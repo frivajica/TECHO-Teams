@@ -6,7 +6,7 @@ const UsuarioEnEquipo = require('./UsuarioEnEquipo');
 
 //Equipo.hasMany(Actividad);
 Usuario.belongsToMany(Equipo, {through: "UsuarioEnEquipo"});
-Role.hasMany(UsuarioEnEquipo);
+Role.hasMany(UsuarioEnEquipo, {as: "Usuario"});
 
 
-module.exports = { Usuario, Equipo };
+module.exports = { Usuario, Equipo, Role, UsuarioEnEquipo };

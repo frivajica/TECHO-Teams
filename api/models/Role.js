@@ -8,6 +8,7 @@ Role.init(
     nombre: {
       type: Sequelize.STRING,
       allowNull: false,
+      unique: true
     },
     description: {
         type: Sequelize.TEXT,
