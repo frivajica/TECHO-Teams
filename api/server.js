@@ -2,13 +2,13 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const db = require("./config/database");
-const routes = require("./routes/index");
+const routes = require("./routes");
 
 app.use(express.json());
 
 app.use(morgan("combined"));
 
-app.use("/", routes);
+app.use("/api", routes);
 
 db.sync({ force: false }).then(() => {
   app.listen(3001, () =>

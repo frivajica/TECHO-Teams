@@ -1,6 +1,6 @@
-const router = require("express").Router();
-const equipos = require("../models/Equipo");
-// const actividades = require("../models/Actividades");
+const express = require("express");
+const router = express.Router();
+const equipos = require("./equipos");
 
 router.use("/equipos", equipos);
 // router.use("/equipos", actividades);
