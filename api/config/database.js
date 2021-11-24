@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
 
-const db = new Sequelize('dbtecho', 'root', 'techoGreatPassword', {
-  host: 'localhost',
+const db = new Sequelize('dbtecho', 'root', 'password', {
   dialect: 'mysql',
   logging: false,
 })
