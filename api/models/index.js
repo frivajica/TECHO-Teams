@@ -1,5 +1,6 @@
-const Equipo = require("./Equipo");
+const Equipo = require('./Equipo');
+const Usuario = require('./Usuario');
 
 //User.belongsToMany(Equipo, {through: "UserRoleInEquipo"})
 
-module.exports = { Equipo };
+module.exports = { Usuario, Equipo };
