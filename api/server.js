@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const db = require("./config/database");
+const Equipo = require("./models")            //toDo quitar, presente para pruebas preliminares
+const Usuario = require("./models")            //toDo quitar, presente para pruebas preliminares
 
 app.use(express.json());
 

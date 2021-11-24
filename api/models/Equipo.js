@@ -22,7 +22,7 @@ Equipo.init(
         type: Sequelize.STRING
     }
   },
-  { sequelize: db, modelName: "Equipo" }
+  { sequelize: db, modelName: "equipos" }
   );
   
   module.exports = Equipo;
