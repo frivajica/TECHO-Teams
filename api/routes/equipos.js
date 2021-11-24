@@ -10,7 +10,7 @@ Router.get("/:id", EquipoController.getOneEquipo )
 
 Router.put("/:id", EquipoController.updateEquipo )
 
-//Router.put("/:id/:userId", EquipoController.addUserToEquipo)
+Router.put("/:id/:userId", EquipoController.addUserToEquipo)
 
 Router.get("/:id/actividades", EquipoController.getActividades)
 

@@ -1,5 +1,5 @@
-const { Equipo } = require('../models');
-const axios = require('axios')
+const { Equipo, Usuario } = require('../models');
+const axios = require('axios');
 
 class EquipoController {
 
@@ -11,7 +11,7 @@ class EquipoController {
 
     static getEquipos(req, res) {
         Equipo.findAll()
-        .then( newTeam => res.status(200).send(newTeam))
+        .then( teamList => res.status(200).send(teamList))
         .catch(err => res.status(500).send(err));
     }
 
@@ -44,6 +44,17 @@ class EquipoController {
             .then(res => res.data)
             .then(activ => res.status(200).send(activ));
         })
+    }
+
+    static addUserToEquipo(req, res) {
+        Equipo.findOne({where: {id: req.params.id}})
+        .then( equipo => {
+            Usuario.findOne({where: {id: req.params.userId}})
+            .then(usr => usr.addEquipo(equipo))
+            .then(() => res.sendStatus(204))
+        })
+        .then()
+        .catch(err => res.status(500).send(err));
     }
 
 

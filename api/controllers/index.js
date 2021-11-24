@@ -1,3 +1,7 @@
-const EquipoController = require("./Equipos");
+const EquipoController = require("./Equipo");
+const UsuarioController = require("./Usuario");
 
-module.exports = {EquipoController}
+module.exports = {
+    EquipoController, 
+    UsuarioController
+}
