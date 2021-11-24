@@ -6,7 +6,7 @@ class Usuario extends Sequelize.Model {}
 Usuario.init(
   {
     mail: {
-      type: S.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
       validate: {
         isEmail: true,
