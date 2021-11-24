@@ -7,7 +7,7 @@ app.use(express.json());
 
 app.use(morgan("combined"));
 
-db.sync({ force: false }).then(() => {
+db.sync({ force: true }).then(() => {
   app.listen(3001, () =>
     console.log(
       "BACKEND HERE!! db sync done \nServidor escuchando en el puerto 3001 :D"
