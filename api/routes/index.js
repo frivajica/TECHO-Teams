@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const equipos = require("./equipos");
+const equipos = require("../models/equipos");
 
 router.use("/equipos", equipos);
 
