@@ -19,10 +19,9 @@
   },
   "scripts": {
     "start": "concurrently 'npm run server' 'npm run client'",
-    "server": "nodemon api/server.js",
+    "server": "node api/server.js",
     "client": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -42,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
