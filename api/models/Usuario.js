@@ -16,10 +16,6 @@ Usuario.init(
         msg: "Email ya en uso!",
       },
     },
-		idUnidadOrganizacional: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
 		dni: {
 			type: Sequelize.STRING,
 			allowNull: false,
@@ -61,9 +57,6 @@ Usuario.init(
     fecha_nacimiento: {
       type: Sequelize.DATE,
       allowNull: false,
-    },
-    hobbies: {
-      type: Sequelize.TEXT,
     },
     bio: {
       type: Sequelize.TEXT,
