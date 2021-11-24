@@ -1,5 +1,10 @@
 const Sequelize = require("sequelize");
 
-// module.exports = new Sequelize ('', null, null, {
-//     dialect:
-// })
+const db = new Sequelize('dbtecho', 'root', 'techoGreatPassword', {
+  dialect: 'mysql',
+  dialectOptions: {
+    // Your mysql2 options here
+  }
+})
+
+module.exports = db;
