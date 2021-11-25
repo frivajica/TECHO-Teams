@@ -9,7 +9,7 @@ import logo from "../../assets/imagenes/navbar/logo.png";
 const Navbar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar sx={{ background: "#0092dd" }} position="static">
+      <AppBar sx={{ background: "#0092dd" }} position="fixed">
         <Toolbar sx={{ justifyContent: "space-around"}}>
           <Link to="/">
             <img src={logo} width="122px" height="37.6px" alt="logo" />
