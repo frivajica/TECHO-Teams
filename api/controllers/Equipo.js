@@ -1,4 +1,4 @@
-const { Equipo, Usuario } = require('../models');
+const { Equipo, Usuario, UsuarioEnEquipo, Role } = require('../models');
 const axios = require('axios');
 
 class EquipoController {
@@ -50,8 +50,24 @@ class EquipoController {
         Equipo.findOne({where: {id: req.params.id}})
         .then( equipo => {
             Usuario.findOne({where: {id: req.params.userId}})
-            .then(usr => usr.addEquipo(equipo))
-            .then(() => res.sendStatus(204))
+            .then(usr => usr.addEquipo(equipo)) //creo fila de usuario x equipo
+            .then(()=>{
+                UsuarioEnEquipo.findOne({where: { //busco la fila de usuario x equipo creada
+                    equipoId: req.params.id, 
+                    usuarioId: req.params.userId
+                    }
+                })
+                .then(usrXequipo => {
+                    Role.findOne({where: {nombre: req.body.role}})
+                    .then(role => {
+                        role.addUsuario(usrXequipo); //creo un id de rol en la fila de usuario x equipo
+                    })
+                    .then(() => res.sendStatus(204))
+                    .catch(err => res.status(500).send(err));
+                })
+                .catch(err => res.status(500).send(err));
+            })
+            .catch(err => res.status(500).send(err));
         })
         .then()
         .catch(err => res.status(500).send(err));
