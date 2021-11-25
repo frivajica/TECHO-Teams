@@ -6,7 +6,7 @@ class Usuario extends Sequelize.Model {}
 Usuario.init(
   {
     mail: {
-      type: S.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
       validate: {
         isEmail: true,
@@ -16,30 +16,30 @@ Usuario.init(
         msg: "Email ya en uso!",
       },
     },
-		idUnidadOrganizacional: {
+    idUnidadOrganizacional: {
       type: Sequelize.INTEGER,
       allowNull: false,
     },
-		dni: {
-			type: Sequelize.STRING,
-			allowNull: false,
-		},
-		idPais: {
+    dni: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    idPais: {
       type: Sequelize.INTEGER,
       allowNull: false,
-		},
-		idProvincia: {
+    },
+    idProvincia: {
       type: Sequelize.INTEGER,
       allowNull: false,
-		},
-		idLocalidad: {
+    },
+    idLocalidad: {
       type: Sequelize.INTEGER,
       allowNull: false,
-		},
-		idUnidadOrganizacional: {
+    },
+    idUnidadOrganizacional: {
       type: Sequelize.INTEGER,
       allowNull: false,
-		},
+    },
     nombre: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -52,12 +52,12 @@ Usuario.init(
       type: Sequelize.STRING,
       allowNull: false,
     },
-		telefono: {
-			type: Sequelize.INTEGER,
-		},
-		sexo: {
-			type: Sequelize.STRING,
-		},
+    telefono: {
+      type: Sequelize.INTEGER,
+    },
+    sexo: {
+      type: Sequelize.STRING,
+    },
     fecha_nacimiento: {
       type: Sequelize.DATE,
       allowNull: false,
