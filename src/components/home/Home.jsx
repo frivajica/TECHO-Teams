@@ -1,15 +1,14 @@
 import React from "react";
 import portada from "../../assets/imagenes/home/portada.jpg";
-import Cards from "../cards/Cards"
+import Cards from "../cards/Cards";
+import "./Home.css";
 
 const Home = () => {
-
-  
   return (
-    <div>
-      <img src={portada} alt="portada" width="100%" height="auto" />
+    <>
+      <img src={portada} className="portada" alt="portada" />
       <Cards />
-    </div>
+    </>
   );
 };
 

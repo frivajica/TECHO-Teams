@@ -14,8 +14,7 @@ const techoRedirect = () => (window.location.href = "https://www.techo.org/");
 const Navbar = () => {
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar sx={{ background: "#0092dd" }}>
+        <AppBar position="sticky" sx={{ background: "#0092dd" }}>
           <Toolbar>
             <Box sx={{ flexGrow: 1, ml: 5 }}>
               <Link to="/">
@@ -37,7 +36,6 @@ const Navbar = () => {
             )}
           </Toolbar>
         </AppBar>
-      </Box>
     </ThemeProvider>
   );
 };

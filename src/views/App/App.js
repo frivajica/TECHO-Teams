@@ -1,9 +1,9 @@
-import { Routes, Route } from "react-router-dom"
-import Navbar from "../commons/navbar/Navbar"
-import Footer from "../commons/footer/Footer"
-import Home from "../components/home/Home"
+import { Routes, Route } from "react-router-dom";
+import Navbar from "../../commons/navbar/Navbar";
+import Footer from "../../commons/footer/Footer";
+import Home from "../../components/home/Home";
 import { ThemeProvider } from '@mui/material/styles';
-import theme from "./themeConfig"
+import theme from "../themeConfig";
  
 function App() {
   return (
