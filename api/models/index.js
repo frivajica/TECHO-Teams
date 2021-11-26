@@ -1,7 +1,7 @@
-const Equipo = require('./Equipo');
-const Usuario = require('./Usuario');
-const Role = require('./Role');
-const UsuarioEnEquipo = require('./UsuarioEnEquipo');
+const Equipo = require("./Equipo");
+const Usuario = require("./Usuario");
+const Role = require("./Role");
+const UsuarioEnEquipo = require("./UsuarioEnEquipo");
 // const Actividad = require("./Actividades");
 
 

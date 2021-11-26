@@ -1,0 +1,31 @@
+.footer {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #d9d9d9;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.techo© {
+  font-family: "Montserrat", sans-serif;
+  font-size: larger;
+  font-weight: bolder;
+  text-align: right;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding-top: 10px;
+}
+
+.logofoot {
+  vertical-align: middle;
+  padding-top: 5px;
+  margin-right: 45%;
+}
+
+.red {
+  margin: 0 2px;
+}
