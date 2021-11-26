@@ -11,6 +11,7 @@ Usuario.belongsToMany(Equipo, {through: UsuarioEnEquipo});
 Equipo.belongsToMany(Usuario, {through: UsuarioEnEquipo});
 
 Role.hasMany(UsuarioEnEquipo, {as: "usrEnEquipo"});
+UsuarioEnEquipo.belongsTo(Role);
 
 
 module.exports = { Usuario, Equipo, Role, UsuarioEnEquipo };
