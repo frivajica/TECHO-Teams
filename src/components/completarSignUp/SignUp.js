@@ -42,8 +42,7 @@ function SignUp() {
       formIsValid = false;
       setFormErrors({
         ...formErrors,
-        estudiosErr:
-          "Especifique Primaria/Secundaria o Titulo universitario, etc.",
+        estudiosErr: "Indique Primaria/Secundaria o Titulo universitario, etc.",
       });
     }
 
