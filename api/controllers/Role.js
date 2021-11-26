@@ -1,7 +1,7 @@
 const { Role, Usuario } = require('../models');
 
 class RoleController {
-    static crearRoles(req, res) {
+    static createRole(req, res) {
         Role.create(req.body)
         .then( newRole => res.status(201).send(newRole))
         .catch(err => res.status(500).send(err));
@@ -17,7 +17,7 @@ class RoleController {
         if (req.params.id === "1") return res.status(401).send("el rol coordinador no puede ser eliminado")
         else {
             Role.destroy({where: {id: req.params.id}})
-            .then(rol => res.status(200).send("rol eliminado", rol))
+            .then(() => res.send("rol eliminado"))
         }
     }
 

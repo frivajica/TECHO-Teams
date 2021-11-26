@@ -5,7 +5,7 @@ const { checkAuthAndAdmin, checkAuth, isCoordinator } = require("../middlewares/
 
 Router.get("/", /* checkAuthAndAdmin, */ RoleController.getRoles)
 
-Router.post("/", /* checkAuthAndAdmin, */ RoleController.crearRoles)
+Router.post("/", /* checkAuthAndAdmin, */ RoleController.createRole)
 
 Router.delete("/borrar/:id", /* checkAuthAndAdmin, */ RoleController.borrarRole)
 

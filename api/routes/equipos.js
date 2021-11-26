@@ -3,7 +3,7 @@ const Router = express.Router();
 const { EquipoController } = require("../controllers");
 const { checkAuthAndAdmin, checkAuth, isCoordinatorHere } = require("../middlewares/auth");
 
-Router.post("/", /* checkAuthAndAdmin, */ EquipoController.crearEquipo )
+Router.post("/", /* checkAuthAndAdmin, */ EquipoController.createEquipo )
 
 Router.get("/", /* checkAuthAndAdmin, */ EquipoController.getEquipos )
 
@@ -11,13 +11,15 @@ Router.get("/:id", /* checkAuth, */ EquipoController.getOneEquipo )
 
 Router.put("/:id", /* isCoordinatorHere, */ EquipoController.updateEquipo )
 
+Router.delete("/:id", /* isCoordinatorHere, */ EquipoController.deleteEquipo )
+
 Router.get("/:id/usuarios", /* checkAuth, */ EquipoController.getUsers)
 
 Router.put("/:id/:userId", /* isCoordinatorHere, */  EquipoController.addUser)
 
 Router.put("/:id/:userId/:roleId", /* isCoordinatorHere, */ EquipoController.changeRole)
 
-Router.delete("/:id/:userId", /* isCoordinatorHere, */ EquipoController.deleteUser)
+Router.delete("/:id/:userId", /* isCoordinatorHere, */ EquipoController.removeUser)
 
 
 module.exports = Router;
