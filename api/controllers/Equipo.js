@@ -37,39 +37,48 @@ class EquipoController {
         .catch(err => res.status(500).send(err));
     }
 
-    static getActividades(req, res) {
-        axios.get("https://actividades.techo.org/seleccionar-pais/13")
-        .then(()=>{
-            axios.get("https://actividades.techo.org/ajax/actividades")
-            .then(res => res.data)
-            .then(activ => res.status(200).send(activ));
-        })
-    }
-
-    static addUserToEquipo(req, res) {
+    static addUser(req, res) {
         Equipo.findOne({where: {id: req.params.id}})
         .then( equipo => {
             Usuario.findOne({where: {id: req.params.userId}})
-            .then(usr => usr.addEquipo(equipo)) //creo fila de usuario x equipo
-            .then(()=>{
-                UsuarioEnEquipo.findOne({where: { //busco la fila de usuario x equipo creada
-                    equipoId: req.params.id, 
-                    usuarioId: req.params.userId
-                    }
-                })
-                .then(usrXequipo => {
-                    Role.findOne({where: {nombre: req.body.role}})
-                    .then(role => {
-                        role.addUsuario(usrXequipo); //creo un id de rol en la fila de usuario x equipo
-                    })
-                    .then(() => res.sendStatus(204))
-                    .catch(err => res.status(500).send(err));
-                })
+            .then(usr => {
+                equipo.addUsuario(usr)
+                .then(usrEnEquipo => res.send(usrEnEquipo))
                 .catch(err => res.status(500).send(err));
             })
             .catch(err => res.status(500).send(err));
         })
-        .then()
+        .catch(err => res.status(500).send(err));
+    }
+
+    static getUsers(req, res) {
+        Equipo.findOne({where: {id: req.params.id}})
+        .then(team => team.getUsuarios())
+        .then(users => res.status(200).send(users))
+        .catch(err => res.status(500).send(err));
+    }
+
+    static changeRole(req, res){
+        UsuarioEnEquipo.findAll({where: {equipoId: req.params.id, usuarioId: req.params.userId}})
+        .then(team => {
+            Role.findOne({where: {id: req.params.roleId}})
+            .then(rol => rol.addUsrEnEquipo(team) )
+            .then(() => res.status(204).send("rol added"))
+        })
+        .catch(err => res.status(500).send(err));
+    }
+
+    static deleteUser(req, res) {
+        Equipo.findOne({where: {id: req.params.id}})
+        .then( equipo => {
+            Usuario.findOne({where: {id: req.params.userId}})
+            .then(usr => {
+                equipo.removeUsuario(usr)
+                .then(() => res.sendStatus(204))
+                .catch(err => res.status(500).send("not removed",err))
+            })
+            .catch(err => res.status(500).send(err));
+        })
         .catch(err => res.status(500).send(err));
     }
 
