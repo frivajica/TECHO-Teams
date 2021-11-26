@@ -5,7 +5,7 @@ class Usuario extends Sequelize.Model {}
 
 Usuario.init(
   {
-    /* mail: {
+    mail: {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
@@ -35,11 +35,11 @@ Usuario.init(
     idUnidadOrganizacional: {
       type: Sequelize.INTEGER,
       allowNull: false,
-    },*/
+    },
     nombre: {
       type: Sequelize.STRING,
       allowNull: false,
-    },/*
+    },
     apellidoPaterno: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -71,7 +71,7 @@ Usuario.init(
     password: {
       type: Sequelize.STRING,
       allowNull: false,
-    }, */
+    },
   },
   { sequelize: db, modelName: "usuarios" }
 );

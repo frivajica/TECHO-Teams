@@ -31,7 +31,7 @@ class EquipoController {
         .then( () => {
             Equipo.findOne({where: {id: req.params.id}})
             .then(res => res.dataValues)
-            .then( updatedTeam => res.status(204).send(updatedTeam))//todavia no puedo hacer que lo devuelva 
+            .then( updatedTeam => res.status(201).send(updatedTeam)) 
             .catch(err => res.status(500).send(err));
         })
         .catch(err => res.status(500).send(err));
@@ -63,7 +63,7 @@ class EquipoController {
         .then(team => {
             Role.findOne({where: {id: req.params.roleId}})
             .then(rol => rol.addUsrEnEquipo(team) )
-            .then(() => res.status(204).send("rol added"))
+            .then(() => res.status(201).send("rol added"))
             .catch(err => res.status(500).send(err));
         })
         .catch(err => res.status(500).send(err));
@@ -80,6 +80,12 @@ class EquipoController {
             })
             .catch(err => res.status(500).send(err));
         })
+        .catch(err => res.status(500).send(err));
+    }
+
+    static deleteEquipo(req, res) {
+        Equipo.destroy({where: {id: req.params.id}})
+        .then( equipo => res.status(200).send("equipo eliminado", equipo))
         .catch(err => res.status(500).send(err));
     }
 
