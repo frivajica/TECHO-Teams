@@ -16,7 +16,7 @@ const Navbar = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar id="navbar">
+      <AppBar id="navbar" position='sticky' >
         <Toolbar>
           <Box sx={{ flexGrow: 1, ml: 5 }}>
             <Link to="/">
