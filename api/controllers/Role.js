@@ -1,4 +1,4 @@
-const { Role } = require('../models');
+const { Role, UsuarioEnEquipo, Usuario } = require('../models');
 
 class RoleController {
     static crearRoles(req, res) {
@@ -14,7 +14,29 @@ class RoleController {
     }
 
     static borrarRole(req, res) {
-        Role.destroy({where: {nombre: req.body.nombre}})
+        if (req.params.id === "1") return res.status(401).send("el rol coordinador no puede ser eliminado")
+        else {
+            Role.destroy({where: {id: req.params.id}})
+            .then(() => res.status(204).send("rol eliminado"))
+        }
+    }
+
+    static getUsuarios(req, res) {
+        Role.findOne({where: {id: req.params.id }})
+        .then( rol => rol.getUsrEnEquipo())
+        .then( async usrList => {
+            let realUsrs = [];
+            for (let i=0; i< usrList.length; i++) {
+                try {
+                    const usrToAdd = await Usuario.findOne({where: {id: usrList[i].usuarioId}})
+                    realUsrs.push(usrToAdd);
+                } catch (error) {
+                    return res.status(500).send(error)
+                }
+            }
+            return res.status(201).send(realUsrs)
+        })
+        .catch(err => res.status(500).send(err));
     }
 }
 

@@ -64,6 +64,7 @@ class EquipoController {
             Role.findOne({where: {id: req.params.roleId}})
             .then(rol => rol.addUsrEnEquipo(team) )
             .then(() => res.status(204).send("rol added"))
+            .catch(err => res.status(500).send(err));
         })
         .catch(err => res.status(500).send(err));
     }

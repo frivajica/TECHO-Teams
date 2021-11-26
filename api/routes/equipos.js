@@ -1,22 +1,23 @@
 const express = require("express")
 const Router = express.Router();
-const {EquipoController} = require("../controllers");
+const { EquipoController } = require("../controllers");
+const { checkAuthAndAdmin, checkAuth, isCoordinatorHere } = require("../middlewares/auth");
 
-Router.post("/", EquipoController.crearEquipo )
+Router.post("/", /* checkAuthAndAdmin, */ EquipoController.crearEquipo )
 
-Router.get("/", EquipoController.getEquipos )
+Router.get("/", /* checkAuthAndAdmin, */ EquipoController.getEquipos )
 
-Router.get("/:id", EquipoController.getOneEquipo )
+Router.get("/:id", /* checkAuth, */ EquipoController.getOneEquipo )
 
-Router.put("/:id", EquipoController.updateEquipo )
+Router.put("/:id", /* isCoordinatorHere, */ EquipoController.updateEquipo )
 
-Router.get("/:id/usuarios", EquipoController.getUsers)
+Router.get("/:id/usuarios", /* checkAuth, */ EquipoController.getUsers)
 
-Router.put("/:id/:userId", EquipoController.addUser)
+Router.put("/:id/:userId", /* isCoordinatorHere, */  EquipoController.addUser)
 
-Router.put("/:id/:userId/:roleId", EquipoController.changeRole)
+Router.put("/:id/:userId/:roleId", /* isCoordinatorHere, */ EquipoController.changeRole)
 
-Router.delete("/:id/:userId", EquipoController.deleteUser)
+Router.delete("/:id/:userId", /* isCoordinatorHere, */ EquipoController.deleteUser)
 
 
 module.exports = Router;
