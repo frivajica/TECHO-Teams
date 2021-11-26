@@ -10,8 +10,13 @@ Router.get("/:id", EquipoController.getOneEquipo )
 
 Router.put("/:id", EquipoController.updateEquipo )
 
-Router.put("/:id/:userId", EquipoController.addUserToEquipo)
+Router.get("/:id/usuarios", EquipoController.getUsers)
 
-Router.get("/:id/actividades", EquipoController.getActividades)
+Router.put("/:id/:userId", EquipoController.addUser)
+
+Router.put("/:id/:userId/:roleId", EquipoController.changeRole)
+
+Router.delete("/:id/:userId", EquipoController.deleteUser)
+
 
 module.exports = Router;

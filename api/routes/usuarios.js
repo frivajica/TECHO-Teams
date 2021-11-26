@@ -6,4 +6,6 @@ Router.get("/", UsuarioController.getUsuarios)
 
 Router.post("/", UsuarioController.crearUsuario )
 
+Router.get("/", UsuarioController.getUsuario )		//un solo usuario
+
 module.exports = Router;

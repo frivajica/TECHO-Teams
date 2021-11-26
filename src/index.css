@@ -133,3 +133,47 @@
   margin-top: 1px;
   margin-bottom: 12px;
 }
+
+/* --------------------------------Navbar & LoginModal------------------------------- */
+
+#navbar {
+  background: "#0092dd";
+}
+
+#logo {
+  width: 122px;
+  height: 37.6px;
+}
+
+#formBox {
+  width: 500px;
+  max-width: 100%;
+}
+
+.size10 {
+  font-size: 10px !important;
+}
+
+.size16 {
+  font-size: 16px !important;
+}
+
+.linksContainter {
+  display: flex;
+  justify-content: space-between;
+}
+
+.links {
+  display: block;
+}
+
+#ingresar {
+  background-color: #0092dd;
+  color: white;
+}
+
+#ingresar:hover {
+  background-color: #0092dd;
+}
+
+/* --------------------------------Cards------------------------------- */

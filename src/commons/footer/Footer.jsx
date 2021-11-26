@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
 import Button from "@mui/material/Button";
-import theme from "../../views/themeConfig";
-import { ThemeProvider } from "@mui/material/styles";
 
 const Footer = () => {
   return (
