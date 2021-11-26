@@ -1,5 +1,8 @@
 * {
   font-family: "Montserrat", sans-serif !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .footer {
@@ -132,6 +135,21 @@
   height: 5px;
   margin-top: 1px;
   margin-bottom: 12px;
+}
+
+#portada {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 254px;
+  background-repeat: no-repeat ;
+  background-size: cover;
+  background-image: url("../src/assets/imagenes/home/portada.jpg");
+}
+
+.textoPortada {
+  color: white;
+  font-size: 2.5vw;
 }
 
 /* --------------------------------Navbar & LoginModal------------------------------- */

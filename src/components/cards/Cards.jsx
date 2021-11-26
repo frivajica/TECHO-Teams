@@ -11,7 +11,7 @@ const Cards = () => {
         flexWrap: "wrap",
         minWidth: 300,
         width: "100%",
-        marginTop: "80px",
+        marginTop: "45px",
         justifyContent: "space-around",
       }}
     >
