@@ -1,42 +1,39 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom"
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import logo from "../../assets/imagenes/navbar/logo.png";
-import theme from "../../views/themeConfig";
-import { ThemeProvider } from "@mui/material/styles";
-import { UserMenu } from "../../components/userMenu/UserMenu";
-import { usuario } from "../../utils/mockData";
-const techoRedirect = () => (window.location.href = "https://www.techo.org/");
+import LoginModal from "./LoginModal";
+import { usuario } from "../../utils/mockData"
+import { UserMenu } from "../../components/userMenu/UserMenu"
 
 const Navbar = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
-    <ThemeProvider theme={theme}>
-        <AppBar position="sticky" sx={{ background: "#0092dd" }}>
-          <Toolbar>
-            <Box sx={{ flexGrow: 1, ml: 5 }}>
-              <Link to="/">
-                <img
-                  src={logo}
-                  width="122px"
-                  height="37.6px"
-                  alt="logo"
-                  onClick={techoRedirect}
-                />
-              </Link>
-            </Box>
-            {usuario ? (
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar id="navbar">
+        <Toolbar>
+          <Box sx={{ flexGrow: 1, ml: 5 }}>
+            <Link to="/">
+              <img id="logo" src={logo} alt="logo" />
+            </Link>
+          </Box>
+          {usuario ? (
               <UserMenu />
             ) : (
-              <Button color="inherit" sx={{ mr: 5 }}>
+              <Button onClick={handleOpen} color="inherit" sx={{ mr: 5 }}>
                 INGRESAR
+                <LoginModal open={open} handleClose={handleClose} />
               </Button>
             )}
-          </Toolbar>
-        </AppBar>
-    </ThemeProvider>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 };
 

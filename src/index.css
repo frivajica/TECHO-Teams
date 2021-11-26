@@ -1,0 +1,179 @@
+* {
+  font-family: "Montserrat", sans-serif !important;
+}
+
+.footer {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #d9d9d9;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.techo© {
+  font-family: "Montserrat", sans-serif;
+  font-size: larger;
+  font-weight: bolder;
+  text-align: right;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding-top: 10px;
+}
+
+.logofoot {
+  vertical-align: middle;
+  padding-top: 5px;
+  margin-right: 45%;
+}
+
+.red {
+  margin: 0 2px;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  margin-bottom: 3%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.titlereg {
+  font-family: "Montserrat", sans-serif;
+  font-size: xx-large;
+  margin-bottom: 0.5rem;
+  margin-top: 9rem;
+  color: inherit;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+}
+
+.subtitlereg {
+  font-family: "Montserrat", sans-serif;
+  font-size: medium;
+  margin-bottom: 0.8rem;
+  margin-top: 0.2rem;
+  color: inherit;
+  font-weight: 100;
+  line-height: 1.5;
+  color: #212529;
+}
+
+.label {
+  font-family: Montserrat, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: #363636;
+}
+
+.option {
+  font-weight: normal;
+  display: block;
+  white-space: nowrap;
+  min-height: 1.2em;
+  padding: 0px 2px 1px;
+}
+
+.button {
+  font-family: Montserrat, sans-serif;
+  background-color: #0092dd !important;
+  border: none !important;
+  font-weight: 700 !important;
+  color: white;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  text-align: center;
+  vertical-align: middle;
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 7%;
+}
+
+#selector {
+  width: 107%;
+}
+
+.button:hover {
+  color: black;
+}
+
+.errorFormMsg {
+  font-size: 13px;
+  color: red;
+  height: 5px;
+  margin-top: 1px;
+  margin-bottom: 12px;
+}
+
+/* --------------------------------Navbar & LoginModal------------------------------- */
+
+#navbar {
+  background: "#0092dd";
+}
+
+#logo {
+  width: 122px;
+  height: 37.6px;
+}
+
+#formBox {
+  width: 500px;
+  max-width: 100%;
+}
+
+.size10 {
+  font-size: 10px !important;
+}
+
+.size16 {
+  font-size: 16px !important;
+}
+
+.linksContainter {
+  display: flex;
+  justify-content: space-between;
+}
+
+.links {
+  display: block;
+}
+
+#ingresar {
+  background-color: #0092dd;
+  color: white;
+}
+
+#ingresar:hover {
+  background-color: #0092dd;
+}
+
+/* --------------------------------Cards------------------------------- */

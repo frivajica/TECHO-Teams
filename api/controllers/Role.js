@@ -12,6 +12,10 @@ class RoleController {
         .then( roleList => res.status(200).send(roleList))
         .catch(err => res.status(500).send(err));
     }
+
+    static borrarRole(req, res) {
+        Role.destroy({where: {nombre: req.body.nombre}})
+    }
 }
 
 module.exports = RoleController;

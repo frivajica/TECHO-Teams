@@ -27,6 +27,8 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "sequelize": "^6.12.0-alpha.1",
+    "sweetalert": "^2.1.2",
+    "react-spring": "^9.3.2",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
@@ -56,5 +58,10 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "react-spring": "<rootDir>/node_modules/react-spring/web.cjs"
+    }
   }
 }
