@@ -1,5 +1,5 @@
 const { Usuario } = require("../models");
-import axios from "axios"
+const axios = require("axios")
 
 class UsuarioController {
   static crearUsuario(req, res) {
@@ -20,8 +20,7 @@ class UsuarioController {
       .catch((err) => res.status(500).send(err));
   }
 
-  static 
-  (req, res) {
+  static crearUsuarioPrueba(req, res) {
     axios.post("https://sandbox.actividades.techo.org/api/register", {
         idPais: 1,
         idUnidadOrganizacional: 0,

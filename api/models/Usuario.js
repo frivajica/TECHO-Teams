@@ -6,7 +6,7 @@ class Usuario extends Sequelize.Model { }
 Usuario.init(
   {
     idPersona: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       primaryKey: true,
     },
     profesion: {

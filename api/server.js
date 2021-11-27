@@ -10,10 +10,12 @@ app.use(morgan("combined"));
 
 app.use("/api", routes);
 
-db.sync({ force: false }).then(() => {
+db.sync({ force: false })
+.then(() => {
   app.listen(3001, () =>
     console.log(
       "BACKEND HERE!! db sync done \nServidor escuchando en el puerto 3001 :D"
     )
-  );
-});
+  )
+})
+.catch(err => console.log({ err }))
