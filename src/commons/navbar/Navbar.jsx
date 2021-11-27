@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import logo from "../../assets/imagenes/navbar/logo.png";
 import LoginModal from "./LoginModal";
-import { usuario } from "../../utils/mockData"
-import { UserMenu } from "../../components/userMenu/UserMenu"
+import { usuario } from "../../utils/mockData";
+import { UserMenu } from "../../components/userMenu/UserMenu";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -23,11 +23,18 @@ const Navbar = () => {
               <img id="logo" src={logo} alt="logo" />
             </Link>
           </Box>
-          {usuario && (<UserMenu />)}
+          {usuario ? (
+            <Button sx={{ mr: 5 }}>
+              <UserMenu />
+            </Button>
+          ) : (
+            <>
               <Button onClick={handleOpen} color="inherit" sx={{ mr: 5 }}>
                 INGRESAR
               </Button>
-                <LoginModal open={open} handleClose={handleClose} />
+              <LoginModal open={open} handleClose={handleClose} />
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

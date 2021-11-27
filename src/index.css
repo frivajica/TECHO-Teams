@@ -164,7 +164,7 @@
   background-image: url("../src/assets/imagenes/home/portada.jpg");
 }
 
-.textoPortada {
+.texto-portada {
   text-align: center;
   color: white;
   font-size: 2em;
@@ -173,6 +173,9 @@
 /* --------------------------------Navbar & LoginModal------------------------------- */
 
 #navbar {
+  position: sticky;
+  display: flex;
+  justify-content: center;
   background: "#0092dd";
   height: 4rem;
 }
