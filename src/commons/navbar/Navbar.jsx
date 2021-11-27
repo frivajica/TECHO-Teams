@@ -16,21 +16,18 @@ const Navbar = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar id="navbar" position='sticky' >
+      <AppBar id="navbar" position="sticky">
         <Toolbar>
           <Box sx={{ flexGrow: 1, ml: 5 }}>
             <Link to="/">
               <img id="logo" src={logo} alt="logo" />
             </Link>
           </Box>
-          {usuario ? (
-              <UserMenu />
-            ) : (
+          {usuario && (<UserMenu />)}
               <Button onClick={handleOpen} color="inherit" sx={{ mr: 5 }}>
                 INGRESAR
-                <LoginModal open={open} handleClose={handleClose} />
               </Button>
-            )}
+                <LoginModal open={open} handleClose={handleClose} />
         </Toolbar>
       </AppBar>
     </Box>

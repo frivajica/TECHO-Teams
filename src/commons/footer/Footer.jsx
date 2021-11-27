@@ -8,13 +8,13 @@ const Footer = () => {
     <footer className="footer">
       <div>
         <img
+          className="logofoot"
           src="https://actividades.techo.org/img/logo_negro_154x41.png"
           alt="Techo Argentina"
           align="left"
-          style={{ paddingTop: "5px", marginRight: "30px" }}
         />
       </div>
-      <div className="logofoot">
+      <div className="social-media">
         <a
           className="red"
           href="http://lt.dplrtrack.info/a1ccecf1d4a82082506189b30dbb3789-1c48a2db5ffee7dd9b1dd7531c928471"
@@ -64,9 +64,7 @@ const Footer = () => {
           />
         </a>
       </div>
-      <div>
-        <p className="techo©">© 2021 TECHO</p>
-      </div>
+      <p className="techo©">© 2021 TECHO</p>
     </footer>
   );
 };
