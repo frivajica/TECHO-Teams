@@ -1,5 +1,5 @@
-export const usuario = {
-  nombre: 'Joaquín',
-  apellidoPaterno: 'Phoenix',
-  cargo: 'Admin'  
-  };
+// export const usuario = {
+//   nombre: 'Joaquín',
+//   apellidoPaterno: 'Phoenix',
+//   cargo: 'Admin'  
+//   };

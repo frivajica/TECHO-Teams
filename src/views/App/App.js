@@ -7,10 +7,12 @@ function App() {
   return (
     <div>
       <Navbar />
+      <div className='content'>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/register" element={<SignUp />} />
       </Routes>
+      </div>
       <Footer />
     </div>
   );

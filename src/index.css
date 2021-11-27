@@ -5,32 +5,46 @@
   box-sizing: border-box;
 }
 
-.footer {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: #d9d9d9;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+.content {
+  min-height: 78vh;
 }
 
-.techo© {
-  font-family: "Montserrat", sans-serif;
-  font-size: larger;
-  font-weight: bolder;
-  text-align: right;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  padding-top: 10px;
+.footer {
+  margin-top: 2rem;
+  padding: 1rem 3rem 1rem 3rem;
+  width: 100%;
+  background-color: #d9d9d9;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .logofoot {
-  vertical-align: middle;
-  padding-top: 5px;
-  margin-right: 45%;
+  padding: 1rem;
+}
+
+.techo© {
+  display: flex;
+  align-items: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: larger;
+  font-weight: bolder;
+  flex-wrap: wrap;
+}
+
+.social-media {
+  display: flex;
+  align-items: center;
+}
+
+@media only screen and (max-width: 850px) {
+  .social-media {
+    align-self: flex-start;
+    order: -1;
+  }
+  .footer {
+  justify-content: center;
+  }
 }
 
 .red {
@@ -138,24 +152,29 @@
 }
 
 #portada {
+  height: 254px;
+  min-height: 10em;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 254px;
-  background-repeat: no-repeat ;
+  background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
   background-image: url("../src/assets/imagenes/home/portada.jpg");
 }
 
 .textoPortada {
+  text-align: center;
   color: white;
-  font-size: 2.5vw;
+  font-size: 2em;
 }
 
 /* --------------------------------Navbar & LoginModal------------------------------- */
 
 #navbar {
   background: "#0092dd";
+  height: 4rem;
 }
 
 #logo {
