@@ -1,5 +1,7 @@
 const { Usuario } = require("../models");
-import axios from "axios"
+const axios = require("axios");
+const FormData = require("form-data");
+const fs = require("fs");
 
 class UsuarioController {
   static crearUsuario(req, res) {
@@ -20,27 +22,34 @@ class UsuarioController {
       .catch((err) => res.status(500).send(err));
   }
 
-  static 
-  (req, res) {
-    axios.post("https://sandbox.actividades.techo.org/api/register", {
-        idPais: 1,
-        idUnidadOrganizacional: 0,
-        nombres: "Agustín",
-        apellidoPaterno: "Vilas",
-        fechaNacimiento: "1989-10-19 00:00:00",
-        telefono: "11",
-        telefonoMovil: "1154915915",
-        sexo: "M",
-        dni: "34905669",
-        mail: "prueba.p5@gmail.com",
-        recibirMails: 1,
-        acepta_marketing: null,
-        email_verified_at: "2021-01-13 13:57:35",
-        deleted_at: null
-    })
+  static crearUsuarioPrueba(req, res) {
+    const formData = new FormData();
+
+    formData.append("mail", "prueba.registro@mail.com");
+    formData.append("password", "12345678");
+    formData.append("password_confirmation", "12345678");
+    formData.append("nombres", "Carlos");
+    formData.append("apellidoPaterno", "Bilardo");
+    formData.append("fechaNacimiento", "1990-01-01");
+    formData.append("telefono", "123451331");
+    formData.append("telefonoMovil", "112234454");
+    formData.append("dni", "30303668");
+    formData.append("recibirMails", 1);
+    formData.append("acepta_marketing", 0);
+    formData.append("idPais", 1);
+    formData.append("idUnidadOrganizacional", 0);
+
+    const formHeaders = formData.getHeaders();
+
+    axios
+      .post("https://sandbox.actividades.techo.org/api/register", formData, {
+        headers: {
+          ...formHeaders,
+        },
+      })
+      .then((rta) => res.send(rta));
     //then((res) => Usuario.create())
   }
-
 }
 
 module.exports = UsuarioController;

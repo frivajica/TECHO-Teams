@@ -1,22 +1,22 @@
 const Sequelize = require("sequelize");
 const db = require("../config/database");
 
-class Usuario extends Sequelize.Model { }
+class Usuario extends Sequelize.Model {}
 
 Usuario.init(
   {
     idPersona: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       primaryKey: true,
     },
     profesion: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
     },
     estudios: {
       type: Sequelize.STRING,
     },
-   // intereses: { type: }
+    // intereses: { type: }
   },
   { sequelize: db, modelName: "usuarios" }
 );
