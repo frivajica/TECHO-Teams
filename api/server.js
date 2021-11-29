@@ -1,3 +1,4 @@
+const { fabClasses } = require("@mui/material");
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
@@ -15,5 +16,6 @@ db.sync({ force: false }).then(() => {
     console.log(
       "BACKEND HERE!! db sync done \nServidor escuchando en el puerto 3001 :D"
     )
-  );
-});
+  )
+})
+.catch(err => console.log({ err }))
