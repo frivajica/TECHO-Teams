@@ -10,4 +10,6 @@ Router.get("/", UsuarioController.getUsuario )		//un solo usuario
 
 Router.post("/prueba", UsuarioController.crearUsuarioPrueba)
 
+Router.post("/login", UsuarioController.loginInUsuarioPrueba)
+
 module.exports = Router;

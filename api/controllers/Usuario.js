@@ -1,5 +1,6 @@
 const { Usuario } = require("../models");
 const axios = require("axios")
+const superagent = require('superagent');
 
 class UsuarioController {
   static crearUsuario(req, res) {
@@ -21,23 +22,23 @@ class UsuarioController {
   }
 
   static crearUsuarioPrueba(req, res) {
-    axios.post("https://sandbox.actividades.techo.org/api/register", {
-        idPais: 1,
-        idUnidadOrganizacional: 0,
-        nombres: "Agustín",
-        apellidoPaterno: "Vilas",
-        fechaNacimiento: "1989-10-19 00:00:00",
-        telefono: "11",
-        telefonoMovil: "1154915915",
-        sexo: "M",
-        dni: "34905669",
-        mail: "prueba.p5@gmail.com",
-        recibirMails: 1,
-        acepta_marketing: null,
-        email_verified_at: "2021-01-13 13:57:35",
-        deleted_at: null
-    })
-    //then((res) => Usuario.create())
+   superagent.post("https://sandbox.actividades.techo.org/api/register")
+   .send(req.body)
+   .set('X-API-Key', 'foobar')
+   .set('Accept', 'application/json')
+    .then((r) => JSON.parse(r.text))
+    .then(newUser => res.status(201).send(newUser))
+    .catch(err => res.status(500).send(err))
+  }
+
+  static loginInUsuarioPrueba(req, res) {
+    superagent.post("https://sandbox.actividades.techo.org/api/login")
+    .send(req.body)
+    .set('X-API-Key', 'foobar')
+    .set('Accept', 'application/json')
+    .then((r) => JSON.parse(r.text))
+    .then(user => res.status(200).send(user))
+    .catch(err => res.status(401).send("Error de logueo"))
   }
 
 }
