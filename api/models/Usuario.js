@@ -16,7 +16,7 @@ Usuario.init(
     estudios: {
       type: Sequelize.STRING,
     },
-    // intereses: { type: }
+    // intereses: { type: Sequelize.STRING }
   },
   { sequelize: db, modelName: "usuarios" }
 );

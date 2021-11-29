@@ -87,13 +87,13 @@ function SignUp() {
       });
     }
 
-    if (!estudios.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        estudiosErr: "Indique Primaria/Secundaria o Titulo universitario, etc.",
-      });
-    }
+    // if (!estudios.value) {
+    //   formIsValid = false;
+    //   setFormErrors({
+    //     ...formErrors,
+    //     estudiosErr: "Indique Primaria/Secundaria o Titulo universitario, etc.",
+    //   });
+    // }
 
     if (!intereses[0]) {
       formIsValid = false;
@@ -106,8 +106,8 @@ function SignUp() {
     return formIsValid;
   };
 
-  //
-  const { profesionErr, estudiosErr, interesErr } = formErrors;
+  //estudiosErr,
+  const { profesionErr, interesErr } = formErrors;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -121,7 +121,7 @@ function SignUp() {
       //   .post('', {
       //     profesion: profesion.value,
       //     estudios: estudios.value,
-      //     interes: interes.value,
+      //     interes: intereses.split(", "),
       //   })
       //   .then((res) => res.data)
       //   .then(successAlert());
@@ -162,7 +162,7 @@ function SignUp() {
             id="estudios"
             className="form-control"
           />
-          {estudiosErr ? <div className="errorFormMsg">{estudiosErr}</div> : ""}
+          {/* {estudiosErr ? <div className="errorFormMsg">{estudiosErr}</div> : ""} */}
           <InputLabel id="demo-multiple-chip-label">
             TEMATICAS/AREAS DE INTERES EN TECHO
           </InputLabel>

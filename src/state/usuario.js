@@ -7,10 +7,10 @@ import axios from "axios";
 
 export const setUsuario = createAction("SET_USARIO");
 
-export const loginRequest = createAsyncThunk("LOGIN", ({ email, password }) => {
+export const loginRequest = createAsyncThunk("LOGIN", ({ mail, password }) => {
   return axios
     .post("https://sandbox.actividades.techo.org/api/login", {
-      email,
+      mail,
       password,
     })
     .then((res) => console.log(res));
