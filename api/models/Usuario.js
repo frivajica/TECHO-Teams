@@ -18,7 +18,7 @@ Usuario.init(
     },
     intereses: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
     },
   },
   { sequelize: db, modelName: "usuarios" }

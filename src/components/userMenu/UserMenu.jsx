@@ -4,8 +4,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { usuario } from "../../utils/mockData";
 import "./UserMenu.css";
+import { useSelector } from "react-redux";
 
 export const UserMenu = () => {
+  const user = useSelector((state) => state.usuario);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -24,7 +26,7 @@ export const UserMenu = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        {usuario.nombre}
+        {user.user.nombres}
       </Button>
       <Menu
         id="positioned-menu"
@@ -42,10 +44,10 @@ export const UserMenu = () => {
         }}
       >
         <MenuItem onClick={handleClose}>Mi Perfil</MenuItem>
-        {(usuario.cargo === "Coordinador" || usuario.cargo === "Admin") && (
+        {(user.user.cargo === "Coordinador" || user.user.cargo === "Admin") && (
           <MenuItem onClick={handleClose}>Mis Equipos</MenuItem>
         )}
-        {usuario.cargo === "Admin" && (
+        {user.user.cargo === "Admin" && (
           <MenuItem onClick={handleClose}>AdminLand</MenuItem>
         )}
         <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem>
