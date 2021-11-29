@@ -4,12 +4,15 @@ const { UsuarioController } = require("../controllers");
 
 Router.get("/", UsuarioController.getUsuarios);
 
-Router.post("/", UsuarioController.crearUsuario);
+Router.post("/registrar", UsuarioController.crearUsuario);
 
 Router.get("/", UsuarioController.getUsuario); //un solo usuario
 
-Router.post("/prueba", UsuarioController.crearUsuarioPrueba);
+Router.post("/login", UsuarioController.loginInUsuario);
 
-Router.post("/login", UsuarioController.loginInUsuarioPrueba);
+Router.post(
+  "/registrarDesdeActividades",
+  UsuarioController.crearUsuarioEquipos
+);
 
 module.exports = Router;
