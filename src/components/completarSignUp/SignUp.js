@@ -3,12 +3,61 @@ import { CustomHook } from "../../hooks/CustomHook";
 import { Container } from "@mui/material";
 import swal from "sweetalert";
 import axios from "axios";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Chip from "@mui/material/Chip";
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
+const interes = [
+  "Voluntariado",
+  "Comunicaciones",
+  "Desarrollo de Fondos",
+  "Gestión Comunitaria",
+  "Administración y Finanzas",
+  "Vivienda y Habitat",
+  "Gestión de tiempo",
+  "Liderazgo",
+  "Gestión de Proyectos",
+  "Autoconocimiento",
+  "Modelo de trabajo TECHO",
+];
 
 function SignUp() {
+  const theme = useTheme();
   const profesion = CustomHook("");
   const estudios = CustomHook("");
-  const interes = CustomHook("");
+  const [intereses, setIntereses] = useState([]);
   const [formErrors, setFormErrors] = useState({});
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setIntereses(typeof value === "string" ? value.split(",") : value);
+  };
 
   const successAlert = () => {
     swal({
@@ -46,17 +95,18 @@ function SignUp() {
       });
     }
 
-    if (!interes.value) {
+    if (!intereses[0]) {
       formIsValid = false;
       setFormErrors({
         ...formErrors,
-        interesErr: "Elija alguna opcion",
+        interesErr: "Elija alguna/s opcion/es",
       });
     }
 
     return formIsValid;
   };
 
+  //
   const { profesionErr, estudiosErr, interesErr } = formErrors;
 
   const handleSubmit = (e) => {
@@ -113,8 +163,38 @@ function SignUp() {
             className="form-control"
           />
           {estudiosErr ? <div className="errorFormMsg">{estudiosErr}</div> : ""}
-          <label for="selector" className="label">
-            <p>INTERES PRINCIPAL EN TECHO</p>
+          <InputLabel id="demo-multiple-chip-label">
+            TEMATICAS/AREAS DE INTERES EN TECHO
+          </InputLabel>
+          <Select
+            labelId="demo-multiple-chip-label"
+            id="demo-multiple-chip"
+            multiple
+            value={intereses}
+            onChange={handleChange}
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+            MenuProps={MenuProps}
+          >
+            {interes.map((name) => (
+              <MenuItem
+                key={name}
+                value={name}
+                style={getStyles(name, intereses, theme)}
+              >
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
+          {interesErr ? <div className="errorFormMsg">{interesErr}</div> : ""}
+          {/* <label for="selector" className="label">
+            <p>INTERESES EN TECHO</p>
             <select id="selector" className="form-control" {...interes}>
               <option label=" "></option>
               <option className="option">Mentoreo</option>
@@ -122,7 +202,8 @@ function SignUp() {
               <option className="option">Otra opcion</option>
             </select>
           </label>
-          {interesErr ? <div className="errorFormMsg">{interesErr}</div> : ""}
+          {interesErr ? <div className="errorFormMsg">{interesErr}</div> : ""} */}
+          <br />
           <button type="submit" className="button">
             SIGUIENTE
           </button>

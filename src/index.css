@@ -43,7 +43,7 @@
     order: -1;
   }
   .footer {
-  justify-content: center;
+    justify-content: center;
   }
 }
 
@@ -144,7 +144,7 @@
 }
 
 .errorFormMsg {
-  font-size: 13px;
+  font-size: 11px;
   color: red;
   height: 5px;
   margin-top: 1px;
@@ -168,6 +168,18 @@
   text-align: center;
   color: white;
   font-size: 2em;
+}
+
+#demo-multiple-chip-label {
+  font-family: Montserrat, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: #363636;
 }
 
 /* --------------------------------Navbar & LoginModal------------------------------- */

@@ -40,7 +40,6 @@ class UsuarioController {
     .then(user => res.status(200).send(user))
     .catch(err => res.status(401).send("Error de logueo"))
   }
-
 }
 
 module.exports = UsuarioController;
