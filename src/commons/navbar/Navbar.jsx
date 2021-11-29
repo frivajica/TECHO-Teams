@@ -6,7 +6,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import logo from "../../assets/imagenes/navbar/logo.png";
 import LoginModal from "./LoginModal";
-import { usuario } from "../../utils/mockData";
 import { UserMenu } from "../../components/userMenu/UserMenu";
 import { useSelector } from "react-redux";
 

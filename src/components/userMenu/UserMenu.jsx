@@ -12,7 +12,7 @@ import { setUsuario } from "../../state/usuario";
 export const UserMenu = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const usuario = useSelector((state) => state.usuario);
+  const usuario = useSelector(({ usuario }) => usuario.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -32,7 +32,7 @@ export const UserMenu = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        {usuario.user && usuario.user.nombres}
+        {usuario && usuario.nombres}
       </Button>
       <Menu
         id="positioned-menu"
@@ -59,7 +59,7 @@ export const UserMenu = () => {
         {(usuario.cargo === "Coordinador" || usuario.cargo === "Admin") && (
           <MenuItem onClick={handleClose}>Mis Equipos</MenuItem>
         )}
-        {usuario.user.cargo === "Admin" && (
+        {usuario.cargo === "Admin" && (
           <MenuItem onClick={handleClose}>AdminLand</MenuItem>
         )}
         <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem>
