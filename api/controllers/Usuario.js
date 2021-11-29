@@ -74,13 +74,8 @@ class UsuarioController {
   static crearUsuarioEquipos(req, res) {
     //user es el obj del estado global de usuario, desde front pasarlo en el body del axios
     const { usuario, profesion, estudios, intereses } = req.body;
-    Usuario.create({
-      idPersona: usuario.idPersona,
-      profesion,
-      estudios,
-      intereses,
-    })
-      .then((user) => res.status(201).send({ ...usuario, ...user.dataValues }))
+    Usuario.create(req.body)
+      .then((user) => res.status(201).send(user))
       .catch((err) => res.status(401).send(err));
   }
 

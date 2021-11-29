@@ -17,6 +17,10 @@ Role.init(
     },
     description: {
         type: Sequelize.TEXT,
+    },
+    activo: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: true
     }
   },
   { sequelize: db, modelName: "roles" }
