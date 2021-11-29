@@ -4,11 +4,13 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { usuario } from "../../utils/mockData";
 import "./UserMenu.css";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setUsuario } from "../../state/usuario";
 
 export const UserMenu = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const usuario = useSelector((state) => state.usuario);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -52,9 +54,14 @@ export const UserMenu = () => {
           horizontal: "left",
         }}
       >
-        <MenuItem onClick={handleClose}>Mi Perfil</MenuItem>
-        {(usuario.cargo === "Coordinador" ||
-          usuario.cargo === "Admin") && (
+        <MenuItem
+          onClick={() =>
+            navigate(`/miPerfil/${usuario.id}`, { replace: false })
+          }
+        >
+          Mi Perfil
+        </MenuItem>
+        {(usuario.cargo === "Coordinador" || usuario.cargo === "Admin") && (
           <MenuItem onClick={handleClose}>Mis Equipos</MenuItem>
         )}
         {usuario.cargo === "Admin" && (
