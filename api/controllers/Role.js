@@ -21,6 +21,20 @@ class RoleController {
         }
     }
 
+    static updateRole(req, res) {
+        if (req.params.id === "1") return res.status(401).send("el rol coordinador no puede ser modificado")
+        else {
+            Role.update(
+                req.body,
+                {
+                    where: {id: req.params.id}
+                },
+            )
+            .then(() => res.send("rol modificado"))
+            .catch(err => res.status(500).send(err));
+        }
+    }
+
     static getUsuarios(req, res) {
         Role.findOne({where: {id: req.params.id }})
         .then( rol => rol.getUsrEnEquipo())

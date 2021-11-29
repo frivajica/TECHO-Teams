@@ -27,12 +27,7 @@ class EquipoController {
                 where: {id: req.params.id}
             },
         )
-        .then( () => {
-            Equipo.findOne({where: {id: req.params.id}})
-            .then(res => res.dataValues)
-            .then( updatedTeam => res.status(201).send(updatedTeam)) 
-            .catch(err => res.status(500).send(err));
-        })
+        .then(() => res.send("equipo modificado"))
         .catch(err => res.status(500).send(err));
     }
 

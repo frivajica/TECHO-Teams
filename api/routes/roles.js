@@ -7,7 +7,7 @@ Router.get("/", /* checkAuthAndAdmin, */ RoleController.getRoles)
 
 Router.post("/", /* checkAuthAndAdmin, */ RoleController.createRole)
 
-Router.delete("/borrar/:id", /* checkAuthAndAdmin, */ RoleController.borrarRole)
+Router.delete("/:id", /* checkAuthAndAdmin, */ RoleController.borrarRole)
 
 Router.get("/:id/usuarios", /* isCoordinator, */ RoleController.getUsuarios)
 
