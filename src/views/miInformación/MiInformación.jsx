@@ -1,4 +1,4 @@
-export const Perfil = () => {
+export const MiInformación = () => {
 
 	return (
 		<>

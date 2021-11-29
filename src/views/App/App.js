@@ -4,7 +4,7 @@ import Footer from "../../commons/footer/Footer";
 import Home from "../../components/home/Home";
 import SignUp from "../../components/completarSignUp/SignUp";
 import { Usuario } from '../usuario/Usuario'
-import { Perfil } from '../perfil/Perfil'
+import { MiInformación } from '../miInformación/MiInformación'
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/register" element={<SignUp />} />
         <Route exact path="/:usuario" element={<Usuario />} />
-        <Route exact path="/miPerfil/:usuario" element={<Perfil />} />
+        <Route exact path="/miPerfil" element={<MiInformación />} />
       </Routes>
       </div>
       <Footer />

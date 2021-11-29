@@ -5,9 +5,14 @@ import MenuItem from "@mui/material/MenuItem";
 import { usuario } from "../../utils/mockData";
 import "./UserMenu.css";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setUsuario } from "../../state/usuario";
 
 export const UserMenu = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const usuario = useSelector((state) => state.usuario);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -15,6 +20,7 @@ export const UserMenu = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+    dispatch(setUsuario({}));
   };
 
   return (
@@ -26,7 +32,7 @@ export const UserMenu = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        {usuario.nombre}
+        {usuario.user && usuario.user.nombres}
       </Button>
       <Menu
         id="positioned-menu"
@@ -44,14 +50,16 @@ export const UserMenu = () => {
         }}
       >
         <MenuItem
-          onClick={() => navigate(`/miPerfil/${usuario.id}`, { replace: false })}
+          onClick={() =>
+            navigate(`/miPerfil/${usuario.id}`, { replace: false })
+          }
         >
           Mi Perfil
         </MenuItem>
         {(usuario.cargo === "Coordinador" || usuario.cargo === "Admin") && (
           <MenuItem onClick={handleClose}>Mis Equipos</MenuItem>
         )}
-        {usuario.cargo === "Admin" && (
+        {usuario.user.cargo === "Admin" && (
           <MenuItem onClick={handleClose}>AdminLand</MenuItem>
         )}
         <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem>
