@@ -25,7 +25,7 @@ const Navbar = () => {
               <img id="logo" src={logo} alt="logo" />
             </Link>
           </Box>
-          {usuario.user ? (
+          {usuario ? (
             <Button sx={{ mr: 5 }}>
               <UserMenu />
             </Button>
