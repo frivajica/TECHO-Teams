@@ -1,6 +1,6 @@
 const { Usuario } = require("../models");
-const axios = require("axios")
-const superagent = require('superagent');
+const axios = require("axios");
+const superagent = require("superagent");
 
 class UsuarioController {
   static crearUsuario(req, res) {
@@ -22,23 +22,25 @@ class UsuarioController {
   }
 
   static crearUsuarioPrueba(req, res) {
-   superagent.post("https://sandbox.actividades.techo.org/api/register")
-   .send(req.body)
-   .set('X-API-Key', 'foobar')
-   .set('Accept', 'application/json')
-    .then((r) => JSON.parse(r.text))
-    .then(newUser => res.status(201).send(newUser))
-    .catch(err => res.status(500).send(err))
+    superagent
+      .post("https://sandbox.actividades.techo.org/api/register")
+      .send(req.body)
+      .set("X-API-Key", "foobar")
+      .set("Accept", "application/json")
+      .then((r) => JSON.parse(r.text))
+      .then((newUser) => res.status(201).send(newUser))
+      .catch((err) => res.status(500).send(err));
   }
 
   static loginInUsuarioPrueba(req, res) {
-    superagent.post("https://sandbox.actividades.techo.org/api/login")
-    .send(req.body)
-    .set('X-API-Key', 'foobar')
-    .set('Accept', 'application/json')
-    .then((r) => JSON.parse(r.text))
-    .then(user => res.status(200).send(user))
-    .catch(err => res.status(401).send("Error de logueo"))
+    superagent
+      .post("https://sandbox.actividades.techo.org/api/login")
+      .send(req.body)
+      .set("X-API-Key", "foobar")
+      .set("Accept", "application/json")
+      .then((r) => JSON.parse(r.text))
+      .then((user) => res.status(200).send(user))
+      .catch((err) => res.status(401).send("Error de logueo"));
   }
 }
 
