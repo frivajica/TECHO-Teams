@@ -4,8 +4,10 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { usuario } from "../../utils/mockData";
 import "./UserMenu.css";
+import { useNavigate } from "react-router-dom";
 
 export const UserMenu = () => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -41,7 +43,11 @@ export const UserMenu = () => {
           horizontal: "left",
         }}
       >
-        <MenuItem onClick={handleClose}>Mi Perfil</MenuItem>
+        <MenuItem
+          onClick={() => navigate(`/miPerfil/${usuario.id}`, { replace: false })}
+        >
+          Mi Perfil
+        </MenuItem>
         {(usuario.cargo === "Coordinador" || usuario.cargo === "Admin") && (
           <MenuItem onClick={handleClose}>Mis Equipos</MenuItem>
         )}

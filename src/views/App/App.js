@@ -3,6 +3,9 @@ import Navbar from "../../commons/navbar/Navbar";
 import Footer from "../../commons/footer/Footer";
 import Home from "../../components/home/Home";
 import SignUp from "../../components/completarSignUp/SignUp";
+import { Usuario } from '../usuario/Usuario'
+import { Perfil } from '../perfil/Perfil'
+
 function App() {
   return (
     <div>
@@ -11,6 +14,8 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/register" element={<SignUp />} />
+        <Route exact path="/:usuario" element={<Usuario />} />
+        <Route exact path="/miPerfil/:usuario" element={<Perfil />} />
       </Routes>
       </div>
       <Footer />

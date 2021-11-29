@@ -20,7 +20,7 @@ const Navbar = () => {
         <Toolbar>
           <Box sx={{ flexGrow: 1, ml: 5 }}>
             <Link to="/">
-              <img id="logo" src={logo} alt="logo" />
+              <img id="logo" src={logo} alt="logo" /> 
             </Link>
           </Box>
           {usuario ? (
