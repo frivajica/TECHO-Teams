@@ -18,6 +18,7 @@ class RoleController {
         else {
             Role.destroy({where: {id: req.params.id}})
             .then(() => res.send("rol eliminado"))
+            .catch(err => res.status(500).send(err));
         }
     }
 
