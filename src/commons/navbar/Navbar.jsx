@@ -23,11 +23,18 @@ const Navbar = () => {
               <img id="logo" src={logo} alt="logo" />
             </Link>
           </Box>
-          {usuario && <UserMenu />}
-          <Button onClick={handleOpen} color="inherit" sx={{ mr: 5 }}>
-            INGRESAR
-          </Button>
-          <LoginModal open={open} handleClose={handleClose} />
+          {usuario ? (
+            <Button sx={{ mr: 5 }}>
+              <UserMenu />
+            </Button>
+          ) : (
+            <>
+              <Button onClick={handleOpen} color="inherit" sx={{ mr: 5 }}>
+                INGRESAR
+              </Button>
+              <LoginModal open={open} handleClose={handleClose} />
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
