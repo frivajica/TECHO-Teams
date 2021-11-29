@@ -8,14 +8,17 @@ import Backdrop from "@mui/material/Backdrop";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
+import { CustomHook } from "../../hooks/CustomHook";
+import { loginRequest } from "../../state/usuario";
+import { useDispatch } from "react-redux";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const { in: open, children, onEnter, onExited, ...other } = props;
   const style = useSpring({
     from: { opacity: 0 },
     to: { opacity: open ? 1 : 0 },
-    onStart: () => (open && onEnter) && onEnter(),
-    onRest: () => (!open && onExited) && onExited(),
+    onStart: () => open && onEnter && onEnter(),
+    onRest: () => !open && onExited && onExited(),
   });
 
   return (
@@ -43,7 +46,15 @@ const style = {
   p: 4,
   borderRadius: 1,
 };
-const LoginModal = ({open, handleClose}) => {
+const LoginModal = ({ open, handleClose }) => {
+  const mail = CustomHook("");
+  const password = CustomHook("");
+  const dispatch = useDispatch();
+
+  const handleLoginClick = (e) => {
+    e.preventDefault();
+    dispatch(loginRequest({ mail: mail.value, password: password.value }));
+  };
 
   return (
     <Modal
@@ -67,14 +78,26 @@ const LoginModal = ({open, handleClose}) => {
           </Typography>
           <hr />
           <br />
-          <form>
+          <form onSubmit={handleLoginClick}>
             <Box id="formBox">
               <Typography component="h2"> Mail: </Typography>
-              <TextField size="small" fullWidth label="Mail" id="fullWidth" />
+              <TextField
+                size="small"
+                fullWidth
+                label="Mail"
+                id="fullWidth"
+                {...mail}
+              />
               <br />
               <br />
               <Typography component="h2"> Contraseña: </Typography>
-              <TextField size="small" fullWidth label="Contraseña" id="fullWidth" />
+              <TextField
+                size="small"
+                fullWidth
+                label="Contraseña"
+                id="fullWidth"
+                {...password}
+              />
             </Box>
             <br />
             <div className="linksContainter">
@@ -94,7 +117,12 @@ const LoginModal = ({open, handleClose}) => {
                   {"REGISTRATE CON MAIL"}
                 </Link>
               </div>
-              <Button id="ingresar" size="medium" variant="outlined">
+              <Button
+                id="ingresar"
+                size="medium"
+                variant="outlined"
+                type="submit"
+              >
                 INGRESAR
               </Button>
             </div>
@@ -106,4 +134,3 @@ const LoginModal = ({open, handleClose}) => {
 };
 
 export default LoginModal;
- 

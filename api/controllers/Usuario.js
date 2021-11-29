@@ -50,7 +50,6 @@ class UsuarioController {
       })
       .catch(err => res.status(401).send(err))
   }
-
 }
 
 module.exports = UsuarioController;
