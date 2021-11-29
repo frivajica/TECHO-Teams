@@ -11,7 +11,7 @@ import { UserMenu } from "../../components/userMenu/UserMenu";
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const user = useSelector((state) => state.usuario);
+  const usuario = useSelector((state) => state.usuario);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -25,7 +25,7 @@ const Navbar = () => {
               <img id="logo" src={logo} alt="logo" />
             </Link>
           </Box>
-          {user ? (
+          {usuario.user ? (
             <Button sx={{ mr: 5 }}>
               <UserMenu />
             </Button>

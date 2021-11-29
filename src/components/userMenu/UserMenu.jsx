@@ -5,9 +5,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { usuario } from "../../utils/mockData";
 import "./UserMenu.css";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setUsuario } from "../../state/usuario";
 
 export const UserMenu = () => {
-  const user = useSelector((state) => state.usuario);
+  const dispatch = useDispatch();
+  const usuario = useSelector((state) => state.usuario);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -15,6 +18,7 @@ export const UserMenu = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+    dispatch(setUsuario({}));
   };
 
   return (
@@ -26,7 +30,7 @@ export const UserMenu = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        {user.user.nombres}
+        {usuario.user && usuario.user.nombres}
       </Button>
       <Menu
         id="positioned-menu"
@@ -44,10 +48,11 @@ export const UserMenu = () => {
         }}
       >
         <MenuItem onClick={handleClose}>Mi Perfil</MenuItem>
-        {(user.user.cargo === "Coordinador" || user.user.cargo === "Admin") && (
+        {(usuario.user.cargo === "Coordinador" ||
+          usuario.user.cargo === "Admin") && (
           <MenuItem onClick={handleClose}>Mis Equipos</MenuItem>
         )}
-        {user.user.cargo === "Admin" && (
+        {usuario.user.cargo === "Admin" && (
           <MenuItem onClick={handleClose}>AdminLand</MenuItem>
         )}
         <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem>
