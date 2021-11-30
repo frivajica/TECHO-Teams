@@ -11,7 +11,7 @@ import { setUsuario } from "../../state/usuario";
 export const UserMenu = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const usuario = useSelector((state) => state.usuario);
+  const usuario = useSelector(({ usuario }) => usuario.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
