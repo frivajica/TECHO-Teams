@@ -19,12 +19,14 @@ export const UserMenu = () => {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleAction = () => {
+    dispatch(setUsuario({}))
+    navigate("/")
+    handleClose()
+  }
+
   const handleClose = () => {
     setAnchorEl(null);
-    dispatch(setUsuario({}))
-    setTimeout(function(){
-      navigate("/")
-    }, 200)
   };
 
   return (
@@ -55,7 +57,7 @@ export const UserMenu = () => {
       >
         <MenuItem
           onClick={() =>
-            navigate(`/miPerfil/${usuario.id}`, { replace: false })
+            navigate(`/miPerfil`)
           }
         >
           Mi Perfil
@@ -66,7 +68,7 @@ export const UserMenu = () => {
         {usuario.cargo === "Admin" && (
           <MenuItem onClick={handleClose}>AdminLand</MenuItem>
         )}
-        <MenuItem onClick={handleClose} >Cerrar Sesión</MenuItem>
+        <MenuItem onClick={handleAction} >Cerrar Sesión</MenuItem>
       </Menu>
     </div>
   );
