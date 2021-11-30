@@ -7,14 +7,21 @@ import axios from "axios";
 
 export const setUsuario = createAction("SET_USARIO");
 
-export const loginRequest = createAsyncThunk("LOGIN", ({ email, password }) => {
-  return axios
-    .post("https://sandbox.actividades.techo.org/api/login", {
-      email,
-      password,
-    })
-    .then((res) => console.log(res));
-});
+export const loginRequest = createAsyncThunk(
+  "LOGIN",
+  ({ mail, password, errorAlert }) => {
+    return axios
+      .post("http://localhost:3001/api/usuarios/login", {
+        mail,
+        password,
+        errorAlert,
+      })
+      .then((res) => {
+        console.log("la res es:", res)
+        return res.data})
+      .catch(() => errorAlert());
+  }
+);
 
 const usuarioReducer = createReducer(
   {},

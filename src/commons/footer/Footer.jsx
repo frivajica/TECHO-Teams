@@ -1,7 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Container } from "@mui/material";
-import Button from "@mui/material/Button";
 
 const Footer = () => {
   return (
@@ -18,7 +15,7 @@ const Footer = () => {
         <a
           className="red"
           href="http://lt.dplrtrack.info/a1ccecf1d4a82082506189b30dbb3789-1c48a2db5ffee7dd9b1dd7531c928471"
-          target="_blank"
+          target="Facebook "
           data-saferedirecturl="https://www.google.com/url?hl=en&q=http://lt.dplrtrack.info/a1ccecf1d4a82082506189b30dbb3789-1c48a2db5ffee7dd9b1dd7531c928471&source=gmail&ust=1524658654821000&usg=AFQjCNFBy0FCWzlSTZDEAzLTyaMYyZolAA"
         >
           <img
@@ -30,7 +27,7 @@ const Footer = () => {
         <a
           className="red"
           href="http://lt.dplrtrack.info/47414522b64f1ac0be8d6c95febc6ce9-1c48a2db5ffee7dd9b1dd7531c928471"
-          target="_blank"
+          target="Instagram"
           data-saferedirecturl="https://www.google.com/url?hl=en&q=http://lt.dplrtrack.info/47414522b64f1ac0be8d6c95febc6ce9-1c48a2db5ffee7dd9b1dd7531c928471&source=gmail&ust=1524658654821000&usg=AFQjCNFFaREy-RpR-hkJTBR7pK0AUsYVGw"
         >
           <img
@@ -42,7 +39,7 @@ const Footer = () => {
         <a
           className="red"
           href="http://lt.dplrtrack.info/b9ae56197721ed27d3ec89b5f615b4d0-1c48a2db5ffee7dd9b1dd7531c928471"
-          target="_blank"
+          target="Linkedin"
           data-saferedirecturl="https://www.google.com/url?hl=en&q=http://lt.dplrtrack.info/b9ae56197721ed27d3ec89b5f615b4d0-1c48a2db5ffee7dd9b1dd7531c928471&source=gmail&ust=1524658654821000&usg=AFQjCNG-Sehf0nB3nTxcvr3Ig0FgjukAZQ"
         >
           <img
@@ -54,7 +51,7 @@ const Footer = () => {
         <a
           className="red"
           href="http://lt.dplrtrack.info/b6390e349653bb94601a7b7ae8742719-1c48a2db5ffee7dd9b1dd7531c928471"
-          target="_blank"
+          target="Twitter"
           data-saferedirecturl="https://www.google.com/url?hl=en&q=http://lt.dplrtrack.info/b6390e349653bb94601a7b7ae8742719-1c48a2db5ffee7dd9b1dd7531c928471&source=gmail&ust=1524658654821000&usg=AFQjCNFViqL5Gg4nAfzjPLmrGyKSNN8wrA"
         >
           <img

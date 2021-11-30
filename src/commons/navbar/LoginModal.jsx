@@ -10,7 +10,9 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import { CustomHook } from "../../hooks/CustomHook";
 import { loginRequest } from "../../state/usuario";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const { in: open, children, onEnter, onExited, ...other } = props;
@@ -46,14 +48,32 @@ const style = {
   p: 4,
   borderRadius: 1,
 };
+
+const errorAlert = () => {
+  swal({
+    title: "Login fallido",
+    text: "Intentalo nuevamente",
+    button: "Aceptar",
+    icon: "error",
+  });
+};
+
 const LoginModal = ({ open, handleClose }) => {
   const mail = CustomHook("");
   const password = CustomHook("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const usuario = useSelector((state) => state.usuario);
 
   const handleLoginClick = (e) => {
     e.preventDefault();
-    dispatch(loginRequest({ mail: mail.value, password: password.value }));
+    dispatch(
+      loginRequest({
+        mail: mail.value,
+        password: password.value,
+        errorAlert,
+      })
+    ).then(() => handleClose());
   };
 
   return (
@@ -92,6 +112,7 @@ const LoginModal = ({ open, handleClose }) => {
               <br />
               <Typography component="h2"> Contraseña: </Typography>
               <TextField
+                type="password"
                 size="small"
                 fullWidth
                 label="Contraseña"
