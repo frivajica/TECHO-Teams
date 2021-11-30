@@ -12,12 +12,7 @@ import { CustomHook } from "../../hooks/CustomHook";
 import { loginRequest } from "../../state/usuario";
 import { useDispatch, useSelector } from "react-redux";
 import swal from "sweetalert";
-<<<<<<< HEAD
-import { useNavigate } from "react-router";
-=======
-import { useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
->>>>>>> 5ca79088c500ce13ff425de7227e65382150ee10
+import { useNavigate } from "react-router-dom";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const { in: open, children, onEnter, onExited, ...other } = props;
@@ -64,12 +59,9 @@ const errorAlert = () => {
 };
 
 const LoginModal = ({ open, handleClose }) => {
-  const navigate = useNavigate();
-  const usuario = useSelector((state) => state.usuario);
   const mail = CustomHook("");
   const password = CustomHook("");
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
   const usuario = useSelector((state) => state.usuario);
 
@@ -81,9 +73,7 @@ const LoginModal = ({ open, handleClose }) => {
         password: password.value,
         errorAlert,
       })
-    )
-    .then(({payload}) => !payload.intereses && navigate("/register"))
-    
+    ).then(({ payload }) => !payload.intereses && navigate("/register"));
   };
 
   return (

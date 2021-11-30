@@ -9,13 +9,12 @@ export const setUsuario = createAction("SET_USARIO");
 
 export const loginRequest = createAsyncThunk(
   "LOGIN",
-  ({ mail, password, errorAlert, pushRegister }) => {
+  ({ mail, password, errorAlert }) => {
     return axios
       .post("http://localhost:3001/api/usuarios/login", {
         mail,
         password,
         errorAlert,
-        pushRegister,
       })
       .then((res) => res.data)
       .catch(() => errorAlert());
