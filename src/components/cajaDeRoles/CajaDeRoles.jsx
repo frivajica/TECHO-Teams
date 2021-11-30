@@ -11,13 +11,13 @@ export const CajaDeRoles = () => {
     <div className="caja">
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }} id="roles">
         {roles.activos.map((value) => (
-          <ButtonBase id='ripple'>
-            <Chip key={value} label={value} color="primary" />
+          <ButtonBase id='ripple' key={value}>
+            <Chip label={value} color="primary" />
           </ButtonBase>
         ))}
         {roles.inactivos.map((value) => (
-          <ButtonBase id='ripple'>
-            <Chip key={value} label={value} color="info" variant="outlined" />
+          <ButtonBase id='ripple' key={value} >
+            <Chip label={value} color="info" variant="outlined" />
           </ButtonBase>
         ))}
       </Box>
