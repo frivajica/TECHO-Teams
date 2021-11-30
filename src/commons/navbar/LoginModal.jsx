@@ -75,7 +75,10 @@ const LoginModal = ({ open, handleClose }) => {
         errorAlert,
       })
     )
-    .then(({payload}) => !payload.intereses && navigate("/register"))
+    .then(({payload}) => {
+      handleClose()
+      !payload.intereses && navigate("/register")
+    })
     
   };
 
