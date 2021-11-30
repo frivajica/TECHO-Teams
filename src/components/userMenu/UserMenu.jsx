@@ -2,7 +2,6 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { usuario } from "../../utils/mockData";
 import "./UserMenu.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -23,7 +22,9 @@ export const UserMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
     dispatch(setUsuario({}));
-    navigate("/");
+    setTimeout(function () {
+      navigate("/");
+    }, 200);
   };
 
   return (

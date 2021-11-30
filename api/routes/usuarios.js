@@ -10,9 +10,6 @@ Router.get("/", UsuarioController.getUsuario); //un solo usuario
 
 Router.post("/login", UsuarioController.loginInUsuario);
 
-Router.post(
-  "/registrarDesdeActividades",
-  UsuarioController.crearUsuarioEquipos
-);
+Router.post( "/registrarDesdeActividades", UsuarioController.crearUsuarioEquipos);
 
 module.exports = Router;

@@ -1,4 +1,4 @@
-import { Routes, Route, Redirect } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "../../commons/navbar/Navbar";
 import Footer from "../../commons/footer/Footer";
 import Home from "../../components/home/Home";
@@ -14,12 +14,10 @@ function App() {
     <div>
       <Navbar />
       <div className="content">
+          {(usuario.nombres && !usuario.intereses) && <Navigate to="/register" />}
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/register" element={<SignUp />} />
-          {/* <Route exact path="/register">
-            {usuario.intereses ? <Redirect to="/" /> : <SignUp />}
-          </Route> */}
           <Route exact path="/:usuario" element={<Usuario />} />
           <Route exact path="/miPerfil" element={<MiInformación />} />
         </Routes>
