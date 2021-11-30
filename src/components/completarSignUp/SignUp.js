@@ -10,7 +10,8 @@ import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
-
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -51,7 +52,8 @@ function SignUp() {
   const estudios = CustomHook("");
   const [intereses, setIntereses] = useState([]);
   const [formErrors, setFormErrors] = useState({});
-
+  const usuario = useSelector((state) => state.usuario);
+  const navigate = useNavigate();
   const handleChange = (event) => {
     const {
       target: { value },
@@ -117,15 +119,16 @@ function SignUp() {
     }
 
     if (handleFormValidation()) {
-      // axios
-      //   .post('', {
-      //     profesion: profesion.value,
-      //     estudios: estudios.value,
-      //     interes: intereses.split(", "),
-      //   })
-      //   .then((res) => res.data)
-      //   .then(successAlert());
-      successAlert();
+      axios
+        .post("http://localhost:3001/api/usuarios/registrarDesdeActividades", {
+          idPersona: usuario.idPersona,
+          profesion: profesion.value,
+          estudios: estudios.value,
+          intereses: JSON.stringify(intereses),
+        })
+        .then((res) => res.data)
+        .then(() => successAlert())
+        .then(() => navigate("/miPerfil"));
     }
   };
 
