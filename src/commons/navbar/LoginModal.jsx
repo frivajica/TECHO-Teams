@@ -10,8 +10,9 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import { CustomHook } from "../../hooks/CustomHook";
 import { loginRequest } from "../../state/usuario";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import swal from "sweetalert";
+import { useNavigate } from "react-router";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const { in: open, children, onEnter, onExited, ...other } = props;
@@ -62,11 +63,19 @@ const LoginModal = ({ open, handleClose }) => {
   const password = CustomHook("");
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+  const usuario = useSelector((state) => state.usuario);
+
   const handleLoginClick = (e) => {
     e.preventDefault();
     dispatch(
-      loginRequest({ mail: mail.value, password: password.value, errorAlert })
+      loginRequest({
+        mail: mail.value,
+        password: password.value,
+        errorAlert,
+      })
     );
+    if (!usuario.intereses) navigate("/register");
   };
 
   return (
