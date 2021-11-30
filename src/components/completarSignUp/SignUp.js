@@ -64,8 +64,9 @@ function SignUp() {
   const successAlert = () => {
     swal({
       title: "Muchas gracias!",
+      text: "Por favor volve a loguearte",
       icon: "success",
-      timer: "2000",
+      timer: "4000",
     });
   };
 
@@ -88,14 +89,6 @@ function SignUp() {
         profesionErr: "Ingrese si es estudiante, contador, vendedor, etc.",
       });
     }
-
-    // if (!estudios.value) {
-    //   formIsValid = false;
-    //   setFormErrors({
-    //     ...formErrors,
-    //     estudiosErr: "Indique Primaria/Secundaria o Titulo universitario, etc.",
-    //   });
-    // }
 
     if (!intereses[0]) {
       formIsValid = false;
@@ -127,8 +120,7 @@ function SignUp() {
           intereses: JSON.stringify(intereses),
         })
         .then((res) => res.data)
-        .then(() => successAlert())
-        .then(() => navigate("/miPerfil"));
+        .then(() => successAlert());
     }
   };
 
@@ -136,7 +128,7 @@ function SignUp() {
     <Container>
       <div style={{ marginTop: "7%", width: "33%", marginLeft: "35%" }}>
         <div className="titlereg">Ya casi terminamos!</div>
-        <div className="subtitlereg">Completa estos datos para continuar!</div>
+        <div className="subtitlereg">Completa tu registro en EQUIPOS!</div>
 
         <form onSubmit={handleSubmit}>
           <label for="profesion" className="label">
