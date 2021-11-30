@@ -55,7 +55,6 @@ function SignUp() {
   const [intereses, setIntereses] = useState([]);
   const [formErrors, setFormErrors] = useState({});
   const usuario = useSelector((state) => state.usuario);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleChange = (event) => {
     const {
@@ -69,7 +68,7 @@ function SignUp() {
       title: "Muchas gracias!",
       text: "Por favor volve a loguearte",
       icon: "success",
-      timer: "4000",
+      timer: "5000",
     });
   };
 
