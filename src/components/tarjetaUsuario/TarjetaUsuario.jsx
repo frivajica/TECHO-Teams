@@ -1,5 +1,6 @@
 import { usuario as u } from "../../utils/mockData";
 import ButtonBase from "@mui/material/ButtonBase";
+import { CajaDeRoles } from "../cajaDeRoles/CajaDeRoles";
 import "./TarjetaUsuario.css";
 
 export const TarjetaUsuario = () => {
@@ -13,7 +14,7 @@ export const TarjetaUsuario = () => {
         </div>
         <h1 className="nombre-usuario">{`${u.nombres} ${u.apellidoPaterno}`}</h1>
         <div className="contenedor-roles">
-          <h3>AQUÍ VA EL CONTENEDOR DE ROLES</h3>
+          <CajaDeRoles />
         </div>
         <h4 className="antiguedad-usuario">{`${`### años`} en TECHO`}</h4>
       </div>
