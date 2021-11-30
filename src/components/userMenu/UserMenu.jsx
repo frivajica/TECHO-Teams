@@ -23,8 +23,8 @@ export const UserMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
     dispatch(setUsuario({}));
+    navigate("/");
   };
-
 
   return (
     <div id="PERRITO">
@@ -52,11 +52,7 @@ export const UserMenu = () => {
           horizontal: "left",
         }}
       >
-        <MenuItem
-          onClick={() =>
-            navigate(`/miPerfil/${usuario.id}`, { replace: false })
-          }
-        >
+        <MenuItem onClick={() => navigate(`/miPerfil`, { replace: false })}>
           Mi Perfil
         </MenuItem>
         {(usuario.cargo === "Coordinador" || usuario.cargo === "Admin") && (
@@ -65,7 +61,7 @@ export const UserMenu = () => {
         {usuario.cargo === "Admin" && (
           <MenuItem onClick={handleClose}>AdminLand</MenuItem>
         )}
-        <MenuItem onClick={handleClose} >Cerrar Sesión</MenuItem>
+        <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem>
       </Menu>
     </div>
   );
