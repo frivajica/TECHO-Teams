@@ -1,7 +1,7 @@
 export const usuario = {
   id: 5,
   createdAt: '2016-05-04 15:59:21',
-  nombre: "Michael",
+  nombres: "Michael",
   apellidoPaterno: "Jackson",
   cargo: "Admin",
   actividades: [20829, 20720, 20874],
