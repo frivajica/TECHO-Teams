@@ -10,10 +10,9 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import { CustomHook } from "../../hooks/CustomHook";
 import { loginRequest } from "../../state/usuario";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import swal from "sweetalert";
-import { useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const { in: open, children, onEnter, onExited, ...other } = props;
@@ -60,11 +59,11 @@ const errorAlert = () => {
 };
 
 const LoginModal = ({ open, handleClose }) => {
-  const navigate = useNavigate();
-  const usuario = useSelector((state) => state.usuario);
   const mail = CustomHook("");
   const password = CustomHook("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const usuario = useSelector((state) => state.usuario);
 
   const handleLoginClick = (e) => {
     e.preventDefault();
@@ -74,9 +73,7 @@ const LoginModal = ({ open, handleClose }) => {
         password: password.value,
         errorAlert,
       })
-    )
-    .then(({payload}) => !payload.intereses && navigate("/register"))
-    
+    ).then(() => handleClose());
   };
 
   return (

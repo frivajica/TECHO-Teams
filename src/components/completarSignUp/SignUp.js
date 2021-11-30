@@ -10,6 +10,9 @@ import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
+import { useSelector, useDispatch } from "react-redux";
+import { setUsuario } from "../../state/usuario";
+import { useNavigate } from "react-router";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -51,7 +54,8 @@ function SignUp() {
   const estudios = CustomHook("");
   const [intereses, setIntereses] = useState([]);
   const [formErrors, setFormErrors] = useState({});
-
+  const usuario = useSelector((state) => state.usuario);
+  const dispatch = useDispatch();
   const handleChange = (event) => {
     const {
       target: { value },
@@ -62,8 +66,9 @@ function SignUp() {
   const successAlert = () => {
     swal({
       title: "Muchas gracias!",
+      text: "Por favor volve a loguearte",
       icon: "success",
-      timer: "2000",
+      timer: "5000",
     });
   };
 
@@ -87,14 +92,6 @@ function SignUp() {
       });
     }
 
-    // if (!estudios.value) {
-    //   formIsValid = false;
-    //   setFormErrors({
-    //     ...formErrors,
-    //     estudiosErr: "Indique Primaria/Secundaria o Titulo universitario, etc.",
-    //   });
-    // }
-
     if (!intereses[0]) {
       formIsValid = false;
       setFormErrors({
@@ -117,15 +114,16 @@ function SignUp() {
     }
 
     if (handleFormValidation()) {
-      // axios
-      //   .post('', {
-      //     profesion: profesion.value,
-      //     estudios: estudios.value,
-      //     interes: intereses.split(", "),
-      //   })
-      //   .then((res) => res.data)
-      //   .then(successAlert());
-      successAlert();
+      axios
+        .post("http://localhost:3001/api/usuarios/registrarDesdeActividades", {
+          idPersona: usuario.idPersona,
+          profesion: profesion.value,
+          estudios: estudios.value,
+          intereses: JSON.stringify(intereses),
+        })
+        .then((res) => res.data)
+        .then(() => successAlert())
+        .then(() => dispatch(setUsuario({})));
     }
   };
 
@@ -133,7 +131,7 @@ function SignUp() {
     <Container>
       <div style={{ marginTop: "7%", width: "33%", marginLeft: "35%" }}>
         <div className="titlereg">Ya casi terminamos!</div>
-        <div className="subtitlereg">Completa estos datos para continuar!</div>
+        <div className="subtitlereg">Completa tu registro en EQUIPOS!</div>
 
         <form onSubmit={handleSubmit}>
           <label for="profesion" className="label">

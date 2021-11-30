@@ -6,7 +6,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import logo from "../../assets/imagenes/navbar/logo.png";
 import LoginModal from "./LoginModal";
-import { usuario } from "../../utils/mockData";
 import { UserMenu } from "../../components/userMenu/UserMenu";
 import { useSelector } from "react-redux";
 
@@ -15,7 +14,6 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  console.log("el estado es open es:", open)
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -23,13 +21,11 @@ const Navbar = () => {
         <Toolbar>
           <Box sx={{ flexGrow: 1, ml: 5 }}>
             <Link to="/">
-              <img id="logo" src={logo} alt="logo" /> 
+              <img id="logo" src={logo} alt="logo" />
             </Link>
           </Box>
           {usuario.nombres ? (
-            <Button sx={{ mr: 5 }}>
-              <UserMenu />
-            </Button>
+              <UserMenu />   
           ) : (
             <>
               <Button onClick={handleOpen} color="inherit" sx={{ mr: 5 }}>

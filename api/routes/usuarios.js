@@ -14,9 +14,6 @@ Router.post("/login", UsuarioController.loginInUsuario);
 
 Router.get("/historial/:userId", UsuarioController.getHistorial);
 
-Router.post(
-  "/registrarDesdeActividades",
-  UsuarioController.crearUsuarioEquipos
-);
+Router.post( "/registrarDesdeActividades", UsuarioController.crearUsuarioEquipos);
 
 module.exports = Router;

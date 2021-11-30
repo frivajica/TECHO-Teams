@@ -2,7 +2,6 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { usuario } from "../../utils/mockData";
 import "./UserMenu.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -20,14 +19,18 @@ export const UserMenu = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleAction = () => {
     dispatch(setUsuario({}));
+    navigate("/");
+    handleClose();
   };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    <div>
+    <div id="PERRITO">
       <Button
         id="positioned-button"
         aria-controls="demo-positioned-menu"
@@ -52,20 +55,14 @@ export const UserMenu = () => {
           horizontal: "left",
         }}
       >
-        <MenuItem
-          onClick={() =>
-            navigate(`/miPerfil/${usuario.id}`, { replace: false })
-          }
-        >
-          Mi Perfil
-        </MenuItem>
+        <MenuItem onClick={() => navigate(`/miPerfil`)}>Mi Perfil</MenuItem>
         {(usuario.cargo === "Coordinador" || usuario.cargo === "Admin") && (
           <MenuItem onClick={handleClose}>Mis Equipos</MenuItem>
         )}
         {usuario.cargo === "Admin" && (
           <MenuItem onClick={handleClose}>AdminLand</MenuItem>
         )}
-        <MenuItem onClick={handleClose} >Cerrar Sesión</MenuItem>
+        <MenuItem onClick={handleAction}>Cerrar Sesión</MenuItem>
       </Menu>
     </div>
   );
