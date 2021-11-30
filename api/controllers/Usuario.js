@@ -22,6 +22,7 @@ class UsuarioController {
       idUnidadOrganizacional,
       nombres,
       apellidoPaterno,
+      apellidoMaterno,
       fechaNacimiento,
       telefono,
       telefonoMovil,
@@ -30,8 +31,8 @@ class UsuarioController {
       mail,
       recibirMails,
       acepta_marketing,
-      email_verified_at,
-      deleted_at,
+      //email_verified_at,
+      //deleted_at,
       profesion,
       estudios,
       intereses,
@@ -46,6 +47,7 @@ class UsuarioController {
         idUnidadOrganizacional,
         nombres,
         apellidoPaterno,
+        apellidoMaterno,
         fechaNacimiento,
         telefono,
         telefonoMovil,
@@ -54,8 +56,8 @@ class UsuarioController {
         mail,
         recibirMails,
         acepta_marketing,
-        email_verified_at,
-        deleted_at,
+        //email_verified_at,
+        //deleted_at,
       })
       .set("X-API-Key", "foobar")
       .set("Accept", "application/json")

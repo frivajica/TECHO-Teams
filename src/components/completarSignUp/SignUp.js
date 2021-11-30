@@ -10,8 +10,10 @@ import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setUsuario } from "../../state/usuario";
 import { useNavigate } from "react-router";
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -54,6 +56,7 @@ function SignUp() {
   const [formErrors, setFormErrors] = useState({});
   const usuario = useSelector((state) => state.usuario);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleChange = (event) => {
     const {
       target: { value },
@@ -120,7 +123,8 @@ function SignUp() {
           intereses: JSON.stringify(intereses),
         })
         .then((res) => res.data)
-        .then(() => successAlert());
+        .then(() => successAlert())
+        .then(() => dispatch(setUsuario({})));
     }
   };
 
