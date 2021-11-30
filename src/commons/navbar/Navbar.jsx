@@ -27,9 +27,9 @@ const Navbar = () => {
             </Link>
           </Box>
           {usuario.nombres ? (
-            <Button sx={{ mr: 5 }}>
+            
               <UserMenu />
-            </Button>
+            
           ) : (
             <>
               <Button onClick={handleOpen} color="inherit" sx={{ mr: 5 }}>
