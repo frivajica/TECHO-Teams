@@ -15,6 +15,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  console.log("el estado es open es:", open)
 
   return (
     <Box sx={{ flexGrow: 1 }}>

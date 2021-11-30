@@ -22,11 +22,9 @@ export const UserMenu = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+    dispatch(setUsuario({}));
   };
 
-  const handleLogout = () => {
-    dispatch(setUsuario({}));
-  }
 
   return (
     <div>
@@ -67,7 +65,7 @@ export const UserMenu = () => {
         {usuario.cargo === "Admin" && (
           <MenuItem onClick={handleClose}>AdminLand</MenuItem>
         )}
-        <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
+        <MenuItem onClick={handleClose} >Cerrar Sesión</MenuItem>
       </Menu>
     </div>
   );

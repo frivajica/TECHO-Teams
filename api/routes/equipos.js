@@ -13,6 +13,10 @@ Router.put("/:id", /* isCoordinatorHere, */ EquipoController.updateEquipo )
 
 Router.delete("/:id", /* isCoordinatorHere, */ EquipoController.deleteEquipo )
 
+Router.post("/:id/roles", /* checkAuth, */ EquipoController.createRole )
+
+Router.get("/:id/roles", /* checkAuth, */ EquipoController.getRoles )
+
 Router.get("/:id/historial", /* checkAuth, */ EquipoController.getHistory )
 
 Router.get("/:id/usuarios", /* checkAuth, */ EquipoController.getUsers)
