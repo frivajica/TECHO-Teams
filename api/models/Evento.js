@@ -8,7 +8,8 @@ Evento.init(
     descripcion: {
       type: Sequelize.TEXT,
       allowNull: false
-    }
+    },
+    tipo: Sequelize.INTEGER,
   },
   { sequelize: db, modelName: "evento" }
 );
