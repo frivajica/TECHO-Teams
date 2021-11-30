@@ -11,7 +11,7 @@ import { setUsuario } from "../../state/usuario";
 export const UserMenu = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const usuario = useSelector(({ usuario }) => usuario.user);
+  const usuario = useSelector((state) => state.usuario);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -20,10 +20,10 @@ export const UserMenu = () => {
   };
 
   const handleAction = () => {
-    dispatch(setUsuario({}))
-    navigate("/")
-    handleClose()
-  }
+    dispatch(setUsuario({}));
+    navigate("/");
+    handleClose();
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -55,20 +55,14 @@ export const UserMenu = () => {
           horizontal: "left",
         }}
       >
-        <MenuItem
-          onClick={() =>
-            navigate(`/miPerfil`)
-          }
-        >
-          Mi Perfil
-        </MenuItem>
+        <MenuItem onClick={() => navigate(`/miPerfil`)}>Mi Perfil</MenuItem>
         {(usuario.cargo === "Coordinador" || usuario.cargo === "Admin") && (
           <MenuItem onClick={handleClose}>Mis Equipos</MenuItem>
         )}
         {usuario.cargo === "Admin" && (
           <MenuItem onClick={handleClose}>AdminLand</MenuItem>
         )}
-        <MenuItem onClick={handleAction} >Cerrar Sesión</MenuItem>
+        <MenuItem onClick={handleAction}>Cerrar Sesión</MenuItem>
       </Menu>
     </div>
   );
