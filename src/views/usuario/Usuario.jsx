@@ -8,7 +8,7 @@ export const Usuario = () => {
       <TarjetaUsuario />
 
       <Divider variant="middle" className="divisor" />
-      <p class="participaciones">
+      <p className="participaciones">
         Participando en
         <span className="num-proyectos">{` ${`### proyectos`} `}</span>
       </p>
