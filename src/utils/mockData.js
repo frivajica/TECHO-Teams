@@ -11,3 +11,18 @@ export const usuario = {
     inactivos: ['Esto', 'Solamente', 'Es una', 'Prueba']
   },
 };
+
+export const historial = [
+  {
+    nombre: 'Apoyo escolar área General Pacheco',
+    fecha_inicio: "15 enero 2017",
+    fecha_final: null,
+    roles: ['Apoyo Escolar', 'Organizador'],
+  },
+  {
+    nombre: 'Colecta Navidad 2017',
+    fecha_inicio: "01 diciembre 2017",
+    fecha_final: '24 diciembre 2017',
+    roles: ['Contador'],
+  }
+]
