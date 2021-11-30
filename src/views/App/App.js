@@ -3,6 +3,7 @@ import Navbar from "../../commons/navbar/Navbar";
 import Footer from "../../commons/footer/Footer";
 import Home from "../../components/home/Home";
 import SignUp from "../../components/completarSignUp/SignUp";
+import Register from "../../components/Register/Register"
 function App() {
   return (
     <div>
@@ -10,7 +11,8 @@ function App() {
       <div className='content'>
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route exact path="/register" element={<SignUp />} />
+        <Route exact path="/joaquin" element={<SignUp />} />
+        <Route exact path="/register" element={<Register />} />
       </Routes>
       </div>
       <Footer />
