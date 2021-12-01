@@ -63,11 +63,10 @@ const interes = [
 ];
 
 function Register() {
-
   //estados para regiones
-  const [paises, setPaises] = useState([])
-  const [provincias, setProvincias] = useState([])
-  const [localidades, setLocalidades] = useState([])
+  const [paises, setPaises] = useState([]);
+  const [provincias, setProvincias] = useState([]);
+  const [localidades, setLocalidades] = useState([]);
 
   // select para la datapicker (Fecha de nna)
   const [locale] = useState("fr");
@@ -81,28 +80,34 @@ function Register() {
   const docu = CustomHook("");
   const telefono = CustomHook("");
   const [intereses, setIntereses] = useState([]);
-  const pais = CustomHook("")
-  const provincia = CustomHook("")
-  const localidad = CustomHook("")
+  const pais = CustomHook("");
+  const provincia = CustomHook("");
+  const localidad = CustomHook("");
   const [formErrors, setFormErrors] = useState({});
+  const [genero, setGenero] = useState("")
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/regiones/paises")
-    .then(res => setPaises(res.data))
-    .catch(err => console.log(err))
-  }, [])
+    axios
+      .get("http://localhost:3001/api/regiones/paises")
+      .then((res) => setPaises(res.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
-  axios.get(`http://localhost:3001/api/regiones/paises/${pais.value}/provincias`)
-    .then(res => setProvincias(res.data))
-    .catch(err => console.log(err))
-  }, [pais.value])
+    axios
+      .get(`http://localhost:3001/api/regiones/paises/${pais.value}/provincias`)
+      .then((res) => setProvincias(res.data))
+      .catch((err) => console.log(err));
+  }, [pais.value]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/api/regiones/paises/${pais.value}/provincias/${provincia.value}/localidades`)
-    .then(res => setLocalidades(res.data))
-    .catch(err => console.log(err))
-  }, [provincia.value])
+    axios
+      .get(
+        `http://localhost:3001/api/regiones/paises/${pais.value}/provincias/${provincia.value}/localidades`
+      )
+      .then((res) => setLocalidades(res.data))
+      .catch((err) => console.log(err));
+  }, [provincia.value]);
 
   const theme = useTheme();
 
@@ -202,7 +207,7 @@ function Register() {
     fechaDeNacimientoErr,
     contraseñaErr,
     mailErr,
-  } = formErrors;  
+  } = formErrors;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -223,7 +228,8 @@ function Register() {
       successAlert();
     }
   };
-  
+  console.log("el genero es:", genero)
+
   return (
     <div>
       <div className="TitleRegister">
@@ -321,20 +327,22 @@ function Register() {
             <br />
             <label for="selector" className="label">
               <p>PAIS *</p>
-              <select 
-              {...pais}>
-                {paises.map(pais => (
-                  <option key={pais.id} value={pais.id}>{pais.nombre}</option>
+              <select {...pais}>
+                {paises.map((pais) => (
+                  <option key={pais.id} value={pais.id}>
+                    {pais.nombre}
+                  </option>
                 ))}
               </select>
             </label>
             <label for="selector" className="label">
               <p>PROVINCIA *</p>
-              <select
-            {...provincia}>
-              {provincias.map(provincia => (
-                <option key={provincia.id} value={provincia.id}>{provincia.provincia}</option>
-              ))}
+              <select {...provincia}>
+                {provincias.map((provincia) => (
+                  <option key={provincia.id} value={provincia.id}>
+                    {provincia.provincia}
+                  </option>
+                ))}
               </select>
             </label>
             <label for="selector" className="label">
@@ -397,7 +405,54 @@ function Register() {
             />
             <br />
             <br />
-            <RadioButonGenero />
+            {/*  <RadioButonGenero /> */}
+            <label for="selector" className="label">
+              <p>GENERO *</p>
+            </label>
+            <div className="radio">
+              <label>
+                <input
+                  name="genero"
+                  type="radio"
+                  value={genero}
+                  onChange={() => setGenero("Masculino")}
+                />
+                Masculino
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input
+                name="genero"
+                  type="radio"
+                  value={genero}
+                  onChange={() => setGenero("Femenino")}
+                />
+                Femenino
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input
+                  type="radio"
+                  name="genero"
+                  value={genero}
+                  onChange={() => setGenero("Otrx")}
+                />
+                Otrx
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input
+                  type="radio"
+                  name="genero"
+                  value={genero}
+                  onChange={() => setGenero("Prefiero no decirlo")}
+                />
+                Prefiero no decirlo
+              </label>
+            </div>
 
             <br />
             <br />
@@ -416,10 +471,11 @@ function Register() {
             <br />
             <label for="selector" className="label">
               <p>LOCALIDAD *</p>
-              <select
-              {...localidad}>
-                {localidades.map(localidad => (
-                  <option key={localidad.id} value={localidad.id}>{localidad.localidad}</option>
+              <select {...localidad}>
+                {localidades.map((localidad) => (
+                  <option key={localidad.id} value={localidad.id}>
+                    {localidad.localidad}
+                  </option>
                 ))}
               </select>
             </label>
@@ -442,7 +498,6 @@ function Register() {
         <input type="checkbox" value="" />
         Acepto recibir notificaciones por email
       </label>
-     
     </div>
   );
 }
