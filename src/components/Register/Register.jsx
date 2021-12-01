@@ -70,21 +70,27 @@ function Register() {
 
   // select para la datapicker (Fecha de nna)
   const [locale] = useState("fr");
-  const [value, setValue] = useState(new Date());
-  //imputs
-  const profesion = CustomHook("");
-  const estudios = CustomHook("");
-  const mail = CustomHook("");
-  const contraseña = CustomHook("");
-  const fechaNacimiento = CustomHook("");
-  const docu = CustomHook("");
-  const telefono = CustomHook("");
+  const [value, setValue] = useState(new Date(""));
+
+  //select intereses
   const [intereses, setIntereses] = useState([]);
+  //
   const pais = CustomHook("");
   const provincia = CustomHook("");
   const localidad = CustomHook("");
-  const [formErrors, setFormErrors] = useState({});
-  const [genero, setGenero] = useState("")
+  //radio buton
+  const [genero, setGenero] = useState("Prefiero no decirlo");
+
+  // parte eber validacion
+  const [docu, setDocu] = useState("");
+  const [profesion, setProfesion] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [errorDocu, setErrorDocu] = useState("");
+  const [errorTelefono, setErrorTelefono] = useState("");
+
+  const [errorProfesion, setErrorerrorProfesion] = useState("");
+
+  const [leyenda, setLeyenda] = useState("");
 
   useEffect(() => {
     axios
@@ -118,118 +124,6 @@ function Register() {
     setIntereses(typeof value === "string" ? value.split(",") : value);
   };
 
-  const successAlert = () => {
-    swal({
-      title: "Muchas gracias!",
-      icon: "success",
-      timer: "2000",
-    });
-  };
-
-  const errorAlert = () => {
-    swal({
-      title: "Error",
-      text: "Por favor complete todos los campos",
-      button: "Aceptar",
-      icon: "error",
-    });
-  };
-
-  const handleFormValidation = () => {
-    let formIsValid = true;
-
-    if (!profesion.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        profesionErr: "Ingrese si es estudiante, contador, vendedor, etc.",
-      });
-    }
-    if (!mail.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        mailErr: "Ingrese un mail",
-      });
-    }
-    if (!contraseña.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        contraseñaErr: "Ingrese una contraseña",
-      });
-    }
-    if (!fechaNacimiento.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        fechaDeNacimientoErr:
-          "Indique                                                         ",
-      });
-    }
-
-    if (!docu.value) {
-      formIsValid = false;
-      setFormErrors({
-        docuErr: "Ingrese su documento o Pasaporte",
-      });
-    }
-    if (!telefono.value) {
-      formIsValid = false;
-      setFormErrors({
-        telefonoErr: "Ingrese su numero de telefono",
-      });
-    }
-    if (!estudios.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        estudiosErr: "Indique Primaria/Secundaria o Titulo universitario, etc.",
-      });
-    }
-
-    if (!intereses[0]) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        interesErr: "Elija alguna/s opcion/es",
-      });
-    }
-
-    return formIsValid;
-  };
-  const {
-    profesionErr,
-    estudiosErr,
-    interesErr,
-    telefonoErr,
-    docuErr,
-    fechaDeNacimientoErr,
-    contraseñaErr,
-    mailErr,
-  } = formErrors;
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!handleFormValidation()) {
-      errorAlert();
-    }
-
-    if (handleFormValidation()) {
-      // axios
-      //   .post('', {
-      //     profesion: profesion.value,
-      //     estudios: estudios.value,
-      //     interes: interes.value,
-      //   })
-      //   .then((res) => res.data)
-      //   .then(successAlert());
-      successAlert();
-    }
-  };
-  console.log("el genero es:", genero)
-
   return (
     <div>
       <div className="TitleRegister">
@@ -238,7 +132,7 @@ function Register() {
       <br />
 
       <div class="row">
-        <form onSubmit={handleSubmit}>
+        <form>
           <div class="column">
             {/* COLUMNA DE DERECHA */}
 
@@ -250,7 +144,6 @@ function Register() {
               className="ButonRegister"
               id="mail"
               name="mail"
-              {...mail}
             />
             <br />
             <br />
@@ -289,13 +182,7 @@ function Register() {
                 value={value}
                 onChange={(newValue) => setValue(newValue)}
                 renderInput={(params) => <TextField {...params} />}
-                // {...fechaNacimiento}
               />
-              {/* {fechaDeNacimientoErr ? (
-                  <div className="errorFormMsg">{fechaDeNacimientoErr}</div>
-                ) : (
-                  ""
-                )} */}
             </LocalizationProvider>
             <br />
             <br />
@@ -304,8 +191,23 @@ function Register() {
               <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
             </label>
 
-            <TextField size="small" id="fullWidth" {...docu} />
-            {docuErr ? <div className="errorFormMsg">{docuErr}</div> : ""}
+            <TextField 
+            onChange={(e)=>{
+              setDocu(e.target.value)
+              if(!docu){
+                setErrorDocu(true)
+              setLeyenda("rellene el campo correctamente para continuar")
+              }else{
+                setErrorDocu(false)
+              setLeyenda("")
+              }
+              
+            }}
+            helperText={leyenda}
+            error={errorDocu}
+            size="small"
+             id="fullWidth"
+             />
             <br />
             <br />
             <label for="selector" className="label">
@@ -313,16 +215,23 @@ function Register() {
             </label>
 
             <TextField
-              name="profesion"
-              id="profesion"
-              size="small"
-              {...profesion}
-            />
-            {profesionErr ? (
-              <div className="errorFormMsg">{profesionErr}</div>
-            ) : (
-              ""
-            )}
+             onChange={(e)=>{
+              setProfesion(e.target.value)
+              if(!profesion){
+                setErrorerrorProfesion(true)
+              setLeyenda("rellene el campo correctamente para continuar")
+              }else{
+                setErrorerrorProfesion(false)
+              setLeyenda("")
+              }
+              
+            }}
+            helperText={leyenda}
+            error={errorProfesion}
+             name="profesion"
+              id="profesion" 
+              size="small" />
+
             <br />
             <br />
             <label for="selector" className="label">
@@ -373,7 +282,7 @@ function Register() {
                 </MenuItem>
               ))}
             </Select>
-            {interesErr ? <div className="errorFormMsg">{interesErr}</div> : ""}
+
             <br />
           </div>
 
@@ -412,6 +321,7 @@ function Register() {
             <div className="radio">
               <label>
                 <input
+                  
                   name="genero"
                   type="radio"
                   value={genero}
@@ -423,7 +333,7 @@ function Register() {
             <div className="radio">
               <label>
                 <input
-                name="genero"
+                  name="genero"
                   type="radio"
                   value={genero}
                   onChange={() => setGenero("Femenino")}
@@ -459,7 +369,23 @@ function Register() {
             <label for="selector" className="label">
               <p>TELEFONO *</p>
             </label>
-            <TextField size="small" id="fullWidth" />
+            <TextField 
+              onChange={(e)=>{
+                setTelefono(e.target.value)
+                if(!telefono){
+                  setErrorTelefono(true)
+                setLeyenda("rellene el campo correctamente para continuar")
+                }else{
+                  setErrorTelefono(false)
+                setLeyenda("")
+                }
+                
+              }}
+              helperText={leyenda}
+              error={errorTelefono}
+            size="small" 
+            id="fullWidth"
+             />
             <br />
             <br />
             <label for="selector" className="label">
