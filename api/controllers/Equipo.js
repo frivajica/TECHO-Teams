@@ -6,7 +6,8 @@ class EquipoController {
         Equipo.create(req.body)
         .then( newTeam => {
             newTeam.createEvento({
-                descripcion: "se creo el equipo "+newTeam.nombre
+                descripcion: "se creo el equipo "+newTeam.nombre,
+                tipo: 0
             })
             .then( () => res.status(201).send(newTeam))
             .catch(err => res.status(500).send(err));
@@ -53,7 +54,8 @@ class EquipoController {
                 equipo.addUsuario(usr)
                 .then(() => {
                     equipo.createEvento({//evento para el historial del equipo
-                        descripcion: usr.nombre+" se unió al equipo, bienvenido! :)"
+                        descripcion: "nuevo voluntario en el equipo",
+                        tipo: 1
                     })
                     .then(event => usr.addEvento(event)) //el evento tambien se vincula con el historial del usuario
                     .then(() => res.send("usuario agregado"))
@@ -77,21 +79,28 @@ class EquipoController {
     }
 
     static changeRole(req, res){
-        UsuarioEnEquipo.findOne({where: {equipoId: req.params.id, usuarioId: req.params.userId, activo: true}})
-        .then(equipo => {
+        UsuarioEnEquipo.findOne({where: {equipoId: req.params.id, usuarioIdPersona: req.params.userId, activo: true}})
+        .then(usrEnEquipo => {
             Role.findOne({where: {id: req.params.roleId, activo: true}})
             .then(rol => {
-                rol.addUsrEnEquipo(equipo); 
+                rol.addUsrEnEquipo(usrEnEquipo); //relaciono rol con tabla intermedia
                 return rol
             })
             .then( rol => {
-                Usuario.findOne({where: {idPersona: req.params.userId}})
+                //busco el usuario para asociar su evento
+                Usuario.findOne({where: {idPersona: req.params.userId}}) 
                 .then(usr => {
-                    equipo.createEvento({
-                        descripcion: usr.nombre+" cambió su rol a "+rol.nombre
+                    //busco el equipo para asociar su evento
+                    Equipo.findOne({where: {id: req.params.id}})
+                    .then(equipo => {
+                        equipo.createEvento({
+                            descripcion: "cambió su rol a "+rol.nombre,
+                            tipo: 2
+                        })
+                        .then(event => usr.addEvento(event))
+                        .then(()=> res.send("rol changed"))
+                        .catch(err => res.status(500).send(err))
                     })
-                    .then(event => usr.addEvento(event))
-                    .then(()=> res.send("rol changed"))
                     .catch(err => res.status(500).send(err))
                 })
                 .catch(err => res.status(500).send(err))
@@ -106,7 +115,7 @@ class EquipoController {
             activo: false
         }, {
             where: {
-                usuarioId: req.params.userId,
+                usuarioIdPersona: req.params.userId,
                 equipoId: req.params.id
             }
         })
@@ -114,7 +123,8 @@ class EquipoController {
             Equipo.findOne({where: {id: req.params.id}})
             .then(equipo => {
                 equipo.createEvento({
-                    descripcion: "se elimino al usuario " + usr.nombre + " del equipo " + equipo.nombre
+                    descripcion: "se elimino al usuario del equipo " + equipo.nombre,
+                    tipo: -1
                 })
                 .then(() => res.status(201).send("usuario eliminado del equipo"))
                 .catch(() => res.status(500).send(err));
