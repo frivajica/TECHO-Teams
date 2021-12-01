@@ -1,0 +1,15 @@
+.caja {
+	max-width: 90%;
+	margin: 1% 5%;
+}
+
+#ripple {
+  border-radius: 25px;
+}
+
+@media (max-width: 700px) {
+	#roles {
+		display: flex;
+		justify-content: center;
+	}
+}

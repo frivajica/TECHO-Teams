@@ -1,4 +1,4 @@
-const { Usuario } = require("../models");
+const { Usuario, Evento, UsuarioEnEquipo } = require("../models");
 const superagent = require("superagent");
 
 class UsuarioController {
@@ -101,6 +101,57 @@ class UsuarioController {
       })
       .catch((err) => res.status(401).send(err));
   }
+
+  static editarUsuario(req, res) {
+    Usuario.update()
+  }
+
+  
+  static getHistorial(req, res) {
+    let historiales = []
+    UsuarioEnEquipo.findAll({where: {usuarioIdPersona: req.params.userId}})
+    .then(usrEnEquipos => {
+      for (let i=0; i < usrEnEquipos.length; i++) {
+        Evento.findAll({
+          where: {usuarioIdPersona: req.params.userId, equipoId: usrEnEquipos[i].equipoId, tipo: 1}, 
+          order: ["createdAt"],
+          attributes: ["createdAt"]
+        })
+        .then(fechasEntrada => {
+          Evento.findAll({
+            where: {usuarioIdPersona: req.params.userId, equipoId: usrEnEquipos[i].equipoId, tipo: -1}, 
+            order: ["createdAt"],
+            attributes: ["createdAt"]
+          })
+          .then(fechasSalida => {
+            Evento.findAll({
+              where: {usuarioIdPersona: req.params.userId, equipoId: usrEnEquipos[i].equipoId, tipo: 2}, 
+              order: ["createdAt"]
+            })
+            .then(rolesEnEquipo => {
+              let roles = []
+              for (let event of rolesEnEquipo) {
+                console.log("im innnn", event)
+                roles.push(event.descripcion.slice(16))
+              }
+              return roles;
+            })
+            .then(roles => {
+              let historialDeEquipo = {entradas: fechasEntrada, salidas: fechasSalida, roles}
+              historiales.push(historialDeEquipo);
+              if (i === usrEnEquipos.length-1) res.send(historiales);
+            })
+            .catch((err) => res.status(500).send(err))
+          })
+          .catch((err) => res.status(500).send(err))
+        })
+        .catch((err) => res.status(500).send(err))
+
+      }
+    })
+    .catch((err) => res.status(500).send(err))
+  }
+
 }
 
 module.exports = UsuarioController;
