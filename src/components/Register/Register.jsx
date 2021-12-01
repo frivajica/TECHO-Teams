@@ -63,46 +63,57 @@ const interes = [
 ];
 
 function Register() {
-
   //estados para regiones
-  const [paises, setPaises] = useState([])
-  const [provincias, setProvincias] = useState([])
-  const [localidades, setLocalidades] = useState([])
+  const [paises, setPaises] = useState([]);
+  const [provincias, setProvincias] = useState([]);
+  const [localidades, setLocalidades] = useState([]);
 
   // select para la datapicker (Fecha de nna)
   const [locale] = useState("fr");
-  const [value, setValue] = useState(new Date());
-  //imputs
-  const profesion = CustomHook("");
-  const estudios = CustomHook("");
-  const mail = CustomHook("");
-  const contraseña = CustomHook("");
-  const fechaNacimiento = CustomHook("");
-  const docu = CustomHook("");
-  const telefono = CustomHook("");
+  const [value, setValue] = useState(new Date(""));
+
+  //select intereses
   const [intereses, setIntereses] = useState([]);
-  const pais = CustomHook("")
-  const provincia = CustomHook("")
-  const localidad = CustomHook("")
-  const [formErrors, setFormErrors] = useState({});
+  //
+  const pais = CustomHook("");
+  const provincia = CustomHook("");
+  const localidad = CustomHook("");
+  //radio buton
+  const [genero, setGenero] = useState("Prefiero no decirlo");
+
+  // parte eber validacion
+  const [docu, setDocu] = useState("");
+  const [profesion, setProfesion] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [errorDocu, setErrorDocu] = useState("");
+  const [errorTelefono, setErrorTelefono] = useState("");
+
+  const [errorProfesion, setErrorerrorProfesion] = useState("");
+
+  const [leyenda, setLeyenda] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/regiones/paises")
-    .then(res => setPaises(res.data))
-    .catch(err => console.log(err))
-  }, [])
+    axios
+      .get("http://localhost:3001/api/regiones/paises")
+      .then((res) => setPaises(res.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
-  axios.get(`http://localhost:3001/api/regiones/paises/${pais.value}/provincias`)
-    .then(res => setProvincias(res.data))
-    .catch(err => console.log(err))
-  }, [pais.value])
+    axios
+      .get(`http://localhost:3001/api/regiones/paises/${pais.value}/provincias`)
+      .then((res) => setProvincias(res.data))
+      .catch((err) => console.log(err));
+  }, [pais.value]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/api/regiones/paises/${pais.value}/provincias/${provincia.value}/localidades`)
-    .then(res => setLocalidades(res.data))
-    .catch(err => console.log(err))
-  }, [provincia.value])
+    axios
+      .get(
+        `http://localhost:3001/api/regiones/paises/${pais.value}/provincias/${provincia.value}/localidades`
+      )
+      .then((res) => setLocalidades(res.data))
+      .catch((err) => console.log(err));
+  }, [provincia.value]);
 
   const theme = useTheme();
 
@@ -113,117 +124,6 @@ function Register() {
     setIntereses(typeof value === "string" ? value.split(",") : value);
   };
 
-  const successAlert = () => {
-    swal({
-      title: "Muchas gracias!",
-      icon: "success",
-      timer: "2000",
-    });
-  };
-
-  const errorAlert = () => {
-    swal({
-      title: "Error",
-      text: "Por favor complete todos los campos",
-      button: "Aceptar",
-      icon: "error",
-    });
-  };
-
-  const handleFormValidation = () => {
-    let formIsValid = true;
-
-    if (!profesion.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        profesionErr: "Ingrese si es estudiante, contador, vendedor, etc.",
-      });
-    }
-    if (!mail.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        mailErr: "Ingrese un mail",
-      });
-    }
-    if (!contraseña.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        contraseñaErr: "Ingrese una contraseña",
-      });
-    }
-    if (!fechaNacimiento.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        fechaDeNacimientoErr:
-          "Indique                                                         ",
-      });
-    }
-
-    if (!docu.value) {
-      formIsValid = false;
-      setFormErrors({
-        docuErr: "Ingrese su documento o Pasaporte",
-      });
-    }
-    if (!telefono.value) {
-      formIsValid = false;
-      setFormErrors({
-        telefonoErr: "Ingrese su numero de telefono",
-      });
-    }
-    if (!estudios.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        estudiosErr: "Indique Primaria/Secundaria o Titulo universitario, etc.",
-      });
-    }
-
-    if (!intereses[0]) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        interesErr: "Elija alguna/s opcion/es",
-      });
-    }
-
-    return formIsValid;
-  };
-  const {
-    profesionErr,
-    estudiosErr,
-    interesErr,
-    telefonoErr,
-    docuErr,
-    fechaDeNacimientoErr,
-    contraseñaErr,
-    mailErr,
-  } = formErrors;  
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!handleFormValidation()) {
-      errorAlert();
-    }
-
-    if (handleFormValidation()) {
-      // axios
-      //   .post('', {
-      //     profesion: profesion.value,
-      //     estudios: estudios.value,
-      //     interes: interes.value,
-      //   })
-      //   .then((res) => res.data)
-      //   .then(successAlert());
-      successAlert();
-    }
-  };
-  
   return (
     <div>
       <div className="TitleRegister">
@@ -232,7 +132,7 @@ function Register() {
       <br />
 
       <div class="row">
-        <form onSubmit={handleSubmit}>
+        <form>
           <div class="column">
             {/* COLUMNA DE DERECHA */}
 
@@ -244,7 +144,6 @@ function Register() {
               className="ButonRegister"
               id="mail"
               name="mail"
-              {...mail}
             />
             <br />
             <br />
@@ -283,13 +182,7 @@ function Register() {
                 value={value}
                 onChange={(newValue) => setValue(newValue)}
                 renderInput={(params) => <TextField {...params} />}
-                // {...fechaNacimiento}
               />
-              {/* {fechaDeNacimientoErr ? (
-                  <div className="errorFormMsg">{fechaDeNacimientoErr}</div>
-                ) : (
-                  ""
-                )} */}
             </LocalizationProvider>
             <br />
             <br />
@@ -298,8 +191,23 @@ function Register() {
               <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
             </label>
 
-            <TextField size="small" id="fullWidth" {...docu} />
-            {docuErr ? <div className="errorFormMsg">{docuErr}</div> : ""}
+            <TextField 
+            onChange={(e)=>{
+              setDocu(e.target.value)
+              if(!docu){
+                setErrorDocu(true)
+              setLeyenda("rellene el campo correctamente para continuar")
+              }else{
+                setErrorDocu(false)
+              setLeyenda("")
+              }
+              
+            }}
+            helperText={leyenda}
+            error={errorDocu}
+            size="small"
+             id="fullWidth"
+             />
             <br />
             <br />
             <label for="selector" className="label">
@@ -307,34 +215,43 @@ function Register() {
             </label>
 
             <TextField
-              name="profesion"
-              id="profesion"
-              size="small"
-              {...profesion}
-            />
-            {profesionErr ? (
-              <div className="errorFormMsg">{profesionErr}</div>
-            ) : (
-              ""
-            )}
+             onChange={(e)=>{
+              setProfesion(e.target.value)
+              if(!profesion){
+                setErrorerrorProfesion(true)
+              setLeyenda("rellene el campo correctamente para continuar")
+              }else{
+                setErrorerrorProfesion(false)
+              setLeyenda("")
+              }
+              
+            }}
+            helperText={leyenda}
+            error={errorProfesion}
+             name="profesion"
+              id="profesion" 
+              size="small" />
+
             <br />
             <br />
             <label for="selector" className="label">
               <p>PAIS *</p>
-              <select 
-              {...pais}>
-                {paises.map(pais => (
-                  <option key={pais.id} value={pais.id}>{pais.nombre}</option>
+              <select {...pais}>
+                {paises.map((pais) => (
+                  <option key={pais.id} value={pais.id}>
+                    {pais.nombre}
+                  </option>
                 ))}
               </select>
             </label>
             <label for="selector" className="label">
               <p>PROVINCIA *</p>
-              <select
-            {...provincia}>
-              {provincias.map(provincia => (
-                <option key={provincia.id} value={provincia.id}>{provincia.provincia}</option>
-              ))}
+              <select {...provincia}>
+                {provincias.map((provincia) => (
+                  <option key={provincia.id} value={provincia.id}>
+                    {provincia.provincia}
+                  </option>
+                ))}
               </select>
             </label>
             <label for="selector" className="label">
@@ -365,7 +282,7 @@ function Register() {
                 </MenuItem>
               ))}
             </Select>
-            {interesErr ? <div className="errorFormMsg">{interesErr}</div> : ""}
+
             <br />
           </div>
 
@@ -397,14 +314,78 @@ function Register() {
             />
             <br />
             <br />
-            <RadioButonGenero />
+            {/*  <RadioButonGenero /> */}
+            <label for="selector" className="label">
+              <p>GENERO *</p>
+            </label>
+            <div className="radio">
+              <label>
+                <input
+                  
+                  name="genero"
+                  type="radio"
+                  value={genero}
+                  onChange={() => setGenero("Masculino")}
+                />
+                Masculino
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input
+                  name="genero"
+                  type="radio"
+                  value={genero}
+                  onChange={() => setGenero("Femenino")}
+                />
+                Femenino
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input
+                  type="radio"
+                  name="genero"
+                  value={genero}
+                  onChange={() => setGenero("Otrx")}
+                />
+                Otrx
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input
+                  type="radio"
+                  name="genero"
+                  value={genero}
+                  onChange={() => setGenero("Prefiero no decirlo")}
+                />
+                Prefiero no decirlo
+              </label>
+            </div>
 
             <br />
             <br />
             <label for="selector" className="label">
               <p>TELEFONO *</p>
             </label>
-            <TextField size="small" id="fullWidth" />
+            <TextField 
+              onChange={(e)=>{
+                setTelefono(e.target.value)
+                if(!telefono){
+                  setErrorTelefono(true)
+                setLeyenda("rellene el campo correctamente para continuar")
+                }else{
+                  setErrorTelefono(false)
+                setLeyenda("")
+                }
+                
+              }}
+              helperText={leyenda}
+              error={errorTelefono}
+            size="small" 
+            id="fullWidth"
+             />
             <br />
             <br />
             <label for="selector" className="label">
@@ -416,10 +397,11 @@ function Register() {
             <br />
             <label for="selector" className="label">
               <p>LOCALIDAD *</p>
-              <select
-              {...localidad}>
-                {localidades.map(localidad => (
-                  <option key={localidad.id} value={localidad.id}>{localidad.localidad}</option>
+              <select {...localidad}>
+                {localidades.map((localidad) => (
+                  <option key={localidad.id} value={localidad.id}>
+                    {localidad.localidad}
+                  </option>
                 ))}
               </select>
             </label>
@@ -442,7 +424,6 @@ function Register() {
         <input type="checkbox" value="" />
         Acepto recibir notificaciones por email
       </label>
-     
     </div>
   );
 }
