@@ -31,8 +31,6 @@ class UsuarioController {
       mail,
       recibirMails,
       acepta_marketing,
-      //email_verified_at,
-      //deleted_at,
       profesion,
       estudios,
       intereses,

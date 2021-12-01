@@ -18,6 +18,7 @@ import { CustomHook } from "../../hooks/CustomHook";
 import "./Register.css";
 
 import { useTheme } from "@mui/material/styles";
+
 const localeMap = {
   fr: frLocale,
 };
@@ -64,14 +65,29 @@ function Register() {
   // select para la datapicker (Fecha de nna)
   const [locale] = useState("fr");
   const [value, setValue] = useState(new Date());
-  //imputs
+  //inputs
+  const [mail, setMail] = useState("");
+  const [leyendaMail, setLeyendaMail] = useState("");
+  const [errorMail, setErrorMail] = useState(false);
+  const [nombre, setNombre] = useState("");
+  const [leyendaNombre, setLeyendaNombre] = useState("");
+  const [errorNombre, setErrorNombre] = useState(false);
+  const [apellidoPaterno, setApellidoPaterno] = useState("");
+  const [leyendaApellidoPaterno, setLeyendaApellidoPaterno] = useState("");
+  const [errorApellidoPaterno, setErrorApellidoPaterno] = useState(false);
   const profesion = CustomHook("");
   const estudios = CustomHook("");
-  const mail = CustomHook("");
-  const contraseña = CustomHook("");
+  const apellidoMaterno = CustomHook("");
+  const [contraseña, setContraseña] = useState("");
+  const [leyendaContraseña, setLeyendaContraseña] = useState("");
+  const [errorContraseña, setErrorContraseña] = useState(false);
+  const [confirmPass, setConfirmPass] = useState("");
+  const [leyendaConfirmPass, setLeyendaConfirmPass] = useState("");
+  const [errorConfirmPass, setErrorConfirmPass] = useState(false);
   const fechaNacimiento = CustomHook("");
   const docu = CustomHook("");
   const telefono = CustomHook("");
+  const [recibirMails, setRecibirMails] = useState(0);
   const [intereses, setIntereses] = useState([]);
   const [formErrors, setFormErrors] = useState({});
 
@@ -81,21 +97,34 @@ function Register() {
     const {
       target: { value },
     } = event;
-    setIntereses(typeof value === "string" ? value.split(",") : value);
+    // if (!intereses.includes(value)) {
+    //   intereses.push(value);
+    //   setIntereses(intereses);
+    // } else {
+    //   let interesesFiltrados = intereses.filter((interes) => interes !== value);
+    //   setIntereses(interesesFiltrados);
+    // }
+    console.log("ACAAA", intereses);
+    setIntereses(value);
+    console.log("EL TROOO", intereses);
+  };
+
+  const handleMail = () => {
+    setRecibirMails((prev) => (prev === 0 ? 1 : 0));
   };
 
   const successAlert = () => {
     swal({
       title: "Muchas gracias!",
       icon: "success",
-      timer: "2000",
+      timer: "4000",
     });
   };
 
   const errorAlert = () => {
     swal({
       title: "Error",
-      text: "Por favor complete todos los campos",
+      text: "Por favor complete todos los campos obligatorios",
       button: "Aceptar",
       icon: "error",
     });
@@ -104,75 +133,102 @@ function Register() {
   const handleFormValidation = () => {
     let formIsValid = true;
 
-    if (!profesion.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        profesionErr: "Ingrese si es estudiante, contador, vendedor, etc.",
-      });
-    }
-    if (!mail.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        mailErr: "Ingrese un mail",
-      });
-    }
-    if (!contraseña.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        contraseñaErr: "Ingrese una contraseña",
-      });
-    }
-    if (!fechaNacimiento.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        fechaDeNacimientoErr:
-          "Indique                                                         ",
-      });
-    }
+    // if (!mail.value) {
+    //   formIsValid = false;
+    //   setFormErrors({ ...formErrors, mailErr: "Ingrese un email" });
+    // }
+    // else
+    // if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail.value)) {
+    //   formIsValid = false;
+    //   setFormErrors({ ...formErrors, mailErr: "Ingrese un email valido" });
+    // }
 
-    if (!docu.value) {
-      formIsValid = false;
-      setFormErrors({
-        docuErr: "Ingrese su documento o Pasaporte",
-      });
-    }
-    if (!telefono.value) {
-      formIsValid = false;
-      setFormErrors({
-        telefonoErr: "Ingrese su numero de telefono",
-      });
-    }
-    if (!estudios.value) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        estudiosErr: "Indique Primaria/Secundaria o Titulo universitario, etc.",
-      });
-    }
+    // if (!nombre.value) {
+    //   formIsValid = false;
+    //   setFormErrors({
+    //     ...formErrors,
+    //     nombreErr: "Ingrese su nombre",
+    //   });
+    // }
 
-    if (!intereses[0]) {
-      formIsValid = false;
-      setFormErrors({
-        ...formErrors,
-        interesErr: "Elija alguna/s opcion/es",
-      });
-    }
+    // if (!profesion.value) {
+    //   formIsValid = false;
+    //   setFormErrors({
+    //     ...formErrors,
+    //     profesionErr: "Ingrese si es estudiante, contador, vendedor, etc.",
+    //   });
+    // }
+
+    // if (contraseña.value.length < 8) {
+    //   formIsValid = false;
+    //   setFormErrors({
+    //     ...formErrors,
+    //     contraseñaErr: "La contraseña debe tener al menos 8 caracteres",
+    //   });
+    // }
+
+    // if (contraseña.value !== confirmar_contraseña.value) {
+    //   formIsValid = false;
+    //   setFormErrors({
+    //     ...formErrors,
+    //     confirmarContraseñaErr: "Las contraseñas deben coincidir",
+    //   });
+    // }
+
+    // if (!apellidoPaterno.value) {
+    //   formIsValid = false;
+    //   setFormErrors({
+    //     ...formErrors,
+    //     apellidoPaternoErr: "Ingrese su apellido",
+    //   });
+    // }
+
+    // if (!fechaNacimiento.value) {
+    //   formIsValid = false;
+    //   setFormErrors({
+    //     ...formErrors,
+    //     fechaDeNacimientoErr:
+    //       "Indique                                                         ",
+    //   });
+    // }
+
+    // if (!docu.value) {
+    //   formIsValid = false;
+    //   setFormErrors({
+    //     ...formErrors,
+    //     docuErr: "Ingrese su documento o Pasaporte",
+    //   });
+    // }
+    // if (!telefono.value) {
+    //   formIsValid = false;
+    //   setFormErrors({
+    //     ...formErrors,
+    //     telefonoErr: "Ingrese su numero de telefono",
+    //   });
+    // }
+
+    // if (!intereses.length) {
+    //   formIsValid = false;
+    //   setFormErrors({
+    //     ...formErrors,
+    //     interesErr: "Elija alguna/s opcion/es",
+    //   });
+    // } else setFormErrors({ ...formErrors, interesErr: "" });
 
     return formIsValid;
   };
+
   const {
+    nombreErr,
     profesionErr,
-    estudiosErr,
     interesErr,
     telefonoErr,
     docuErr,
     fechaDeNacimientoErr,
     contraseñaErr,
+    confirmarContraseñaErr,
     mailErr,
+    apellidoPaternoErr,
   } = formErrors;
 
   const handleSubmit = (e) => {
@@ -185,15 +241,33 @@ function Register() {
     if (handleFormValidation()) {
       // axios
       //   .post('', {
+      //     idPais:
+      //     idProvincia:
+      //    idLocalidad:
       //     profesion: profesion.value,
       //     estudios: estudios.value,
       //     interes: interes.value,
+      //     mail:mail.value,
+      //     nombres: nombre.value
+      //     apellidoPaterno: apellidoPaterno.value
+      //  apellidoMaterno: apellidoMaterno.value
+      //  password: contraseña.value
+      //   password_confirmation: confirmar_contraseña.value
+      //    acepta_marketing : recibirMails
+      //     recibirMails: recibirMails
+      //    fechaNacimiento
+      //  telefono: telefono.value
+      //  telefonoMovil ??? PUEDE IR COMO ALGO FIJO, NO LO PIDE EN ACTIVIDADES, PERO SI EN LA API
+      //  dni: docu.value
+      //   sexo:
+      //  idUnidadOrganizacional: 0
       //   })
       //   .then((res) => res.data)
       //   .then(successAlert());
       successAlert();
     }
   };
+
   return (
     <div>
       <div className="TitleRegister">
@@ -205,39 +279,71 @@ function Register() {
         <form onSubmit={handleSubmit}>
           <div class="column">
             {/* COLUMNA DE DERECHA */}
-
-            <label for="selector" className="label">
+            <label for="mail" className="label">
               <p>MAIL *</p>
             </label>
             <TextField
+              onChange={(e) => {
+                setMail(e.target.value);
+                if (
+                  !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)
+                ) {
+                  setErrorMail(true);
+                  setLeyendaMail("Ingrese un email valido");
+                } else {
+                  setErrorMail(false);
+                  setLeyendaMail("");
+                }
+              }}
               size="small"
               className="ButonRegister"
-              id="mail"
-              name="mail"
-              {...mail}
+              error={errorMail}
+              helperText={leyendaMail}
+              variant="outlined"
             />
             <br />
             <br />
-            <label for="selector" className="label">
-              <p>Nombres *</p>
+            <label for="nombre" className="label">
+              <p>NOMBRE *</p>
             </label>
             <TextField
+              onChange={(e) => {
+                setNombre(e.target.value);
+                if (!nombre) {
+                  setErrorNombre(true);
+                  setLeyendaNombre("Ingrese su nombre");
+                } else {
+                  setErrorNombre(false);
+                  setLeyendaNombre("");
+                }
+              }}
               size="small"
               className="ButonRegister"
-              id="nombres"
-              name="nombres"
+              error={errorNombre}
+              helperText={leyendaNombre}
+              variant="outlined"
             />
-
             <br />
             <br />
-            <label for="selector" className="label">
+            <label for="apellidoPaterno" className="label">
               <p>APELLIDO PATERNO *</p>
             </label>
             <TextField
+              onChange={(e) => {
+                setApellidoPaterno(e.target.value);
+                if (!apellidoPaterno) {
+                  setErrorApellidoPaterno(true);
+                  setLeyendaApellidoPaterno("Ingrese su apellido");
+                } else {
+                  setErrorApellidoPaterno(false);
+                  setLeyendaApellidoPaterno("");
+                }
+              }}
               size="small"
               className="ButonRegister"
-              id="nombres"
-              name="nombres"
+              error={errorApellidoPaterno}
+              helperText={leyendaApellidoPaterno}
+              variant="outlined"
             />
             <br />
             <br />
@@ -263,19 +369,16 @@ function Register() {
             </LocalizationProvider>
             <br />
             <br />
-
             <label for="selector" className="label">
               <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
             </label>
-
             <TextField size="small" id="fullWidth" {...docu} />
             {docuErr ? <div className="errorFormMsg">{docuErr}</div> : ""}
             <br />
             <br />
-            <label for="selector" className="label">
+            <label for="profesion" className="label">
               <p>PROFESIÓN *</p>
             </label>
-
             <TextField
               name="profesion"
               id="profesion"
@@ -296,13 +399,13 @@ function Register() {
               </select>
             </label>
             <label for="selector" className="label">
-              <p>PROVINCIA *</p>
+              <p>PROVINCIA</p>
               <select>
                 <option value="Argentina">Cordoba</option>
               </select>
             </label>
             <label for="selector" className="label">
-              <p>TEMATICAS/AREAS DE INTERES EN TECHO</p>
+              <p>TEMATICAS/AREAS DE INTERES EN TECHO *</p>
             </label>
             <Select
               id="demo-multiple-chip"
@@ -336,18 +439,53 @@ function Register() {
           <div class="column">
             {/* COLUMNA DE IZQUIERDA*/}
 
-            <label for="selector" className="label">
-              <p>CREAR NUEVA CONTRASEÑA *</p>
+            <label for="password" className="label">
+              <p>CONTRASEÑA *</p>
             </label>
+            <TextField
+              onChange={(e) => {
+                setContraseña(e.target.value);
+                if (contraseña.length < 7) {
+                  setErrorContraseña(true);
+                  setLeyendaContraseña(
+                    "La contraseña debe tener al menos 8 caracteres"
+                  );
+                } else {
+                  setErrorContraseña(false);
+                  setLeyendaContraseña("");
+                }
+              }}
+              size="small"
+              className="ButonRegister"
+              error={errorContraseña}
+              helperText={leyendaContraseña}
+              variant="outlined"
+              // type="password"
+            />
 
-            <TextField size="small" id="fullWidth" />
             <br />
             <br />
             <label for="selector" className="label">
               <p>CONFIRMAR CONTRASEÑA *</p>
             </label>
-
-            <TextField size="small" id="fullWidth" />
+            <TextField
+              onChange={(e) => {
+                setConfirmPass(e.target.value);
+                if (contraseña !== confirmPass) {
+                  setErrorConfirmPass(true);
+                  setLeyendaConfirmPass("Las contraseñas deben coincidir");
+                } else {
+                  setErrorConfirmPass(false);
+                  setLeyendaConfirmPass("");
+                }
+              }}
+              size="small"
+              className="ButonRegister"
+              error={errorConfirmPass}
+              helperText={leyendaConfirmPass}
+              variant="outlined"
+              // type="password"
+            />
             <br />
             <br />
             <label for="selector" className="label">
@@ -358,6 +496,7 @@ function Register() {
               className="ButonRegister"
               id="nombres"
               name="nombres"
+              {...apellidoMaterno}
             />
             <br />
             <br />
@@ -368,18 +507,22 @@ function Register() {
             <label for="selector" className="label">
               <p>TELEFONO *</p>
             </label>
-            <TextField size="small" id="fullWidth" />
+            <TextField size="small" id="fullWidth" {...telefono} />
+            {telefonoErr ? (
+              <div className="errorFormMsg">{telefonoErr}</div>
+            ) : (
+              ""
+            )}
             <br />
             <br />
             <label for="selector" className="label">
               <p>ESTUDIOS</p>
             </label>
-
-            <TextField size="small" id="fullWidth" />
+            <TextField size="small" id="fullWidth" {...estudios} />
             <br />
             <br />
             <label for="selector" className="label">
-              <p>LOCALIDAD *</p>
+              <p>LOCALIDAD</p>
               <select>
                 <option value="Argentina">Capital</option>
               </select>
@@ -389,21 +532,21 @@ function Register() {
 
             <br />
           </div>
+
+          <Button sx={{ ml: 36 }} variant="text">
+            VOLVER
+          </Button>
+          <Button id="ingresar" size="medium" variant="outlined" type="submit">
+            REGISTRAR
+          </Button>
         </form>
       </div>
-      <Button sx={{ ml: 36 }} variant="text">
-        VOLVER
-      </Button>
-      <Button id="ingresar" size="medium" variant="outlined" type="submit">
-        INGRESAR
-      </Button>
       <br />
       <br />
       <label for="selector" className="label">
-        <input type="checkbox" value="" />
+        <input type="checkbox" onClick={handleMail} />
         Acepto recibir notificaciones por email
       </label>
-     
     </div>
   );
 }
