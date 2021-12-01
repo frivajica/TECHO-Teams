@@ -81,7 +81,6 @@ function Register() {
   const [apellidoPaterno, setApellidoPaterno] = useState("");
   const [leyendaApellidoPaterno, setLeyendaApellidoPaterno] = useState("");
   const [errorApellidoPaterno, setErrorApellidoPaterno] = useState(false);
-  const profesion = CustomHook("");
   const estudios = CustomHook("");
   const apellidoMaterno = CustomHook("");
   const [contraseña, setContraseña] = useState("");
@@ -90,17 +89,27 @@ function Register() {
   const [confirmPass, setConfirmPass] = useState("");
   const [leyendaConfirmPass, setLeyendaConfirmPass] = useState("");
   const [errorConfirmPass, setErrorConfirmPass] = useState(false);
-  const docu = CustomHook("");
-  const telefono = CustomHook("");
   const [recibirMails, setRecibirMails] = useState(0);
   const [intereses, setIntereses] = useState([]);
+  //
   const pais = CustomHook("");
   const provincia = CustomHook("");
   const localidad = CustomHook("");
   const [formErrors, setFormErrors] = useState({});
+  // console.log(fechaNacimiento);
+  //radio buton
   const [genero, setGenero] = useState("Prefiero no decirlo");
 
-  // console.log(fechaNacimiento);
+  // parte eber validacion
+  const [docu, setDocu] = useState("");
+  const [profesion, setProfesion] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [errorDocu, setErrorDocu] = useState("");
+  const [errorTelefono, setErrorTelefono] = useState("");
+
+  const [errorProfesion, setErrorerrorProfesion] = useState("");
+
+  const [leyenda, setLeyenda] = useState("");
 
   useEffect(() => {
     axios
@@ -321,7 +330,7 @@ function Register() {
       <br />
 
       <div class="row">
-        <form onSubmit={handleSubmit}>
+        <form>
           <div class="column">
             {/* COLUMNA DE DERECHA */}
             <label for="mail" className="label">
@@ -411,24 +420,46 @@ function Register() {
             <label for="selector" className="label">
               <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
             </label>
-            <TextField size="small" id="fullWidth" {...docu} />
-            {docuErr ? <div className="errorFormMsg">{docuErr}</div> : ""}
+
+            <TextField
+              onChange={(e) => {
+                setDocu(e.target.value);
+                if (!docu) {
+                  setErrorDocu(true);
+                  setLeyenda("rellene el campo correctamente para continuar");
+                } else {
+                  setErrorDocu(false);
+                  setLeyenda("");
+                }
+              }}
+              helperText={leyenda}
+              error={errorDocu}
+              size="small"
+              id="fullWidth"
+            />
             <br />
             <br />
             <label for="profesion" className="label">
               <p>PROFESIÓN *</p>
             </label>
             <TextField
+              onChange={(e) => {
+                setProfesion(e.target.value);
+                if (!profesion) {
+                  setErrorerrorProfesion(true);
+                  setLeyenda("rellene el campo correctamente para continuar");
+                } else {
+                  setErrorerrorProfesion(false);
+                  setLeyenda("");
+                }
+              }}
+              helperText={leyenda}
+              error={errorProfesion}
               name="profesion"
               id="profesion"
               size="small"
-              {...profesion}
             />
-            {profesionErr ? (
-              <div className="errorFormMsg">{profesionErr}</div>
-            ) : (
-              ""
-            )}
+
             <br />
             <br />
             <label for="selector" className="label">
@@ -479,7 +510,7 @@ function Register() {
                 </MenuItem>
               ))}
             </Select>
-            {interesErr ? <div className="errorFormMsg">{interesErr}</div> : ""}
+
             <br />
           </div>
 
@@ -601,7 +632,22 @@ function Register() {
             <label for="selector" className="label">
               <p>TELEFONO *</p>
             </label>
-            <TextField size="small" id="fullWidth" {...telefono} />
+            <TextField
+              onChange={(e) => {
+                setTelefono(e.target.value);
+                if (!telefono) {
+                  setErrorTelefono(true);
+                  setLeyenda("rellene el campo correctamente para continuar");
+                } else {
+                  setErrorTelefono(false);
+                  setLeyenda("");
+                }
+              }}
+              helperText={leyenda}
+              error={errorTelefono}
+              size="small"
+              id="fullWidth"
+            />
             <br />
             <br />
             <label for="selector" className="label">
