@@ -15,9 +15,6 @@ Role.init(
       allowNull: false,
       unique: true
     },
-    description: {
-        type: Sequelize.TEXT,
-    },
     activo: {
       type: Sequelize.BOOLEAN,
       defaultValue: true

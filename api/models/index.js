@@ -7,8 +7,8 @@ const Evento = require("./Evento");
 Usuario.belongsToMany(Equipo, {through: UsuarioEnEquipo});
 Equipo.belongsToMany(Usuario, {through: UsuarioEnEquipo});
 
-Equipo.hasMany(Role)
-Role.belongsTo(Equipo)
+//Equipo.hasMany(Role)
+//Role.belongsTo(Equipo)
 
 Role.hasMany(UsuarioEnEquipo, {as: "usrEnEquipo"});
 UsuarioEnEquipo.belongsTo(Role);
