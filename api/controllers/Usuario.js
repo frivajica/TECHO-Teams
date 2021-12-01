@@ -103,6 +103,11 @@ class UsuarioController {
       })
       .catch((err) => res.status(401).send(err));
   }
+
+  static editarUsuario(req, res) {
+    Usuario.update()
+  }
+
 }
 
 module.exports = UsuarioController;

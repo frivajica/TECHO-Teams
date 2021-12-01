@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import frLocale from "date-fns/locale/fr";
@@ -18,6 +19,7 @@ import { CustomHook } from "../../hooks/CustomHook";
 import "./Register.css";
 
 import { useTheme } from "@mui/material/styles";
+
 const localeMap = {
   fr: frLocale,
 };
@@ -61,6 +63,12 @@ const interes = [
 ];
 
 function Register() {
+
+  //estados para regiones
+  const [paises, setPaises] = useState([])
+  const [provincias, setProvincias] = useState([])
+  const [localidades, setLocalidades] = useState([])
+
   // select para la datapicker (Fecha de nna)
   const [locale] = useState("fr");
   const [value, setValue] = useState(new Date());
@@ -73,7 +81,28 @@ function Register() {
   const docu = CustomHook("");
   const telefono = CustomHook("");
   const [intereses, setIntereses] = useState([]);
+  const pais = CustomHook("")
+  const provincia = CustomHook("")
+  const localidad = CustomHook("")
   const [formErrors, setFormErrors] = useState({});
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/api/regiones/paises")
+    .then(res => setPaises(res.data))
+    .catch(err => console.log(err))
+  }, [])
+
+  useEffect(() => {
+  axios.get(`http://localhost:3001/api/regiones/paises/${pais.value}/provincias`)
+    .then(res => setProvincias(res.data))
+    .catch(err => console.log(err))
+  }, [pais.value])
+
+  useEffect(() => {
+    axios.get(`http://localhost:3001/api/regiones/paises/${pais.value}/provincias/${provincia.value}/localidades`)
+    .then(res => setLocalidades(res.data))
+    .catch(err => console.log(err))
+  }, [provincia.value])
 
   const theme = useTheme();
 
@@ -173,7 +202,7 @@ function Register() {
     fechaDeNacimientoErr,
     contraseñaErr,
     mailErr,
-  } = formErrors;
+  } = formErrors;  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -194,6 +223,7 @@ function Register() {
       successAlert();
     }
   };
+  
   return (
     <div>
       <div className="TitleRegister">
@@ -291,14 +321,20 @@ function Register() {
             <br />
             <label for="selector" className="label">
               <p>PAIS *</p>
-              <select>
-                <option value="Argentina">Argentina</option>
+              <select 
+              {...pais}>
+                {paises.map(pais => (
+                  <option key={pais.id} value={pais.id}>{pais.nombre}</option>
+                ))}
               </select>
             </label>
             <label for="selector" className="label">
               <p>PROVINCIA *</p>
-              <select>
-                <option value="Argentina">Cordoba</option>
+              <select
+            {...provincia}>
+              {provincias.map(provincia => (
+                <option key={provincia.id} value={provincia.id}>{provincia.provincia}</option>
+              ))}
               </select>
             </label>
             <label for="selector" className="label">
@@ -380,8 +416,11 @@ function Register() {
             <br />
             <label for="selector" className="label">
               <p>LOCALIDAD *</p>
-              <select>
-                <option value="Argentina">Capital</option>
+              <select
+              {...localidad}>
+                {localidades.map(localidad => (
+                  <option key={localidad.id} value={localidad.id}>{localidad.localidad}</option>
+                ))}
               </select>
             </label>
             <br />

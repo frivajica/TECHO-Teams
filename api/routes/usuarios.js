@@ -12,4 +12,6 @@ Router.post("/login", UsuarioController.loginInUsuario);
 
 Router.post( "/registrarDesdeActividades", UsuarioController.crearUsuarioEquipos);
 
+Router.put("/editarUsuario", UsuarioController.editarUsuario)
+
 module.exports = Router;
