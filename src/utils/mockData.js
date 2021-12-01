@@ -17,12 +17,30 @@ export const historial = [
     nombre: 'Apoyo escolar área General Pacheco',
     fecha_inicio: "15 enero 2017",
     fecha_final: null,
-    roles: ['Apoyo Escolar', 'Organizador'],
+    roles: ['Apoyo Escolar', 'Organizador', 'Prueba1', 'Prueba2', 'Prueba3', 'Prueba4', 'Prueba5', 'Prueba6', 'Prueba7', 'Prueba8', 'Prueba9'],
   },
   {
     nombre: 'Colecta Navidad 2017',
     fecha_inicio: "01 diciembre 2017",
     fecha_final: '24 diciembre 2017',
     roles: ['Contador'],
-  }
+  },
+  {
+    nombre: 'Apoyo escolar área General Pacheco',
+    fecha_inicio: "15 enero 2017",
+    fecha_final: null,
+    roles: ['Apoyo Escolar', 'Organizador', 'Prueba1', 'Prueba2', 'Prueba3', 'Prueba4', 'Prueba5', 'Prueba6', 'Prueba7', 'Prueba8', 'Prueba9'],
+  },
+  {
+    nombre: 'Apoyo escolar área General Pacheco',
+    fecha_inicio: "15 enero 2017",
+    fecha_final: null,
+    roles: ['Apoyo Escolar', 'Organizador', 'Prueba1', 'Prueba2', 'Prueba3', 'Prueba4', 'Prueba5', 'Prueba6', 'Prueba7', 'Prueba8', 'Prueba9'],
+  },
+  {
+    nombre: 'Apoyo escolar área General Pacheco',
+    fecha_inicio: "15 enero 2017",
+    fecha_final: null,
+    roles: ['Apoyo Escolar', 'Organizador', 'Prueba1', 'Prueba2', 'Prueba3', 'Prueba4', 'Prueba5', 'Prueba6', 'Prueba7', 'Prueba8', 'Prueba9'],
+  },
 ]

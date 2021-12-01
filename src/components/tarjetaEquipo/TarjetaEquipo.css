@@ -1,0 +1,71 @@
+.grid-equipo {
+	padding: 1rem;
+	border-style: solid;
+	background-color: #F5F5F4;
+	border-color: #D6D9D4;
+	border-radius: 5px;
+	border-width: 3px;
+  display: grid;
+  grid-template-columns: 50% 42% auto;
+  grid-template-rows: 2em auto;
+  gap: 10px;
+}
+
+.actividad-equipo {
+  grid-column: 1;
+  grid-row: 1;
+	font-weight: bold;
+}
+
+.actividad-fechas {
+  grid-column: 1;
+  grid-row: 2;
+	align-self: flex-end;
+}
+
+.roles-equipo {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+	display: flex;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	gap: 0.2rem;
+}
+
+#lista-roles {
+	padding: 0 0 0 1rem;
+}
+
+#roles-titulo {
+	height: 2rem;
+	line-height: 2rem;
+}
+
+#flecha-equipo {
+	grid-column: 3;
+	grid-row: 1 / span 2;
+	align-self: center;
+	justify-self: center;
+	cursor: pointer;
+}
+
+@media (max-width: 700px) {
+	.grid-equipo {
+		grid-template-columns: auto;
+		grid-template-rows: auto;
+	}
+
+	.actividad-equipo {
+		grid-column: 1 / span 2;
+	}
+	
+	.roles-equipo {
+		grid-column: 1;
+		grid-row: 3;
+	}
+
+	#flecha-equipo {
+		grid-column: 2;
+		grid-row: 1 / span 3;
+	}
+}

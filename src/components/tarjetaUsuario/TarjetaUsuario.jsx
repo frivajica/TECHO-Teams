@@ -8,7 +8,7 @@ export const TarjetaUsuario = () => {
     <div className="tarjeta-usuario">
       <div className="grid-usuario">
         <div className="avatar-usuario">
-          <ButtonBase sx={{ width: 200, height: 200 }}>
+          <ButtonBase sx={{ width: 200, height: 200 }} id='ripple-avatar'>
             <img className="avatar" src={u.avatar} alt="Avatar de Usuario" />
           </ButtonBase>
         </div>
