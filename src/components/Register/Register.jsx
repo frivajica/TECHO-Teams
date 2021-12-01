@@ -70,7 +70,7 @@ function Register() {
 
   // select para la datapicker (Fecha de nna)
   const [locale] = useState("fr");
-  const [value, setValue] = useState(new Date());
+  const [value, setValue] = useState(new Date(""));
   //inputs
   const [mail, setMail] = useState("");
   const [leyendaMail, setLeyendaMail] = useState("");
@@ -90,7 +90,6 @@ function Register() {
   const [confirmPass, setConfirmPass] = useState("");
   const [leyendaConfirmPass, setLeyendaConfirmPass] = useState("");
   const [errorConfirmPass, setErrorConfirmPass] = useState(false);
-  const fechaNacimiento = CustomHook("");
   const docu = CustomHook("");
   const telefono = CustomHook("");
   const [recibirMails, setRecibirMails] = useState(0);
@@ -99,7 +98,9 @@ function Register() {
   const provincia = CustomHook("");
   const localidad = CustomHook("");
   const [formErrors, setFormErrors] = useState({});
-  const [genero, setGenero] = useState("");
+  const [genero, setGenero] = useState("Prefiero no decirlo");
+
+  // console.log(fechaNacimiento);
 
   useEffect(() => {
     axios
@@ -165,6 +166,17 @@ function Register() {
 
   const handleFormValidation = () => {
     let formIsValid = true;
+
+    if (!mail) formIsValid = false;
+    if (!nombre) formIsValid = false;
+    if (!apellidoPaterno) formIsValid = false;
+    if (!contraseña) formIsValid = false;
+    if (!confirmPass) formIsValid = false;
+    if (!genero) formIsValid = false;
+    if (!docu) formIsValid = false;
+    if (!profesion) formIsValid = false;
+    if (!telefono) formIsValid = false;
+    if (!pais) formIsValid = false;
 
     // if (!mail.value) {
     //   formIsValid = false;
@@ -274,24 +286,24 @@ function Register() {
     if (handleFormValidation()) {
       // axios
       //   .post('', {
-      //     idPais:
-      //     idProvincia:
-      //    idLocalidad:
+      //     idPais: pais.value,
+      //     idProvincia: provincia.value,
+      //    idLocalidad: localidad.value,
       //     profesion: profesion.value,
       //     estudios: estudios.value,
       //     interes: interes.value,
-      //     mail:mail.value,
-      //     nombres: nombre.value
-      //     apellidoPaterno: apellidoPaterno.value
-      //  apellidoMaterno: apellidoMaterno.value
-      //  password: contraseña.value
-      //   password_confirmation: confirmar_contraseña.value
-      //    acepta_marketing : recibirMails
-      //     recibirMails: recibirMails
-      //    fechaNacimiento
-      //  telefono: telefono.value
+      //     mail:mail,
+      //     nombres: nombre,
+      //     apellidoPaterno: apellidoPaterno,
+      //  apellidoMaterno: apellidoMaterno.value,
+      //  password: contraseña,
+      //   password_confirmation: confirmPass,
+      //    acepta_marketing : recibirMails,
+      //     recibirMails: recibirMails,
+      //    fechaNacimiento: value.toISOString().split("T")[0],
+      //  telefono: telefono,
       //  telefonoMovil ??? PUEDE IR COMO ALGO FIJO, NO LO PIDE EN ACTIVIDADES, PERO SI EN LA API
-      //  dni: docu.value
+      //  dni: docu.value,
       //   sexo:
       //  idUnidadOrganizacional: 0
       //   })
@@ -392,13 +404,7 @@ function Register() {
                 value={value}
                 onChange={(newValue) => setValue(newValue)}
                 renderInput={(params) => <TextField {...params} />}
-                // {...fechaNacimiento}
               />
-              {/* {fechaDeNacimientoErr ? (
-                  <div className="errorFormMsg">{fechaDeNacimientoErr}</div>
-                ) : (
-                  ""
-                )} */}
             </LocalizationProvider>
             <br />
             <br />
@@ -596,11 +602,6 @@ function Register() {
               <p>TELEFONO *</p>
             </label>
             <TextField size="small" id="fullWidth" {...telefono} />
-            {telefonoErr ? (
-              <div className="errorFormMsg">{telefonoErr}</div>
-            ) : (
-              ""
-            )}
             <br />
             <br />
             <label for="selector" className="label">
@@ -624,7 +625,6 @@ function Register() {
 
             <br />
           </div>
-
           <Button sx={{ ml: 36 }} variant="text">
             VOLVER
           </Button>
