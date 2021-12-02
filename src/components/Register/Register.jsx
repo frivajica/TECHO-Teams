@@ -91,24 +91,16 @@ function Register() {
   const [errorConfirmPass, setErrorConfirmPass] = useState(false);
   const [recibirMails, setRecibirMails] = useState(0);
   const [intereses, setIntereses] = useState([]);
-  //
   const pais = CustomHook("");
   const provincia = CustomHook("");
   const localidad = CustomHook("");
-  const [formErrors, setFormErrors] = useState({});
-  // console.log(fechaNacimiento);
-  //radio buton
   const [genero, setGenero] = useState("Prefiero no decirlo");
-
-  // parte eber validacion
   const [docu, setDocu] = useState("");
   const [profesion, setProfesion] = useState("");
   const [telefono, setTelefono] = useState("");
   const [errorDocu, setErrorDocu] = useState("");
   const [errorTelefono, setErrorTelefono] = useState("");
-
   const [errorProfesion, setErrorerrorProfesion] = useState("");
-
   const [leyenda, setLeyenda] = useState("");
 
   useEffect(() => {
@@ -140,16 +132,7 @@ function Register() {
     const {
       target: { value },
     } = event;
-    // if (!intereses.includes(value)) {
-    //   intereses.push(value);
-    //   setIntereses(intereses);
-    // } else {
-    //   let interesesFiltrados = intereses.filter((interes) => interes !== value);
-    //   setIntereses(interesesFiltrados);
-    // }
-    console.log("ACAAA", intereses);
     setIntereses(value);
-    console.log("EL TROOO", intereses);
   };
 
   const handleMail = () => {
@@ -167,7 +150,7 @@ function Register() {
   const errorAlert = () => {
     swal({
       title: "Error",
-      text: "Por favor complete todos los campos obligatorios",
+      text: "Por favor complete todos los campos con asterisco",
       button: "Aceptar",
       icon: "error",
     });
@@ -176,114 +159,19 @@ function Register() {
   const handleFormValidation = () => {
     let formIsValid = true;
 
-    if (!mail) formIsValid = false;
-    if (!nombre) formIsValid = false;
-    if (!apellidoPaterno) formIsValid = false;
-    if (!contraseña) formIsValid = false;
-    if (!confirmPass) formIsValid = false;
-    if (!genero) formIsValid = false;
-    if (!docu) formIsValid = false;
-    if (!profesion) formIsValid = false;
-    if (!telefono) formIsValid = false;
-    if (!pais) formIsValid = false;
-
-    // if (!mail.value) {
-    //   formIsValid = false;
-    //   setFormErrors({ ...formErrors, mailErr: "Ingrese un email" });
-    // }
-    // else
-    // if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail.value)) {
-    //   formIsValid = false;
-    //   setFormErrors({ ...formErrors, mailErr: "Ingrese un email valido" });
-    // }
-
-    // if (!nombre.value) {
-    //   formIsValid = false;
-    //   setFormErrors({
-    //     ...formErrors,
-    //     nombreErr: "Ingrese su nombre",
-    //   });
-    // }
-
-    // if (!profesion.value) {
-    //   formIsValid = false;
-    //   setFormErrors({
-    //     ...formErrors,
-    //     profesionErr: "Ingrese si es estudiante, contador, vendedor, etc.",
-    //   });
-    // }
-
-    // if (contraseña.value.length < 8) {
-    //   formIsValid = false;
-    //   setFormErrors({
-    //     ...formErrors,
-    //     contraseñaErr: "La contraseña debe tener al menos 8 caracteres",
-    //   });
-    // }
-
-    // if (contraseña.value !== confirmar_contraseña.value) {
-    //   formIsValid = false;
-    //   setFormErrors({
-    //     ...formErrors,
-    //     confirmarContraseñaErr: "Las contraseñas deben coincidir",
-    //   });
-    // }
-
-    // if (!apellidoPaterno.value) {
-    //   formIsValid = false;
-    //   setFormErrors({
-    //     ...formErrors,
-    //     apellidoPaternoErr: "Ingrese su apellido",
-    //   });
-    // }
-
-    // if (!fechaNacimiento.value) {
-    //   formIsValid = false;
-    //   setFormErrors({
-    //     ...formErrors,
-    //     fechaDeNacimientoErr:
-    //       "Indique                                                         ",
-    //   });
-    // }
-
-    // if (!docu.value) {
-    //   formIsValid = false;
-    //   setFormErrors({
-    //     ...formErrors,
-    //     docuErr: "Ingrese su documento o Pasaporte",
-    //   });
-    // }
-    // if (!telefono.value) {
-    //   formIsValid = false;
-    //   setFormErrors({
-    //     ...formErrors,
-    //     telefonoErr: "Ingrese su numero de telefono",
-    //   });
-    // }
-
-    // if (!intereses.length) {
-    //   formIsValid = false;
-    //   setFormErrors({
-    //     ...formErrors,
-    //     interesErr: "Elija alguna/s opcion/es",
-    //   });
-    // } else setFormErrors({ ...formErrors, interesErr: "" });
+    // if (errorMail) formIsValid = false;
+    // if (errorNombre) formIsValid = false;
+    // if (errorApellidoPaterno) formIsValid = false;
+    // if (errorContraseña) formIsValid = false;
+    // if (errorConfirmPass) formIsValid = false;
+    // if (errorDocu) formIsValid = false;
+    // if (errorProfesion) formIsValid = false;
+    // if (errorTelefono) formIsValid = false;
+    // if (!pais) formIsValid = false;
+    // if (!intereses.length) formIsValid = false;
 
     return formIsValid;
   };
-
-  const {
-    nombreErr,
-    profesionErr,
-    interesErr,
-    telefonoErr,
-    docuErr,
-    fechaDeNacimientoErr,
-    contraseñaErr,
-    confirmarContraseñaErr,
-    mailErr,
-    apellidoPaternoErr,
-  } = formErrors;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -293,34 +181,57 @@ function Register() {
     }
 
     if (handleFormValidation()) {
-      // axios
-      //   .post('', {
-      //     idPais: pais.value,
-      //     idProvincia: provincia.value,
-      //    idLocalidad: localidad.value,
-      //     profesion: profesion.value,
-      //     estudios: estudios.value,
-      //     interes: interes.value,
-      //     mail:mail,
-      //     nombres: nombre,
-      //     apellidoPaterno: apellidoPaterno,
-      //  apellidoMaterno: apellidoMaterno.value,
-      //  password: contraseña,
-      //   password_confirmation: confirmPass,
-      //    acepta_marketing : recibirMails,
-      //     recibirMails: recibirMails,
-      //    fechaNacimiento: value.toISOString().split("T")[0],
-      //  telefono: telefono,
-      //  telefonoMovil ??? PUEDE IR COMO ALGO FIJO, NO LO PIDE EN ACTIVIDADES, PERO SI EN LA API
-      //  dni: docu.value,
-      //   sexo:
-      //  idUnidadOrganizacional: 0
-      //   })
-      //   .then((res) => res.data)
-      //   .then(successAlert());
-      successAlert();
+      axios
+        .post("http://localhost:3001/api/usuarios/registrar", {
+          idPais: parseInt(pais.value),
+          idProvincia: parseInt(provincia.value),
+          idLocalidad: parseInt(localidad.value),
+          profesion: profesion,
+          estudios: estudios.value,
+          intereses: JSON.stringify(intereses),
+          mail: mail,
+          nombres: nombre,
+          apellidoPaterno: apellidoPaterno,
+          apellidoMaterno: apellidoMaterno.value,
+          password: contraseña,
+          password_confirmation: confirmPass,
+          acepta_marketing: recibirMails,
+          recibirMails: recibirMails,
+          fechaNacimiento: value.toISOString().split("T")[0],
+          telefono: "0",
+          telefonoMovil: telefono,
+          dni: docu,
+          sexo: genero,
+          idUnidadOrganizacional: 0,
+        })
+        .then((res) => {
+          console.log(res.data);
+          return res.data;
+        })
+        .then(successAlert())
+        .catch((err) => console.log({ err }));
     }
   };
+
+  const [form, setForm] = useState({});
+  console.log("El estado de form ->", form);
+
+  const onChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.mail)) {
+      setError({ ...error, mailErr: "Ingrese un mail valido" });
+    } else setError({ ...error, mailErr: "" });
+
+    if (!form.apellido) {
+      setError({ ...error, apellidoErr: "Ingrese un apellido" });
+    } else setError({ ...error, apellidoErr: "" });
+  };
+
+  const [error, setError] = useState({});
 
   return (
     <div>
@@ -330,31 +241,26 @@ function Register() {
       <br />
 
       <div class="row">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div class="column">
             {/* COLUMNA DE DERECHA */}
             <label for="mail" className="label">
               <p>MAIL *</p>
             </label>
             <TextField
-              onChange={(e) => {
-                setMail(e.target.value);
-                if (
-                  !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)
-                ) {
-                  setErrorMail(true);
-                  setLeyendaMail("Ingrese un email valido");
-                } else {
-                  setErrorMail(false);
-                  setLeyendaMail("");
-                }
-              }}
+              onChange={onChange}
+              name="mail"
               size="small"
               className="ButonRegister"
               error={errorMail}
               helperText={leyendaMail}
               variant="outlined"
             />
+            {error.mailErr ? (
+              <div className="errorFormMsg">{error.mailErr}</div>
+            ) : (
+              ""
+            )}
             <br />
             <br />
             <label for="nombre" className="label">
@@ -371,6 +277,7 @@ function Register() {
                   setLeyendaNombre("");
                 }
               }}
+              name="nombre"
               size="small"
               className="ButonRegister"
               error={errorNombre}
@@ -383,7 +290,8 @@ function Register() {
               <p>APELLIDO PATERNO *</p>
             </label>
             <TextField
-              onChange={(e) => {
+              onChange={
+                onChange /* (e) => {
                 setApellidoPaterno(e.target.value);
                 if (!apellidoPaterno) {
                   setErrorApellidoPaterno(true);
@@ -392,13 +300,20 @@ function Register() {
                   setErrorApellidoPaterno(false);
                   setLeyendaApellidoPaterno("");
                 }
-              }}
+              } */
+              }
+              name="apellido"
               size="small"
               className="ButonRegister"
               error={errorApellidoPaterno}
               helperText={leyendaApellidoPaterno}
               variant="outlined"
             />
+            {error.apellidoErr ? (
+              <div className="errorFormMsg">{error.apellidoErr}</div>
+            ) : (
+              ""
+            )}
             <br />
             <br />
             <label for="selector" className="label">
@@ -426,7 +341,7 @@ function Register() {
                 setDocu(e.target.value);
                 if (!docu) {
                   setErrorDocu(true);
-                  setLeyenda("rellene el campo correctamente para continuar");
+                  setLeyenda("Complete el campo correctamente");
                 } else {
                   setErrorDocu(false);
                   setLeyenda("");
@@ -447,7 +362,7 @@ function Register() {
                 setProfesion(e.target.value);
                 if (!profesion) {
                   setErrorerrorProfesion(true);
-                  setLeyenda("rellene el campo correctamente para continuar");
+                  setLeyenda("Complete el campo correctamente");
                 } else {
                   setErrorerrorProfesion(false);
                   setLeyenda("");
@@ -473,7 +388,7 @@ function Register() {
               </select>
             </label>
             <label for="selector" className="label">
-              <p>PROVINCIA *</p>
+              <p>PROVINCIA </p>
               <select {...provincia}>
                 {provincias.map((provincia) => (
                   <option key={provincia.id} value={provincia.id}>
@@ -523,7 +438,7 @@ function Register() {
             <TextField
               onChange={(e) => {
                 setContraseña(e.target.value);
-                if (contraseña.length < 7) {
+                if (e.target.value.length < 8) {
                   setErrorContraseña(true);
                   setLeyendaContraseña(
                     "La contraseña debe tener al menos 8 caracteres"
@@ -549,7 +464,7 @@ function Register() {
             <TextField
               onChange={(e) => {
                 setConfirmPass(e.target.value);
-                if (contraseña !== confirmPass) {
+                if (contraseña !== e.target.value) {
                   setErrorConfirmPass(true);
                   setLeyendaConfirmPass("Las contraseñas deben coincidir");
                 } else {
@@ -578,9 +493,9 @@ function Register() {
             />
             <br />
             <br />
-            {/*  <RadioButonGenero /> */}
+
             <label for="selector" className="label">
-              <p>GENERO *</p>
+              <p>GENERO </p>
             </label>
             <div className="radio">
               <label>
@@ -630,14 +545,14 @@ function Register() {
             <br />
             <br />
             <label for="selector" className="label">
-              <p>TELEFONO *</p>
+              <p>TELEFONO MOVIL *</p>
             </label>
             <TextField
               onChange={(e) => {
                 setTelefono(e.target.value);
-                if (!telefono) {
+                if (!telefono && !/^\d+$/.test(telefono)) {
                   setErrorTelefono(true);
-                  setLeyenda("rellene el campo correctamente para continuar");
+                  setLeyenda("Complete el campo correctamente");
                 } else {
                   setErrorTelefono(false);
                   setLeyenda("");
@@ -657,7 +572,7 @@ function Register() {
             <br />
             <br />
             <label for="selector" className="label">
-              <p>LOCALIDAD *</p>
+              <p>LOCALIDAD </p>
               <select {...localidad}>
                 {localidades.map((localidad) => (
                   <option key={localidad.id} value={localidad.id}>
