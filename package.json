@@ -41,7 +41,9 @@
     "client": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "seed": "node api/seed/seed1"
+    "seed2": "node api/seed/seed2",
+    "seed3": "node api/seed/seed3",
+    "seed": "concurrently node api/seed/seed1 \"npm run seed2\" \"npm run seed3\""
   },
   "eslintConfig": {
     "extends": [
