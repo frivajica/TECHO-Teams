@@ -7,7 +7,7 @@
 .grid-usuario {
   display: grid;
   grid-template-columns: 200px auto;
-  grid-template-rows: 50px auto;
+  grid-template-rows: auto;
   gap: 20px;
 }
 
@@ -24,11 +24,13 @@
 .antiguedad-usuario {
   grid-column: 4;
   grid-row: 1;
+  justify-self: flex-end;
+  align-self: center;
 }
 
 .avatar-usuario {
   grid-column: 1;
-  grid-row: 1 / span 2;
+  grid-row: 1 / span 3;
 }
 
 .avatar {
@@ -40,6 +42,13 @@
 
 #ripple-avatar {
   border-radius: 25px;
+}
+
+#boton-mi-info {
+  grid-column: 4;
+  grid-row: 3;
+  width: 15em;
+  justify-self: center;
 }
 
 @media (max-width: 700px) {
@@ -64,10 +73,16 @@
   .antiguedad-usuario {
     grid-column: 1;
     grid-row: 4;
+    justify-self: center;
   }
 
   .avatar-usuario {
     grid-column: 1;
     grid-row: 1;
+  }
+
+  #boton-mi-info {
+    grid-column: 1;
+    grid-row: 5;
   }
 }

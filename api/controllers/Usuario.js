@@ -17,6 +17,8 @@ class UsuarioController {
   static crearUsuario(req, res) {
     const {
       idPais,
+      idProvincia,
+      idLocalidad,
       password,
       password_confirmation,
       idUnidadOrganizacional,
@@ -31,8 +33,6 @@ class UsuarioController {
       mail,
       recibirMails,
       acepta_marketing,
-      //email_verified_at,
-      //deleted_at,
       profesion,
       estudios,
       intereses,
@@ -42,6 +42,8 @@ class UsuarioController {
       .post("https://sandbox.actividades.techo.org/api/register")
       .send({
         idPais,
+        idProvincia,
+        idLocalidad,
         password,
         password_confirmation,
         idUnidadOrganizacional,
@@ -56,8 +58,6 @@ class UsuarioController {
         mail,
         recibirMails,
         acepta_marketing,
-        //email_verified_at,
-        //deleted_at,
       })
       .set("X-API-Key", "foobar")
       .set("Accept", "application/json")
@@ -105,31 +105,42 @@ class UsuarioController {
   }
 
   static editarUsuario(req, res) {
-    Usuario.update()
+    Usuario.update();
   }
 
-  
   static getHistorial(req, res) {
-    let historiales = []
-    UsuarioEnEquipo.findAll({where: {usuarioIdPersona: req.params.userId}})
-    .then(usrEnEquipos => {
-      for (let i=0; i < usrEnEquipos.length; i++) {
-        Evento.findAll({
-          where: {usuarioIdPersona: req.params.userId, equipoId: usrEnEquipos[i].equipoId, tipo: 1}, 
-          order: ["createdAt"],
-          attributes: ["createdAt"]
-        })
-        .then(fechasEntrada => {
+    let historiales = [];
+    UsuarioEnEquipo.findAll({ where: { usuarioIdPersona: req.params.userId } })
+      .then((usrEnEquipos) => {
+        for (let i = 0; i < usrEnEquipos.length; i++) {
           Evento.findAll({
-            where: {usuarioIdPersona: req.params.userId, equipoId: usrEnEquipos[i].equipoId, tipo: -1}, 
+            where: {
+              usuarioIdPersona: req.params.userId,
+              equipoId: usrEnEquipos[i].equipoId,
+              tipo: 1,
+            },
             order: ["createdAt"],
-            attributes: ["createdAt"]
+            attributes: ["createdAt"],
           })
-          .then(fechasSalida => {
-            Evento.findAll({
-              where: {usuarioIdPersona: req.params.userId, equipoId: usrEnEquipos[i].equipoId, tipo: 2}, 
-              order: ["createdAt"]
-            })
+            .then((fechasEntrada) => {
+              Evento.findAll({
+                where: {
+                  usuarioIdPersona: req.params.userId,
+                  equipoId: usrEnEquipos[i].equipoId,
+                  tipo: -1,
+                },
+                order: ["createdAt"],
+                attributes: ["createdAt"],
+              })
+                .then((fechasSalida) => {
+                  Evento.findAll({
+                    where: {
+                      usuarioIdPersona: req.params.userId,
+                      equipoId: usrEnEquipos[i].equipoId,
+                      tipo: 2,
+                    },
+                    order: ["createdAt"],
+                  })
             .then(rolesEnEquipo => {
               let roles = []
               for (let event of rolesEnEquipo) {
@@ -161,7 +172,6 @@ class UsuarioController {
     .then(usrEquipos => res.status(200).send(usrEquipos))
     .catch((err) => res.status(500).send(err))
   }
-
 }
 
 module.exports = UsuarioController;
