@@ -111,55 +111,38 @@ class UsuarioController {
   static getHistorial(req, res) {
     let historiales = [];
     UsuarioEnEquipo.findAll({ where: { usuarioIdPersona: req.params.userId } })
-      .then((usrEnEquipos) => {
-        console.log(usrEnEquipos.length)
-        for (let i = 0; i < usrEnEquipos.length; i++) {
-          Evento.findAll({
+    .then(async (usrEnEquipos) => {
+      for (let i = 0; i < usrEnEquipos.length; i++) {
+        let fechasEntrada = [];
+        let fechasSalida = [];
+        let rolesEnEquipo = [];
+        const findEvents = (tipo, attributes) => {
+          return Evento.findAll({
             where: {
               usuarioIdPersona: req.params.userId,
               equipoId: usrEnEquipos[i].equipoId,
-              tipo: 1,
+              tipo
             },
             order: ["createdAt"],
-            attributes: ["createdAt"],
+            attributes: [attributes]
           })
-          .then((fechasEntrada) => {
-            Evento.findAll({
-              where: {
-                usuarioIdPersona: req.params.userId,
-                equipoId: usrEnEquipos[i].equipoId,
-                tipo: -1,
-              },
-              order: ["createdAt"],
-              attributes: ["createdAt"],
-            })
-            .then((fechasSalida) => {
-              Evento.findAll({
-                where: {
-                  usuarioIdPersona: req.params.userId,
-                  equipoId: usrEnEquipos[i].equipoId,
-                  tipo: 2,
-                },
-                order: ["createdAt"],
-              })
-              .then(rolesEnEquipo => {
-                let roles = []
-                for (let event of rolesEnEquipo) {
-                  roles.push(event.descripcion.slice(16))
-                }
-                return roles;
-              })
-              .then(roles => {
-                let historialDeEquipo = {entradas: fechasEntrada, salidas: fechasSalida, roles, activo: usrEnEquipos[i].activo}
-                historiales.push(historialDeEquipo);
-                if (i === usrEnEquipos.length-1) res.send(historiales);
-              })
-              .catch((err) => res.status(500).send(err))
-          })
-          .catch((err) => res.status(500).send(err))
-        })
-        .catch((err) => res.status(500).send(err))
+        }
 
+        fechasEntrada = await findEvents(1, "createdAt")
+
+        fechasSalida = await findEvents(-1, "createdAt")
+
+        rolesEnEquipo = await findEvents(2, "descripcion")
+
+        console.log("im looping", i)
+        let historialDeEquipo = {
+          entradas: fechasEntrada, 
+          salidas: fechasSalida, 
+          roles: rolesEnEquipo, 
+          activo: usrEnEquipos[i].activo
+        }
+        historiales.push(historialDeEquipo);
+        if (i === usrEnEquipos.length-1) res.send(historiales);
       }
     })
     .catch((err) => res.status(500).send(err))
