@@ -18,4 +18,6 @@ Router.post( "/registrarDesdeActividades", UsuarioController.crearUsuarioEquipos
 
 Router.put("/editarUsuario", UsuarioController.editarUsuario)
 
+Router.get("/:idPersona/misEquipos", UsuarioController.getEquipos)
+
 module.exports = Router;

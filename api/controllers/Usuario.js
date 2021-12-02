@@ -101,7 +101,7 @@ class UsuarioController {
             )
         );
       })
-      .catch((err) => res.status(401).send(err));
+      .catch((err) => res.status(401).send({err}));
   }
 
   static editarUsuario(req, res) {
@@ -133,13 +133,13 @@ class UsuarioController {
             .then(rolesEnEquipo => {
               let roles = []
               for (let event of rolesEnEquipo) {
-                console.log("im innnn", event)
                 roles.push(event.descripcion.slice(16))
               }
               return roles;
             })
             .then(roles => {
-              let historialDeEquipo = {entradas: fechasEntrada, salidas: fechasSalida, roles}
+              console.log("------->", usrEnEquipos[i].activo)
+              let historialDeEquipo = {entradas: fechasEntrada, salidas: fechasSalida, roles, activo: usrEnEquipos[i].activo}
               historiales.push(historialDeEquipo);
               if (i === usrEnEquipos.length-1) res.send(historiales);
             })
@@ -151,6 +151,14 @@ class UsuarioController {
 
       }
     })
+    .catch((err) => res.status(500).send(err))
+  }
+
+  static getEquipos(req, res) {
+    UsuarioEnEquipo.findAll({where: {
+      usuarioIdPersona: req.params.idPersona
+    }})
+    .then(usrEquipos => res.status(200).send(usrEquipos))
     .catch((err) => res.status(500).send(err))
   }
 
