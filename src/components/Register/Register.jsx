@@ -6,19 +6,89 @@ import frLocale from "date-fns/locale/fr";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import RadioButonGenero from "./RadioButonGenero";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
-import swal from "sweetalert";
 import { CustomHook } from "../../hooks/CustomHook";
-
+import { useValidation } from "../../hooks/useValidation";
 import "./Register.css";
 
 import { useTheme } from "@mui/material/styles";
+
+const initialForm = {
+  nombres: "",
+  mail: "",
+  apellidoPaterno: "",
+  dni: "",
+  telefonoMovil: "",
+  profesion: "",
+  password: "",
+  password_confirmation: "",
+};
+
+const validationsForm = (form) => {
+  let errors = {};
+  let regexName = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
+  let regexMail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
+  let regexDocu = /^[a-zA-Z0-9_.-]*$/;
+  let regexTelefono = /^[0-9]*$/;
+
+  if (!form.nombres.trim()) {
+    errors.nombres = "El campo 'Nombres' es requerido";
+  } else if (!regexName.test(form.nombres.trim())) {
+    errors.nombres =
+      "El campo 'Nombres' sólo acepta letras y espacios en blanco";
+  }
+
+  if (!form.mail.trim()) {
+    errors.mail = "El campo 'mail' es requerido";
+  } else if (!regexMail.test(form.mail.trim())) {
+    errors.mail = "El campo 'mail' es incorrecto";
+  }
+
+  if (!form.apellidoPaterno.trim()) {
+    errors.apellidoPaterno = "El campo 'Apellido Paterno' es requerido";
+  } else if (!regexName.test(form.apellidoPaterno.trim())) {
+    errors.apellidoPaterno = "El campo 'Apellido Paterno' es incorrecto";
+  }
+  if (!form.dni.trim()) {
+    errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es requerido";
+  } else if (!regexDocu.test(form.dni.trim())) {
+    errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es incorrecto";
+  }
+  if (!form.telefonoMovil.trim()) {
+    errors.telefonoMovil = "El campo 'Telefono Movil' es requerido";
+  } else if (
+    !regexTelefono.test(form.telefonoMovil.trim()) ||
+    form.telefonoMovil.length < 8
+  ) {
+    errors.telefonoMovil = "El campo 'Telefono Movil' es incorrecto";
+  }
+  if (!form.profesion.trim()) {
+    errors.profesion = "El campo 'profesion' es requerido";
+  } else if (!regexName.test(form.profesion.trim())) {
+    errors.profesion = "El campo 'profesion' es incorrecto";
+  }
+
+  if (!form.password.trim()) {
+    errors.password = "El campo 'password' es requerido";
+  } else if (form.password.length < 8) {
+    errors.password = "El campo 'password' debe contener mas de 8 caracteres";
+  }
+  if (!form.password_confirmation.trim()) {
+    errors.password_confirmation = "Este campo es requerido!";
+  } else if (form.password_confirmation !== form.password) {
+    errors.password_confirmation =
+      "El campo debe coincidir con el campo de password";
+  }
+  return errors;
+};
+let styles = {
+  fontWeight: "bold",
+  color: "#dc3545",
+};
 
 const localeMap = {
   fr: frLocale,
@@ -63,6 +133,15 @@ const interes = [
 ];
 
 function Register() {
+  const {
+    form,
+    errors,
+    loading,
+    response,
+    handleChanges,
+    handleBlur,
+    handleSubmit,
+  } = useValidation(initialForm, validationsForm);
   //estados para regiones
   const [paises, setPaises] = useState([]);
   const [provincias, setProvincias] = useState([]);
@@ -72,36 +151,21 @@ function Register() {
   const [locale] = useState("fr");
   const [value, setValue] = useState(new Date(""));
   //inputs
-  const [mail, setMail] = useState("");
-  const [leyendaMail, setLeyendaMail] = useState("");
-  const [errorMail, setErrorMail] = useState(false);
-  const [nombre, setNombre] = useState("");
-  const [leyendaNombre, setLeyendaNombre] = useState("");
-  const [errorNombre, setErrorNombre] = useState(false);
-  const [apellidoPaterno, setApellidoPaterno] = useState("");
-  const [leyendaApellidoPaterno, setLeyendaApellidoPaterno] = useState("");
-  const [errorApellidoPaterno, setErrorApellidoPaterno] = useState(false);
-  const estudios = CustomHook("");
-  const apellidoMaterno = CustomHook("");
   const [contraseña, setContraseña] = useState("");
   const [leyendaContraseña, setLeyendaContraseña] = useState("");
   const [errorContraseña, setErrorContraseña] = useState(false);
-  const [confirmPass, setConfirmPass] = useState("");
-  const [leyendaConfirmPass, setLeyendaConfirmPass] = useState("");
-  const [errorConfirmPass, setErrorConfirmPass] = useState(false);
   const [recibirMails, setRecibirMails] = useState(0);
   const [intereses, setIntereses] = useState([]);
   const pais = CustomHook("");
   const provincia = CustomHook("");
   const localidad = CustomHook("");
   const [genero, setGenero] = useState("Prefiero no decirlo");
-  const [docu, setDocu] = useState("");
-  const [profesion, setProfesion] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [errorDocu, setErrorDocu] = useState("");
-  const [errorTelefono, setErrorTelefono] = useState("");
-  const [errorProfesion, setErrorerrorProfesion] = useState("");
-  const [leyenda, setLeyenda] = useState("");
+  const estudios = CustomHook("");
+  const apellidoMaterno = CustomHook("");
+
+  const handleMail = () => {
+    setRecibirMails((prev) => (prev === 0 ? 1 : 0));
+  };
 
   useEffect(() => {
     axios
@@ -213,25 +277,14 @@ function Register() {
     }
   };
 
-  const [form, setForm] = useState({});
-  console.log("El estado de form ->", form);
+  // const [form, setForm] = useState({});
+  // console.log("El estado de form ->", form);
 
-  const onChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-
-    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.mail)) {
-      setError({ ...error, mailErr: "Ingrese un mail valido" });
-    } else setError({ ...error, mailErr: "" });
-
-    if (!form.apellido) {
-      setError({ ...error, apellidoErr: "Ingrese un apellido" });
-    } else setError({ ...error, apellidoErr: "" });
-  };
-
-  const [error, setError] = useState({});
+  // const onChange = (e) => {
+  //   setForm({
+  //     ...form,
+  //     [e.target.name]: e.target.value,
+  //   });
 
   return (
     <div>
@@ -244,76 +297,50 @@ function Register() {
         <form onSubmit={handleSubmit}>
           <div class="column">
             {/* COLUMNA DE DERECHA */}
-            <label for="mail" className="label">
-              <p>MAIL *</p>
+
+            <label for="selector" className="label">
+              <p>EMAIL *</p>
             </label>
             <TextField
-              onChange={onChange}
+              type="email"
               name="mail"
-              size="small"
-              className="ButonRegister"
-              error={errorMail}
-              helperText={leyendaMail}
-              variant="outlined"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.mail}
+              required
             />
-            {error.mailErr ? (
-              <div className="errorFormMsg">{error.mailErr}</div>
-            ) : (
-              ""
-            )}
+            {errors.mail && <p style={styles}>{errors.mail}</p>}
             <br />
             <br />
-            <label for="nombre" className="label">
-              <p>NOMBRE *</p>
+            <label for="selector" className="label">
+              <p>NOMBRES *</p>
             </label>
             <TextField
-              onChange={(e) => {
-                setNombre(e.target.value);
-                if (!nombre) {
-                  setErrorNombre(true);
-                  setLeyendaNombre("Ingrese su nombre");
-                } else {
-                  setErrorNombre(false);
-                  setLeyendaNombre("");
-                }
-              }}
-              name="nombre"
-              size="small"
-              className="ButonRegister"
-              error={errorNombre}
-              helperText={leyendaNombre}
-              variant="outlined"
+              type="text"
+              name="nombres"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.nombres}
+              required
             />
+            {errors.nombres && <p style={styles}>{errors.nombres}</p>}
             <br />
             <br />
             <label for="apellidoPaterno" className="label">
               <p>APELLIDO PATERNO *</p>
             </label>
             <TextField
-              onChange={
-                onChange /* (e) => {
-                setApellidoPaterno(e.target.value);
-                if (!apellidoPaterno) {
-                  setErrorApellidoPaterno(true);
-                  setLeyendaApellidoPaterno("Ingrese su apellido");
-                } else {
-                  setErrorApellidoPaterno(false);
-                  setLeyendaApellidoPaterno("");
-                }
-              } */
-              }
-              name="apellido"
-              size="small"
-              className="ButonRegister"
-              error={errorApellidoPaterno}
-              helperText={leyendaApellidoPaterno}
-              variant="outlined"
+              type="text"
+              name="apellidoPaterno"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.apellidoPaterno}
+              required
             />
-            {error.apellidoErr ? (
-              <div className="errorFormMsg">{error.apellidoErr}</div>
-            ) : (
-              ""
+            {errors.apellidoPaterno && (
+              <p style={styles}>{errors.apellidoPaterno}</p>
             )}
+
             <br />
             <br />
             <label for="selector" className="label">
@@ -337,44 +364,29 @@ function Register() {
             </label>
 
             <TextField
-              onChange={(e) => {
-                setDocu(e.target.value);
-                if (!docu) {
-                  setErrorDocu(true);
-                  setLeyenda("Complete el campo correctamente");
-                } else {
-                  setErrorDocu(false);
-                  setLeyenda("");
-                }
-              }}
-              helperText={leyenda}
-              error={errorDocu}
-              size="small"
-              id="fullWidth"
+              type="text"
+              name="dni"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.dni}
+              required
             />
+            {errors.dni && <p style={styles}>{errors.dni}</p>}
+
             <br />
             <br />
-            <label for="profesion" className="label">
-              <p>PROFESIÓN *</p>
+            <label for="selector" className="label">
+              <p>PROFESIÓN / OCUPACIÓN*</p>
             </label>
             <TextField
-              onChange={(e) => {
-                setProfesion(e.target.value);
-                if (!profesion) {
-                  setErrorerrorProfesion(true);
-                  setLeyenda("Complete el campo correctamente");
-                } else {
-                  setErrorerrorProfesion(false);
-                  setLeyenda("");
-                }
-              }}
-              helperText={leyenda}
-              error={errorProfesion}
+              type="text"
               name="profesion"
-              id="profesion"
-              size="small"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.profesion}
+              required
             />
-
+            {errors.profesion && <p style={styles}>{errors.profesion}</p>}
             <br />
             <br />
             <label for="selector" className="label">
@@ -456,29 +468,32 @@ function Register() {
               // type="password"
             />
 
+            <TextField
+              type="text"
+              name="password"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.password}
+              required
+            />
+            {errors.password && <p style={styles}>{errors.password}</p>}
             <br />
             <br />
             <label for="selector" className="label">
               <p>CONFIRMAR CONTRASEÑA *</p>
             </label>
+
             <TextField
-              onChange={(e) => {
-                setConfirmPass(e.target.value);
-                if (contraseña !== e.target.value) {
-                  setErrorConfirmPass(true);
-                  setLeyendaConfirmPass("Las contraseñas deben coincidir");
-                } else {
-                  setErrorConfirmPass(false);
-                  setLeyendaConfirmPass("");
-                }
-              }}
-              size="small"
-              className="ButonRegister"
-              error={errorConfirmPass}
-              helperText={leyendaConfirmPass}
-              variant="outlined"
-              // type="password"
+              type="text"
+              name="password_confirmation"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.password_confirmation}
+              required
             />
+            {errors.password_confirmation && (
+              <p style={styles}>{errors.password_confirmation}</p>
+            )}
             <br />
             <br />
             <label for="selector" className="label">
@@ -547,28 +562,25 @@ function Register() {
             <label for="selector" className="label">
               <p>TELEFONO MOVIL *</p>
             </label>
+
             <TextField
-              onChange={(e) => {
-                setTelefono(e.target.value);
-                if (!telefono && !/^\d+$/.test(telefono)) {
-                  setErrorTelefono(true);
-                  setLeyenda("Complete el campo correctamente");
-                } else {
-                  setErrorTelefono(false);
-                  setLeyenda("");
-                }
-              }}
-              helperText={leyenda}
-              error={errorTelefono}
-              size="small"
-              id="fullWidth"
+              type="text"
+              name="telefonoMovil"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.telefonoMovil}
+              required
             />
+            {errors.telefonoMovil && (
+              <p style={styles}>{errors.telefonoMovil}</p>
+            )}
             <br />
             <br />
             <label for="selector" className="label">
               <p>ESTUDIOS</p>
             </label>
             <TextField size="small" id="fullWidth" {...estudios} />
+
             <br />
             <br />
             <label for="selector" className="label">

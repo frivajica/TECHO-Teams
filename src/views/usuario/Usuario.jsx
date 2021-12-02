@@ -1,7 +1,7 @@
 import "./Usuario.css";
 import Divider from "@mui/material/Divider";
 import { TarjetaUsuario } from "../../components/tarjetaUsuario/TarjetaUsuario";
-import { HistorialActividades } from "../../components/historialActividades/HistorialActividades";
+import { HistorialEquipos } from "../../components/historialEquipos/HistorialEquipos";
 
 export const Usuario = () => {
   return (
@@ -13,7 +13,7 @@ export const Usuario = () => {
         <span className="num-proyectos">{` ${`### proyectos`} `}</span>
       </p>
       <Divider variant="middle" className="divisor" />
-      <HistorialActividades />
+      <HistorialEquipos />
     </div>
   );
 };
