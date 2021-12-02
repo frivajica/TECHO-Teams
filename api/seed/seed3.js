@@ -21,7 +21,8 @@ const getRoles = () => {
 const agregarRoles = (userEq, rol) => {
         //console.log("estoy funcionando", userEq)
         axios.put(`http://localhost:3001/api/equipos/${usuariosEnEquipos[userEq].equipoId}/${usuariosEnEquipos[userEq].usuarioIdPersona}/${roles[rol].id}`)
-}
+        .catch(err => console.log(err))
+    }
 
 getUsuarioEnEquipo()
     .then(() => getRoles()
@@ -81,8 +82,3 @@ db.sync()
         process.exit(1);
     });
 
-
-    /* 
-    
-    
-    */

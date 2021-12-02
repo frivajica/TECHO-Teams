@@ -3,15 +3,11 @@ import ButtonBase from "@mui/material/ButtonBase";
 import { CajaDeRoles } from "../cajaDeRoles/CajaDeRoles";
 import "./TarjetaUsuario.css";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
-import ModeEditOutlineRoundedIcon from "@mui/icons-material/ModeEditOutlineRounded";
 import {  useLocation } from 'react-router-dom';
 import { BotonMiInfo } from '../../components/botonMiInfo/BotonMiInfo'
 
 export const TarjetaUsuario = () => {
   const usuario = useSelector((state) => state.usuario);
-  const navigate = useNavigate();
   const location = useLocation();
   let soyYo = `/${usuario.idPersona}` ===  location.pathname;
   

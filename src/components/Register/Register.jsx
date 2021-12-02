@@ -16,6 +16,7 @@ import { useValidation } from "../../hooks/useValidation";
 import "./Register.css";
 import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
+import { Link, useNavigate } from "react-router-dom";
 
 const initialForm = {
   nombres: "",
@@ -26,6 +27,7 @@ const initialForm = {
   profesion: "",
   password: "",
   password_confirmation: "",
+  fechaNacimiento: "",
 };
 
 const validationsForm = (form) => {
@@ -134,24 +136,27 @@ function Register() {
     handleBlur,
     //handleSubmit,
   } = useValidation(initialForm, validationsForm);
-
+  const navigate = useNavigate();
   //estados para regiones
   const [paises, setPaises] = useState([]);
   const [provincias, setProvincias] = useState([]);
   const [localidades, setLocalidades] = useState([]);
-
-  // select para la datapicker (Fecha de nna)
-  const [locale] = useState("fr");
-  const [value, setValue] = useState(new Date());
-  //inputs
-  const [recibirMails, setRecibirMails] = useState(0);
-  const [intereses, setIntereses] = useState([]);
   const pais = CustomHook("");
   const provincia = CustomHook("");
   const localidad = CustomHook("");
+
+  //inputs
+  const [recibirMails, setRecibirMails] = useState(0);
+  const [intereses, setIntereses] = useState([]);
   const [genero, setGenero] = useState("Prefiero no decirlo");
   const estudios = CustomHook("");
   const apellidoMaterno = CustomHook("");
+  let edadMax = new Date(new Date() - 31536000000 * 100)
+    .toISOString()
+    .split("T")[0];
+  let edadMin = new Date(new Date() - 31536000000 * 10)
+    .toISOString()
+    .split("T")[0];
 
   const handleMail = () => {
     setRecibirMails((prev) => (prev === 0 ? 1 : 0));
@@ -191,9 +196,10 @@ function Register() {
 
   const successAlert = () => {
     swal({
-      title: "Muchas gracias!",
+      title: "Registro exitoso!",
+      text: "Dirigite a Ingresar para loguearte",
       icon: "success",
-      timer: "4000",
+      timer: "5000",
     });
   };
 
@@ -216,7 +222,6 @@ function Register() {
     apellidoMaterno: apellidoMaterno.value,
     acepta_marketing: recibirMails,
     recibirMails: recibirMails,
-    fechaNacimiento: value.toISOString().split("T")[0],
     telefono: "0",
     sexo: genero,
     idUnidadOrganizacional: 0,
@@ -225,10 +230,13 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (Object.keys(errors) !== 0) errorAlert();
-    else if (!pais.value) errorAlert();
-    else if (!intereses.length) errorAlert();
-    else {
+    if (Object.keys(errors).length !== 0) {
+      return errorAlert();
+    } else if (!pais.value) {
+      return errorAlert();
+    } else if (!intereses.length) {
+      return errorAlert();
+    } else {
       axios
         .post("http://localhost:3001/api/usuarios/registrar", envio)
         .then((res) => {
@@ -236,6 +244,7 @@ function Register() {
           return res.data;
         })
         .then(successAlert())
+        .then(navigate("/"))
         .catch((err) => console.log({ err }));
     }
   };
@@ -300,17 +309,21 @@ function Register() {
             <label for="selector" className="label">
               <p>FECHA DE NACIMIENTO *</p>
             </label>
-            <LocalizationProvider
-              dateAdapter={AdapterDateFns}
-              locale={localeMap[locale]}
-            >
-              <DatePicker
-                mask={maskMap[locale]}
-                value={value}
-                onChange={(newValue) => setValue(newValue)}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
+            <input
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              type="date"
+              name="fechaNacimiento"
+              value={form.fechaNacimiento}
+              min={edadMax}
+              max={edadMin}
+              onKeyDown={(e) => e.preventDefault()}
+              required
+            />
+            <span class="validity"></span>
+            {errors.fechaNacimiento && (
+              <p style={styles}>{errors.fechaNacimiento}</p>
+            )}
             <br />
             <br />
             <label for="selector" className="label">
@@ -403,7 +416,7 @@ function Register() {
             </label>
 
             <TextField
-              type="text"
+              type="password"
               name="password"
               onBlur={handleBlur}
               onChange={handleChanges}
@@ -418,7 +431,7 @@ function Register() {
             </label>
 
             <TextField
-              type="text"
+              type="password"
               name="password_confirmation"
               onBlur={handleBlur}
               onChange={handleChanges}
@@ -532,9 +545,11 @@ function Register() {
 
             <br />
           </div>
-          <Button sx={{ ml: 36 }} variant="text">
-            VOLVER
-          </Button>
+          <Link style={{ textDecoration: "none" }} to="/">
+            <Button sx={{ ml: 36 }} variant="text">
+              VOLVER
+            </Button>
+          </Link>
           <Button id="ingresar" size="medium" variant="outlined" type="submit">
             REGISTRAR
           </Button>

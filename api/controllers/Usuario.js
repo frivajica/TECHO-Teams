@@ -112,6 +112,7 @@ class UsuarioController {
     let historiales = [];
     UsuarioEnEquipo.findAll({ where: { usuarioIdPersona: req.params.userId } })
       .then((usrEnEquipos) => {
+        console.log(usrEnEquipos.length)
         for (let i = 0; i < usrEnEquipos.length; i++) {
           Evento.findAll({
             where: {
@@ -122,15 +123,24 @@ class UsuarioController {
             order: ["createdAt"],
             attributes: ["createdAt"],
           })
-            .then((fechasEntrada) => {
+          .then((fechasEntrada) => {
+            Evento.findAll({
+              where: {
+                usuarioIdPersona: req.params.userId,
+                equipoId: usrEnEquipos[i].equipoId,
+                tipo: -1,
+              },
+              order: ["createdAt"],
+              attributes: ["createdAt"],
+            })
+            .then((fechasSalida) => {
               Evento.findAll({
                 where: {
                   usuarioIdPersona: req.params.userId,
                   equipoId: usrEnEquipos[i].equipoId,
-                  tipo: -1,
+                  tipo: 2,
                 },
                 order: ["createdAt"],
-                attributes: ["createdAt"],
               })
                 .then((fechasSalida) => {
                   Evento.findAll({
