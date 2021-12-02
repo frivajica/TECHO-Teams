@@ -55,7 +55,9 @@ export const UserMenu = () => {
           horizontal: "left",
         }}
       >
-        <MenuItem onClick={() => navigate(`/miPerfil`)}>Mi Perfil</MenuItem>
+        <MenuItem onClick={() => navigate(`/${usuario.idPersona}`)}>
+          Mi Perfil
+        </MenuItem>
         {(usuario.cargo === "Coordinador" || usuario.cargo === "Admin") && (
           <MenuItem onClick={handleClose}>Mis Equipos</MenuItem>
         )}
