@@ -17,8 +17,8 @@ export const loginRequest = createAsyncThunk(
         errorAlert,
       })
       .then((res) => {
-        console.log("la res es:", res)
-        return res.data})
+        return res.data;
+      })
       .catch(() => errorAlert());
   }
 );

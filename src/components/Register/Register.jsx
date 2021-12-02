@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import { CustomHook } from "../../hooks/CustomHook";
 import { useValidation } from "../../hooks/useValidation";
 import "./Register.css";
-
+import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
 
 const initialForm = {
@@ -40,51 +40,43 @@ const validationsForm = (form) => {
   } else if (!regexName.test(form.nombres.trim())) {
     errors.nombres =
       "El campo 'Nombres' sólo acepta letras y espacios en blanco";
-  }
-
-  if (!form.mail.trim()) {
+  } else if (!form.mail.trim()) {
     errors.mail = "El campo 'mail' es requerido";
   } else if (!regexMail.test(form.mail.trim())) {
     errors.mail = "El campo 'mail' es incorrecto";
-  }
-
-  if (!form.apellidoPaterno.trim()) {
+  } else if (!form.apellidoPaterno.trim()) {
     errors.apellidoPaterno = "El campo 'Apellido Paterno' es requerido";
   } else if (!regexName.test(form.apellidoPaterno.trim())) {
     errors.apellidoPaterno = "El campo 'Apellido Paterno' es incorrecto";
-  }
-  if (!form.dni.trim()) {
+  } else if (!form.dni.trim()) {
     errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es requerido";
   } else if (!regexDocu.test(form.dni.trim())) {
     errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es incorrecto";
-  }
-  if (!form.telefonoMovil.trim()) {
+  } else if (!form.telefonoMovil.trim()) {
     errors.telefonoMovil = "El campo 'Telefono Movil' es requerido";
   } else if (
     !regexTelefono.test(form.telefonoMovil.trim()) ||
     form.telefonoMovil.length < 8
   ) {
     errors.telefonoMovil = "El campo 'Telefono Movil' es incorrecto";
-  }
-  if (!form.profesion.trim()) {
+  } else if (!form.profesion.trim()) {
     errors.profesion = "El campo 'profesion' es requerido";
   } else if (!regexName.test(form.profesion.trim())) {
     errors.profesion = "El campo 'profesion' es incorrecto";
-  }
-
-  if (!form.password.trim()) {
+  } else if (!form.password.trim()) {
     errors.password = "El campo 'password' es requerido";
   } else if (form.password.length < 8) {
     errors.password = "El campo 'password' debe contener mas de 8 caracteres";
-  }
-  if (!form.password_confirmation.trim()) {
+  } else if (!form.password_confirmation.trim()) {
     errors.password_confirmation = "Este campo es requerido!";
   } else if (form.password_confirmation !== form.password) {
     errors.password_confirmation =
       "El campo debe coincidir con el campo de password";
   }
+
   return errors;
 };
+
 let styles = {
   fontWeight: "bold",
   color: "#dc3545",
@@ -140,8 +132,9 @@ function Register() {
     response,
     handleChanges,
     handleBlur,
-    handleSubmit,
+    //handleSubmit,
   } = useValidation(initialForm, validationsForm);
+
   //estados para regiones
   const [paises, setPaises] = useState([]);
   const [provincias, setProvincias] = useState([]);
@@ -149,11 +142,8 @@ function Register() {
 
   // select para la datapicker (Fecha de nna)
   const [locale] = useState("fr");
-  const [value, setValue] = useState(new Date(""));
+  const [value, setValue] = useState(new Date());
   //inputs
-  const [contraseña, setContraseña] = useState("");
-  const [leyendaContraseña, setLeyendaContraseña] = useState("");
-  const [errorContraseña, setErrorContraseña] = useState(false);
   const [recibirMails, setRecibirMails] = useState(0);
   const [intereses, setIntereses] = useState([]);
   const pais = CustomHook("");
@@ -199,10 +189,6 @@ function Register() {
     setIntereses(value);
   };
 
-  const handleMail = () => {
-    setRecibirMails((prev) => (prev === 0 ? 1 : 0));
-  };
-
   const successAlert = () => {
     swal({
       title: "Muchas gracias!",
@@ -214,60 +200,37 @@ function Register() {
   const errorAlert = () => {
     swal({
       title: "Error",
-      text: "Por favor complete todos los campos con asterisco",
+      text: "Complete los campos obligatorios correctamente",
       button: "Aceptar",
       icon: "error",
     });
   };
 
-  const handleFormValidation = () => {
-    let formIsValid = true;
-
-    // if (errorMail) formIsValid = false;
-    // if (errorNombre) formIsValid = false;
-    // if (errorApellidoPaterno) formIsValid = false;
-    // if (errorContraseña) formIsValid = false;
-    // if (errorConfirmPass) formIsValid = false;
-    // if (errorDocu) formIsValid = false;
-    // if (errorProfesion) formIsValid = false;
-    // if (errorTelefono) formIsValid = false;
-    // if (!pais) formIsValid = false;
-    // if (!intereses.length) formIsValid = false;
-
-    return formIsValid;
+  let envio = {
+    ...form,
+    idPais: parseInt(pais.value),
+    idProvincia: parseInt(provincia.value),
+    idLocalidad: parseInt(localidad.value),
+    estudios: estudios.value,
+    intereses: JSON.stringify(intereses),
+    apellidoMaterno: apellidoMaterno.value,
+    acepta_marketing: recibirMails,
+    recibirMails: recibirMails,
+    fechaNacimiento: value.toISOString().split("T")[0],
+    telefono: "0",
+    sexo: genero,
+    idUnidadOrganizacional: 0,
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!handleFormValidation()) {
-      errorAlert();
-    }
-
-    if (handleFormValidation()) {
+    if (Object.keys(errors) !== 0) errorAlert();
+    else if (!pais.value) errorAlert();
+    else if (!intereses.length) errorAlert();
+    else {
       axios
-        .post("http://localhost:3001/api/usuarios/registrar", {
-          idPais: parseInt(pais.value),
-          idProvincia: parseInt(provincia.value),
-          idLocalidad: parseInt(localidad.value),
-          profesion: profesion,
-          estudios: estudios.value,
-          intereses: JSON.stringify(intereses),
-          mail: mail,
-          nombres: nombre,
-          apellidoPaterno: apellidoPaterno,
-          apellidoMaterno: apellidoMaterno.value,
-          password: contraseña,
-          password_confirmation: confirmPass,
-          acepta_marketing: recibirMails,
-          recibirMails: recibirMails,
-          fechaNacimiento: value.toISOString().split("T")[0],
-          telefono: "0",
-          telefonoMovil: telefono,
-          dni: docu,
-          sexo: genero,
-          idUnidadOrganizacional: 0,
-        })
+        .post("http://localhost:3001/api/usuarios/registrar", envio)
         .then((res) => {
           console.log(res.data);
           return res.data;
@@ -276,15 +239,6 @@ function Register() {
         .catch((err) => console.log({ err }));
     }
   };
-
-  // const [form, setForm] = useState({});
-  // console.log("El estado de form ->", form);
-
-  // const onChange = (e) => {
-  //   setForm({
-  //     ...form,
-  //     [e.target.name]: e.target.value,
-  //   });
 
   return (
     <div>
@@ -447,26 +401,6 @@ function Register() {
             <label for="password" className="label">
               <p>CONTRASEÑA *</p>
             </label>
-            <TextField
-              onChange={(e) => {
-                setContraseña(e.target.value);
-                if (e.target.value.length < 8) {
-                  setErrorContraseña(true);
-                  setLeyendaContraseña(
-                    "La contraseña debe tener al menos 8 caracteres"
-                  );
-                } else {
-                  setErrorContraseña(false);
-                  setLeyendaContraseña("");
-                }
-              }}
-              size="small"
-              className="ButonRegister"
-              error={errorContraseña}
-              helperText={leyendaContraseña}
-              variant="outlined"
-              // type="password"
-            />
 
             <TextField
               type="text"
