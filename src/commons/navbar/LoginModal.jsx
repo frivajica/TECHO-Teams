@@ -132,7 +132,7 @@ const LoginModal = ({ open, handleClose }) => {
                 </Link>
                 <Link
                   className="links size10"
-                  href="https://actividades.techo.org/registro"
+                  href="/registro"
                   underline="hover"
                 >
                   {"REGISTRATE CON MAIL"}
