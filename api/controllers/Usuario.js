@@ -149,7 +149,6 @@ class UsuarioController {
               return roles;
             })
             .then(roles => {
-              console.log("------->", usrEnEquipos[i].activo)
               let historialDeEquipo = {entradas: fechasEntrada, salidas: fechasSalida, roles, activo: usrEnEquipos[i].activo}
               historiales.push(historialDeEquipo);
               if (i === usrEnEquipos.length-1) res.send(historiales);
