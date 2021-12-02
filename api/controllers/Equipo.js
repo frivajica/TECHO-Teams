@@ -83,7 +83,7 @@ class EquipoController {
         .then(usrEnEquipo => {
             Role.findOne({where: {id: req.params.roleId, activo: true}})
             .then(rol => {
-                rol.addUsrEnEquipo(usrEnEquipo); //relaciono rol con tabla intermedia
+                rol.addUsrEnEquipo(usrEnEquipo); // <-- relaciono rol con tabla intermedia
                 return rol
             })
             .then( rol => {
@@ -93,11 +93,11 @@ class EquipoController {
                     //busco el equipo para asociar su evento
                     Equipo.findOne({where: {id: req.params.id}})
                     .then(equipo => {
-                        equipo.createEvento({
+                        equipo.createEvento({// <-- se crea y asocia con equipo
                             descripcion: "cambió su rol a "+rol.nombre,
                             tipo: 2
                         })
-                        .then(event => usr.addEvento(event))
+                        .then(event => usr.addEvento(event))// <-- tambien lo asocio con el usuario
                         .then(()=> res.send("rol changed"))
                         .catch(err => res.status(500).send(err))
                     })

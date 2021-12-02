@@ -133,7 +133,6 @@ class UsuarioController {
             .then(rolesEnEquipo => {
               let roles = []
               for (let event of rolesEnEquipo) {
-                console.log("im innnn", event)
                 roles.push(event.descripcion.slice(16))
               }
               return roles;
