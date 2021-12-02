@@ -17,6 +17,8 @@ class UsuarioController {
   static crearUsuario(req, res) {
     const {
       idPais,
+      idProvincia,
+      idLocalidad,
       password,
       password_confirmation,
       idUnidadOrganizacional,
@@ -31,8 +33,6 @@ class UsuarioController {
       mail,
       recibirMails,
       acepta_marketing,
-      //email_verified_at,
-      //deleted_at,
       profesion,
       estudios,
       intereses,
@@ -42,6 +42,8 @@ class UsuarioController {
       .post("https://sandbox.actividades.techo.org/api/register")
       .send({
         idPais,
+        idProvincia,
+        idLocalidad,
         password,
         password_confirmation,
         idUnidadOrganizacional,
@@ -56,8 +58,6 @@ class UsuarioController {
         mail,
         recibirMails,
         acepta_marketing,
-        //email_verified_at,
-        //deleted_at,
       })
       .set("X-API-Key", "foobar")
       .set("Accept", "application/json")
@@ -101,48 +101,60 @@ class UsuarioController {
             )
         );
       })
-      .catch((err) => res.status(401).send(err));
+      .catch((err) => res.status(401).send({err}));
   }
 
   static editarUsuario(req, res) {
-    Usuario.update()
+    Usuario.update();
   }
 
-  
   static getHistorial(req, res) {
-    let historiales = []
-    UsuarioEnEquipo.findAll({where: {usuarioIdPersona: req.params.userId}})
-    .then(usrEnEquipos => {
-      for (let i=0; i < usrEnEquipos.length; i++) {
-        Evento.findAll({
-          where: {usuarioIdPersona: req.params.userId, equipoId: usrEnEquipos[i].equipoId, tipo: 1}, 
-          order: ["createdAt"],
-          attributes: ["createdAt"]
-        })
-        .then(fechasEntrada => {
+    let historiales = [];
+    UsuarioEnEquipo.findAll({ where: { usuarioIdPersona: req.params.userId } })
+      .then((usrEnEquipos) => {
+        console.log(usrEnEquipos.length)
+        for (let i = 0; i < usrEnEquipos.length; i++) {
           Evento.findAll({
-            where: {usuarioIdPersona: req.params.userId, equipoId: usrEnEquipos[i].equipoId, tipo: -1}, 
+            where: {
+              usuarioIdPersona: req.params.userId,
+              equipoId: usrEnEquipos[i].equipoId,
+              tipo: 1,
+            },
             order: ["createdAt"],
-            attributes: ["createdAt"]
+            attributes: ["createdAt"],
           })
-          .then(fechasSalida => {
+          .then((fechasEntrada) => {
             Evento.findAll({
-              where: {usuarioIdPersona: req.params.userId, equipoId: usrEnEquipos[i].equipoId, tipo: 2}, 
-              order: ["createdAt"]
+              where: {
+                usuarioIdPersona: req.params.userId,
+                equipoId: usrEnEquipos[i].equipoId,
+                tipo: -1,
+              },
+              order: ["createdAt"],
+              attributes: ["createdAt"],
             })
-            .then(rolesEnEquipo => {
-              let roles = []
-              for (let event of rolesEnEquipo) {
-                roles.push(event.descripcion.slice(16))
-              }
-              return roles;
-            })
-            .then(roles => {
-              let historialDeEquipo = {entradas: fechasEntrada, salidas: fechasSalida, roles}
-              historiales.push(historialDeEquipo);
-              if (i === usrEnEquipos.length-1) res.send(historiales);
-            })
-            .catch((err) => res.status(500).send(err))
+            .then((fechasSalida) => {
+              Evento.findAll({
+                where: {
+                  usuarioIdPersona: req.params.userId,
+                  equipoId: usrEnEquipos[i].equipoId,
+                  tipo: 2,
+                },
+                order: ["createdAt"],
+              })
+              .then(rolesEnEquipo => {
+                let roles = []
+                for (let event of rolesEnEquipo) {
+                  roles.push(event.descripcion.slice(16))
+                }
+                return roles;
+              })
+              .then(roles => {
+                let historialDeEquipo = {entradas: fechasEntrada, salidas: fechasSalida, roles, activo: usrEnEquipos[i].activo}
+                historiales.push(historialDeEquipo);
+                if (i === usrEnEquipos.length-1) res.send(historiales);
+              })
+              .catch((err) => res.status(500).send(err))
           })
           .catch((err) => res.status(500).send(err))
         })
@@ -153,6 +165,13 @@ class UsuarioController {
     .catch((err) => res.status(500).send(err))
   }
 
+  static getEquipos(req, res) {
+    UsuarioEnEquipo.findAll({where: {
+      usuarioIdPersona: req.params.idPersona
+    }})
+    .then(usrEquipos => res.status(200).send(usrEquipos))
+    .catch((err) => res.status(500).send(err))
+  }
 }
 
 module.exports = UsuarioController;

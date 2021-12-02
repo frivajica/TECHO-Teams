@@ -6,19 +6,81 @@ import frLocale from "date-fns/locale/fr";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import RadioButonGenero from "./RadioButonGenero";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
-import swal from "sweetalert";
 import { CustomHook } from "../../hooks/CustomHook";
-
+import { useValidation } from "../../hooks/useValidation";
 import "./Register.css";
-
+import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
+
+const initialForm = {
+  nombres: "",
+  mail: "",
+  apellidoPaterno: "",
+  dni: "",
+  telefonoMovil: "",
+  profesion: "",
+  password: "",
+  password_confirmation: "",
+};
+
+const validationsForm = (form) => {
+  let errors = {};
+  let regexName = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
+  let regexMail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
+  let regexDocu = /^[a-zA-Z0-9_.-]*$/;
+  let regexTelefono = /^[0-9]*$/;
+
+  if (!form.nombres.trim()) {
+    errors.nombres = "El campo 'Nombres' es requerido";
+  } else if (!regexName.test(form.nombres.trim())) {
+    errors.nombres =
+      "El campo 'Nombres' sólo acepta letras y espacios en blanco";
+  } else if (!form.mail.trim()) {
+    errors.mail = "El campo 'mail' es requerido";
+  } else if (!regexMail.test(form.mail.trim())) {
+    errors.mail = "El campo 'mail' es incorrecto";
+  } else if (!form.apellidoPaterno.trim()) {
+    errors.apellidoPaterno = "El campo 'Apellido Paterno' es requerido";
+  } else if (!regexName.test(form.apellidoPaterno.trim())) {
+    errors.apellidoPaterno = "El campo 'Apellido Paterno' es incorrecto";
+  } else if (!form.dni.trim()) {
+    errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es requerido";
+  } else if (!regexDocu.test(form.dni.trim())) {
+    errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es incorrecto";
+  } else if (!form.telefonoMovil.trim()) {
+    errors.telefonoMovil = "El campo 'Telefono Movil' es requerido";
+  } else if (
+    !regexTelefono.test(form.telefonoMovil.trim()) ||
+    form.telefonoMovil.length < 8
+  ) {
+    errors.telefonoMovil = "El campo 'Telefono Movil' es incorrecto";
+  } else if (!form.profesion.trim()) {
+    errors.profesion = "El campo 'profesion' es requerido";
+  } else if (!regexName.test(form.profesion.trim())) {
+    errors.profesion = "El campo 'profesion' es incorrecto";
+  } else if (!form.password.trim()) {
+    errors.password = "El campo 'password' es requerido";
+  } else if (form.password.length < 8) {
+    errors.password = "El campo 'password' debe contener mas de 8 caracteres";
+  } else if (!form.password_confirmation.trim()) {
+    errors.password_confirmation = "Este campo es requerido!";
+  } else if (form.password_confirmation !== form.password) {
+    errors.password_confirmation =
+      "El campo debe coincidir con el campo de password";
+  }
+
+  return errors;
+};
+
+let styles = {
+  fontWeight: "bold",
+  color: "#dc3545",
+};
 
 const localeMap = {
   fr: frLocale,
@@ -63,6 +125,16 @@ const interes = [
 ];
 
 function Register() {
+  const {
+    form,
+    errors,
+    loading,
+    response,
+    handleChanges,
+    handleBlur,
+    //handleSubmit,
+  } = useValidation(initialForm, validationsForm);
+
   //estados para regiones
   const [paises, setPaises] = useState([]);
   const [provincias, setProvincias] = useState([]);
@@ -70,27 +142,20 @@ function Register() {
 
   // select para la datapicker (Fecha de nna)
   const [locale] = useState("fr");
-  const [value, setValue] = useState(new Date(""));
-
-  //select intereses
+  const [value, setValue] = useState(new Date());
+  //inputs
+  const [recibirMails, setRecibirMails] = useState(0);
   const [intereses, setIntereses] = useState([]);
-  //
   const pais = CustomHook("");
   const provincia = CustomHook("");
   const localidad = CustomHook("");
-  //radio buton
   const [genero, setGenero] = useState("Prefiero no decirlo");
+  const estudios = CustomHook("");
+  const apellidoMaterno = CustomHook("");
 
-  // parte eber validacion
-  const [docu, setDocu] = useState("");
-  const [profesion, setProfesion] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [errorDocu, setErrorDocu] = useState("");
-  const [errorTelefono, setErrorTelefono] = useState("");
-
-  const [errorProfesion, setErrorerrorProfesion] = useState("");
-
-  const [leyenda, setLeyenda] = useState("");
+  const handleMail = () => {
+    setRecibirMails((prev) => (prev === 0 ? 1 : 0));
+  };
 
   useEffect(() => {
     axios
@@ -121,7 +186,58 @@ function Register() {
     const {
       target: { value },
     } = event;
-    setIntereses(typeof value === "string" ? value.split(",") : value);
+    setIntereses(value);
+  };
+
+  const successAlert = () => {
+    swal({
+      title: "Muchas gracias!",
+      icon: "success",
+      timer: "4000",
+    });
+  };
+
+  const errorAlert = () => {
+    swal({
+      title: "Error",
+      text: "Complete los campos obligatorios correctamente",
+      button: "Aceptar",
+      icon: "error",
+    });
+  };
+
+  let envio = {
+    ...form,
+    idPais: parseInt(pais.value),
+    idProvincia: parseInt(provincia.value),
+    idLocalidad: parseInt(localidad.value),
+    estudios: estudios.value,
+    intereses: JSON.stringify(intereses),
+    apellidoMaterno: apellidoMaterno.value,
+    acepta_marketing: recibirMails,
+    recibirMails: recibirMails,
+    fechaNacimiento: value.toISOString().split("T")[0],
+    telefono: "0",
+    sexo: genero,
+    idUnidadOrganizacional: 0,
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (Object.keys(errors) !== 0) errorAlert();
+    else if (!pais.value) errorAlert();
+    else if (!intereses.length) errorAlert();
+    else {
+      axios
+        .post("http://localhost:3001/api/usuarios/registrar", envio)
+        .then((res) => {
+          console.log(res.data);
+          return res.data;
+        })
+        .then(successAlert())
+        .catch((err) => console.log({ err }));
+    }
   };
 
   return (
@@ -132,42 +248,53 @@ function Register() {
       <br />
 
       <div class="row">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div class="column">
             {/* COLUMNA DE DERECHA */}
 
             <label for="selector" className="label">
-              <p>MAIL *</p>
+              <p>EMAIL *</p>
             </label>
             <TextField
-              size="small"
-              className="ButonRegister"
-              id="mail"
+              type="email"
               name="mail"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.mail}
+              required
             />
+            {errors.mail && <p style={styles}>{errors.mail}</p>}
             <br />
             <br />
             <label for="selector" className="label">
-              <p>Nombres *</p>
+              <p>NOMBRES *</p>
             </label>
             <TextField
-              size="small"
-              className="ButonRegister"
-              id="nombres"
+              type="text"
               name="nombres"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.nombres}
+              required
             />
-
+            {errors.nombres && <p style={styles}>{errors.nombres}</p>}
             <br />
             <br />
-            <label for="selector" className="label">
+            <label for="apellidoPaterno" className="label">
               <p>APELLIDO PATERNO *</p>
             </label>
             <TextField
-              size="small"
-              className="ButonRegister"
-              id="nombres"
-              name="nombres"
+              type="text"
+              name="apellidoPaterno"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.apellidoPaterno}
+              required
             />
+            {errors.apellidoPaterno && (
+              <p style={styles}>{errors.apellidoPaterno}</p>
+            )}
+
             <br />
             <br />
             <label for="selector" className="label">
@@ -186,52 +313,34 @@ function Register() {
             </LocalizationProvider>
             <br />
             <br />
-
             <label for="selector" className="label">
               <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
             </label>
 
-            <TextField 
-            onChange={(e)=>{
-              setDocu(e.target.value)
-              if(!docu){
-                setErrorDocu(true)
-              setLeyenda("rellene el campo correctamente para continuar")
-              }else{
-                setErrorDocu(false)
-              setLeyenda("")
-              }
-              
-            }}
-            helperText={leyenda}
-            error={errorDocu}
-            size="small"
-             id="fullWidth"
-             />
+            <TextField
+              type="text"
+              name="dni"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.dni}
+              required
+            />
+            {errors.dni && <p style={styles}>{errors.dni}</p>}
+
             <br />
             <br />
             <label for="selector" className="label">
-              <p>PROFESIÓN *</p>
+              <p>PROFESIÓN / OCUPACIÓN*</p>
             </label>
-
             <TextField
-             onChange={(e)=>{
-              setProfesion(e.target.value)
-              if(!profesion){
-                setErrorerrorProfesion(true)
-              setLeyenda("rellene el campo correctamente para continuar")
-              }else{
-                setErrorerrorProfesion(false)
-              setLeyenda("")
-              }
-              
-            }}
-            helperText={leyenda}
-            error={errorProfesion}
-             name="profesion"
-              id="profesion" 
-              size="small" />
-
+              type="text"
+              name="profesion"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.profesion}
+              required
+            />
+            {errors.profesion && <p style={styles}>{errors.profesion}</p>}
             <br />
             <br />
             <label for="selector" className="label">
@@ -245,7 +354,7 @@ function Register() {
               </select>
             </label>
             <label for="selector" className="label">
-              <p>PROVINCIA *</p>
+              <p>PROVINCIA </p>
               <select {...provincia}>
                 {provincias.map((provincia) => (
                   <option key={provincia.id} value={provincia.id}>
@@ -255,7 +364,7 @@ function Register() {
               </select>
             </label>
             <label for="selector" className="label">
-              <p>TEMATICAS/AREAS DE INTERES EN TECHO</p>
+              <p>TEMATICAS/AREAS DE INTERES EN TECHO *</p>
             </label>
             <Select
               id="demo-multiple-chip"
@@ -289,18 +398,36 @@ function Register() {
           <div class="column">
             {/* COLUMNA DE IZQUIERDA*/}
 
-            <label for="selector" className="label">
-              <p>CREAR NUEVA CONTRASEÑA *</p>
+            <label for="password" className="label">
+              <p>CONTRASEÑA *</p>
             </label>
 
-            <TextField size="small" id="fullWidth" />
+            <TextField
+              type="text"
+              name="password"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.password}
+              required
+            />
+            {errors.password && <p style={styles}>{errors.password}</p>}
             <br />
             <br />
             <label for="selector" className="label">
               <p>CONFIRMAR CONTRASEÑA *</p>
             </label>
 
-            <TextField size="small" id="fullWidth" />
+            <TextField
+              type="text"
+              name="password_confirmation"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.password_confirmation}
+              required
+            />
+            {errors.password_confirmation && (
+              <p style={styles}>{errors.password_confirmation}</p>
+            )}
             <br />
             <br />
             <label for="selector" className="label">
@@ -311,17 +438,17 @@ function Register() {
               className="ButonRegister"
               id="nombres"
               name="nombres"
+              {...apellidoMaterno}
             />
             <br />
             <br />
-            {/*  <RadioButonGenero /> */}
+
             <label for="selector" className="label">
-              <p>GENERO *</p>
+              <p>GENERO </p>
             </label>
             <div className="radio">
               <label>
                 <input
-                  
                   name="genero"
                   type="radio"
                   value={genero}
@@ -367,36 +494,31 @@ function Register() {
             <br />
             <br />
             <label for="selector" className="label">
-              <p>TELEFONO *</p>
+              <p>TELEFONO MOVIL *</p>
             </label>
-            <TextField 
-              onChange={(e)=>{
-                setTelefono(e.target.value)
-                if(!telefono){
-                  setErrorTelefono(true)
-                setLeyenda("rellene el campo correctamente para continuar")
-                }else{
-                  setErrorTelefono(false)
-                setLeyenda("")
-                }
-                
-              }}
-              helperText={leyenda}
-              error={errorTelefono}
-            size="small" 
-            id="fullWidth"
-             />
+
+            <TextField
+              type="text"
+              name="telefonoMovil"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.telefonoMovil}
+              required
+            />
+            {errors.telefonoMovil && (
+              <p style={styles}>{errors.telefonoMovil}</p>
+            )}
             <br />
             <br />
             <label for="selector" className="label">
               <p>ESTUDIOS</p>
             </label>
+            <TextField size="small" id="fullWidth" {...estudios} />
 
-            <TextField size="small" id="fullWidth" />
             <br />
             <br />
             <label for="selector" className="label">
-              <p>LOCALIDAD *</p>
+              <p>LOCALIDAD </p>
               <select {...localidad}>
                 {localidades.map((localidad) => (
                   <option key={localidad.id} value={localidad.id}>
@@ -410,18 +532,18 @@ function Register() {
 
             <br />
           </div>
+          <Button sx={{ ml: 36 }} variant="text">
+            VOLVER
+          </Button>
+          <Button id="ingresar" size="medium" variant="outlined" type="submit">
+            REGISTRAR
+          </Button>
         </form>
       </div>
-      <Button sx={{ ml: 36 }} variant="text">
-        VOLVER
-      </Button>
-      <Button id="ingresar" size="medium" variant="outlined" type="submit">
-        INGRESAR
-      </Button>
       <br />
       <br />
       <label for="selector" className="label">
-        <input type="checkbox" value="" />
+        <input type="checkbox" onClick={handleMail} />
         Acepto recibir notificaciones por email
       </label>
     </div>

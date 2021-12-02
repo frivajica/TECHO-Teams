@@ -20,6 +20,9 @@ Usuario.init(
       type: Sequelize.STRING,
       allowNull: false,
     },
+    imagen: {
+      type: Sequelize.STRING
+    }
   },
   { sequelize: db, modelName: "usuarios" }
 );
