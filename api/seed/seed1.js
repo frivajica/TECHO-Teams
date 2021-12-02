@@ -32,14 +32,14 @@ const equipos = [
 {
     nombre: "Reparación de veredas - Nueva Córdoba",
     cantMiembros: 6,
-    activo: false,
+    activo: true,
     detalles: "Nuestro equipo se encarga de la reparación y construcción de nuevas veredas en todo el barrio de Nueva Córdoba gracias a los aportes obtenidos en la colecta del 2015.",
     img: "https://noticiasdevillalaangostura.com/wp-content/uploads/2020/10/Asfalto-21.10-1-e1603293272248.jpg"
 },
 {
     nombre: "Coordinación Colecta 2018",
     cantMiembros: 4,
-    activo: false,
+    activo: true,
     detalles: "Nos encargamos de la coordinación general de la colecta 2018 para Argentina.",
     img: "https://lh3.googleusercontent.com/proxy/rEA3Gvovw0LpYH-J_1XiIC3yyRGaLtUlrQ3xsTxkDhVnOGI7uAjQNmFxZNNbJgwZp4w8fIu5U3WfeS8fpvOLaByrcZ0CHLa92jLF4lXtgn-nLROGUtwsPBFSUA"
 },

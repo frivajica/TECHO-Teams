@@ -5,29 +5,39 @@
 
 const db = require("../config/database")
 const { Equipo, Usuario } = require("../models")
+const axios = require("axios")
 
 let equipos, usuarios
 
 const getEquipos = () => {
-    Equipo.findAll()
+    return Equipo.findAll()
         .then((eqs) => equipos = eqs)
 }
 
 const getUsuarios = () => {
-    Usuario.findAll()
+    return Usuario.findAll()
         .then(usrs => usuarios = usrs)
 }
 
+const addUserToEquipos = (equipo, num1, num2) => {
+    for (let i = num1; i < num2; i++) {
+        axios.put(`http://localhost:3001/api/equipos/${equipos[equipo].id}/${usuarios[i].idPersona}`)
+    }
+}
+
+
 getEquipos()
-getUsuarios()
+    .then(() => getUsuarios()
+        .then(() => {
+            addUserToEquipos(0, 0, 7)
+            addUserToEquipos(1, 2, 7)
+            addUserToEquipos(2, 1, 5)
+            addUserToEquipos(3, 0, 6)
+            addUserToEquipos(4, 3, 7)
+            addUserToEquipos(5, 1, 6)
+        }))
 
 db.sync()
-    .then(() => equipos[0].addUsuarios(usuarios))
-    .then(() => equipos[1].addUsuarios([usuarios[0], usuarios[1], usuarios[2], usuarios[3], usuarios[4]]))
-    .then(() => equipos[2].addUsuarios([usuarios[2], usuarios[4], usuarios[5], usuarios[6]]))
-    .then(() => equipos[3].addUsuarios([usuarios[2], usuarios[4], usuarios[5], usuarios[6], usuarios[0], usuarios[1]]))
-    .then(() => equipos[4].addUsuarios(usuarios[0], usuarios[6], usuarios[1], usuarios[3]))
-    .then(() => equipos[5].addUsuarios(usuarios[0], usuarios[1], usuarios[2], usuarios[5], usuarios[2]))
     .then(() => process.exit(0))
     .catch((err) => {
         console.log("Algo salió mal en el proceso: ", err.message);

@@ -6,7 +6,7 @@ import Home from "../../components/home/Home";
 import SignUp from "../../components/completarSignUp/SignUp";
 import Register from "../../components/Register/Register";
 import { Usuario } from "../usuario/Usuario";
-import { MiInformación } from "../miInformación/MiInformación";
+import MiInformación from "../miInformación/MiInformación";
 import { useSelector } from "react-redux";
 
 function App() {

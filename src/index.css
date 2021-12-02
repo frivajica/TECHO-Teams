@@ -1,17 +1,18 @@
 * {
-  font-family: "Montserrat", sans-serif !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 700 !important ;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 .content {
-  min-height: 78vh;
+  min-height: 80vh;
 }
 
 .footer {
   margin-top: 2rem;
-  padding: 1rem 3rem 1rem 3rem;
+  padding: 1rem 3rem;
   width: 100%;
   background-color: #d9d9d9;
   display: flex;
