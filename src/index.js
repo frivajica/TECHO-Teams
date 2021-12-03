@@ -10,7 +10,7 @@ import { PersistGate } from "redux-persist/integration/react";
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <BrowserRouter>
+      <BrowserRouter basename="/React">
         <React.StrictMode>
           <App />
         </React.StrictMode>
