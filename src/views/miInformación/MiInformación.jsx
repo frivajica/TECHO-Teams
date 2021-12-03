@@ -71,7 +71,7 @@ function MiInformación() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-	superagent.post("ruta de la api", {...form, pais, provincia})
+	superagent.post("https://sandbox.actividades.techo.org/api/editPersona/12345", {...form, pais, provincia})
 	.then(() => {
 		axios.put("ruta editar usuario db", {intereses})
 		.then(() => swal({
@@ -109,7 +109,7 @@ function MiInformación() {
 						</label>
 						<TextField
 						size="small"
-						lg={10} sm={12}
+						className="field"
 						id="nombres"
 						name="nombres"
 						onChange={handleChange}
@@ -122,7 +122,7 @@ function MiInformación() {
 						</label>
 						<TextField
 						size="small"
-						lg={10} sm={12}
+						className="field"
 						id="nombres"
 						name="nombres"
 						onChange={handleChange}
@@ -141,7 +141,7 @@ function MiInformación() {
 							mask={maskMap[locale]}
 							value={value}
 							onChange={(newValue) => setValue(newValue)}
-							renderInput={(params) => <TextField lg={10} sm={12} {...params} />}
+							renderInput={(params) => <TextField className="field" {...params} />}
 							// {...fechaNacimiento}
 						/>
 						{/* {fechaDeNacimientoErr ? (
@@ -173,7 +173,7 @@ function MiInformación() {
 						<p>NUMERO DE DOCUMENTO/PASAPORTE</p>
 						</label>
 						<TextField 
-						lg={10} sm={12}
+						className="field"
 						name="DNI"
 						size="small" 
 						id="fullWidth"
@@ -185,7 +185,7 @@ function MiInformación() {
 						<label for="selector" className="label">
 						<p>PAIS </p>
 						<select 
-						lg={10} sm={12}
+						className="field"
 						name="pais"
 						onChange={(e)=> setPais(e.target.value)}
 						>
@@ -200,7 +200,7 @@ function MiInformación() {
 						<label for="selector" className="label">
 							<p>PROVINCIA</p>
 						<select
-						lg={10} sm={12}
+						className="field"
 						name="provincia"
 						onChange={(e)=> setProvincia(e.target.value)}
 						>
@@ -215,8 +215,7 @@ function MiInformación() {
 						<label for="selector" className="label">
 						<p>LOCALIDAD</p>
 						<select
-						lg={10}
-						sm={12}
+						className="field"
 						name="localidad"
 						onChange={handleChange}
 						>
@@ -231,21 +230,21 @@ function MiInformación() {
 						<label for="selector" className="label">
 						<p>APELLIDO MATERNO </p>
 						</label>
-						<TextField size="small" lg={10} sm={12} id="nombres" name="nombres"/>
+						<TextField size="small" className="field" id="nombres" name="nombres"/>
 					</Grid>
 
 					<Grid item lg={6} sm={12}>
 						<label for="selector" className="label">
 						<p>TELEFONO </p>
 						</label>
-						<TextField size="small" id="fullWidth" lg={10} sm={12}/>
+						<TextField size="small" id="fullWidth" className="field"/>
 					</Grid>
 
 					<Grid item lg={6} sm={12}>
 						<label for="selector" className="label">
 						<p>ESTUDIOS</p>
 						</label>
-						<TextField size="small" id="fullWidth" lg={10} sm={12} />
+						<TextField size="small" id="fullWidth" className="field" />
 					</Grid>
 
 					<Grid item lg={6} sm={12}>
@@ -253,7 +252,7 @@ function MiInformación() {
 						<p>PROFESIÓN </p>
 						</label>
 						<TextField
-						lg={10} sm={12}
+						className="field"
 						name="profesion"
 						id="profesion"
 						size="small"
@@ -266,6 +265,7 @@ function MiInformación() {
 							<p>TEMATICAS/AREAS DE INTERES EN TECHO</p>
 						</label>
 						<Select
+						className="field"
 						id="demo-multiple-chip"
 						multiple
 						value={intereses}
