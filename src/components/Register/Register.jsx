@@ -3,9 +3,8 @@ import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import frLocale from "date-fns/locale/fr";
-import DatePicker from "@mui/lab/DatePicker";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import Divider from "@mui/material/Divider";
+
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -43,9 +42,9 @@ const validationsForm = (form) => {
     errors.nombres =
       "El campo 'Nombres' sólo acepta letras y espacios en blanco";
   } else if (!form.mail.trim()) {
-    errors.mail = "El campo 'mail' es requerido";
+    errors.mail = "El campo 'email' es requerido";
   } else if (!regexMail.test(form.mail.trim())) {
-    errors.mail = "El campo 'mail' es incorrecto";
+    errors.mail = "El campo 'email' es incorrecto";
   } else if (!form.apellidoPaterno.trim()) {
     errors.apellidoPaterno = "El campo 'Apellido Paterno' es requerido";
   } else if (!regexName.test(form.apellidoPaterno.trim())) {
@@ -82,14 +81,6 @@ const validationsForm = (form) => {
 let styles = {
   fontWeight: "bold",
   color: "#dc3545",
-};
-
-const localeMap = {
-  fr: frLocale,
-};
-
-const maskMap = {
-  fr: "__/__/____",
 };
 
 const ITEM_HEIGHT = 48;
@@ -130,8 +121,7 @@ function Register() {
   const {
     form,
     errors,
-    loading,
-    response,
+
     handleChanges,
     handleBlur,
     //handleSubmit,
@@ -151,10 +141,10 @@ function Register() {
   const [genero, setGenero] = useState("Prefiero no decirlo");
   const estudios = CustomHook("");
   const apellidoMaterno = CustomHook("");
-  let edadMax = new Date(new Date() - 31536000000 * 100)
+  let FechaMinima = new Date(new Date() - 31536000000 * 100)
     .toISOString()
     .split("T")[0];
-  let edadMin = new Date(new Date() - 31536000000 * 10)
+  let FechaMaxima = new Date(new Date() - 31536000000 * 10)
     .toISOString()
     .split("T")[0];
 
@@ -250,21 +240,22 @@ function Register() {
   };
 
   return (
-    <div>
+    <div id="register">
       <div className="TitleRegister">
-        Completa estos datos para registrarte!
+      ¡Completa estos datos para registrarte!
       </div>
       <br />
 
-      <div class="row">
-        <form onSubmit={handleSubmit}>
-          <div class="column">
-            {/* COLUMNA DE DERECHA */}
+      <form onSubmit={handleSubmit}>
+        <div class="row">
+          <div class="column" id="columna-izquierda">
+            {/* COLUMNA DE izquierda */}
 
             <label for="selector" className="label">
               <p>EMAIL *</p>
             </label>
             <TextField
+              size="small"
               type="email"
               name="mail"
               onBlur={handleBlur}
@@ -279,6 +270,7 @@ function Register() {
               <p>NOMBRES *</p>
             </label>
             <TextField
+              size="small"
               type="text"
               name="nombres"
               onBlur={handleBlur}
@@ -293,6 +285,7 @@ function Register() {
               <p>APELLIDO PATERNO *</p>
             </label>
             <TextField
+              size="small"
               type="text"
               name="apellidoPaterno"
               onBlur={handleBlur}
@@ -312,11 +305,12 @@ function Register() {
             <input
               onBlur={handleBlur}
               onChange={handleChanges}
+              class="input-fecha"
               type="date"
               name="fechaNacimiento"
               value={form.fechaNacimiento}
-              min={edadMax}
-              max={edadMin}
+              min={FechaMinima}
+              max={FechaMaxima}
               onKeyDown={(e) => e.preventDefault()}
               required
             />
@@ -331,6 +325,7 @@ function Register() {
             </label>
 
             <TextField
+              size="small"
               type="text"
               name="dni"
               onBlur={handleBlur}
@@ -346,6 +341,7 @@ function Register() {
               <p>PROFESIÓN / OCUPACIÓN*</p>
             </label>
             <TextField
+              size="small"
               type="text"
               name="profesion"
               onBlur={handleBlur}
@@ -386,7 +382,7 @@ function Register() {
               onChange={handleChange}
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
               renderValue={(selected) => (
-                <Box>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   {selected.map((value) => (
                     <Chip key={value} label={value} />
                   ))}
@@ -408,14 +404,15 @@ function Register() {
             <br />
           </div>
 
-          <div class="column">
-            {/* COLUMNA DE IZQUIERDA*/}
+          <div class="column" id="columna-derecha">
+            {/* COLUMNA DE derecha*/}
 
             <label for="password" className="label">
               <p>CONTRASEÑA *</p>
             </label>
 
             <TextField
+              size="small"
               type="password"
               name="password"
               onBlur={handleBlur}
@@ -431,6 +428,7 @@ function Register() {
             </label>
 
             <TextField
+              size="small"
               type="password"
               name="password_confirmation"
               onBlur={handleBlur}
@@ -455,53 +453,58 @@ function Register() {
             />
             <br />
             <br />
-
-            <label for="selector" className="label">
-              <p>GENERO </p>
-            </label>
-            <div className="radio">
-              <label>
-                <input
-                  name="genero"
-                  type="radio"
-                  value={genero}
-                  onChange={() => setGenero("Masculino")}
-                />
-                Masculino
+            <div className="label">
+              <label for="selector" className="label">
+                <p>GENERO </p>
               </label>
-            </div>
-            <div className="radio">
-              <label>
-                <input
-                  name="genero"
-                  type="radio"
-                  value={genero}
-                  onChange={() => setGenero("Femenino")}
-                />
-                Femenino
-              </label>
-            </div>
-            <div className="radio">
-              <label>
-                <input
-                  type="radio"
-                  name="genero"
-                  value={genero}
-                  onChange={() => setGenero("Otrx")}
-                />
-                Otrx
-              </label>
-            </div>
-            <div className="radio">
-              <label>
-                <input
-                  type="radio"
-                  name="genero"
-                  value={genero}
-                  onChange={() => setGenero("Prefiero no decirlo")}
-                />
-                Prefiero no decirlo
-              </label>
+              <div className="radio">
+                <label>
+                  <input
+                  id="radio-button"
+                    name="genero"
+                    type="radio"
+                    value={genero}
+                    onChange={() => setGenero("Masculino")}
+                  />
+                  Masculino
+                </label>
+              </div>
+              <div className="radio">
+                <label>
+                  <input
+                  id="radio-button"
+                    name="genero"
+                    type="radio"
+                    value={genero}
+                    onChange={() => setGenero("Femenino")}
+                  />
+                  Femenino
+                </label>
+              </div>
+              <div className="radio">
+                <label>
+                  <input
+                    id="radio-button"
+                    type="radio"
+                    name="genero"
+                    value={genero}
+                    onChange={() => setGenero("Otrx")}
+                  />
+                  Otrx
+                </label>
+              </div>
+              <div className="radio">
+                <label>
+                  <input
+                  id="radio-button"
+                    type="radio"
+                    name="genero"
+                    value={genero}
+                    onChange={() => setGenero("Prefiero no decirlo")}
+                  />
+                  Prefiero no decirlo
+                </label>
+              </div>
             </div>
 
             <br />
@@ -511,6 +514,7 @@ function Register() {
             </label>
 
             <TextField
+              size="small"
               type="text"
               name="telefonoMovil"
               onBlur={handleBlur}
@@ -545,22 +549,25 @@ function Register() {
 
             <br />
           </div>
+        </div>
+        <div id="form-fondo">
+          <Divider className="divisor" />
+          <label for="selector" className="label" id="checkbox">
+            <input type="checkbox" onClick={handleMail} />
+             Acepto recibir notificaciones por email
+          </label>
           <Link style={{ textDecoration: "none" }} to="/">
-            <Button sx={{ ml: 36 }} variant="text">
-              VOLVER
-            </Button>
+            <Button variant="text">VOLVER</Button>
           </Link>
+
           <Button id="ingresar" size="medium" variant="outlined" type="submit">
             REGISTRAR
           </Button>
-        </form>
-      </div>
+        </div>
+      </form>
       <br />
+
       <br />
-      <label for="selector" className="label">
-        <input type="checkbox" onClick={handleMail} />
-        Acepto recibir notificaciones por email
-      </label>
     </div>
   );
 }
