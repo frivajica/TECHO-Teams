@@ -25,7 +25,11 @@ function App() {
             }
           />
           <Route exact path="/completarRegistro" element={<SignUp />} />
-          <Route exact path="/registro" element={<Register />} />
+          <Route
+            exact
+            path="/registro"
+            element={!usuario.nombres ? <Register /> : <Home />}
+          />
           <Route
             exact
             path={`/${usuario.idPersona}`}

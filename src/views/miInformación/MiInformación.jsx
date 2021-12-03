@@ -103,7 +103,7 @@ function MiInformación() {
     fechaNacimiento: usuario.fechaNacimiento,
     estudios: usuario.estudios,
     sexo: usuario.sexo,
-    intereses: usuario.intereses ? JSON.parse(usuario.intereses) : "",
+    //intereses: usuario.intereses ? JSON.parse(usuario.intereses) : "",
     idPais: usuario.idPais,
     idProvincia: usuario.idProvincia,
     idLocalidad: usuario.idLocalidad,
@@ -252,7 +252,6 @@ function MiInformación() {
               onBlur={handleBlur}
               onChange={handleChanges}
               value={form.nombres}
-              defaultValue={usuario.nombres}
               required
             />
             {errors.nombres && <p style={styles}>{errors.nombres}</p>}
@@ -345,7 +344,6 @@ function MiInformación() {
             <p>PAÍS *</p>
             <select {...pais} className="form-select">
               {paises.map((pais) =>
-                // -> initialForm.pais -> 13
                 pais.id === initialForm.pais ? (
                   <option key={pais.id} value={pais.id} selected="selected">
                     {pais.nombre}
