@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import frLocale from "date-fns/locale/fr";
 import Divider from "@mui/material/Divider";
 
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -244,293 +243,292 @@ function Register() {
       <h2 className="TitleRegister">¡Completa estos datos para registrarte!</h2>
 
       <form onSubmit={handleSubmit}>
-        <div className="row">
-          <div className="column" id="columna-izquierda">
-            {/* COLUMNA DE izquierda */}
+        <div className="contenedor-formulario">
+          <label htmlFor="selector" className="label">
+            <p>EMAIL *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="email"
+              name="mail"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.mail}
+              required
+            />
+            {errors.mail && <p style={styles}>{errors.mail}</p>}
+          </label>
 
-            <label htmlFor="selector" className="label">
-              <p>EMAIL *</p>
-              <TextField
-                className='text-field'
-                size="small"
-                type="email"
-                name="mail"
-                onBlur={handleBlur}
-                onChange={handleChanges}
-                value={form.mail}
-                required
-              />
-              {errors.mail && <p style={styles}>{errors.mail}</p>}
-            </label>
+          <label htmlFor="selector" className="label">
+            <p>NOMBRES *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="text"
+              name="nombres"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.nombres}
+              required
+            />
+            {errors.nombres && <p style={styles}>{errors.nombres}</p>}
+          </label>
 
-            <label htmlFor="selector" className="label">
-              <p>NOMBRES *</p>
-              <TextField
-                className="text-field"
-                size="small"
-                type="text"
-                name="nombres"
-                onBlur={handleBlur}
-                onChange={handleChanges}
-                value={form.nombres}
-                required
-              />
-              {errors.nombres && <p style={styles}>{errors.nombres}</p>}
-            </label>
+          <label htmlFor="password" className="label">
+            <p>CONTRASEÑA *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="password"
+              name="password"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.password}
+              required
+            />
+            {errors.password && <p style={styles}>{errors.password}</p>}
+          </label>
 
-            <label htmlFor="apellidoPaterno" className="label">
-              <p>APELLIDO PATERNO *</p>
-              <TextField
-                className="text-field"
-                size="small"
-                type="text"
-                name="apellidoPaterno"
-                onBlur={handleBlur}
-                onChange={handleChanges}
-                value={form.apellidoPaterno}
-                required
-              />
-              {errors.apellidoPaterno && (
-                <p style={styles}>{errors.apellidoPaterno}</p>
+          <label htmlFor="selector" className="label">
+            <p>CONFIRMAR CONTRASEÑA *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="password"
+              name="password_confirmation"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.password_confirmation}
+              required
+            />
+            {errors.password_confirmation && (
+              <p style={styles}>{errors.password_confirmation}</p>
+            )}
+          </label>
+
+          <label htmlFor="apellidoPaterno" className="label">
+            <p>APELLIDO PATERNO *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="text"
+              name="apellidoPaterno"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.apellidoPaterno}
+              required
+            />
+            {errors.apellidoPaterno && (
+              <p style={styles}>{errors.apellidoPaterno}</p>
+            )}
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>APELLIDO MATERNO </p>
+            <TextField
+              className="text-field"
+              size="small"
+              id="nombres"
+              name="nombres"
+              {...apellidoMaterno}
+            />
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>FECHA DE NACIMIENTO *</p>
+            <input
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              className="input-fecha"
+              type="date"
+              name="fechaNacimiento"
+              value={form.fechaNacimiento}
+              min={FechaMinima}
+              max={FechaMaxima}
+              onKeyDown={(e) => e.preventDefault()}
+              required
+            />
+            <span className="validity"></span>
+            {errors.fechaNacimiento && (
+              <p style={styles}>{errors.fechaNacimiento}</p>
+            )}
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="text"
+              name="dni"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.dni}
+              required
+            />
+            {errors.dni && <p style={styles}>{errors.dni}</p>}
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>PROFESIÓN / OCUPACIÓN*</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="text"
+              name="profesion"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.profesion}
+              required
+            />
+            {errors.profesion && <p style={styles}>{errors.profesion}</p>}
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>PAÍS *</p>
+            <select {...pais} className="form-select">
+              {paises.map((pais) => (
+                <option key={pais.id} value={pais.id}>
+                  {pais.nombre}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>PROVINCIA </p>
+            <select {...provincia} className="form-select">
+              {provincias.map((provincia) => (
+                <option key={provincia.id} value={provincia.id}>
+                  {provincia.provincia}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>TELEFONO MOVIL *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="text"
+              name="telefonoMovil"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.telefonoMovil}
+              required
+            />
+            {errors.telefonoMovil && (
+              <p style={styles}>{errors.telefonoMovil}</p>
+            )}
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>ESTUDIOS</p>
+            <TextField
+              className="text-field"
+              size="small"
+              id="fullWidth"
+              {...estudios}
+            />
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>LOCALIDAD </p>
+            <select {...localidad} className="form-select">
+              {localidades.map((localidad) => (
+                <option key={localidad.id} value={localidad.id}>
+                  {localidad.localidad}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>TEMÁTICAS/ÁREAS DE INTÉRES *</p>
+            <Select
+              id="demo-multiple-chip"
+              multiple
+              value={intereses}
+              onChange={handleChange}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} />
+                  ))}
+                </Box>
               )}
-            </label>
+              MenuProps={MenuProps}
+            >
+              {interes.map((name) => (
+                <MenuItem
+                  key={name}
+                  value={name}
+                  style={getStyles(name, intereses, theme)}
+                >
+                  {name}
+                </MenuItem>
+              ))}
+            </Select>
+          </label>
 
-            <label htmlFor="selector" className="label">
-              <p>FECHA DE NACIMIENTO *</p>
-              <input
-                onBlur={handleBlur}
-                onChange={handleChanges}
-                className="input-fecha"
-                type="date"
-                name="fechaNacimiento"
-                value={form.fechaNacimiento}
-                min={FechaMinima}
-                max={FechaMaxima}
-                onKeyDown={(e) => e.preventDefault()}
-                required
-              />
-              <span className="validity"></span>
-              {errors.fechaNacimiento && (
-                <p style={styles}>{errors.fechaNacimiento}</p>
-              )}
-            </label>
-            <label htmlFor="selector" className="label">
-              <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
-              <TextField
-                className="text-field"
-                size="small"
-                type="text"
-                name="dni"
-                onBlur={handleBlur}
-                onChange={handleChanges}
-                value={form.dni}
-                required
-              />
-              {errors.dni && <p style={styles}>{errors.dni}</p>}
-            </label>
-            <label htmlFor="selector" className="label">
-              <p>PROFESIÓN / OCUPACIÓN*</p>
-              <TextField
-                className="text-field"
-                size="small"
-                type="text"
-                name="profesion"
-                onBlur={handleBlur}
-                onChange={handleChanges}
-                value={form.profesion}
-                required
-              />
-              {errors.profesion && <p style={styles}>{errors.profesion}</p>}
-            </label>
-
-            <label htmlFor="selector" className="label">
-              <p>PAIS *</p>
-              <select {...pais} className="form-select">
-                {paises.map((pais) => (
-                  <option key={pais.id} value={pais.id}>
-                    {pais.nombre}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label htmlFor="selector" className="label">
-              <p>PROVINCIA </p>
-              <select {...provincia} className="form-select">
-                {provincias.map((provincia) => (
-                  <option key={provincia.id} value={provincia.id}>
-                    {provincia.provincia}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label htmlFor="selector" className="label">
-              <p>TEMATICAS/AREAS DE INTERES EN TECHO *</p>
-              <Select
-                id="demo-multiple-chip"
-                multiple
-                value={intereses}
-                onChange={handleChange}
-                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                renderValue={(selected) => (
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                    {selected.map((value) => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
-                )}
-                MenuProps={MenuProps}
-              >
-                {interes.map((name) => (
-                  <MenuItem
-                    key={name}
-                    value={name}
-                    style={getStyles(name, intereses, theme)}
-                  >
-                    {name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </label>
-          </div>
-
-          <div className="column" id="columna-derecha">
-            {/* COLUMNA DE derecha*/}
-
-            <label htmlFor="password" className="label">
-              <p>CONTRASEÑA *</p>
-              <TextField
-                className="text-field"
-                size="small"
-                type="password"
-                name="password"
-                onBlur={handleBlur}
-                onChange={handleChanges}
-                value={form.password}
-                required
-              />
-              {errors.password && <p style={styles}>{errors.password}</p>}
-            </label>
-
-            <label htmlFor="selector" className="label">
-              <p>CONFIRMAR CONTRASEÑA *</p>
-              <TextField
-                className="text-field"
-                size="small"
-                type="password"
-                name="password_confirmation"
-                onBlur={handleBlur}
-                onChange={handleChanges}
-                value={form.password_confirmation}
-                required
-              />
-              {errors.password_confirmation && (
-                <p style={styles}>{errors.password_confirmation}</p>
-              )}
-            </label>
-
-            <label htmlFor="selector" className="label">
-              <p>APELLIDO MATERNO </p>
-              <TextField
-                className="text-field"
-                size="small"
-                id="nombres"
-                name="nombres"
-                {...apellidoMaterno}
-              />
-            </label>
-              <label htmlFor="selector" className="label">
-                <p>GENERO </p>
-              <div className="radio">
-                <label >
-                  <input
-                    id="radio-button"
-                    name="genero"
-                    type="radio"
-                    value={genero}
-                    onChange={() => setGenero("Masculino")}
-                  />
-                  Masculino
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input
-                    id="radio-button"
-                    name="genero"
-                    type="radio"
-                    value={genero}
-                    onChange={() => setGenero("Femenino")}
-                  />
-                  Femenino
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input
-                    id="radio-button"
-                    type="radio"
-                    name="genero"
-                    value={genero}
-                    onChange={() => setGenero("Otrx")}
-                  />
-                  Otrx
-                </label>
-              </div>
-              <div className="radio">
-                <label>
-                  <input
-                    id="radio-button"
-                    type="radio"
-                    name="genero"
-                    value={genero}
-                    onChange={() => setGenero("Prefiero no decirlo")}
-                  />
-                  Prefiero no decirlo
-                </label>
-              </div>
+          <label htmlFor="selector" className="label">
+            <p>GÉNERO </p>
+            <div className="radio">
+              <label>
+                <input
+                  id="radio-button"
+                  name="genero"
+                  type="radio"
+                  value={genero}
+                  onChange={() => setGenero("Masculino")}
+                />
+                Masculino
               </label>
+            </div>
 
-            <label htmlFor="selector" className="label">
-              <p>TELEFONO MOVIL *</p>
-              <TextField
-                className="text-field"
-                size="small"
-                type="text"
-                name="telefonoMovil"
-                onBlur={handleBlur}
-                onChange={handleChanges}
-                value={form.telefonoMovil}
-                required
-              />
-              {errors.telefonoMovil && (
-                <p style={styles}>{errors.telefonoMovil}</p>
-              )}
-            </label>
+            <div className="radio">
+              <label>
+                <input
+                  id="radio-button"
+                  name="genero"
+                  type="radio"
+                  value={genero}
+                  onChange={() => setGenero("Femenino")}
+                />
+                Femenino
+              </label>
+            </div>
 
-            <label htmlFor="selector" className="label">
-              <p>ESTUDIOS</p>
-              <TextField
-                className="text-field"
-                size="small"
-                id="fullWidth"
-                {...estudios}
-              />
-            </label>
+            <div className="radio">
+              <label>
+                <input
+                  id="radio-button"
+                  type="radio"
+                  name="genero"
+                  value={genero}
+                  onChange={() => setGenero("Otrx")}
+                />
+                Otrx
+              </label>
+            </div>
 
-            <label htmlFor="selector" className="label">
-              <p>LOCALIDAD </p>
-              <select {...localidad} className="form-select">
-                {localidades.map((localidad) => (
-                  <option key={localidad.id} value={localidad.id}>
-                    {localidad.localidad}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
+            <div className="radio">
+              <label>
+                <input
+                  id="radio-button"
+                  type="radio"
+                  name="genero"
+                  value={genero}
+                  onChange={() => setGenero("Prefiero no decirlo")}
+                />
+                Prefiero no decirlo
+              </label>
+            </div>
+          </label>
         </div>
+
         <div id="form-fondo">
           <Divider className="divisor" />
           <label htmlFor="selector" className="label" id="checkbox">
