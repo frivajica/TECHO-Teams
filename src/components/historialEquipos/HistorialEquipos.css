@@ -22,3 +22,12 @@
 	grid-auto-rows: auto;
   gap: 2rem;
 }
+.participaciones {
+	width: 100vw;
+	overflow: hidden;
+	word-wrap: break-word;
+	margin-top: 4vh;
+	margin-bottom: 4vh;
+	font-size: 1.4em;
+	text-align: center;
+  }

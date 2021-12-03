@@ -395,6 +395,7 @@ function MiInformación() {
               id="demo-multiple-chip"
               multiple
               value={intereses}
+              style={{width: "100%"}}
               onChange={handleChange}
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
               renderValue={(selected) => (
