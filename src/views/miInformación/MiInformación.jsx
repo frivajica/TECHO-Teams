@@ -87,18 +87,16 @@ function MiInformación() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    superagent
-      .post("ruta de la api", { ...form, pais, provincia })
-      .then(() => {
-        axios.put("ruta editar usuario db", { intereses }).then(() =>
-          swal({
-            title: "Perfil editado",
-            icon: "success",
-            timer: "2000",
-          })
-        );
-      })
-      .catch((err) => console.log(err));
+	superagent.post("https://sandbox.actividades.techo.org/api/editPersona/12345", {...form, pais, provincia})
+	.then(() => {
+		axios.put("ruta editar usuario db", {intereses})
+		.then(() => swal({
+			title: "Perfil editado",
+			icon: "success",
+			timer: "2000",
+		}))
+	})
+	.catch(err => console.log(err))
   };
 
   return (
@@ -139,39 +137,52 @@ function MiInformación() {
                 />
               </Grid>
 
-              <Grid item lg={6} sm={12}>
-                <label for="selector" className="label">
-                  <p>APELLIDO PATERNO</p>
-                </label>
-                <TextField
-                  size="small"
-                  lg={10}
-                  sm={12}
-                  id="nombres"
-                  name="nombres"
-                  onChange={handleChange}
-                  defaultValue={usuario.apellidoPaterno}
-                />
-              </Grid>
+			<div class="row">
+				<form onSubmit={handleSubmit}>
+				<Grid container spacing={2} style={{width:"90%"}}>
+					
+					<Grid item lg={6} sm={12}>
+						<label for="selector" className="label">
+						<p>Nombres</p>
+						</label>
+						<TextField
+						size="small"
+						className="field"
+						id="nombres"
+						name="nombres"
+						onChange={handleChange}
+						/>
+					</Grid>
+					
+					<Grid item lg={6} sm={12}>
+						<label for="selector" className="label">
+						<p>APELLIDO PATERNO</p>
+						</label>
+						<TextField
+						size="small"
+						className="field"
+						id="nombres"
+						name="nombres"
+						onChange={handleChange}
+						/>
+					</Grid>
 
-              <Grid item lg={6} sm={12}>
-                <label for="selector" className="label">
-                  <p>FECHA DE NACIMIENTO</p>
-                </label>
-                <LocalizationProvider
-                  dateAdapter={AdapterDateFns}
-                  locale={localeMap[locale]}
-                >
-                  <DatePicker
-                    mask={maskMap[locale]}
-                    value={value}
-                    onChange={(newValue) => setValue(newValue)}
-                    renderInput={(params) => (
-                      <TextField lg={10} sm={12} {...params} />
-                    )}
-                    // {...fechaNacimiento}
-                  />
-                  {/* {fechaDeNacimientoErr ? (
+					<Grid item lg={6} sm={12}>
+						<label for="selector" className="label">
+						<p>FECHA DE NACIMIENTO</p>
+						</label>
+						<LocalizationProvider
+						dateAdapter={AdapterDateFns}
+						locale={localeMap[locale]}
+						>
+						<DatePicker
+							mask={maskMap[locale]}
+							value={value}
+							onChange={(newValue) => setValue(newValue)}
+							renderInput={(params) => <TextField className="field" {...params} />}
+							// {...fechaNacimiento}
+						/>
+						{/* {fechaDeNacimientoErr ? (
 							<div className="errorFormMsg">{fechaDeNacimientoErr}</div>
 							) : (
 							""
@@ -207,114 +218,129 @@ function MiInformación() {
                 </FormControl>
               </Grid>
 
-              <Grid item lg={6} sm={12}>
-                <label for="selector" className="label">
-                  <p>NUMERO DE DOCUMENTO/PASAPORTE</p>
-                </label>
-                <TextField
-                  lg={10}
-                  sm={12}
-                  name="DNI"
-                  size="small"
-                  id="fullWidth"
-                  onChange={handleChange}
-                />
-              </Grid>
+					<Grid item lg={6} sm={12}>
+						<label for="selector" className="label">
+						<p>NUMERO DE DOCUMENTO/PASAPORTE</p>
+						</label>
+						<TextField 
+						className="field"
+						name="DNI"
+						size="small" 
+						id="fullWidth"
+						onChange={handleChange} 
+						/>
+					</Grid>
 
-              <Grid item lg={6} sm={12}>
-                <label for="selector" className="label">
-                  <p>PAIS </p>
-                  <select
-                    lg={10}
-                    sm={12}
-                    name="pais"
-                    onChange={(e) => setPais(e.target.value)}
-                  >
-                    {paises.map((pais) => (
-                      <option key={pais.id} value={pais.id}>
-                        {pais.nombre}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </Grid>
+					<Grid item lg={6} sm={12}>
+						<label for="selector" className="label">
+						<p>PAIS </p>
+						<select 
+						className="field"
+						name="pais"
+						onChange={(e)=> setPais(e.target.value)}
+						>
+							{paises.map(pais => (
+							<option key={pais.id} value={pais.id}>{pais.nombre}</option>
+							))}
+						</select>
+						</label>
+					</Grid>
+					
+					<Grid item lg={6} sm={12}>
+						<label for="selector" className="label">
+							<p>PROVINCIA</p>
+						<select
+						className="field"
+						name="provincia"
+						onChange={(e)=> setProvincia(e.target.value)}
+						>
+							{provincias.map(provincia => (
+								<option key={provincia.id} value={provincia.id}>{provincia.provincia}</option>
+							))}
+						</select>
+						</label>
+					</Grid>
 
-              <Grid item lg={6} sm={12}>
-                <label for="selector" className="label">
-                  <p>PROVINCIA</p>
-                  <select
-                    lg={10}
-                    sm={12}
-                    name="provincia"
-                    onChange={(e) => setProvincia(e.target.value)}
-                  >
-                    {provincias.map((provincia) => (
-                      <option key={provincia.id} value={provincia.id}>
-                        {provincia.provincia}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </Grid>
+					<Grid item lg={6} sm={12}>
+						<label for="selector" className="label">
+						<p>LOCALIDAD</p>
+						<select
+						className="field"
+						name="localidad"
+						onChange={handleChange}
+						>
+							{localidades.map(localidad => (
+							<option key={localidad.id} value={localidad.id}>{localidad.localidad}</option>
+							))}
+						</select>
+						</label>
+					</Grid>
 
-              <Grid item lg={6} sm={12}>
-                <label for="selector" className="label">
-                  <p>LOCALIDAD</p>
-                  <select
-                    lg={10}
-                    sm={12}
-                    name="localidad"
-                    onChange={handleChange}
-                  >
-                    {localidades.map((localidad) => (
-                      <option key={localidad.id} value={localidad.id}>
-                        {localidad.localidad}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </Grid>
+					<Grid item lg={6} sm={12}>
+						<label for="selector" className="label">
+						<p>APELLIDO MATERNO </p>
+						</label>
+						<TextField size="small" className="field" id="nombres" name="nombres"/>
+					</Grid>
 
-              <Grid item lg={6} sm={12}>
-                <label for="selector" className="label">
-                  <p>APELLIDO MATERNO </p>
-                </label>
-                <TextField
-                  size="small"
-                  lg={10}
-                  sm={12}
-                  id="nombres"
-                  name="nombres"
-                />
-              </Grid>
+					<Grid item lg={6} sm={12}>
+						<label for="selector" className="label">
+						<p>TELEFONO </p>
+						</label>
+						<TextField size="small" id="fullWidth" className="field"/>
+					</Grid>
 
-              <Grid item lg={6} sm={12}>
-                <label for="selector" className="label">
-                  <p>TELEFONO </p>
-                </label>
-                <TextField size="small" id="fullWidth" lg={10} sm={12} />
-              </Grid>
+					<Grid item lg={6} sm={12}>
+						<label for="selector" className="label">
+						<p>ESTUDIOS</p>
+						</label>
+						<TextField size="small" id="fullWidth" className="field" />
+					</Grid>
 
-              <Grid item lg={6} sm={12}>
-                <label for="selector" className="label">
-                  <p>ESTUDIOS</p>
-                </label>
-                <TextField size="small" id="fullWidth" lg={10} sm={12} />
-              </Grid>
+					<Grid item lg={6} sm={12}>
+						<label for="selector" className="label">
+						<p>PROFESIÓN </p>
+						</label>
+						<TextField
+						className="field"
+						name="profesion"
+						id="profesion"
+						size="small"
+						onChange={handleChange}
+						/>
+					</Grid>
 
-              <Grid item lg={6} sm={12}>
-                <label for="selector" className="label">
-                  <p>PROFESIÓN </p>
-                </label>
-                <TextField
-                  lg={10}
-                  sm={12}
-                  name="profesion"
-                  id="profesion"
-                  size="small"
-                  onChange={handleChange}
-                />
-              </Grid>
+					<Grid item lg={6} sm={12}>
+						<label for="selector" className="label">
+							<p>TEMATICAS/AREAS DE INTERES EN TECHO</p>
+						</label>
+						<Select
+						className="field"
+						id="demo-multiple-chip"
+						multiple
+						value={intereses}
+						onChange={(e)=> setIntereses(e.target.value)}
+						input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+						renderValue={(selected) => (
+							<Box>
+							{selected.map((value) => (
+								<Chip key={value} label={value} />
+							))}
+							</Box>
+						)}
+						MenuProps={MenuProps}
+						>
+						{interes.map((name) => (
+							<MenuItem
+							key={name}
+							value={name}
+							style={getStyles(name, intereses, theme)}
+							>
+							{name}
+							</MenuItem>
+						))}
+						</Select>
+					</Grid>
 
               <Grid item lg={6} sm={12}>
                 <label for="selector" className="label">

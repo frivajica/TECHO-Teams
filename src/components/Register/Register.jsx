@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import frLocale from "date-fns/locale/fr";
-import DatePicker from "@mui/lab/DatePicker";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import Divider from "@mui/material/Divider";
+
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -43,9 +41,9 @@ const validationsForm = (form) => {
     errors.nombres =
       "El campo 'Nombres' sólo acepta letras y espacios en blanco";
   } else if (!form.mail.trim()) {
-    errors.mail = "El campo 'mail' es requerido";
+    errors.mail = "El campo 'email' es requerido";
   } else if (!regexMail.test(form.mail.trim())) {
-    errors.mail = "El campo 'mail' es incorrecto";
+    errors.mail = "El campo 'email' es incorrecto";
   } else if (!form.apellidoPaterno.trim()) {
     errors.apellidoPaterno = "El campo 'Apellido Paterno' es requerido";
   } else if (!regexName.test(form.apellidoPaterno.trim())) {
@@ -82,14 +80,6 @@ const validationsForm = (form) => {
 let styles = {
   fontWeight: "bold",
   color: "#dc3545",
-};
-
-const localeMap = {
-  fr: frLocale,
-};
-
-const maskMap = {
-  fr: "__/__/____",
 };
 
 const ITEM_HEIGHT = 48;
@@ -130,8 +120,7 @@ function Register() {
   const {
     form,
     errors,
-    loading,
-    response,
+
     handleChanges,
     handleBlur,
     //handleSubmit,
@@ -151,10 +140,10 @@ function Register() {
   const [genero, setGenero] = useState("Prefiero no decirlo");
   const estudios = CustomHook("");
   const apellidoMaterno = CustomHook("");
-  let edadMax = new Date(new Date() - 31536000000 * 100)
+  let FechaMinima = new Date(new Date() - 31536000000 * 100)
     .toISOString()
     .split("T")[0];
-  let edadMin = new Date(new Date() - 31536000000 * 10)
+  let FechaMaxima = new Date(new Date() - 31536000000 * 10)
     .toISOString()
     .split("T")[0];
 
@@ -250,21 +239,16 @@ function Register() {
   };
 
   return (
-    <div>
-      <div className="TitleRegister">
-        Completa estos datos para registrarte!
-      </div>
-      <br />
+    <div id="register">
+      <h2 className="TitleRegister">¡Completa estos datos para registrarte!</h2>
 
-      <div class="row">
-        <form onSubmit={handleSubmit}>
-          <div class="column">
-            {/* COLUMNA DE DERECHA */}
-
-            <label for="selector" className="label">
-              <p>EMAIL *</p>
-            </label>
+      <form onSubmit={handleSubmit}>
+        <div className="contenedor-formulario">
+          <label htmlFor="selector" className="label">
+            <p>EMAIL *</p>
             <TextField
+              className="text-field"
+              size="small"
               type="email"
               name="mail"
               onBlur={handleBlur}
@@ -273,12 +257,13 @@ function Register() {
               required
             />
             {errors.mail && <p style={styles}>{errors.mail}</p>}
-            <br />
-            <br />
-            <label for="selector" className="label">
-              <p>NOMBRES *</p>
-            </label>
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>NOMBRES *</p>
             <TextField
+              className="text-field"
+              size="small"
               type="text"
               name="nombres"
               onBlur={handleBlur}
@@ -287,12 +272,45 @@ function Register() {
               required
             />
             {errors.nombres && <p style={styles}>{errors.nombres}</p>}
-            <br />
-            <br />
-            <label for="apellidoPaterno" className="label">
-              <p>APELLIDO PATERNO *</p>
-            </label>
+          </label>
+
+          <label htmlFor="password" className="label">
+            <p>CONTRASEÑA *</p>
             <TextField
+              className="text-field"
+              size="small"
+              type="password"
+              name="password"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.password}
+              required
+            />
+            {errors.password && <p style={styles}>{errors.password}</p>}
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>CONFIRMAR CONTRASEÑA *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="password"
+              name="password_confirmation"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.password_confirmation}
+              required
+            />
+            {errors.password_confirmation && (
+              <p style={styles}>{errors.password_confirmation}</p>
+            )}
+          </label>
+
+          <label htmlFor="apellidoPaterno" className="label">
+            <p>APELLIDO PATERNO *</p>
+            <TextField
+              className="text-field"
+              size="small"
               type="text"
               name="apellidoPaterno"
               onBlur={handleBlur}
@@ -303,34 +321,44 @@ function Register() {
             {errors.apellidoPaterno && (
               <p style={styles}>{errors.apellidoPaterno}</p>
             )}
+          </label>
 
-            <br />
-            <br />
-            <label for="selector" className="label">
-              <p>FECHA DE NACIMIENTO *</p>
-            </label>
+          <label htmlFor="selector" className="label">
+            <p>APELLIDO MATERNO </p>
+            <TextField
+              className="text-field"
+              size="small"
+              id="nombres"
+              name="nombres"
+              {...apellidoMaterno}
+            />
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>FECHA DE NACIMIENTO *</p>
             <input
               onBlur={handleBlur}
               onChange={handleChanges}
+              className="input-fecha"
               type="date"
               name="fechaNacimiento"
               value={form.fechaNacimiento}
-              min={edadMax}
-              max={edadMin}
+              min={FechaMinima}
+              max={FechaMaxima}
               onKeyDown={(e) => e.preventDefault()}
               required
             />
-            <span class="validity"></span>
+            <span className="validity"></span>
             {errors.fechaNacimiento && (
               <p style={styles}>{errors.fechaNacimiento}</p>
             )}
-            <br />
-            <br />
-            <label for="selector" className="label">
-              <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
-            </label>
+          </label>
 
+          <label htmlFor="selector" className="label">
+            <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
             <TextField
+              className="text-field"
+              size="small"
               type="text"
               name="dni"
               onBlur={handleBlur}
@@ -339,13 +367,13 @@ function Register() {
               required
             />
             {errors.dni && <p style={styles}>{errors.dni}</p>}
+          </label>
 
-            <br />
-            <br />
-            <label for="selector" className="label">
-              <p>PROFESIÓN / OCUPACIÓN*</p>
-            </label>
+          <label htmlFor="selector" className="label">
+            <p>PROFESIÓN / OCUPACIÓN*</p>
             <TextField
+              className="text-field"
+              size="small"
               type="text"
               name="profesion"
               onBlur={handleBlur}
@@ -354,31 +382,70 @@ function Register() {
               required
             />
             {errors.profesion && <p style={styles}>{errors.profesion}</p>}
-            <br />
-            <br />
-            <label for="selector" className="label">
-              <p>PAIS *</p>
-              <select {...pais}>
-                {paises.map((pais) => (
-                  <option key={pais.id} value={pais.id}>
-                    {pais.nombre}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label for="selector" className="label">
-              <p>PROVINCIA </p>
-              <select {...provincia}>
-                {provincias.map((provincia) => (
-                  <option key={provincia.id} value={provincia.id}>
-                    {provincia.provincia}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label for="selector" className="label">
-              <p>TEMATICAS/AREAS DE INTERES EN TECHO *</p>
-            </label>
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>PAÍS *</p>
+            <select {...pais} className="form-select">
+              {paises.map((pais) => (
+                <option key={pais.id} value={pais.id}>
+                  {pais.nombre}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>PROVINCIA </p>
+            <select {...provincia} className="form-select">
+              {provincias.map((provincia) => (
+                <option key={provincia.id} value={provincia.id}>
+                  {provincia.provincia}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>TELEFONO MOVIL *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="text"
+              name="telefonoMovil"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.telefonoMovil}
+              required
+            />
+            {errors.telefonoMovil && (
+              <p style={styles}>{errors.telefonoMovil}</p>
+            )}
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>ESTUDIOS</p>
+            <TextField
+              className="text-field"
+              size="small"
+              id="fullWidth"
+              {...estudios}
+            />
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>LOCALIDAD </p>
+            <select {...localidad} className="form-select">
+              {localidades.map((localidad) => (
+                <option key={localidad.id} value={localidad.id}>
+                  {localidad.localidad}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>TEMÁTICAS/ÁREAS DE INTÉRES *</p>
             <Select
               id="demo-multiple-chip"
               multiple
@@ -386,7 +453,7 @@ function Register() {
               onChange={handleChange}
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
               renderValue={(selected) => (
-                <Box>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   {selected.map((value) => (
                     <Chip key={value} label={value} />
                   ))}
@@ -404,64 +471,14 @@ function Register() {
                 </MenuItem>
               ))}
             </Select>
+          </label>
 
-            <br />
-          </div>
-
-          <div class="column">
-            {/* COLUMNA DE IZQUIERDA*/}
-
-            <label for="password" className="label">
-              <p>CONTRASEÑA *</p>
-            </label>
-
-            <TextField
-              type="password"
-              name="password"
-              onBlur={handleBlur}
-              onChange={handleChanges}
-              value={form.password}
-              required
-            />
-            {errors.password && <p style={styles}>{errors.password}</p>}
-            <br />
-            <br />
-            <label for="selector" className="label">
-              <p>CONFIRMAR CONTRASEÑA *</p>
-            </label>
-
-            <TextField
-              type="password"
-              name="password_confirmation"
-              onBlur={handleBlur}
-              onChange={handleChanges}
-              value={form.password_confirmation}
-              required
-            />
-            {errors.password_confirmation && (
-              <p style={styles}>{errors.password_confirmation}</p>
-            )}
-            <br />
-            <br />
-            <label for="selector" className="label">
-              <p>APELLIDO MATERNO </p>
-            </label>
-            <TextField
-              size="small"
-              className="ButonRegister"
-              id="nombres"
-              name="nombres"
-              {...apellidoMaterno}
-            />
-            <br />
-            <br />
-
-            <label for="selector" className="label">
-              <p>GENERO </p>
-            </label>
+          <label htmlFor="selector" className="label">
+            <p>GÉNERO </p>
             <div className="radio">
               <label>
                 <input
+                  id="radio-button"
                   name="genero"
                   type="radio"
                   value={genero}
@@ -470,9 +487,11 @@ function Register() {
                 Masculino
               </label>
             </div>
+
             <div className="radio">
               <label>
                 <input
+                  id="radio-button"
                   name="genero"
                   type="radio"
                   value={genero}
@@ -481,9 +500,11 @@ function Register() {
                 Femenino
               </label>
             </div>
+
             <div className="radio">
               <label>
                 <input
+                  id="radio-button"
                   type="radio"
                   name="genero"
                   value={genero}
@@ -492,9 +513,11 @@ function Register() {
                 Otrx
               </label>
             </div>
+
             <div className="radio">
               <label>
                 <input
+                  id="radio-button"
                   type="radio"
                   name="genero"
                   value={genero}
@@ -503,64 +526,23 @@ function Register() {
                 Prefiero no decirlo
               </label>
             </div>
+          </label>
+        </div>
 
-            <br />
-            <br />
-            <label for="selector" className="label">
-              <p>TELEFONO MOVIL *</p>
-            </label>
-
-            <TextField
-              type="text"
-              name="telefonoMovil"
-              onBlur={handleBlur}
-              onChange={handleChanges}
-              value={form.telefonoMovil}
-              required
-            />
-            {errors.telefonoMovil && (
-              <p style={styles}>{errors.telefonoMovil}</p>
-            )}
-            <br />
-            <br />
-            <label for="selector" className="label">
-              <p>ESTUDIOS</p>
-            </label>
-            <TextField size="small" id="fullWidth" {...estudios} />
-
-            <br />
-            <br />
-            <label for="selector" className="label">
-              <p>LOCALIDAD </p>
-              <select {...localidad}>
-                {localidades.map((localidad) => (
-                  <option key={localidad.id} value={localidad.id}>
-                    {localidad.localidad}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <br />
-            <br />
-
-            <br />
-          </div>
+        <div id="form-fondo">
+          <Divider className="divisor" />
+          <label htmlFor="selector" className="label" id="checkbox">
+            <input type="checkbox" onClick={handleMail} />
+            Acepto recibir notificaciones por email
+          </label>
           <Link style={{ textDecoration: "none" }} to="/">
-            <Button sx={{ ml: 36 }} variant="text">
-              VOLVER
-            </Button>
+            <Button variant="text">VOLVER</Button>
           </Link>
           <Button id="ingresar" size="medium" variant="outlined" type="submit">
             REGISTRAR
           </Button>
-        </form>
-      </div>
-      <br />
-      <br />
-      <label for="selector" className="label">
-        <input type="checkbox" onClick={handleMail} />
-        Acepto recibir notificaciones por email
-      </label>
+        </div>
+      </form>
     </div>
   );
 }
