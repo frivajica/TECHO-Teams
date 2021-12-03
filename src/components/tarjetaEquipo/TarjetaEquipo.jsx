@@ -3,12 +3,19 @@ import ButtonBase from "@mui/material/ButtonBase";
 import Box from "@mui/material/Box";
 import "./TarjetaEquipo.css";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import moment from 'moment';
+import 'moment/locale/es';
+moment.locale("es")
 
 export const TarjetaEquipo = ({ nombre, inicio, final, roles }) => {
+
+  inicio = moment(inicio).format( "DD MMMM YYYY");
+  final = final !== "actualidad" ? moment(final).format( "DD MMMM YYYY") : final
+
   return (
     <div className="grid-equipo">
       <h2 className="actividad-equipo">{nombre}</h2>
-      <p className="actividad-fechas">{`${inicio}`}</p>
+      <p className="num-proyectos actividad-fechas">{`Desde ${inicio} - Hasta ${final}`}</p>
       <div className="roles-equipo">
         <span id='roles-titulo'>
 					Roles:
@@ -18,8 +25,8 @@ export const TarjetaEquipo = ({ nombre, inicio, final, roles }) => {
           id="lista-roles"
         >
           {roles.map((value) => (
-            <ButtonBase id="ripple" key={value}>
-              <Chip label={value} color="primary" />
+            <ButtonBase id="ripple" key={value.descripcion.slice(16)}>
+              <Chip label={value.descripcion.slice(16)} color="primary" />
             </ButtonBase>
           ))}
         </Box>

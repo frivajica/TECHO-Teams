@@ -5,6 +5,7 @@ import equipoReducer from "./equipo";
 import rolReducer from "./rol";
 import usuarioReducer from "./usuario";
 import usuariosReducer from "./usuarios";
+import historialDeUsuarioReducer from "./historialDeUsuario"
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -14,7 +15,9 @@ const rootReducer = combineReducers({
   usuarios: usuariosReducer,
   equipo: equipoReducer,
   rol: rolReducer,
+  historialDeUsuario: historialDeUsuarioReducer
 });
+
 const persistConfig = {
   key: "root",
   storage,
