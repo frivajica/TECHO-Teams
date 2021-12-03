@@ -2,24 +2,21 @@ import Chip from "@mui/material/Chip";
 import ButtonBase from "@mui/material/ButtonBase";
 import Box from "@mui/material/Box";
 import "./TarjetaEquipo.css";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import moment from 'moment';
-import 'moment/locale/es';
-moment.locale("es")
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import moment from "moment";
+import "moment/locale/es";
+moment.locale("es");
 
 export const TarjetaEquipo = ({ nombre, inicio, final, roles }) => {
-
-  inicio = moment(inicio).format( "DD MMMM YYYY");
-  final = final !== "actualidad" ? moment(final).format( "DD MMMM YYYY") : final
+  inicio = moment(inicio).format("DD MMMM YYYY");
+  final = final !== "actualidad" ? moment(final).format("DD MMMM YYYY") : final;
 
   return (
     <div className="grid-equipo">
       <h2 className="actividad-equipo">{nombre}</h2>
       <p className="num-proyectos actividad-fechas">{`Desde ${inicio} - Hasta ${final}`}</p>
       <div className="roles-equipo">
-        <span id='roles-titulo'>
-					Roles:
-				</span>
+        <span id="roles-titulo">Roles:</span>
         <Box
           sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
           id="lista-roles"
@@ -31,7 +28,7 @@ export const TarjetaEquipo = ({ nombre, inicio, final, roles }) => {
           ))}
         </Box>
       </div>
-			<ArrowForwardIosIcon id='flecha-equipo'/>
+      <ArrowForwardIosIcon id="flecha-equipo" />
     </div>
   );
 };

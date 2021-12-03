@@ -16,18 +16,6 @@ import { useTheme } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const initialForm = {
-  nombres: "",
-  mail: "",
-  apellidoPaterno: "",
-  dni: "",
-  telefonoMovil: "",
-  profesion: "",
-  password: "",
-  password_confirmation: "",
-  fechaNacimiento: "",
-};
-
 const validationsForm = (form) => {
   let errors = {};
   let regexName = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
@@ -40,10 +28,6 @@ const validationsForm = (form) => {
   } else if (!regexName.test(form.nombres.trim())) {
     errors.nombres =
       "El campo 'Nombres' sólo acepta letras y espacios en blanco";
-  } else if (!form.mail.trim()) {
-    errors.mail = "El campo 'email' es requerido";
-  } else if (!regexMail.test(form.mail.trim())) {
-    errors.mail = "El campo 'email' es incorrecto";
   } else if (!form.apellidoPaterno.trim()) {
     errors.apellidoPaterno = "El campo 'Apellido Paterno' es requerido";
   } else if (!regexName.test(form.apellidoPaterno.trim())) {
@@ -63,17 +47,7 @@ const validationsForm = (form) => {
     errors.profesion = "El campo 'profesion' es requerido";
   } else if (!regexName.test(form.profesion.trim())) {
     errors.profesion = "El campo 'profesion' es incorrecto";
-  } else if (!form.password.trim()) {
-    errors.password = "El campo 'password' es requerido";
-  } else if (form.password.length < 8) {
-    errors.password = "El campo 'password' debe contener mas de 8 caracteres";
-  } else if (!form.password_confirmation.trim()) {
-    errors.password_confirmation = "Este campo es requerido!";
-  } else if (form.password_confirmation !== form.password) {
-    errors.password_confirmation =
-      "El campo debe coincidir con el campo de password";
   }
-
   return errors;
 };
 
@@ -118,6 +92,23 @@ const interes = [
 
 function MiInformación() {
   const usuario = useSelector((state) => state.usuario);
+  console.log({ usuario: usuario.intereses });
+  const initialForm = {
+    nombres: usuario.nombres,
+    mail: usuario.mail,
+    apellidoPaterno: usuario.apellidoPaterno,
+    dni: usuario.dni,
+    telefonoMovil: usuario.telefonoMovil,
+    profesion: usuario.profesion,
+    fechaNacimiento: usuario.fechaNacimiento,
+    estudios: usuario.estudios,
+    sexo: usuario.sexo,
+    intereses: usuario.intereses ? JSON.parse(usuario.intereses) : "",
+    idPais: usuario.idPais,
+    idProvincia: usuario.idProvincia,
+    idLocalidad: usuario.idLocalidad,
+  };
+
   const { form, errors, handleChanges, handleBlur } = useValidation(
     initialForm,
     validationsForm
@@ -128,15 +119,15 @@ function MiInformación() {
   const [paises, setPaises] = useState([]);
   const [provincias, setProvincias] = useState([]);
   const [localidades, setLocalidades] = useState([]);
-  const pais = CustomHook("");
-  const provincia = CustomHook("");
-  const localidad = CustomHook("");
+  const pais = CustomHook(initialForm.idPais);
+  const provincia = CustomHook(initialForm.idProvincia);
+  const localidad = CustomHook(initialForm.idLocalidad);
 
   //inputs
   const [recibirMails, setRecibirMails] = useState(0);
   const [intereses, setIntereses] = useState([]);
   const [genero, setGenero] = useState("Prefiero no decirlo");
-  const estudios = CustomHook("");
+  const estudios = CustomHook(initialForm.estudios);
   const apellidoMaterno = CustomHook("");
   let FechaMinima = new Date(new Date() - 31536000000 * 100)
     .toISOString()
@@ -261,6 +252,7 @@ function MiInformación() {
               onBlur={handleBlur}
               onChange={handleChanges}
               value={form.nombres}
+              defaultValue={usuario.nombres}
               required
             />
             {errors.nombres && <p style={styles}>{errors.nombres}</p>}
@@ -352,11 +344,18 @@ function MiInformación() {
           <label htmlFor="selector" className="label">
             <p>PAÍS *</p>
             <select {...pais} className="form-select">
-              {paises.map((pais) => (
-                <option key={pais.id} value={pais.id}>
-                  {pais.nombre}
-                </option>
-              ))}
+              {paises.map((pais) =>
+                // -> initialForm.pais -> 13
+                pais.id === initialForm.pais ? (
+                  <option key={pais.id} value={pais.id} selected="selected">
+                    {pais.nombre}
+                  </option>
+                ) : (
+                  <option key={pais.id} value={pais.id}>
+                    {pais.nombre}
+                  </option>
+                )
+              )}
             </select>
           </label>
 
