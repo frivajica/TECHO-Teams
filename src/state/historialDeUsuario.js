@@ -12,7 +12,7 @@ export const obtenerHistorial = createAsyncThunk("OBTENER_HISTORIAL", (_, thunkA
     .catch(err => console.log({err}))
 })
 
-const historialDeUsuarioReducer = createReducer({},
+const historialDeUsuarioReducer = createReducer([],
     {
       [obtenerHistorial.fulfilled]: (state, action) => action.payload,
     }

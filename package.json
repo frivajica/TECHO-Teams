@@ -18,6 +18,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "form-data": "^4.0.0",
+    "moment": "^2.29.1",
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.15",
@@ -42,7 +43,6 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "seed": "node api/seed/seed3"
-
   },
   "eslintConfig": {
     "extends": [

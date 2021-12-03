@@ -6,8 +6,9 @@ import { HistorialEquipos } from "../../components/historialEquipos/HistorialEqu
 
 
 export const Usuario = () => {
-
+  const historialDeUsuario = useSelector(state => state.historialDeUsuario)
   const usuario = useSelector(state => state.usuario)
+  const cantEquip = historialDeUsuario.filter(equipo => equipo.activo === true)
 
   return (
     <div className="contenedor">
@@ -15,10 +16,10 @@ export const Usuario = () => {
       <Divider variant="middle" className="divisor" />
       <p className="participaciones">
         Participando en
-        <span className="num-proyectos">{` ${`### proyectos`} `}</span>
+        <span className="num-proyectos">{` ${cantEquip.length} equipos`}</span>
       </p>
       <Divider variant="middle" className="divisor" />
-      <HistorialEquipos />
+      <HistorialEquipos historialDeUsuario={historialDeUsuario} />
     </div>
   );
 };

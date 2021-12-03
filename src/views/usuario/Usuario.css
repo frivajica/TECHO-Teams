@@ -12,9 +12,10 @@
   width: 100vw;
   overflow: hidden;
   word-wrap: break-word;
-  margin: 4vh auto 4vh 8vw;
-  margin-right: auto;
+  margin-top: 4vh;
+  margin-bottom: 4vh;
   font-size: 1.4em;
+  text-align: center;
 }
 
 @media (max-width: 700px) {

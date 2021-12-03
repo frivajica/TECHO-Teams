@@ -1,4 +1,4 @@
-const { Usuario, Evento, UsuarioEnEquipo } = require("../models");
+const { Usuario, Evento, UsuarioEnEquipo, Equipo } = require("../models");
 const superagent = require("superagent");
 
 class UsuarioController {
@@ -116,6 +116,7 @@ class UsuarioController {
         let fechasEntrada = [];
         let fechasSalida = [];
         let rolesEnEquipo = [];
+        let equipo = {}
         const findEvents = (tipo, attributes) => {
           return Evento.findAll({
             where: {
@@ -131,15 +132,18 @@ class UsuarioController {
         fechasEntrada = await findEvents(1, "createdAt")
 
         fechasSalida = await findEvents(-1, "createdAt")
-
+        
         rolesEnEquipo = await findEvents(2, "descripcion")
 
+        equipo = await Equipo.findOne({where: {id: usrEnEquipos[i].equipoId}})
+       
         console.log("im looping", i)
         let historialDeEquipo = {
           entradas: fechasEntrada, 
           salidas: fechasSalida, 
           roles: rolesEnEquipo, 
-          activo: usrEnEquipos[i].activo
+          activo: usrEnEquipos[i].activo,
+          equipo
         }
         historiales.push(historialDeEquipo);
         if (i === usrEnEquipos.length-1) res.send(historiales);
@@ -153,7 +157,7 @@ class UsuarioController {
       usuarioIdPersona: req.params.idPersona
     }})
     .then(usrEquipos => res.status(200).send(usrEquipos))
-    .catch((err) => res.status(500).send(err))
+    .catch((err) => res.status(500).send({err}))
   }
 }
 
