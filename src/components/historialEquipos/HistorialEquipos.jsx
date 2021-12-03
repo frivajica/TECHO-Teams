@@ -16,14 +16,17 @@ export const HistorialEquipos = ({historialDeUsuario}) => {
       <div className="historial">
         <h2 id="titulo-historia"> Historia </h2>
         <div className="caja-equipos">
-          {historialDeUsuario.map((e, i) => {
+          {!historialDeUsuario.length ? 
+          <h3 className="participaciones">Todavía no pertences a ningún equipo</h3> : 
+          historialDeUsuario.map((e, i) => {
             return (
               <TarjetaEquipo
-								key={i}
+								key={i}d
                 nombre={e.equipo.nombre}
                 inicio={e.equipo.createdAt}
                 final={salida(e)}
                 roles={e.roles}
+                activo={e.activo}
                 className='contenedor-equipo'
               />
             );
