@@ -117,14 +117,11 @@ const interes = [
 ];
 
 function Register() {
-  const {
-    form,
-    errors,
+  const { form, errors, handleChanges, handleBlur } = useValidation(
+    initialForm,
+    validationsForm
+  );
 
-    handleChanges,
-    handleBlur,
-    //handleSubmit,
-  } = useValidation(initialForm, validationsForm);
   const navigate = useNavigate();
   //estados para regiones
   const [paises, setPaises] = useState([]);

@@ -2,402 +2,491 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import DatePicker from "@mui/lab/DatePicker";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import RadioButonGenero from "./RadioButonGenero";
+import Divider from "@mui/material/Divider";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
-import {
-  Checkbox,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
+import { CustomHook } from "../../hooks/CustomHook";
+import { useValidation } from "../../hooks/useValidation";
+// import "../../components/Register.css";
 import swal from "sweetalert";
-import useForm from "../../hooks/formState";
-import "./Register.css";
 import { useTheme } from "@mui/material/styles";
-import { usuario as u } from "../../utils/mockData";
-import superagent from "superagent";
-import {
-  interes,
-  getStyles,
-  MenuProps,
-  maskMap,
-  localeMap,
-} from "../../utils/formUtils";
-import { bgcolor } from "@mui/system";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+const initialForm = {
+  nombres: "",
+  mail: "",
+  apellidoPaterno: "",
+  dni: "",
+  telefonoMovil: "",
+  profesion: "",
+  password: "",
+  password_confirmation: "",
+  fechaNacimiento: "",
+};
+
+const validationsForm = (form) => {
+  let errors = {};
+  let regexName = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
+  let regexMail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
+  let regexDocu = /^[a-zA-Z0-9_.-]*$/;
+  let regexTelefono = /^[0-9]*$/;
+
+  if (!form.nombres.trim()) {
+    errors.nombres = "El campo 'Nombres' es requerido";
+  } else if (!regexName.test(form.nombres.trim())) {
+    errors.nombres =
+      "El campo 'Nombres' sólo acepta letras y espacios en blanco";
+  } else if (!form.mail.trim()) {
+    errors.mail = "El campo 'email' es requerido";
+  } else if (!regexMail.test(form.mail.trim())) {
+    errors.mail = "El campo 'email' es incorrecto";
+  } else if (!form.apellidoPaterno.trim()) {
+    errors.apellidoPaterno = "El campo 'Apellido Paterno' es requerido";
+  } else if (!regexName.test(form.apellidoPaterno.trim())) {
+    errors.apellidoPaterno = "El campo 'Apellido Paterno' es incorrecto";
+  } else if (!form.dni.trim()) {
+    errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es requerido";
+  } else if (!regexDocu.test(form.dni.trim())) {
+    errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es incorrecto";
+  } else if (!form.telefonoMovil.trim()) {
+    errors.telefonoMovil = "El campo 'Telefono Movil' es requerido";
+  } else if (
+    !regexTelefono.test(form.telefonoMovil.trim()) ||
+    form.telefonoMovil.length < 8
+  ) {
+    errors.telefonoMovil = "El campo 'Telefono Movil' es incorrecto";
+  } else if (!form.profesion.trim()) {
+    errors.profesion = "El campo 'profesion' es requerido";
+  } else if (!regexName.test(form.profesion.trim())) {
+    errors.profesion = "El campo 'profesion' es incorrecto";
+  } else if (!form.password.trim()) {
+    errors.password = "El campo 'password' es requerido";
+  } else if (form.password.length < 8) {
+    errors.password = "El campo 'password' debe contener mas de 8 caracteres";
+  } else if (!form.password_confirmation.trim()) {
+    errors.password_confirmation = "Este campo es requerido!";
+  } else if (form.password_confirmation !== form.password) {
+    errors.password_confirmation =
+      "El campo debe coincidir con el campo de password";
+  }
+
+  return errors;
+};
+
+let styles = {
+  fontWeight: "bold",
+  color: "#dc3545",
+};
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
+const interes = [
+  "Voluntariado",
+  "Comunicaciones",
+  "Desarrollo de Fondos",
+  "Gestión Comunitaria",
+  "Administración y Finanzas",
+  "Vivienda y Habitat",
+  "Gestión de tiempo",
+  "Liderazgo",
+  "Gestión de Proyectos",
+  "Autoconocimiento",
+  "Modelo de trabajo TECHO",
+];
 
 function MiInformación() {
   const usuario = useSelector((state) => state.usuario);
+  const { form, errors, handleChanges, handleBlur } = useValidation(
+    initialForm,
+    validationsForm
+  );
 
+  const navigate = useNavigate();
   //estados para regiones
   const [paises, setPaises] = useState([]);
   const [provincias, setProvincias] = useState([]);
   const [localidades, setLocalidades] = useState([]);
-  //info de usuario loggeado
-  const [loggedUser, setLoggedUser] = useState({});
+  const pais = CustomHook("");
+  const provincia = CustomHook("");
+  const localidad = CustomHook("");
 
-  // select para la datapicker (Fecha de nna)
-  const [locale] = useState("fr");
-  const [value, setValue] = useState(new Date());
-  //imputs
-  const { form, handleChange } = useForm();
-  const [pais, setPais] = useState("");
-  const [provincia, setProvincia] = useState("");
+  //inputs
+  const [recibirMails, setRecibirMails] = useState(0);
   const [intereses, setIntereses] = useState([]);
+  const [genero, setGenero] = useState("Prefiero no decirlo");
+  const estudios = CustomHook("");
+  const apellidoMaterno = CustomHook("");
+  let FechaMinima = new Date(new Date() - 31536000000 * 100)
+    .toISOString()
+    .split("T")[0];
+  let FechaMaxima = new Date(new Date() - 31536000000 * 10)
+    .toISOString()
+    .split("T")[0];
+
+  const handleMail = () => {
+    setRecibirMails((prev) => (prev === 0 ? 1 : 0));
+  };
 
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/regiones/paises")
       .then((res) => setPaises(res.data))
       .catch((err) => console.log(err));
-
-    superagent
-      .get("ruta de api para datos de usuario loggeado + token")
-      .then((usrInfo) => setLoggedUser(usrInfo));
   }, []);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/api/regiones/paises/${pais}/provincias`)
+      .get(`http://localhost:3001/api/regiones/paises/${pais.value}/provincias`)
       .then((res) => setProvincias(res.data))
       .catch((err) => console.log(err));
-  }, [pais]);
+  }, [pais.value]);
 
   useEffect(() => {
     axios
       .get(
-        `http://localhost:3001/api/regiones/paises/${pais}/provincias/${provincia}/localidades`
+        `http://localhost:3001/api/regiones/paises/${pais.value}/provincias/${provincia.value}/localidades`
       )
       .then((res) => setLocalidades(res.data))
       .catch((err) => console.log(err));
-  }, [provincia]);
+  }, [provincia.value]);
 
   const theme = useTheme();
 
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setIntereses(value);
+  };
+
+  const successAlert = () => {
+    swal({
+      title: "Registro exitoso!",
+      text: "Dirigite a Ingresar para loguearte",
+      icon: "success",
+      timer: "5000",
+    });
+  };
+
+  const errorAlert = () => {
+    swal({
+      title: "Error",
+      text: "Complete los campos obligatorios correctamente",
+      button: "Aceptar",
+      icon: "error",
+    });
+  };
+
+  let envio = {
+    ...form,
+    idPais: parseInt(pais.value),
+    idProvincia: parseInt(provincia.value),
+    idLocalidad: parseInt(localidad.value),
+    estudios: estudios.value,
+    intereses: JSON.stringify(intereses),
+    apellidoMaterno: apellidoMaterno.value,
+    acepta_marketing: recibirMails,
+    recibirMails: recibirMails,
+    telefono: "0",
+    sexo: genero,
+    idUnidadOrganizacional: 0,
+  };
+
+  // ESTE POST HAY QUE VER
   const handleSubmit = (e) => {
-    e.preventDefault();
-	superagent.post("https://sandbox.actividades.techo.org/api/editPersona/12345", {...form, pais, provincia})
-	.then(() => {
-		axios.put("ruta editar usuario db", {intereses})
-		.then(() => swal({
-			title: "Perfil editado",
-			icon: "success",
-			timer: "2000",
-		}))
-	})
-	.catch(err => console.log(err))
+    // e.preventDefault();
+    // superagent
+    //   .post("https://sandbox.actividades.techo.org/api/editPersona/12345", {
+    //     ...form,
+    //     pais,
+    //     provincia,
+    //   })
+    //   .then(() => {
+    //     axios.put("ruta editar usuario db", { intereses }).then(() =>
+    //       swal({
+    //         title: "Perfil editado",
+    //         icon: "success",
+    //         timer: "2000",
+    //       })
+    //     );
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   return (
-    <div className="mainContainer">
-      <div className="secondContainer">
-        <p className="Title">
-          {`Bienvenido, ${u.nombres} (mail@provicional.com)`}
-        </p>
-        <p className="subtitle">
-          Aquí podrás realizar cambios en tu pérfil. También podés{" "}
+    <div>
+      <h1 className="TitleRegister">Datos Personales</h1>
+      <hr />
+      <br />
+      <div className="subtitle2" style={{ display: "flex" }}>
+        <p>
+          Aquí podrás realizar cambios en tu perfil. También podés{" "}
           <a href="https://actividades.techo.org/perfil/cambiar_email">
             cambiar tu dirección de email.
           </a>
         </p>
+      </div>
 
-        <br />
-        <br />
-        <Divider />
-        <br />
+      <form onSubmit={handleSubmit}>
+        <div className="contenedor-formulario">
+          <label htmlFor="selector" className="label">
+            <p>NOMBRES *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="text"
+              name="nombres"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.nombres}
+              required
+            />
+            {errors.nombres && <p style={styles}>{errors.nombres}</p>}
+          </label>
 
-        <h1 className="formTitle">Datos Personales</h1>
+          <label htmlFor="apellidoPaterno" className="label">
+            <p>APELLIDO PATERNO *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="text"
+              name="apellidoPaterno"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.apellidoPaterno}
+              required
+            />
+            {errors.apellidoPaterno && (
+              <p style={styles}>{errors.apellidoPaterno}</p>
+            )}
+          </label>
 
-        <div class="row">
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2} style={{ width: "90%" }}>
-              <Grid item lg={6} sm={12}>
-                <label for="selector" className="label">
-                  <p>Nombres</p>
-                </label>
-                <TextField
-                  size="small"
-                  lg={10}
-                  sm={12}
-                  id="nombres"
-                  name="nombres"
-                  onChange={handleChange}
-                  defaultValue={usuario.nombres}
-                />
-              </Grid>
+          <label htmlFor="selector" className="label">
+            <p>FECHA DE NACIMIENTO *</p>
+            <input
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              className="input-fecha"
+              type="date"
+              name="fechaNacimiento"
+              value={form.fechaNacimiento}
+              min={FechaMinima}
+              max={FechaMaxima}
+              onKeyDown={(e) => e.preventDefault()}
+              required
+            />
+            <span className="validity"></span>
+            {errors.fechaNacimiento && (
+              <p style={styles}>{errors.fechaNacimiento}</p>
+            )}
+          </label>
 
-			<div class="row">
-				<form onSubmit={handleSubmit}>
-				<Grid container spacing={2} style={{width:"90%"}}>
-					
-					<Grid item lg={6} sm={12}>
-						<label for="selector" className="label">
-						<p>Nombres</p>
-						</label>
-						<TextField
-						size="small"
-						className="field"
-						id="nombres"
-						name="nombres"
-						onChange={handleChange}
-						/>
-					</Grid>
-					
-					<Grid item lg={6} sm={12}>
-						<label for="selector" className="label">
-						<p>APELLIDO PATERNO</p>
-						</label>
-						<TextField
-						size="small"
-						className="field"
-						id="nombres"
-						name="nombres"
-						onChange={handleChange}
-						/>
-					</Grid>
+          <label htmlFor="selector" className="label">
+            <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="text"
+              name="dni"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.dni}
+              required
+            />
+            {errors.dni && <p style={styles}>{errors.dni}</p>}
+          </label>
 
-					<Grid item lg={6} sm={12}>
-						<label for="selector" className="label">
-						<p>FECHA DE NACIMIENTO</p>
-						</label>
-						<LocalizationProvider
-						dateAdapter={AdapterDateFns}
-						locale={localeMap[locale]}
-						>
-						<DatePicker
-							mask={maskMap[locale]}
-							value={value}
-							onChange={(newValue) => setValue(newValue)}
-							renderInput={(params) => <TextField className="field" {...params} />}
-							// {...fechaNacimiento}
-						/>
-						{/* {fechaDeNacimientoErr ? (
-							<div className="errorFormMsg">{fechaDeNacimientoErr}</div>
-							) : (
-							""
-							)} */}
-                </LocalizationProvider>
-              </Grid>
+          <label htmlFor="selector" className="label">
+            <p>PROFESIÓN / OCUPACIÓN*</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="text"
+              name="profesion"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.profesion}
+              required
+            />
+            {errors.profesion && <p style={styles}>{errors.profesion}</p>}
+          </label>
 
-              <Grid item lg={6} sm={12}>
-                <FormControl component="fieldset">
-                  <FormLabel component="legend">Género</FormLabel>
-                  <RadioGroup row name="sexo" onChange={handleChange}>
-                    <FormControlLabel
-                      value="mujer"
-                      control={<Radio />}
-                      label="mujer"
-                    />
-                    <FormControlLabel
-                      value="hombre"
-                      control={<Radio />}
-                      label="hombre"
-                    />
-                    <FormControlLabel
-                      value="otrx"
-                      control={<Radio />}
-                      label="otrx"
-                    />
-                    <FormControlLabel
-                      value="prefiero no decirlo"
-                      control={<Radio />}
-                      label="prefiero no decirlo"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
+          <label htmlFor="selector" className="label">
+            <p>TELEFONO MOVIL *</p>
+            <TextField
+              className="text-field"
+              size="small"
+              type="text"
+              name="telefonoMovil"
+              onBlur={handleBlur}
+              onChange={handleChanges}
+              value={form.telefonoMovil}
+              required
+            />
+            {errors.telefonoMovil && (
+              <p style={styles}>{errors.telefonoMovil}</p>
+            )}
+          </label>
+          <label htmlFor="selector" className="label">
+            <p>PAÍS *</p>
+            <select {...pais} className="form-select">
+              {paises.map((pais) => (
+                <option key={pais.id} value={pais.id}>
+                  {pais.nombre}
+                </option>
+              ))}
+            </select>
+          </label>
 
-					<Grid item lg={6} sm={12}>
-						<label for="selector" className="label">
-						<p>NUMERO DE DOCUMENTO/PASAPORTE</p>
-						</label>
-						<TextField 
-						className="field"
-						name="DNI"
-						size="small" 
-						id="fullWidth"
-						onChange={handleChange} 
-						/>
-					</Grid>
+          <label htmlFor="selector" className="label">
+            <p>PROVINCIA </p>
+            <select {...provincia} className="form-select">
+              {provincias.map((provincia) => (
+                <option key={provincia.id} value={provincia.id}>
+                  {provincia.provincia}
+                </option>
+              ))}
+            </select>
+          </label>
 
-					<Grid item lg={6} sm={12}>
-						<label for="selector" className="label">
-						<p>PAIS </p>
-						<select 
-						className="field"
-						name="pais"
-						onChange={(e)=> setPais(e.target.value)}
-						>
-							{paises.map(pais => (
-							<option key={pais.id} value={pais.id}>{pais.nombre}</option>
-							))}
-						</select>
-						</label>
-					</Grid>
-					
-					<Grid item lg={6} sm={12}>
-						<label for="selector" className="label">
-							<p>PROVINCIA</p>
-						<select
-						className="field"
-						name="provincia"
-						onChange={(e)=> setProvincia(e.target.value)}
-						>
-							{provincias.map(provincia => (
-								<option key={provincia.id} value={provincia.id}>{provincia.provincia}</option>
-							))}
-						</select>
-						</label>
-					</Grid>
+          <label htmlFor="selector" className="label">
+            <p>ESTUDIOS</p>
+            <TextField
+              className="text-field"
+              size="small"
+              id="fullWidth"
+              {...estudios}
+            />
+          </label>
 
-					<Grid item lg={6} sm={12}>
-						<label for="selector" className="label">
-						<p>LOCALIDAD</p>
-						<select
-						className="field"
-						name="localidad"
-						onChange={handleChange}
-						>
-							{localidades.map(localidad => (
-							<option key={localidad.id} value={localidad.id}>{localidad.localidad}</option>
-							))}
-						</select>
-						</label>
-					</Grid>
+          <label htmlFor="selector" className="label">
+            <p>LOCALIDAD </p>
+            <select {...localidad} className="form-select">
+              {localidades.map((localidad) => (
+                <option key={localidad.id} value={localidad.id}>
+                  {localidad.localidad}
+                </option>
+              ))}
+            </select>
+          </label>
 
-					<Grid item lg={6} sm={12}>
-						<label for="selector" className="label">
-						<p>APELLIDO MATERNO </p>
-						</label>
-						<TextField size="small" className="field" id="nombres" name="nombres"/>
-					</Grid>
-
-					<Grid item lg={6} sm={12}>
-						<label for="selector" className="label">
-						<p>TELEFONO </p>
-						</label>
-						<TextField size="small" id="fullWidth" className="field"/>
-					</Grid>
-
-					<Grid item lg={6} sm={12}>
-						<label for="selector" className="label">
-						<p>ESTUDIOS</p>
-						</label>
-						<TextField size="small" id="fullWidth" className="field" />
-					</Grid>
-
-					<Grid item lg={6} sm={12}>
-						<label for="selector" className="label">
-						<p>PROFESIÓN </p>
-						</label>
-						<TextField
-						className="field"
-						name="profesion"
-						id="profesion"
-						size="small"
-						onChange={handleChange}
-						/>
-					</Grid>
-
-					<Grid item lg={6} sm={12}>
-						<label for="selector" className="label">
-							<p>TEMATICAS/AREAS DE INTERES EN TECHO</p>
-						</label>
-						<Select
-						className="field"
-						id="demo-multiple-chip"
-						multiple
-						value={intereses}
-						onChange={(e)=> setIntereses(e.target.value)}
-						input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-						renderValue={(selected) => (
-							<Box>
-							{selected.map((value) => (
-								<Chip key={value} label={value} />
-							))}
-							</Box>
-						)}
-						MenuProps={MenuProps}
-						>
-						{interes.map((name) => (
-							<MenuItem
-							key={name}
-							value={name}
-							style={getStyles(name, intereses, theme)}
-							>
-							{name}
-							</MenuItem>
-						))}
-						</Select>
-					</Grid>
-
-              <Grid item lg={6} sm={12}>
-                <label for="selector" className="label">
-                  <p>TEMATICAS/AREAS DE INTERES EN TECHO</p>
-                </label>
-                <Select
-                  id="demo-multiple-chip"
-                  multiple
-                  value={intereses}
-                  onChange={(e) => setIntereses(e.target.value)}
-                  input={
-                    <OutlinedInput id="select-multiple-chip" label="Chip" />
-                  }
-                  renderValue={(selected) => (
-                    <Box>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
-                    </Box>
-                  )}
-                  MenuProps={MenuProps}
-                >
-                  {interes.map((name) => (
-                    <MenuItem
-                      key={name}
-                      value={name}
-                      style={getStyles(name, intereses, theme)}
-                    >
-                      {name}
-                    </MenuItem>
+          <label htmlFor="selector" className="label">
+            <p>TEMÁTICAS/ÁREAS DE INTÉRES *</p>
+            <Select
+              id="demo-multiple-chip"
+              multiple
+              value={intereses}
+              onChange={handleChange}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} />
                   ))}
-                </Select>
-              </Grid>
-            </Grid>
-          </form>
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            >
+              {interes.map((name) => (
+                <MenuItem
+                  key={name}
+                  value={name}
+                  style={getStyles(name, intereses, theme)}
+                >
+                  {name}
+                </MenuItem>
+              ))}
+            </Select>
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>GÉNERO </p>
+            <div className="radio">
+              <label>
+                <input
+                  id="radio-button"
+                  name="genero"
+                  type="radio"
+                  value={genero}
+                  onChange={() => setGenero("Masculino")}
+                />
+                Masculino
+              </label>
+            </div>
+
+            <div className="radio">
+              <label>
+                <input
+                  id="radio-button"
+                  name="genero"
+                  type="radio"
+                  value={genero}
+                  onChange={() => setGenero("Femenino")}
+                />
+                Femenino
+              </label>
+            </div>
+
+            <div className="radio">
+              <label>
+                <input
+                  id="radio-button"
+                  type="radio"
+                  name="genero"
+                  value={genero}
+                  onChange={() => setGenero("Otrx")}
+                />
+                Otrx
+              </label>
+            </div>
+
+            <div className="radio">
+              <label>
+                <input
+                  id="radio-button"
+                  type="radio"
+                  name="genero"
+                  value={genero}
+                  onChange={() => setGenero("Prefiero no decirlo")}
+                />
+                Prefiero no decirlo
+              </label>
+            </div>
+          </label>
         </div>
 
-        <br />
-        <FormControlLabel
-          label="Recibir notificaciones operativas de la plataforma (necesario para mantenerte informado de las actividades en las que participas)"
-          control={<Checkbox />}
-        />
-        <FormControlLabel
-          label="Acepto que TECHO se contacte conmigo para notificarme de eventos y campañas"
-          control={<Checkbox />}
-        />
-        <br />
-        <br />
-
-        <div style={{ alignSelf: "flex-start" }}>
-          <Button
-            id="ingresar"
-            size="medium"
-            variant="outlined"
-            type="submit"
-            sx={{ mr: 0.5 }}
-          >
+        <div id="form-fondo">
+          <Divider className="divisor" />
+          <label htmlFor="selector" className="label" id="checkbox">
+            <input type="checkbox" onClick={handleMail} />
+            Acepto recibir notificaciones por email
+          </label>
+          <Link style={{ textDecoration: "none" }} to="/">
+            <Button variant="text">VOLVER</Button>
+          </Link>
+          <Button id="ingresar" size="medium" variant="outlined" type="submit">
             GUARDAR
           </Button>
           <Button
@@ -409,11 +498,7 @@ function MiInformación() {
             ELIMINAR MI CUENTA
           </Button>
         </div>
-
-        <br />
-        <Divider />
-        <br />
-      </div>
+      </form>
     </div>
   );
 }

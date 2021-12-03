@@ -9,6 +9,25 @@
   color: #212529;
 }
 
+.subtitle2 {
+  font-family: "Montserrat", sans-serif;
+  font-size: medium;
+  text-align: center;
+  margin-top: 2rem;
+  color: inherit;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #212529;
+  justify-content: center;
+  align-content: center;
+}
+
+.redButton {
+  color: white;
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
 .zize12px {
   font-size: 12px !important;
 }
@@ -88,7 +107,7 @@
   margin: 5% 15% 2%;
   display: grid !important;
   grid-template-columns: repeat(2, auto);
-  grid-template-rows: repeat(auto-fit,  7rem);
+  grid-template-rows: repeat(auto-fit, 7rem);
   gap: 2rem 7em;
 }
 
@@ -103,7 +122,7 @@
 
 @media (max-width: 700px) {
   .contenedor-formulario {
-    grid-template-columns: 100% ;
+    grid-template-columns: 100%;
     grid-template-rows: repeat(auto-fit);
   }
 }
