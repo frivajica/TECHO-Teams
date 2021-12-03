@@ -16,7 +16,7 @@ Router.get("/historial/:userId", UsuarioController.getHistorial);
 
 Router.post( "/registrarDesdeActividades", UsuarioController.crearUsuarioEquipos);
 
-Router.put("/editarUsuario", UsuarioController.editarUsuario)
+Router.put("/editarUsuario/:id", UsuarioController.editarUsuario)
 
 Router.get("/:idPersona/misEquipos", UsuarioController.getEquipos)
 
