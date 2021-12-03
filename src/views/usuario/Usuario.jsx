@@ -15,7 +15,6 @@ export const Usuario = () => {
       <TarjetaUsuario usuario={usuario} />
       <Divider variant="middle" className="divisor" />
       <p className="participaciones">
-        Participando en
         <span className="num-proyectos">{` ${cantEquip.length} equipos`}</span>
       </p>
       <Divider variant="middle" className="divisor" />
