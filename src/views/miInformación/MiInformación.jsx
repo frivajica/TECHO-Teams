@@ -92,7 +92,7 @@ const interes = [
 
 function MiInformación() {
   const usuario = useSelector((state) => state.usuario);
-
+  console.log({ usuario: usuario.intereses });
   const initialForm = {
     nombres: usuario.nombres,
     mail: usuario.mail,
@@ -103,7 +103,7 @@ function MiInformación() {
     fechaNacimiento: usuario.fechaNacimiento,
     estudios: usuario.estudios,
     sexo: usuario.sexo,
-    intereses: usuario.intereses,
+    intereses: usuario.intereses ? JSON.parse(usuario.intereses) : "",
     idPais: usuario.idPais,
     idProvincia: usuario.idProvincia,
     idLocalidad: usuario.idLocalidad,
