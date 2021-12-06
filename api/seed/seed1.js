@@ -63,7 +63,7 @@ const personas = [
         idPersona: 791718,
         profesion: "Psicologa",
         estudios: "Psicologia UBA",
-        intereses: `'["Voluntariado", "Comunicaciones"]'`
+        intereses: '["Voluntariado", "Comunicaciones"]'
     },
     {
         idPersona: 791719,
