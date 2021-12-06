@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "concurrently 'npm run server' 'npm run client'",
-    "server": "nodemon api/server.js",
+    "server": "nodemon --inspect api/server.js",
     "client": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
