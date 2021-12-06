@@ -59,49 +59,52 @@ const equipos = [
 ];
 
 const personas = [
-    {
-        idPersona: 791718,
-        profesion: "Psicologa",
-        estudios: "Psicologia UBA",
-        intereses: `'["Voluntariado", "Comunicaciones"]'`
-    },
-    {
-        idPersona: 791719,
-        profesion: "Cocinero",
-        estudios: null,
-        intereses: '["Vivienda y Habitat", "Voluntariado"]'
-    },
-    {
-        idPersona: 791720,
-        profesion: "Ingeniera Industrial",
-        estudios: "Ingenieria UCA",
-        intereses: '["Gestión de tiempo","Liderazgo","Modelo de trabajo TECHO"]'
-    },
-    {
-        idPersona: 791721,
-        profesion: "Publicista",
-        estudios: "Lic. en Publicidad",
-        intereses: '["Gestión Comunitaria", "Administración y Finanzas", "Vivienda y Habitat", "Gestión de Proyectos"]'
-    },
-    {
-        idPersona: 791723,
-        profesion: "Arquitecto",
-        estudios: "Arquitectura - UCOR",
-        intereses: '["Autoconocimiento", "Desarrollo de Fondos", "Vivienda y Habitat"]'
-    },
-    {
-        idPersona: 791724,
-        profesion: "Vendedora",
-        estudios: null,
-        intereses: '["Voluntariado", "Comunicaciones"]'
-    },
-    {
-        idPersona: 791725,
-        profesion: "Contador",
-        estudios: "Universidad Siglo21",
-        intereses: '["Desarrollo de Fondos", "Gestión de tiempo", "Gestión de Proyectos"]'
-    }
-]
+  {
+    idPersona: 791718,
+    profesion: "Psicologa",
+    estudios: "Psicologia UBA",
+    intereses: '["Voluntariado", "Comunicaciones"]',
+  },
+  {
+    idPersona: 791719,
+    profesion: "Cocinero",
+    estudios: null,
+    intereses: '["Vivienda y Habitat", "Voluntariado"]',
+  },
+  {
+    idPersona: 791720,
+    profesion: "Ingeniera Industrial",
+    estudios: "Ingenieria UCA",
+    intereses: '["Gestión de tiempo","Liderazgo","Modelo de trabajo TECHO"]',
+  },
+  {
+    idPersona: 791721,
+    profesion: "Publicista",
+    estudios: "Lic. en Publicidad",
+    intereses:
+      '["Gestión Comunitaria", "Administración y Finanzas", "Vivienda y Habitat", "Gestión de Proyectos"]',
+  },
+  {
+    idPersona: 791723,
+    profesion: "Arquitecto",
+    estudios: "Arquitectura - UCOR",
+    intereses:
+      '["Autoconocimiento", "Desarrollo de Fondos", "Vivienda y Habitat"]',
+  },
+  {
+    idPersona: 791724,
+    profesion: "Vendedora",
+    estudios: null,
+    intereses: '["Voluntariado", "Comunicaciones"]',
+  },
+  {
+    idPersona: 791725,
+    profesion: "Contador",
+    estudios: "Universidad Siglo21",
+    intereses:
+      '["Desarrollo de Fondos", "Gestión de tiempo", "Gestión de Proyectos"]',
+  },
+];
 
 const roles = [
   {
