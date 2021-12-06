@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../config/database");
 
-class Equipo extends Sequelize.Model {}
+class Equipo extends Sequelize.Model { }
 
 Equipo.init(
   {
@@ -10,20 +10,35 @@ Equipo.init(
       allowNull: false,
     },
     cantMiembros: {
-        type: Sequelize.INTEGER,
+      type: Sequelize.INTEGER,
     },
     activo: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true
+      type: Sequelize.BOOLEAN,
+      defaultValue: true
     },
     detalles: {
-        type: Sequelize.TEXT
+      type: Sequelize.TEXT
+    },
+    area: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    paisId: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    sedeId: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    territorioId: { //es el barrio donde trabaja el equipo
+      type: Sequelize.INTEGER
     },
     img: {
-        type: Sequelize.STRING
+      type: Sequelize.STRING
     }
   },
   { sequelize: db, modelName: "equipos" }
-  );
-  
-  module.exports = Equipo;
+);
+
+module.exports = Equipo;

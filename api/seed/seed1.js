@@ -12,6 +12,10 @@ const equipos = [
     nombre: "Detección y Asignación - Rosario",
     cantMiembros: 7,
     activo: true,
+    area: "Voluntariado",
+    paisId: 13,
+    sedeId: 10,
+    territorioId: 598,
     detalles:
       "Todos los fines de semanas recorremos el barrio Puertas Amarrillas de Rosario para evaluar la construcción de viviendas",
     img: "https://images.lavoz.com.ar/resizer/rsDNWT8FMQ0yK2yIjgTiu8MyeNw=/1023x682/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/BY36LF72YVA6HK6O36LXISBLGQ.jpg",
@@ -20,6 +24,10 @@ const equipos = [
     nombre: "Comedor Infantil - La Plata",
     cantMiembros: 5,
     activo: true,
+    area: "Gestion comunitaria",
+    paisId: 13,
+    sedeId: 6,
+    territorioId: 25,
     detalles:
       "Este equipo trabaja en el barrio La Ilusión de La Plata desarrollando un comedor infantil para más de 50 niñxs. Trabajamos con la comunidad desde 2014.",
     img: "https://www.expoknews.com/wp-content/uploads/2018/01/DSC_0325-1024x683.jpg",
@@ -28,6 +36,10 @@ const equipos = [
     nombre: "Coordinación general de construcciones - GBA",
     cantMiembros: 4,
     activo: true,
+    area:"Vivienda y Habitat",
+    paisId: 13,
+    sedeId: 2,
+    territorioId: null, //no tiene territorio especifico
     detalles:
       "Nos encargamos de la organización y planificación de las construcciones que Techo lleva a cabo en el Gran Buenos Aires.",
     img: "https://www.bbva.com/wp-content/uploads/2016/06/Voluntariado_BBVAPY_7-1024x768.jpg",
@@ -36,6 +48,10 @@ const equipos = [
     nombre: "Reparación de veredas - Nueva Córdoba",
     cantMiembros: 6,
     activo: true,
+    area: "Vivienda y Habitat",
+    paisId: 13,
+    sedeId: 8,
+    territorioId: 663,
     detalles:
       "Nuestro equipo se encarga de la reparación y construcción de nuevas veredas en todo el barrio de Nueva Córdoba gracias a los aportes obtenidos en la colecta del 2015.",
     img: "https://noticiasdevillalaangostura.com/wp-content/uploads/2020/10/Asfalto-21.10-1-e1603293272248.jpg",
@@ -44,6 +60,10 @@ const equipos = [
     nombre: "Coordinación Colecta 2018",
     cantMiembros: 4,
     activo: true,
+    area: "Desarrollo de Fondos",
+    paisId: 13,
+    sedeId: 1,
+    territorioId: null,
     detalles:
       "Nos encargamos de la coordinación general de la colecta 2018 para Argentina.",
     img: "https://lh3.googleusercontent.com/proxy/rEA3Gvovw0LpYH-J_1XiIC3yyRGaLtUlrQ3xsTxkDhVnOGI7uAjQNmFxZNNbJgwZp4w8fIu5U3WfeS8fpvOLaByrcZ0CHLa92jLF4lXtgn-nLROGUtwsPBFSUA",
@@ -52,6 +72,10 @@ const equipos = [
     nombre: "Apoyo Escolar - Zárate",
     cantMiembros: 5,
     activo: true,
+    area:"Voluntariado",
+    paisId: 13,
+    sedeId: 3,
+    territorioId: 52,
     detalles:
       "Somos un equipo que se encarga de brindar apoyo escolar para los niños y niñas de los barrios de Zárate en los que TECHO está presente.",
     img: "http://www.columbia.edu.py/images/contenido/ID1351-I1-20190802-5d44f9b713eb4.jpg",
