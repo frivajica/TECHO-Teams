@@ -79,7 +79,7 @@ class EquipoController {
             .catch(err => res.status(500).send(err));
     }
 
-    static changeRole(req, res) {
+    static changeRole(req, res) { //Cambiar rol de usuario en un equipo
         UsuarioEnEquipo.findOne({ where: { equipoId: req.params.id, usuarioIdPersona: req.params.userId, activo: true } })
             .then(usrEnEquipo => {
                 Role.findOne({ where: { id: req.params.roleId, activo: true } })
@@ -111,7 +111,7 @@ class EquipoController {
             .catch(err => res.status(500).send(err));
     }
 
-    static removeUser(req, res) {
+    static removeUser(req, res) { //Esto solo lo realiza el coord del equipo
         UsuarioEnEquipo.update({
             activo: false
         }, {
@@ -149,7 +149,7 @@ class EquipoController {
             .catch(err => res.status(500).send(err))
     }
 
-    static createRole(req, res) {
+    static createRole(req, res) { //HABRIA QUE BORRARLO, LE SACAMOS LOS ROLES A LOS EQUIPOS
         Role.create(req.body)
             .then(newRole => {
                 Equipo.findOne({ where: { id: req.params.id } })
@@ -160,7 +160,7 @@ class EquipoController {
             .catch(err => res.status(500).send(err));
     }
 
-    static getRoles(req, res) {
+    static getRoles(req, res) { //TMB HABRIA QUE BORRARLO
         Equipo.findOne({ where: { id: req.params.id } })
             .then(equipo => equipo.getRoles())
             .then(roles => res.status(201).send(roles))
