@@ -102,6 +102,25 @@ function getStyles(name, personName, theme) {
   };
 }
 
+const listaEstudios = [
+  "",
+  "Finanzas/Contabilidad",
+  "Administración/Economía",
+  "Ingeniería",
+  "Derecho/Abogacía",
+  "Ciencias Sociales",
+  "Sociogía",
+  "Historia",
+  "Arte",
+  "Recursos Humanos",
+  "Psicología/Psiquiatría",
+  "Medicina",
+  "Diseño",
+  "Arquitectura",
+  "Ciencias Exactas",
+  "Informática/Programación",
+];
+
 const interes = [
   "Voluntariado",
   "Comunicaciones",
@@ -183,7 +202,7 @@ function Register() {
   const successAlert = () => {
     swal({
       title: "Registro exitoso!",
-      text: "Dirigite a Ingresar para loguearte",
+      text: "Te hemos enviado un mail que debes validar!",
       icon: "success",
       timer: "5000",
     });
@@ -212,6 +231,8 @@ function Register() {
     sexo: genero,
     idUnidadOrganizacional: 0,
   };
+
+  console.log(envio);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -433,13 +454,24 @@ function Register() {
 
           <label htmlFor="selector" className="label">
             <p>ESTUDIOS</p>
+            <select {...estudios} className="form-select">
+              {listaEstudios.map((estudio, i) => (
+                <option key={i} value={estudio}>
+                  {estudio}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {/* <label htmlFor="selector" className="label">
+            <p>ESTUDIOS</p>
             <TextField
               className="text-field"
               size="small"
               id="fullWidth"
               {...estudios}
             />
-          </label>
+          </label> */}
 
           <label htmlFor="selector" className="label">
             <p>TEMÁTICAS/ÁREAS DE INTÉRES *</p>

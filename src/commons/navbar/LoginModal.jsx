@@ -49,10 +49,10 @@ const style = {
   borderRadius: 1,
 };
 
-const errorAlert = () => {
+const errorAlert = (title = "Login fallido", text = "Intentalo nuevamente") => {
   swal({
-    title: "Login fallido",
-    text: "Intentalo nuevamente",
+    title,
+    text,
     button: "Aceptar",
     icon: "error",
   });
