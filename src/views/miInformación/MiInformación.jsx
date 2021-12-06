@@ -10,7 +10,7 @@ import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import { CustomHook } from "../../hooks/CustomHook";
 import { useValidation } from "../../hooks/useValidation";
-// import "../../components/Register.css";
+//import "../../components/Register.css";
 import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
@@ -124,7 +124,7 @@ function MiInformación() {
     fechaNacimiento: usuario.fechaNacimiento.slice(0, 10),
     estudios: usuario.estudios,
     sexo: usuario.sexo,
-    //intereses: usuario.intereses ? JSON.parse(usuario.intereses) : "",
+    intereses: usuario.intereses ? JSON.parse(usuario.intereses) : "",
     idPais: usuario.idPais,
     idProvincia: usuario.idProvincia,
     idLocalidad: usuario.idLocalidad,
