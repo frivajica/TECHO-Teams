@@ -2,7 +2,6 @@ import { usuario as u } from "../../utils/mockData";
 import ButtonBase from "@mui/material/ButtonBase";
 import { CajaDeRoles } from "../cajaDeRoles/CajaDeRoles";
 import "./TarjetaUsuario.css";
-
 import {  useLocation } from 'react-router-dom';
 import { BotonMiInfo } from '../../components/botonMiInfo/BotonMiInfo'
 import moment from 'moment';
