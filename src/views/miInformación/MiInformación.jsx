@@ -276,7 +276,6 @@ function MiInformación() {
               onBlur={handleBlur}
               onChange={handleChanges}
               value={form.nombres}
-              defaultValue={usuario.nombres}
               required
             />
             {errors.nombres && <p style={styles}>{errors.nombres}</p>}
