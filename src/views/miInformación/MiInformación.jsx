@@ -124,7 +124,7 @@ function MiInformación() {
     fechaNacimiento: usuario.fechaNacimiento.slice(0, 10),
     estudios: usuario.estudios,
     sexo: usuario.sexo,
-    intereses: usuario.intereses ? JSON.parse(usuario.intereses) : "",
+    //intereses: usuario.intereses ? JSON.parse(usuario.intereses) : "",
     idPais: usuario.idPais,
     idProvincia: usuario.idProvincia,
     idLocalidad: usuario.idLocalidad,
@@ -416,6 +416,7 @@ function MiInformación() {
               id="demo-multiple-chip"
               multiple
               value={form.intereses}
+              style={{ width: "100%" }}
               onChange={handleChange}
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
               renderValue={(selected) => (

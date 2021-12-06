@@ -217,27 +217,3 @@ class UsuarioController {
 }
 
 module.exports = UsuarioController;
-
-
-/*
-superagent
-    .put(`https://sandbox.actividades.techo.org/api/editPersona/${req.params.id}`)
-    .set('X-API-Key', 'foobar')
-    .set('accept', 'json')
-    .send({
-      idPais,
-      idProvincia,
-      idLocalidad,
-      nombres,
-      apellidoPaterno,
-      apellidoMaterno,
-      fechaNacimiento,
-      telefono,
-      dni,
-      telefonoMovil,
-      sexo,
-      mail,
-      recibirMails,
-      acepta_marketing})
-      .then(updatedUsr => res.status(200).send(updatedUsr))
-*/
