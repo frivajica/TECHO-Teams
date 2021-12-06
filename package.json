@@ -43,7 +43,7 @@
     "client": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "seed": "node api/seed/seed3"
+    "seed": "node api/seed/seed1 && node api/seed/seed2 && node api/seed/seed3"
   },
   "eslintConfig": {
     "extends": [
