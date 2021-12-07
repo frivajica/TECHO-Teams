@@ -9,14 +9,10 @@ import 'moment/locale/es';
 moment.locale("es")
 
 export const TarjetaUsuario = ({usuario}) => {
-  
   const location = useLocation();
   let soyYo = `/${usuario.idPersona}` ===  location.pathname;
-  
-  const creado = usuario.createdAt.slice(0,10)
-  console.log("creado:", creado)
-  let momentFromNow = moment(creado, "YYYY MM DD").fromNow(true)
-  momentFromNow = momentFromNow.slice(3, 7) == "hora" ? "Menos de un día" : momentFromNow;
+  const creado = usuario.createdAt.slice(0, 10);
+  const momentFromNow = moment(creado, "YYYY-MM-DD").fromNow().slice(5);
 
   return (
     <div className="tarjeta-usuario">

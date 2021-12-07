@@ -1,0 +1,28 @@
+.conformacion {
+	width: 85%;
+	margin: 0 auto;
+	display: grid;
+	gap: 3rem;
+}
+
+.presentacion-seccion {
+	margin: 3rem 0 0 0;
+}
+
+#modificar-roles {
+	grid-row: 2;
+}
+
+#agregar-roles {
+	grid-row: 4;
+}
+
+#agregar-roles h2 {
+	margin: 0 0 3rem 0;
+}
+
+.divisor {
+	display: flex;
+  width: 70%;
+	justify-self: center;
+}
