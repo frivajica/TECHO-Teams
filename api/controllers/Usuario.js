@@ -120,19 +120,17 @@ class UsuarioController {
           where: { idPersona: userActivs.user.idPersona },
         })
           .then((user) =>
-            res
-              .status(200)
-              .send(
-                !user
-                  ? { ...userActivs.user, token: userActivs.token }
-                  : !userActivs.user.email_verified_at
-                  ? { error: "Usuario debe validar mail" }
-                  : {
-                      ...user.dataValues,
-                      ...userActivs.user,
-                      token: userActivs.token,
-                    }
-              )
+            res.status(200).send(
+              !user
+                ? { ...userActivs.user, token: userActivs.token }
+                : !userActivs.user.email_verified_at
+                ? { error: "Usuario debe validar mail" }
+                : {
+                    ...user.dataValues,
+                    ...userActivs.user,
+                    token: userActivs.token,
+                  }
+            )
           )
           .catch((err) => console.log("no funcionaaaa pero casi", err));
       })
