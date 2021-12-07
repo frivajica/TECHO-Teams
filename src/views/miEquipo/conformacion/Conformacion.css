@@ -11,6 +11,8 @@
 
 #modificar-roles {
 	grid-row: 2;
+  display: grid;
+	gap: 3rem;
 }
 
 #agregar-roles {
