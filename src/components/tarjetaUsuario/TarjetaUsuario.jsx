@@ -2,7 +2,6 @@ import { usuario as u } from "../../utils/mockData";
 import ButtonBase from "@mui/material/ButtonBase";
 import { CajaDeRoles } from "../cajaDeRoles/CajaDeRoles";
 import "./TarjetaUsuario.css";
-
 import {  useLocation } from 'react-router-dom';
 import { BotonMiInfo } from '../../components/botonMiInfo/BotonMiInfo'
 import moment from 'moment';
@@ -10,13 +9,10 @@ import 'moment/locale/es';
 moment.locale("es")
 
 export const TarjetaUsuario = ({usuario}) => {
-  
   const location = useLocation();
   let soyYo = `/${usuario.idPersona}` ===  location.pathname;
-  
-  const creado = usuario.createdAt.slice(0, 10)
-  const momentFromNow = moment(creado, "YYYY-MM-DD").fromNow().slice(5)
-  
+  const creado = usuario.createdAt.slice(0, 10);
+  const momentFromNow = moment(creado, "YYYY-MM-DD").fromNow().slice(5);
 
   return (
     <div className="tarjeta-usuario">
