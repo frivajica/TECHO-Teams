@@ -13,12 +13,12 @@ export const Conformacion = () => {
         </p>
       </div>
       <div id="modificar-roles">
-        {/* mapear esto */} <TarjetaRoles searchBar />
+        {/* mapear esto */} <TarjetaRoles />
       </div>
       <Divider variant="middle" className="divisor" />
       <div id="agregar-roles">
 				<h2>Añadir rol</h2>
-        <TarjetaRoles searchBar/>
+        <TarjetaRoles/>
       </div>
     </div>
   );
