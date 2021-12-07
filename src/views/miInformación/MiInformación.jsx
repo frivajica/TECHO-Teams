@@ -76,6 +76,25 @@ function getStyles(name, personName, theme) {
   };
 }
 
+const listaEstudios = [
+  "",
+  "Finanzas/Contabilidad",
+  "Administración/Economía",
+  "Ingeniería",
+  "Derecho/Abogacía",
+  "Ciencias Sociales",
+  "Sociogía",
+  "Historia",
+  "Arte",
+  "Recursos Humanos",
+  "Psicología/Psiquiatría",
+  "Medicina",
+  "Diseño",
+  "Arquitectura",
+  "Ciencias Exactas",
+  "Informática/Programación",
+];
+
 const interes = [
   "Voluntariado",
   "Comunicaciones",
@@ -97,12 +116,12 @@ function MiInformación() {
   const [paises, setPaises] = useState([]);
   const [provincias, setProvincias] = useState([]);
   const [localidades, setLocalidades] = useState([]);
-
+  console.log(provincias);
   //inputs
   const [recibirMails, setRecibirMails] = useState(
     usuario.recibirMails === 1 ? 1 : 0
   );
-  const [intereses, setIntereses] = useState([]);
+  const [intereses, setIntereses] = useState(JSON.parse(usuario.intereses));
   const [genero, setGenero] = useState("Prefiero no decirlo");
   const apellidoMaterno = CustomHook("");
   let FechaMinima = new Date(new Date() - 31536000000 * 100)
@@ -111,8 +130,6 @@ function MiInformación() {
   let FechaMaxima = new Date(new Date() - 31536000000 * 10)
     .toISOString()
     .split("T")[0];
-
-  console.log({ usuario: usuario.intereses });
 
   const initialForm = {
     nombres: usuario.nombres,
@@ -124,20 +141,18 @@ function MiInformación() {
     fechaNacimiento: usuario.fechaNacimiento.slice(0, 10),
     estudios: usuario.estudios,
     sexo: usuario.sexo,
-    intereses: usuario.intereses ? JSON.parse(usuario.intereses) : "",
+    intereses: intereses,
     idPais: usuario.idPais,
     idProvincia: usuario.idProvincia,
     idLocalidad: usuario.idLocalidad,
     recibirMails: recibirMails,
   };
 
-  console.log(initialForm);
-
   const estudios = CustomHook(initialForm.estudios);
   const pais = CustomHook(initialForm.idPais);
   const provincia = CustomHook(initialForm.idProvincia);
   const localidad = CustomHook(initialForm.idLocalidad);
-
+  console.log(provincia);
   const { form, errors, handleChanges, handleBlur } = useValidation(
     initialForm,
     validationsForm
@@ -176,6 +191,7 @@ function MiInformación() {
     const {
       target: { value },
     } = event;
+    console.log("------> valuess", value);
     setIntereses(value);
   };
 
@@ -211,6 +227,7 @@ function MiInformación() {
     sexo: genero,
     idUnidadOrganizacional: 0,
   };
+
   console.log(envio);
   // ESTE POST HAY QUE VER
   const handleSubmit = (e) => {
@@ -390,13 +407,31 @@ function MiInformación() {
 
           <label htmlFor="selector" className="label">
             <p>ESTUDIOS</p>
+            <select {...estudios} className="form-select">
+              {listaEstudios.map((estudio, i) =>
+                // -> initialForm.pais -> 13
+                estudio === initialForm.estudios ? (
+                  <option key={i} value={estudio} selected="selected">
+                    {estudio}
+                  </option>
+                ) : (
+                  <option key={i} value={estudio}>
+                    {estudio}
+                  </option>
+                )
+              )}
+            </select>
+          </label>
+
+          {/* <label htmlFor="selector" className="label">
+            <p>ESTUDIOS</p>
             <TextField
               className="text-field"
               size="small"
               id="fullWidth"
               {...estudios}
             />
-          </label>
+          </label> */}
 
           <label htmlFor="selector" className="label">
             <p>LOCALIDAD </p>
@@ -414,7 +449,7 @@ function MiInformación() {
             <Select
               id="demo-multiple-chip"
               multiple
-              value={form.intereses}
+              value={intereses}
               style={{ width: "100%" }}
               onChange={handleChange}
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}

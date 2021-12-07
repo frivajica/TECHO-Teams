@@ -1,0 +1,89 @@
+.tarjeta-usuario {
+    flex-grow: 1;
+    margin: 7vh 8vw;
+    justify-self: flex-end;
+  }
+  
+  .grid-usuario {
+    display: grid;
+    grid-template-columns: 200px auto;
+    grid-template-rows: auto;
+    gap: 20px;
+  }
+  
+  .nombre-usuario {
+    grid-column: 2 / span 2;
+    grid-row: 1;
+  }
+  
+  .contenedor-roles {
+    grid-column: 2 / span 3;
+    grid-row: 2;
+  }
+  
+  .antiguedad-usuario {
+    grid-column: 4;
+    grid-row: 1;
+    justify-self: flex-end;
+    align-self: center;
+  }
+  
+  .avatar-usuario {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+  }
+  
+  .avatar {
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+  }
+  
+  #ripple-avatar {
+    border-radius: 25px;
+  }
+  
+  #boton-mi-info {
+    grid-column: 4;
+    grid-row: 3;
+    width: 15em;
+    justify-self: center;
+  }
+  
+  @media (max-width: 700px) {
+    .grid-usuario {
+      grid-template-columns: auto;
+      grid-template-rows: 200px auto;
+      gap: 20px;
+      align-items: center;
+      justify-items: center;
+    }
+  
+    .nombre-usuario {
+      grid-column: 1;
+      grid-row: 2;
+    }
+  
+    .contenedor-roles {
+      grid-column: 1;
+      grid-row: 3;
+    }
+  
+    .antiguedad-usuario {
+      grid-column: 1;
+      grid-row: 4;
+      justify-self: center;
+    }
+  
+    .avatar-usuario {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  
+    #boton-mi-info {
+      grid-column: 1;
+      grid-row: 5;
+    }
+  }
+  

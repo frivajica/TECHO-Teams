@@ -4,7 +4,9 @@ const { UsuarioController } = require("../controllers");
 
 Router.get("/", UsuarioController.getUsuarios);
 
-Router.get("/", UsuarioController.getUsuario); //un solo usuario
+Router.get("/filtrar/id/:id", UsuarioController.getUsuario); //un solo usuario
+
+Router.get("/filtrar/mail/:mail", UsuarioController.getUsuarioByMail)
 
 Router.post("/", UsuarioController.crearUsuarioEquipos);
 

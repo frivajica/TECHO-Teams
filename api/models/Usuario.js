@@ -24,7 +24,7 @@ Usuario.init(
       type: Sequelize.STRING
     }
   },
-  { sequelize: db, modelName: "usuarios" }
+  { sequelize: db, modelName: "usuarios"}
 );
 
 module.exports = Usuario;

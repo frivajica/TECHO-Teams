@@ -5,10 +5,12 @@ import Footer from "../../commons/footer/Footer";
 import Home from "../../components/home/Home";
 import SignUp from "../../components/completarSignUp/SignUp";
 import Register from "../../components/Register/Register";
+import { Equipo } from "../miEquipo/Equipo";
 import { Usuario } from "../usuario/Usuario";
 import MiInformación from "../miInformación/MiInformación";
 import { useSelector } from "react-redux";
-
+import { CrearEquipo } from "../../components/crearEquipo/CrearEquipo";
+import Search from "../../components/search/Search";
 function App() {
   const usuario = useSelector((state) => state.usuario);
 
@@ -24,6 +26,7 @@ function App() {
               usuario.nombres && !usuario.intereses ? <SignUp /> : <Home />
             }
           />
+          {/* VER DE PRIVATIZAR RUTA SOLO PARA QUIENES NO TENGAN INTERESES */}
           <Route exact path="/completarRegistro" element={<SignUp />} />
           <Route
             exact
@@ -48,6 +51,9 @@ function App() {
               )
             }
           />
+          <Route exact path="/miEquipo" element={<Equipo />} />
+          <Route exact path="/crearEquipo" element={<CrearEquipo />} />
+          <Route exact path="/search" element={<Search />} />
         </Routes>
       </div>
       <Footer />
