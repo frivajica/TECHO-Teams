@@ -1,4 +1,5 @@
 const { Equipo, Usuario, UsuarioEnEquipo, Role } = require('../models');
+const generateAxios = require('../utils/generateAxios');
 
 class EquipoController {
 
@@ -46,27 +47,23 @@ class EquipoController {
             .catch(err => res.status(500).send(err));
     }
 
-    static addUser(req, res) {
-        Equipo.findOne({ where: { id: req.params.id } })
-            .then(equipo => {
-                if (!equipo.activo) return res.send("el equipo no esta activo")
-                Usuario.findOne({ where: { idPersona: req.params.userId } })
-                    .then(usr => {
-                        equipo.addUsuario(usr)
-                            .then(() => {
-                                equipo.createEvento({//evento para el historial del equipo
-                                    descripcion: "nuevo voluntario en el equipo",
-                                    tipo: 1
-                                })
-                                    .then(event => usr.addEvento(event)) //el evento tambien se vincula con el historial del usuario
-                                    .then(() => res.send("usuario agregado"))
-                                    .catch(err => res.status(500).send(err))
-                            })
-                            .catch(err => res.status(500).send(err));
-                    })
-                    .catch(err => res.status(500).send(err));
+    static async addUser(req, res) {
+        try {
+            const equipo = await Equipo.findOne({ where: { id: req.params.id } })
+            if (!equipo.activo) return res.send("el equipo no esta activo")
+            const usr = await Usuario.findOne({ where: { idPersona: req.params.userId } })
+            await equipo.addUsuario(usr)
+            const server = generateAxios(req.body.token)
+            const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
+            const evento = await equipo.createEvento({//evento para el historial del equipo
+                descripcion: `El voluntario ${usrInfo.nombres} se unió al equipo`,
+                tipo: 1
             })
-            .catch(err => res.status(500).send(err));
+            await usr.addEvento(evento)
+            return res.send("usuario agregado")
+        } catch (error) {
+            return res.status(500).send(error)
+        }
     }
 
     static getUsers(req, res) {
@@ -79,67 +76,65 @@ class EquipoController {
             .catch(err => res.status(500).send(err));
     }
 
-    static changeRole(req, res) { //Cambiar rol de usuario en un equipo
-        UsuarioEnEquipo.findOne({ where: { equipoId: req.params.id, usuarioIdPersona: req.params.userId, activo: true } })
-            .then(usrEnEquipo => {
-                Role.findOne({ where: { id: req.params.roleId, activo: true } })
-                    .then(rol => {
-                        usrEnEquipo.setRole(rol) //relaciono rol con tabla intermedia 
-                        return rol
-                    })
-                    .then(rol => {
-                        //busco el usuario para asociar su evento
-                        Usuario.findOne({ where: { idPersona: req.params.userId } })
-                            .then(usr => {
-                                //busco el equipo para asociar su evento
-                                Equipo.findOne({ where: { id: req.params.id } })
-                                    .then(equipo => {
-                                        equipo.createEvento({
-                                            descripcion: "cambió su rol a " + rol.nombre,
-                                            tipo: 2
-                                        })
-                                            .then(event => usr.addEvento(event))
-                                            .then(() => res.send("rol changed"))
-                                            .catch(err => res.status(500).send(err))
-                                    })
-                                    .catch(err => res.status(500).send(err))
-                            })
-                            .catch(err => res.status(500).send(err))
-                    })
-                    .catch(err => res.status(500).send(err));
+    static async changeRole(req, res) { //Cambiar rol de usuario en un equipo
+        try {
+            console.log("im in!!!")
+            const usrEnEquipo = await UsuarioEnEquipo.findOne({ where: { equipoId: req.params.id, usuarioIdPersona: req.params.userId, activo: true } })
+            const rol = await Role.findOne({ where: { id: req.params.roleId, activo: true } })
+            await usrEnEquipo.setRole(rol) //relaciono rol con tabla intermedia 
+            const usr = await Usuario.findOne({ where: { idPersona: req.params.userId } })
+            const equipo = await Equipo.findOne({ where: { id: req.params.id } })
+            console.log("i'll generate the axios", req.body.token)
+            const server = generateAxios(req.body.token)
+            const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
+            console.log("user info recived", usrInfo)
+            const evento = await equipo.createEvento({
+                descripcion: usrInfo.nombres+" cambió su rol a "+rol.nombre,
+                tipo: 2
             })
-            .catch(err => res.status(500).send(err));
+            console.log("event created")
+            await usr.addEvento(evento)
+            return res.send("rol changed")
+        } catch (error) {
+            return res.status(500).send(error)
+        }
     }
 
-    static removeUser(req, res) { //Esto solo lo realiza el coord del equipo
-        UsuarioEnEquipo.update({
-            activo: false
-        }, {
-            where: {
-                usuarioIdPersona: req.params.userId,
-                equipoId: req.params.id
-            }
-        })
-            .then(() => {
-                Equipo.findOne({ where: { id: req.params.id } })
-                    .then(equipo => {
-                        equipo.createEvento({
-                            descripcion: "se elimino al usuario del equipo " + equipo.nombre,
-                            tipo: -1
-                        })
-                            .then(() => res.status(201).send("usuario eliminado del equipo"))
-                            .catch(() => res.status(500).send(err));
-                    })
-                    .catch(() => res.status(500).send(err));
+    static async removeUser(req, res) { //Esto solo lo realiza el coord del equipo
+        try {
+            await UsuarioEnEquipo.update({ activo: false }, {
+                where: {
+                    usuarioIdPersona: req.params.userId,
+                    equipoId: req.params.id
+                }
             })
-            .catch(() => res.status(500).send(err));
+            const server = generateAxios(req.body.token)
+            const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
+            const equipo = await Equipo.findOne({ where: { id: req.params.id } })
+            const evento = await equipo.createEvento({
+                descripcion: `se elimino a ${usrInfo.nombres} del equipo ` + equipo.nombre,
+                tipo: -1
+            })
+            const usuario = await Usuario.findOne({ where: { id: req.params.userId }})
+            await usuario.addEvento(evento)
+            return res.status(201).send("usuario eliminado del equipo")
+        } catch (error) {
+            return res.status(500).send(error)
+        }
     }
 
-    static deleteEquipo(req, res) {
-        Equipo.update({ activo: false }, { where: { id: req.params.id } })
-            .then(() => UsuarioEnEquipo.update({ activo: false }, { where: { equipoId: req.params.id } })
-                .then(() => res.send("equipo desactivado")))
-            .catch(() => res.status(500).send(err));
+    static async deleteEquipo(req, res) {
+        try {
+            await Equipo.update({ activo: false }, { where: { id: req.params.id } })
+            await UsuarioEnEquipo.update({ activo: false }, { where: { equipoId: req.params.id } })
+            const equipo = await Equipo.findOne({ where: { id: req.params.id } })
+            equipo.createEvento({
+                descripcion: `el equipo fué deshabilitado :(`,
+                tipo: -2
+            }).then(() => res.status(201).send("equipo desactivado"))
+        } catch (error) {
+            return res.status(500).send(error)
+        }
     }
 
     static getHistory(req, res) {
@@ -148,24 +143,6 @@ class EquipoController {
             .then(history => res.send(history))
             .catch(err => res.status(500).send(err))
     }
-
-    static createRole(req, res) { //HABRIA QUE BORRARLO, LE SACAMOS LOS ROLES A LOS EQUIPOS
-        Role.create(req.body)
-            .then(newRole => {
-                Equipo.findOne({ where: { id: req.params.id } })
-                    .then(equipo => equipo.addRole(newRole))
-                    .then(() => res.status(201).send(newRole))
-                    .catch(err => res.status(500).send(err));
-            })
-            .catch(err => res.status(500).send(err));
-    }
-
-    static getRoles(req, res) { //TMB HABRIA QUE BORRARLO
-        Equipo.findOne({ where: { id: req.params.id } })
-            .then(equipo => equipo.getRoles())
-            .then(roles => res.status(201).send(roles))
-    }
-
 
 }
 

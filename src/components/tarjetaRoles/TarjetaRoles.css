@@ -1,0 +1,57 @@
+.tarjeta-roles {
+  width: 85%;
+  margin: 0 auto;
+	display: grid;
+  grid-template-columns: 200px 1fr 1fr;
+  gap: 3rem;
+}
+
+.rol-imagen {
+  grid-column: 1;
+  grid-row: 1 ;
+}
+
+#ripple-imagen {
+  border-radius: 25px;
+}
+
+#ripple-imagen img {
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  border-radius: 25px;
+}
+
+#save-icon {
+  border-radius: 100%;
+  grid-column: 3;
+  align-self: center;
+  justify-self: center;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.rol-opciones {
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: 100%;
+  justify-content: flex-start;
+}
+
+#modificar-rol {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+
+#buscar-persona {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#checkbox-rol {
+  margin: 0 -10px;
+  grid-column: 1;
+  grid-row: 3;
+}
