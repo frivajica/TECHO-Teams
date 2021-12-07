@@ -2,6 +2,15 @@ const { Usuario, Evento, UsuarioEnEquipo, Equipo } = require("../models");
 const superagent = require("superagent");
 const axios = require("axios")
 
+const generateAxios = (token) => {
+  const axiosInstance = axios.create({
+    baseURL: 'https://sandbox.actividades.techo.org/api'
+  })
+  // Config de headers de axios para pedidos con autenticación
+  axiosInstance.defaults.headers.common.Authorization = token
+  return axiosInstance
+}
+
 class UsuarioController {
   static getUsuarios(req, res) {
     Usuario.findAll()
@@ -10,9 +19,25 @@ class UsuarioController {
   }
 
   static getUsuario(req, res) {
-    Usuario.findOne({ where: { id: req.params.id } })
+    Usuario.findOne({ where: { idPersona: req.params.id } })
       .then((user) => res.send(user))
       .catch((err) => res.status(500).send(err));
+  }
+
+  static getUsuarioByMail(req, res) {
+    const server = generateAxios(req.headers.authorization)
+   server
+   .get(`/personas/mail/${req.params.mail}`)
+   .then(res => res.data[0])
+   .then(usuarioActivs => {
+    console.log("USUARIO DE ACTIVIS", usuarioActivs) 
+     return Usuario.findOne({where: { idPersona: usuarioActivs.idPersona}})
+     .then(usuarioEqs => {
+      console.log("USUARIO DEeqs", usuarioEqs) 
+      res.status(200).send({...usuarioEqs.dataValues, ...usuarioActivs})
+    })
+    })
+   .catch((err) => console.log({err}))
   }
 
   static crearUsuario(req, res) {
@@ -98,7 +123,7 @@ class UsuarioController {
             .send(
               !user
                 ? userActivs.user
-                : { ...user.dataValues, ...userActivs.user }
+                : { ...user.dataValues, ...userActivs.user, token: userActivs.token }
             )
         );
       })

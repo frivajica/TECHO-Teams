@@ -3,7 +3,6 @@
 // 2--> Al final de esa linea poner 2 "/seed2" y escribir en la consola npm run seed p/seedear seed2.js
 // 3--> Al final de esa linea poner 3 "/seed3" y escribir en la consola npm run seed p/seedear seed3.js
 
-const db = require("../config/database")
 const { Equipo, Usuario } = require("../models")
 const axios = require("axios")
 
@@ -36,10 +35,3 @@ getEquipos()
             addUserToEquipos(4, 3, 7)
             addUserToEquipos(5, 1, 6)
         }))
-
-db.sync()
-    .then(() => process.exit(0))
-    .catch((err) => {
-        console.log("Algo salió mal en el proceso: ", err.message);
-        process.exit(1);
-    });
