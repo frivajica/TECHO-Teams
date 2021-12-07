@@ -13,7 +13,7 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
-export const chooseEventContent = (evento, isLast) => {
+export const chooseEventContent = (evento, isLast, i) => {
     let color = "text.secondary", icon = <></>, descripcion = "éste evento no pudo procesarse"
     switch (evento.tipo) {
         case -2: {
@@ -49,9 +49,9 @@ export const chooseEventContent = (evento, isLast) => {
     }
 
     return (
-        <TimelineItem justifyContent="center">
+        <TimelineItem key={i}>
             <TimelineOppositeContent color="text.secondary" sx={{ py: '20px', px: 2 }}>
-                {evento.createdAt.slice(0,10)}
+                {evento.createdAt.slice(8,10)+" / "+evento.createdAt.slice(5,7)+" / "+evento.createdAt.slice(0,4)}
             </TimelineOppositeContent>
             <TimelineSeparator>
                 <TimelineDot color={color} variant="outlined">
