@@ -14,10 +14,14 @@ export const loginRequest = createAsyncThunk(
       .post("http://localhost:3001/api/usuarios/login", {
         mail,
         password,
-        errorAlert,
       })
       .then((res) => {
-        return res.data;
+        if (res.data.error)
+          errorAlert(
+            "Error de logueo",
+            "Recorda verificar tu email para ingresar"
+          );
+        else return res.data;
       })
       .catch(() => errorAlert());
   }

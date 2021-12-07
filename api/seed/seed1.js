@@ -36,7 +36,7 @@ const equipos = [
     nombre: "Coordinación general de construcciones - GBA",
     cantMiembros: 4,
     activo: true,
-    area:"Vivienda y Habitat",
+    area: "Vivienda y Habitat",
     paisId: 13,
     sedeId: 2,
     territorioId: null, //no tiene territorio especifico
@@ -72,7 +72,7 @@ const equipos = [
     nombre: "Apoyo Escolar - Zárate",
     cantMiembros: 5,
     activo: true,
-    area:"Voluntariado",
+    area: "Voluntariado",
     paisId: 13,
     sedeId: 3,
     territorioId: 52,
@@ -83,49 +83,52 @@ const equipos = [
 ];
 
 const personas = [
-    {
-        idPersona: 791718,
-        profesion: "Psicologa",
-        estudios: "Psicologia UBA",
-        intereses: '["Voluntariado", "Comunicaciones"]'
-    },
-    {
-        idPersona: 791719,
-        profesion: "Cocinero",
-        estudios: null,
-        intereses: '["Vivienda y Habitat", "Voluntariado"]'
-    },
-    {
-        idPersona: 791720,
-        profesion: "Ingeniera Industrial",
-        estudios: "Ingenieria UCA",
-        intereses: '["Gestión de tiempo","Liderazgo","Modelo de trabajo TECHO"]'
-    },
-    {
-        idPersona: 791721,
-        profesion: "Publicista",
-        estudios: "Lic. en Publicidad",
-        intereses: '["Gestión Comunitaria", "Administración y Finanzas", "Vivienda y Habitat", "Gestión de Proyectos"]'
-    },
-    {
-        idPersona: 791723,
-        profesion: "Arquitecto",
-        estudios: "Arquitectura - UCOR",
-        intereses: '["Autoconocimiento", "Desarrollo de Fondos", "Vivienda y Habitat"]'
-    },
-    {
-        idPersona: 791724,
-        profesion: "Vendedora",
-        estudios: null,
-        intereses: '["Voluntariado", "Comunicaciones"]'
-    },
-    {
-        idPersona: 791725,
-        profesion: "Contador",
-        estudios: "Universidad Siglo21",
-        intereses: '["Desarrollo de Fondos", "Gestión de tiempo", "Gestión de Proyectos"]'
-    }
-]
+  {
+    idPersona: 791718,
+    profesion: "Psicologa",
+    estudios: "Psicologia UBA",
+    intereses: '["Voluntariado", "Comunicaciones"]',
+  },
+  {
+    idPersona: 791719,
+    profesion: "Cocinero",
+    estudios: null,
+    intereses: '["Vivienda y Habitat", "Voluntariado"]',
+  },
+  {
+    idPersona: 791720,
+    profesion: "Ingeniera Industrial",
+    estudios: "Ingenieria UCA",
+    intereses: '["Gestión de tiempo","Liderazgo","Modelo de trabajo TECHO"]',
+  },
+  {
+    idPersona: 791721,
+    profesion: "Publicista",
+    estudios: "Lic. en Publicidad",
+    intereses:
+      '["Gestión Comunitaria", "Administración y Finanzas", "Vivienda y Habitat", "Gestión de Proyectos"]',
+  },
+  {
+    idPersona: 791723,
+    profesion: "Arquitecto",
+    estudios: "Arquitectura - UCOR",
+    intereses:
+      '["Autoconocimiento", "Desarrollo de Fondos", "Vivienda y Habitat"]',
+  },
+  {
+    idPersona: 791724,
+    profesion: "Vendedora",
+    estudios: null,
+    intereses: '["Voluntariado", "Comunicaciones"]',
+  },
+  {
+    idPersona: 791725,
+    profesion: "Contador",
+    estudios: "Universidad Siglo21",
+    intereses:
+      '["Desarrollo de Fondos", "Gestión de tiempo", "Gestión de Proyectos"]',
+  },
+];
 
 const roles = [
   {

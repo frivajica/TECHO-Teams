@@ -8,6 +8,8 @@ import moment from 'moment';
 import 'moment/locale/es';
 moment.locale("es")
 
+
+
 export const TarjetaUsuario = ({usuario}) => {
   const location = useLocation();
   let soyYo = `/${usuario.idPersona}` ===  location.pathname;

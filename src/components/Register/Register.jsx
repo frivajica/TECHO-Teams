@@ -35,34 +35,15 @@ const validationsForm = (form) => {
   let regexDocu = /^[a-zA-Z0-9_.-]*$/;
   let regexTelefono = /^[0-9]*$/;
 
-  if (!form.nombres.trim()) {
+  if (!form.mail.trim()) {
+    errors.mail = "El campo 'email' es requerido";
+  } else if (!regexMail.test(form.mail.trim())) {
+    errors.mail = "El campo 'email' es incorrecto";
+  } else if (!form.nombres.trim()) {
     errors.nombres = "El campo 'Nombres' es requerido";
   } else if (!regexName.test(form.nombres.trim())) {
     errors.nombres =
       "El campo 'Nombres' sólo acepta letras y espacios en blanco";
-  } else if (!form.mail.trim()) {
-    errors.mail = "El campo 'email' es requerido";
-  } else if (!regexMail.test(form.mail.trim())) {
-    errors.mail = "El campo 'email' es incorrecto";
-  } else if (!form.apellidoPaterno.trim()) {
-    errors.apellidoPaterno = "El campo 'Apellido Paterno' es requerido";
-  } else if (!regexName.test(form.apellidoPaterno.trim())) {
-    errors.apellidoPaterno = "El campo 'Apellido Paterno' es incorrecto";
-  } else if (!form.dni.trim()) {
-    errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es requerido";
-  } else if (!regexDocu.test(form.dni.trim())) {
-    errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es incorrecto";
-  } else if (!form.telefonoMovil.trim()) {
-    errors.telefonoMovil = "El campo 'Telefono Movil' es requerido";
-  } else if (
-    !regexTelefono.test(form.telefonoMovil.trim()) ||
-    form.telefonoMovil.length < 8
-  ) {
-    errors.telefonoMovil = "El campo 'Telefono Movil' es incorrecto";
-  } else if (!form.profesion.trim()) {
-    errors.profesion = "El campo 'profesion' es requerido";
-  } else if (!regexName.test(form.profesion.trim())) {
-    errors.profesion = "El campo 'profesion' es incorrecto";
   } else if (!form.password.trim()) {
     errors.password = "El campo 'password' es requerido";
   } else if (form.password.length < 8) {
@@ -72,6 +53,25 @@ const validationsForm = (form) => {
   } else if (form.password_confirmation !== form.password) {
     errors.password_confirmation =
       "El campo debe coincidir con el campo de password";
+  } else if (!form.apellidoPaterno.trim()) {
+    errors.apellidoPaterno = "El campo 'Apellido Paterno' es requerido";
+  } else if (!regexName.test(form.apellidoPaterno.trim())) {
+    errors.apellidoPaterno = "El campo 'Apellido Paterno' es incorrecto";
+  } else if (!form.dni.trim()) {
+    errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es requerido";
+  } else if (!regexDocu.test(form.dni.trim())) {
+    errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es incorrecto";
+  } else if (!form.profesion.trim()) {
+    errors.profesion = "El campo 'profesion' es requerido";
+  } else if (!regexName.test(form.profesion.trim())) {
+    errors.profesion = "El campo 'profesion' es incorrecto";
+  } else if (!form.telefonoMovil.trim()) {
+    errors.telefonoMovil = "El campo 'Telefono Movil' es requerido";
+  } else if (
+    !regexTelefono.test(form.telefonoMovil.trim()) ||
+    form.telefonoMovil.length < 8
+  ) {
+    errors.telefonoMovil = "El campo 'Telefono Movil' es incorrecto";
   }
 
   return errors;
@@ -101,6 +101,25 @@ function getStyles(name, personName, theme) {
         : theme.typography.fontWeightMedium,
   };
 }
+
+const listaEstudios = [
+  "",
+  "Finanzas/Contabilidad",
+  "Administración/Economía",
+  "Ingeniería",
+  "Derecho/Abogacía",
+  "Ciencias Sociales",
+  "Sociogía",
+  "Historia",
+  "Arte",
+  "Recursos Humanos",
+  "Psicología/Psiquiatría",
+  "Medicina",
+  "Diseño",
+  "Arquitectura",
+  "Ciencias Exactas",
+  "Informática/Programación",
+];
 
 const interes = [
   "Voluntariado",
@@ -183,7 +202,7 @@ function Register() {
   const successAlert = () => {
     swal({
       title: "Registro exitoso!",
-      text: "Dirigite a Ingresar para loguearte",
+      text: "Te hemos enviado un mail que debes validar!",
       icon: "success",
       timer: "5000",
     });
@@ -201,8 +220,8 @@ function Register() {
   let envio = {
     ...form,
     idPais: parseInt(pais.value),
-    idProvincia: parseInt(provincia.value),
-    idLocalidad: parseInt(localidad.value),
+    idProvincia: provincia.value ? parseInt(provincia.value) : 0,
+    idLocalidad: localidad.value ? parseInt(localidad.value) : 0,
     estudios: estudios.value,
     intereses: JSON.stringify(intereses),
     apellidoMaterno: apellidoMaterno.value,
@@ -212,6 +231,8 @@ function Register() {
     sexo: genero,
     idUnidadOrganizacional: 0,
   };
+
+  console.log(envio);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -352,6 +373,17 @@ function Register() {
           </label>
 
           <label htmlFor="selector" className="label">
+            <p>PAÍS *</p>
+            <select {...pais} className="form-select">
+              {paises.map((pais) => (
+                <option key={pais.id} value={pais.id}>
+                  {pais.nombre}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label htmlFor="selector" className="label">
             <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
             <TextField
               className="text-field"
@@ -364,6 +396,17 @@ function Register() {
               required
             />
             {errors.dni && <p style={styles}>{errors.dni}</p>}
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>PROVINCIA </p>
+            <select {...provincia} className="form-select">
+              {provincias.map((provincia) => (
+                <option key={provincia.id} value={provincia.id}>
+                  {provincia.provincia}
+                </option>
+              ))}
+            </select>
           </label>
 
           <label htmlFor="selector" className="label">
@@ -382,24 +425,11 @@ function Register() {
           </label>
 
           <label htmlFor="selector" className="label">
-            <p>PAÍS *</p>
-            <select {...pais} className="form-select">
-              <option></option>
-              {paises.map((pais) => (
-                <option key={pais.id} value={pais.id}>
-                  {pais.nombre}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label htmlFor="selector" className="label">
-            <p>PROVINCIA </p>
-            <select {...provincia} className="form-select">
-            <option></option>
-              {provincias.map((provincia) => (
-                <option key={provincia.id} value={provincia.id}>
-                  {provincia.provincia}
+            <p>LOCALIDAD </p>
+            <select {...localidad} className="form-select">
+              {localidades.map((localidad) => (
+                <option key={localidad.id} value={localidad.id}>
+                  {localidad.localidad}
                 </option>
               ))}
             </select>
@@ -424,25 +454,24 @@ function Register() {
 
           <label htmlFor="selector" className="label">
             <p>ESTUDIOS</p>
+            <select {...estudios} className="form-select">
+              {listaEstudios.map((estudio, i) => (
+                <option key={i} value={estudio}>
+                  {estudio}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {/* <label htmlFor="selector" className="label">
+            <p>ESTUDIOS</p>
             <TextField
               className="text-field"
               size="small"
               id="fullWidth"
               {...estudios}
             />
-          </label>
-
-          <label htmlFor="selector" className="label">
-            <p>LOCALIDAD </p>
-            <select {...localidad} className="form-select">
-            <option></option>
-              {localidades.map((localidad) => (
-                <option key={localidad.id} value={localidad.id}>
-                  {localidad.localidad}
-                </option>
-              ))}
-            </select>
-          </label>
+          </label> */}
 
           <label htmlFor="selector" className="label">
             <p>TEMÁTICAS/ÁREAS DE INTÉRES *</p>

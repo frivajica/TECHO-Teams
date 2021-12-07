@@ -6,4 +6,4 @@ export const Equipo = () => {
       <Conformacion />
     </div>
   );
-}
+};

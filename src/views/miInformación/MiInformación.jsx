@@ -10,7 +10,7 @@ import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import { CustomHook } from "../../hooks/CustomHook";
 import { useValidation } from "../../hooks/useValidation";
-// import "../../components/Register.css";
+//import "../../components/Register.css";
 import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
@@ -36,6 +36,10 @@ const validationsForm = (form) => {
     errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es requerido";
   } else if (!regexDocu.test(form.dni.trim())) {
     errors.dni = "El campo 'NUMERO DE DOCUMENTO/PASAPORTE ' es incorrecto";
+  } else if (!form.profesion.trim()) {
+    errors.profesion = "El campo 'profesion' es requerido";
+  } else if (!regexName.test(form.profesion.trim())) {
+    errors.profesion = "El campo 'profesion' es incorrecto";
   } else if (!form.telefonoMovil.trim()) {
     errors.telefonoMovil = "El campo 'Telefono Movil' es requerido";
   } else if (
@@ -43,10 +47,6 @@ const validationsForm = (form) => {
     form.telefonoMovil.length < 8
   ) {
     errors.telefonoMovil = "El campo 'Telefono Movil' es incorrecto";
-  } else if (!form.profesion.trim()) {
-    errors.profesion = "El campo 'profesion' es requerido";
-  } else if (!regexName.test(form.profesion.trim())) {
-    errors.profesion = "El campo 'profesion' es incorrecto";
   }
   return errors;
 };
@@ -76,6 +76,25 @@ function getStyles(name, personName, theme) {
   };
 }
 
+const listaEstudios = [
+  "",
+  "Finanzas/Contabilidad",
+  "Administración/Economía",
+  "Ingeniería",
+  "Derecho/Abogacía",
+  "Ciencias Sociales",
+  "Sociogía",
+  "Historia",
+  "Arte",
+  "Recursos Humanos",
+  "Psicología/Psiquiatría",
+  "Medicina",
+  "Diseño",
+  "Arquitectura",
+  "Ciencias Exactas",
+  "Informática/Programación",
+];
+
 const interes = [
   "Voluntariado",
   "Comunicaciones",
@@ -92,42 +111,18 @@ const interes = [
 
 function MiInformación() {
   const usuario = useSelector((state) => state.usuario);
-  console.log({ usuario: usuario.intereses });
-  const initialForm = {
-    nombres: usuario.nombres,
-    mail: usuario.mail,
-    apellidoPaterno: usuario.apellidoPaterno,
-    dni: usuario.dni,
-    telefonoMovil: usuario.telefonoMovil,
-    profesion: usuario.profesion,
-    fechaNacimiento: usuario.fechaNacimiento,
-    estudios: usuario.estudios,
-    sexo: usuario.sexo,
-    //intereses: usuario.intereses ? JSON.parse(usuario.intereses) : "",
-    idPais: usuario.idPais,
-    idProvincia: usuario.idProvincia,
-    idLocalidad: usuario.idLocalidad,
-  };
-
-  const { form, errors, handleChanges, handleBlur } = useValidation(
-    initialForm,
-    validationsForm
-  );
-
   const navigate = useNavigate();
   //estados para regiones
   const [paises, setPaises] = useState([]);
   const [provincias, setProvincias] = useState([]);
   const [localidades, setLocalidades] = useState([]);
-  const pais = CustomHook(initialForm.idPais);
-  const provincia = CustomHook(initialForm.idProvincia);
-  const localidad = CustomHook(initialForm.idLocalidad);
-
+  console.log(provincias);
   //inputs
-  const [recibirMails, setRecibirMails] = useState(0);
-  const [intereses, setIntereses] = useState([]);
+  const [recibirMails, setRecibirMails] = useState(
+    usuario.recibirMails === 1 ? 1 : 0
+  );
+  const [intereses, setIntereses] = useState(JSON.parse(usuario.intereses));
   const [genero, setGenero] = useState("Prefiero no decirlo");
-  const estudios = CustomHook(initialForm.estudios);
   const apellidoMaterno = CustomHook("");
   let FechaMinima = new Date(new Date() - 31536000000 * 100)
     .toISOString()
@@ -135,6 +130,33 @@ function MiInformación() {
   let FechaMaxima = new Date(new Date() - 31536000000 * 10)
     .toISOString()
     .split("T")[0];
+
+  const initialForm = {
+    nombres: usuario.nombres,
+    mail: usuario.mail,
+    apellidoPaterno: usuario.apellidoPaterno,
+    dni: usuario.dni,
+    telefonoMovil: usuario.telefonoMovil,
+    profesion: usuario.profesion,
+    fechaNacimiento: usuario.fechaNacimiento.slice(0, 10),
+    estudios: usuario.estudios,
+    sexo: usuario.sexo,
+    intereses: intereses,
+    idPais: usuario.idPais,
+    idProvincia: usuario.idProvincia,
+    idLocalidad: usuario.idLocalidad,
+    recibirMails: recibirMails,
+  };
+
+  const estudios = CustomHook(initialForm.estudios);
+  const pais = CustomHook(initialForm.idPais);
+  const provincia = CustomHook(initialForm.idProvincia);
+  const localidad = CustomHook(initialForm.idLocalidad);
+  console.log(provincia);
+  const { form, errors, handleChanges, handleBlur } = useValidation(
+    initialForm,
+    validationsForm
+  );
 
   const handleMail = () => {
     setRecibirMails((prev) => (prev === 0 ? 1 : 0));
@@ -169,6 +191,7 @@ function MiInformación() {
     const {
       target: { value },
     } = event;
+    console.log("------> valuess", value);
     setIntereses(value);
   };
 
@@ -205,6 +228,7 @@ function MiInformación() {
     idUnidadOrganizacional: 0,
   };
 
+  console.log(envio);
   // ESTE POST HAY QUE VER
   const handleSubmit = (e) => {
     // e.preventDefault();
@@ -325,6 +349,24 @@ function MiInformación() {
           </label>
 
           <label htmlFor="selector" className="label">
+            <p>PAÍS *</p>
+            <select {...pais} className="form-select">
+              {paises.map((pais) =>
+                // -> initialForm.pais -> 13
+                pais.id === initialForm.idPais ? (
+                  <option key={pais.id} value={pais.id} selected="selected">
+                    {pais.nombre}
+                  </option>
+                ) : (
+                  <option key={pais.id} value={pais.id}>
+                    {pais.nombre}
+                  </option>
+                )
+              )}
+            </select>
+          </label>
+
+          <label htmlFor="selector" className="label">
             <p>TELEFONO MOVIL *</p>
             <TextField
               className="text-field"
@@ -340,35 +382,48 @@ function MiInformación() {
               <p style={styles}>{errors.telefonoMovil}</p>
             )}
           </label>
+
           <label htmlFor="selector" className="label">
-            <p>PAÍS *</p>
-            <select {...pais} className="form-select">
-              {paises.map((pais) =>
-                pais.id === initialForm.pais ? (
-                  <option key={pais.id} value={pais.id} selected="selected">
-                    {pais.nombre}
+            <p>PROVINCIA </p>
+            <select {...provincia} className="form-select">
+              {initialForm.idPais &&
+                provincias.map((provincia) =>
+                  provincia.id === initialForm.idProvincia ? (
+                    <option
+                      key={provincia.id}
+                      value={provincia.id}
+                      selected="selected"
+                    >
+                      {provincia.nombre}
+                    </option>
+                  ) : (
+                    <option key={provincia.id} value={provincia.id}>
+                      {provincia.nombre}
+                    </option>
+                  )
+                )}
+            </select>
+          </label>
+
+          <label htmlFor="selector" className="label">
+            <p>ESTUDIOS</p>
+            <select {...estudios} className="form-select">
+              {listaEstudios.map((estudio, i) =>
+                // -> initialForm.pais -> 13
+                estudio === initialForm.estudios ? (
+                  <option key={i} value={estudio} selected="selected">
+                    {estudio}
                   </option>
                 ) : (
-                  <option key={pais.id} value={pais.id}>
-                    {pais.nombre}
+                  <option key={i} value={estudio}>
+                    {estudio}
                   </option>
                 )
               )}
             </select>
           </label>
 
-          <label htmlFor="selector" className="label">
-            <p>PROVINCIA </p>
-            <select {...provincia} className="form-select">
-              {provincias.map((provincia) => (
-                <option key={provincia.id} value={provincia.id}>
-                  {provincia.provincia}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label htmlFor="selector" className="label">
+          {/* <label htmlFor="selector" className="label">
             <p>ESTUDIOS</p>
             <TextField
               className="text-field"
@@ -376,7 +431,7 @@ function MiInformación() {
               id="fullWidth"
               {...estudios}
             />
-          </label>
+          </label> */}
 
           <label htmlFor="selector" className="label">
             <p>LOCALIDAD </p>
@@ -395,7 +450,7 @@ function MiInformación() {
               id="demo-multiple-chip"
               multiple
               value={intereses}
-              style={{width: "100%"}}
+              style={{ width: "100%" }}
               onChange={handleChange}
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
               renderValue={(selected) => (
@@ -419,7 +474,7 @@ function MiInformación() {
             </Select>
           </label>
 
-          <label htmlFor="selector" className="label">
+          {/* <label htmlFor="selector" className="label">
             <p>GÉNERO </p>
             <div className="radio">
               <label>
@@ -472,13 +527,17 @@ function MiInformación() {
                 Prefiero no decirlo
               </label>
             </div>
-          </label>
+          </label> */}
         </div>
 
         <div id="form-fondo">
           <Divider className="divisor" />
           <label htmlFor="selector" className="label" id="checkbox">
-            <input type="checkbox" onClick={handleMail} />
+            <input
+              type="checkbox"
+              onClick={handleMail}
+              checked={recibirMails === 1 ? true : false}
+            />
             Acepto recibir notificaciones por email
           </label>
           <Link style={{ textDecoration: "none" }} to="/">
