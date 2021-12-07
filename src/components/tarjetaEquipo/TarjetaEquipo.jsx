@@ -34,8 +34,8 @@ export const TarjetaEquipo = ({ nombre, inicio, final, roles, activo }) => {
           id="lista-roles"
         >
           {roles.map((value) => (
-            <ButtonBase id="ripple" key={value.descripcion.slice(16)}>
-              <Chip label={value.descripcion.slice(16)} color="primary" />
+            <ButtonBase id="ripple" key={value.nombreRol}>
+              <Chip label={value.nombreRol} color="primary" />
             </ButtonBase>
           ))}
         </Box>

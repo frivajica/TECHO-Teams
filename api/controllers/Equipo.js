@@ -7,8 +7,8 @@ class EquipoController {
         Equipo.create(req.body)
             .then(newTeam => {
                 newTeam.createEvento({
-                    descripcion: "se creo el equipo " + newTeam.nombre,
-                    tipo: 0
+                    tipo: 0,
+                    nombreEquipo: newTeam.nombre
                 })
                     .then(() => res.status(201).send(newTeam))
                     .catch(err => res.status(500).send(err));
@@ -56,8 +56,9 @@ class EquipoController {
             const server = generateAxios(req.body.token)
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
             const evento = await equipo.createEvento({//evento para el historial del equipo
-                descripcion: `El voluntario ${usrInfo.nombres} se unió al equipo`,
-                tipo: 1
+                tipo: 1,
+                nombreEquipo: equipo.nombre,
+                nombreUsuario: usrInfo.nombres
             })
             await usr.addEvento(evento)
             return res.send("usuario agregado")
@@ -89,8 +90,10 @@ class EquipoController {
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
             console.log("user info recived", usrInfo)
             const evento = await equipo.createEvento({
-                descripcion: usrInfo.nombres+" cambió su rol a "+rol.nombre,
-                tipo: 2
+                tipo: 2,
+                nombreEquipo: equipo.nombre,
+                nombreUsuario: usrInfo.nombres,
+                nombreRol: rol.nombre
             })
             console.log("event created")
             await usr.addEvento(evento)
@@ -112,8 +115,9 @@ class EquipoController {
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
             const evento = await equipo.createEvento({
-                descripcion: `se elimino a ${usrInfo.nombres} del equipo ` + equipo.nombre,
-                tipo: -1
+                tipo: -1,
+                nombreEquipo: equipo.nombre,
+                nombreUsuario: usrInfo.nombres
             })
             const usuario = await Usuario.findOne({ where: { id: req.params.userId }})
             await usuario.addEvento(evento)
@@ -129,8 +133,8 @@ class EquipoController {
             await UsuarioEnEquipo.update({ activo: false }, { where: { equipoId: req.params.id } })
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
             equipo.createEvento({
-                descripcion: `el equipo fué deshabilitado :(`,
-                tipo: -2
+                tipo: -2,
+                nombreEquipo: equipo.nombre
             }).then(() => res.status(201).send("equipo desactivado"))
         } catch (error) {
             return res.status(500).send(error)

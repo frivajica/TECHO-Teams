@@ -196,23 +196,22 @@ class UsuarioController {
           let fechasSalida = [];
           let rolesEnEquipo = [];
           let equipo = {}
-          const findEvents = (tipo, attributes) => {
+          const findEvents = (tipo) => {
             return Evento.findAll({
               where: {
                 usuarioIdPersona: req.params.userId,
                 equipoId: usrEnEquipos[i].equipoId,
                 tipo
               },
-              order: ["createdAt"],
-              attributes: [attributes]
+              order: ["createdAt"]
             })
           }
 
-          fechasEntrada = await findEvents(1, "createdAt")
+          fechasEntrada = await findEvents(1)
 
-          fechasSalida = await findEvents(-1, "createdAt")
+          fechasSalida = await findEvents(-1)
 
-          rolesEnEquipo = await findEvents(2, "descripcion")
+          rolesEnEquipo = await findEvents(2)
 
           equipo = await Equipo.findOne({ where: { id: usrEnEquipos[i].equipoId } })
 
