@@ -1,4 +1,4 @@
-import { Conformacion } from "./conformacion/Conformacion";
+import  Conformacion  from "./conformacion/Conformacion";
 
 export const Equipo = () => {
   return (
