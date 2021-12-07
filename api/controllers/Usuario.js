@@ -117,17 +117,18 @@ class UsuarioController {
       .then((userActivs) => {
         return Usuario.findOne({
           where: { idPersona: userActivs.user.idPersona },
-        }).then((user) =>
+        }).then((user) => 
           res
             .status(200)
             .send(
               !user
-                ? userActivs.user
+                ? {...userActivs.user, token: userActivs.token }
                 : { ...user.dataValues, ...userActivs.user, token: userActivs.token }
             )
-        );
+        )
+        .catch((err) => console.log("no funcionaaaa pero casi", err));
       })
-      .catch((err) => res.status(401).send({ err }));
+      .catch((err) => console.log("no funciono imbecciiiil", err));
   }
 
   static editarUsuario(req, res) {
@@ -215,7 +216,6 @@ class UsuarioController {
 
           equipo = await Equipo.findOne({ where: { id: usrEnEquipos[i].equipoId } })
 
-          console.log("im looping", i)
           let historialDeEquipo = {
             entradas: fechasEntrada,
             salidas: fechasSalida,

@@ -17,36 +17,45 @@ const getRoles = () => {
         .then(rolesArr => roles = rolesArr)
 }
 
-const agregarRoles = (userEq, rol) => {
-        //console.log("estoy funcionando", userEq)
-        axios.put(`http://localhost:3001/api/equipos/${usuariosEnEquipos[userEq].equipoId}/${usuariosEnEquipos[userEq].usuarioIdPersona}/${roles[rol].id}`)
+const agregarRoles = (userEq, rol, token) => {
+        axios.put(`http://localhost:3001/api/equipos/${usuariosEnEquipos[userEq].equipoId}/${usuariosEnEquipos[userEq].usuarioIdPersona}/${roles[rol].id}`, {token})
         .catch(err => console.log(err))
     }
 
+const login = async () => {
+    return await axios.post("http://localhost:3001/api/usuarios/login", {
+        mail: "mariana.gutierrez@gmail.com",
+        password: "123456789"
+        })
+        .then(res => res.data.token)
+        .catch(err => console.log(err));
+}
+
 getUsuarioEnEquipo()
     .then(() => getRoles()
-        .then(() => {
-            agregarRoles(0, 0)
-            agregarRoles(1, 3)
-            agregarRoles(2, 5)
-            agregarRoles(3, 5)
-            agregarRoles(4, 7)
-            agregarRoles(5, 2)
-            agregarRoles(6, 0)
-            agregarRoles(7, 5)
-            agregarRoles(8, 2)
-            agregarRoles(9, 6)
-            agregarRoles(10, 4)
-            agregarRoles(11, 5)
-            agregarRoles(12, 9)
-            agregarRoles(13, 9)
-            agregarRoles(14, 1)
-            agregarRoles(15, 6)
-            agregarRoles(16, 0)
-            agregarRoles(17, 4)
-            agregarRoles(18, 2)
-            agregarRoles(19, 1)
-            agregarRoles(20, 6)
+        .then(() => login())
+        .then(token => {
+            agregarRoles(0, 0, token)
+            /* agregarRoles(1, 3, token)
+            agregarRoles(2, 5, token)
+            agregarRoles(3, 5, token)
+            agregarRoles(4, 7, token)
+            agregarRoles(5, 2, token)
+            agregarRoles(6, 0, token)
+            agregarRoles(7, 5, token)
+            agregarRoles(8, 2, token)
+            agregarRoles(9, 6, token)
+            agregarRoles(10, 4, token)
+            agregarRoles(11, 5, token)
+            agregarRoles(12, 9, token)
+            agregarRoles(13, 9, token)
+            agregarRoles(14, 1, token)
+            agregarRoles(15, 6, token)
+            agregarRoles(16, 0, token)
+            agregarRoles(17, 4, token)
+            agregarRoles(18, 2, token)
+            agregarRoles(19, 1, token)
+            agregarRoles(20, 6, token) */
         })
     )
 

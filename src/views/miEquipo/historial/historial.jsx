@@ -7,7 +7,7 @@ import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import { useEffect, useState } from 'react';
 import axios from "axios";
-import { Stack, Button, Divider, Icon } from '@mui/material';
+import { Stack, Button, Divider } from '@mui/material';
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -78,7 +78,6 @@ export default function EventosEquipo( {equipoId} ) {
         <br />
 
         <Timeline position="alternate" style={{width:"100%"}}>
-            {console.log(historial)}
             {historial.map((evento, i) => (
                 <TimelineItem key={i}>
                     <TimelineOppositeContent color="text.secondary">
