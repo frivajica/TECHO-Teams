@@ -18,10 +18,16 @@ class UsuarioController {
       .catch((err) => res.status(500).send(err));
   }
 
-  static getUsuario(req, res) {
-    Usuario.findOne({ where: { idPersona: req.params.id } })
-      .then((user) => res.send(user))
-      .catch((err) => res.status(500).send(err));
+  static getUsuarioById(req, res) {
+    const server = generateAxios(req.headers.authorization)
+   server
+   .get(`/personas/${req.params.id}`)
+   .then(res => res.data)
+   .then(usuarioActivs => {
+     return Usuario.findOne({ where: { idPersona: req.params.id }})
+     .then(usuarioEqs => res.status(200).send({...usuarioEqs.dataValues, ...usuarioActivs}))
+    })
+   .catch((err) => res.status(500).send(err));
   }
 
   static getUsuarioByMail(req, res) {
@@ -30,12 +36,8 @@ class UsuarioController {
    .get(`/personas/mail/${req.params.mail}`)
    .then(res => res.data[0])
    .then(usuarioActivs => {
-    console.log("USUARIO DE ACTIVIS", usuarioActivs) 
      return Usuario.findOne({where: { idPersona: usuarioActivs.idPersona}})
-     .then(usuarioEqs => {
-      console.log("USUARIO DEeqs", usuarioEqs) 
-      res.status(200).send({...usuarioEqs.dataValues, ...usuarioActivs})
-    })
+     .then(usuarioEqs => res.status(200).send({...usuarioEqs.dataValues, ...usuarioActivs}))
     })
    .catch((err) => console.log({err}))
   }
@@ -122,7 +124,7 @@ class UsuarioController {
             .status(200)
             .send(
               !user
-                ? userActivs.user
+                ? {...userActivs.user, token: userActivs.token }
                 : { ...user.dataValues, ...userActivs.user, token: userActivs.token }
             )
         );
