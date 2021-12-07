@@ -120,6 +120,10 @@
   margin-right: 0.5rem;
 }
 
+.territorio {
+  pointer-events: none;
+}
+
 @media (max-width: 700px) {
   .contenedor-formulario {
     grid-template-columns: 100%;
