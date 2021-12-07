@@ -1,15 +1,15 @@
 const { Usuario, Evento, UsuarioEnEquipo, Equipo } = require("../models");
 const superagent = require("superagent");
-const axios = require("axios")
+const axios = require("axios");
 
 const generateAxios = (token) => {
   const axiosInstance = axios.create({
-    baseURL: 'https://sandbox.actividades.techo.org/api'
-  })
+    baseURL: "https://sandbox.actividades.techo.org/api",
+  });
   // Config de headers de axios para pedidos con autenticación
-  axiosInstance.defaults.headers.common.Authorization = token
-  return axiosInstance
-}
+  axiosInstance.defaults.headers.common.Authorization = token;
+  return axiosInstance;
+};
 
 class UsuarioController {
   static getUsuarios(req, res) {
@@ -18,10 +18,16 @@ class UsuarioController {
       .catch((err) => res.status(500).send(err));
   }
 
-  static getUsuario(req, res) {
-    Usuario.findOne({ where: { idPersona: req.params.id } })
-      .then((user) => res.send(user))
-      .catch((err) => res.status(500).send(err));
+  static getUsuarioById(req, res) {
+    const server = generateAxios(req.headers.authorization)
+   server
+   .get(`/personas/${req.params.id}`)
+   .then(res => res.data)
+   .then(usuarioActivs => {
+     return Usuario.findOne({ where: { idPersona: req.params.id }})
+     .then(usuarioEqs => res.status(200).send({...usuarioEqs.dataValues, ...usuarioActivs}))
+    })
+   .catch((err) => res.status(500).send(err));
   }
 
   static getUsuarioByMail(req, res) {
@@ -30,12 +36,8 @@ class UsuarioController {
    .get(`/personas/mail/${req.params.mail}`)
    .then(res => res.data[0])
    .then(usuarioActivs => {
-    console.log("USUARIO DE ACTIVIS", usuarioActivs) 
      return Usuario.findOne({where: { idPersona: usuarioActivs.idPersona}})
-     .then(usuarioEqs => {
-      console.log("USUARIO DEeqs", usuarioEqs) 
-      res.status(200).send({...usuarioEqs.dataValues, ...usuarioActivs})
-    })
+     .then(usuarioEqs => res.status(200).send({...usuarioEqs.dataValues, ...usuarioActivs}))
     })
    .catch((err) => console.log({err}))
   }
@@ -117,16 +119,21 @@ class UsuarioController {
       .then((userActivs) => {
         return Usuario.findOne({
           where: { idPersona: userActivs.user.idPersona },
-        }).then((user) => 
-          res
-            .status(200)
-            .send(
+        })
+          .then((user) =>
+            res.status(200).send(
               !user
-                ? {...userActivs.user, token: userActivs.token }
-                : { ...user.dataValues, ...userActivs.user, token: userActivs.token }
+                ? { ...userActivs.user, token: userActivs.token }
+                : !userActivs.user.email_verified_at
+                ? { error: "Usuario debe validar mail" }
+                : {
+                    ...user.dataValues,
+                    ...userActivs.user,
+                    token: userActivs.token,
+                  }
             )
-        )
-        .catch((err) => console.log("no funcionaaaa pero casi", err));
+          )
+          .catch((err) => console.log("no funcionaaaa pero casi", err));
       })
       .catch((err) => console.log("no funciono imbecciiiil", err));
   }
@@ -151,10 +158,12 @@ class UsuarioController {
       intereses,
     } = req.body;
 
-    console.log("buenos dias")
+    console.log("buenos dias");
 
     superagent
-      .post(`https://sandbox.actividades.techo.org/api/editPersona/${req.params.id}`)
+      .post(
+        `https://sandbox.actividades.techo.org/api/editPersona/${req.params.id}`
+      )
       .send({
         idPais,
         idProvincia,
@@ -168,23 +177,27 @@ class UsuarioController {
         mail,
         recibirMails,
         acepta_marketing,
-        idUnidadOrganizacional
+        idUnidadOrganizacional,
       })
       .set("X-API-Key", "foobar")
       .set("Accept", "application/json")
-      .then(updatedUsr => ({
-        usuarioPromise: Usuario.update({ profesion, estudios, intereses },
-         { where: { idPersona: req.params.id }}),
-        updatedUsr
+      .then((updatedUsr) => ({
+        usuarioPromise: Usuario.update(
+          { profesion, estudios, intereses },
+          { where: { idPersona: req.params.id } }
+        ),
+        updatedUsr,
       }))
       .then(({ usuarioPromise, updatedUsr }) => {
         return usuarioPromise
-          .then(() => Usuario.findOne({where: {idPersona: req.params.id}}))
-          .then(personaUpd => 
-            res.status(200).send({ ...personaUpd.dataValues, ...updatedUsr.request._data }))
+          .then(() => Usuario.findOne({ where: { idPersona: req.params.id } }))
+          .then((personaUpd) =>
+            res
+              .status(200)
+              .send({ ...personaUpd.dataValues, ...updatedUsr.request._data })
+          );
       })
-      .catch(err => console.log({ err }))
-
+      .catch((err) => console.log({ err }));
   }
 
   static getHistorial(req, res) {
@@ -201,7 +214,7 @@ class UsuarioController {
               where: {
                 usuarioIdPersona: req.params.userId,
                 equipoId: usrEnEquipos[i].equipoId,
-                tipo
+                tipo,
               },
               order: ["createdAt"]
             })
@@ -213,30 +226,32 @@ class UsuarioController {
 
           rolesEnEquipo = await findEvents(2)
 
-          equipo = await Equipo.findOne({ where: { id: usrEnEquipos[i].equipoId } })
+          equipo = await Equipo.findOne({
+            where: { id: usrEnEquipos[i].equipoId },
+          });
 
           let historialDeEquipo = {
             entradas: fechasEntrada,
             salidas: fechasSalida,
             roles: rolesEnEquipo,
             activo: usrEnEquipos[i].activo,
-            equipo
-          }
+            equipo,
+          };
           historiales.push(historialDeEquipo);
           if (i === usrEnEquipos.length - 1) res.send(historiales);
         }
       })
-      .catch((err) => res.status(500).send(err))
+      .catch((err) => res.status(500).send(err));
   }
 
   static getEquipos(req, res) {
     UsuarioEnEquipo.findAll({
       where: {
-        usuarioIdPersona: req.params.idPersona
-      }
+        usuarioIdPersona: req.params.idPersona,
+      },
     })
-      .then(usrEquipos => res.status(200).send(usrEquipos))
-      .catch((err) => res.status(500).send({ err }))
+      .then((usrEquipos) => res.status(200).send(usrEquipos))
+      .catch((err) => res.status(500).send({ err }));
   }
 }
 
