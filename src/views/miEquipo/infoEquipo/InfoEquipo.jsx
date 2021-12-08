@@ -4,17 +4,15 @@ import Box from "@mui/material/Box";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Divider from "@mui/material/Divider";
-import CardMedia from "@mui/material/CardMedia";
-import { CardActionArea } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import Alert from "@mui/material/Alert";
+
 import { useParams } from "react-router-dom";
 
 export const InfoEquipo = () => {
   const [state, setState] = React.useState("");
   const [equipo, setEquipo] = useState([]);
 
-  const  id  = useParams();
+  const id = useParams();
 
   useEffect(() => {
     axios
@@ -31,9 +29,15 @@ export const InfoEquipo = () => {
   return (
     <Box>
       <Box className="condicion">
-        <label>
-          <p>{!state ? "Habilitado" : "Deshabilitado"}</p>
-        </label>
+        {!state ? (
+          <Alert sx={{borderRadius:0}} variant="filled" severity="success">
+            Habilitado
+          </Alert>
+        ) : (
+          <Alert sx={{borderRadius:0}}  variant="filled" severity="error">
+            Deshabilitado{" "}
+          </Alert>
+        )}
       </Box>
       <div class="Buttons">
         <div>
@@ -49,16 +53,21 @@ export const InfoEquipo = () => {
           <Button variant="contained">Historia</Button>
         </div>
       </div>
+      <Divider variant="middle" />
       <Box
         id="grid"
         sx={
           !state
             ? { color: "#212529" }
-            : { bgcolor: "#9e9e9e", borderRadius: 5, color: "#e0e0e0", margin:30}
+            : {
+                bgcolor: "#9e9e9e",
+                borderRadius: 5,
+                color: "#e0e0e0",
+                margin: 30,
+              }
         }
       >
-         
-         <div class="Title">
+        <div class="Title">
           <label>
             <p>Equipos:</p>
           </label>
@@ -70,7 +79,7 @@ export const InfoEquipo = () => {
             </label>
           </Box>
         </div>
-         
+
         <div class="Title">
           <label>
             <p>Detalles:</p>
@@ -90,13 +99,6 @@ export const InfoEquipo = () => {
         </div>
         <div>
           <label>12</label>
-        </div>
-
-        <div class="Title">
-          <label>Activo:</label>
-        </div>
-        <div>
-          <label>true</label>
         </div>
         <div class="Title">
           <label>
@@ -130,12 +132,15 @@ export const InfoEquipo = () => {
         <div>
           <label>barrio</label>
         </div>
-         <div>
-         <img src="https://noticiasdevillalaangostura.com/wp-content/uploads/2020/10/Asfalto-21.10-1-e1603293272248.jpg" alt="MDN"/>
-
-         </div>
+        <div class="img">
+          <img
+            width="300"
+            height="300"
+            src="https://noticiasdevillalaangostura.com/wp-content/uploads/2020/10/Asfalto-21.10-1-e1603293272248.jpg"
+            alt="MDN"
+          />
+        </div>
       </Box>
-      
     </Box>
   );
 }
