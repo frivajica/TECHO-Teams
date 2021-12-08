@@ -4,7 +4,7 @@ import axios from "axios";
 import { Stack, Button, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import {chooseEventContent} from '../../../utils/historialEquipo/chooseEventContent'
+import {ChooseEventContent} from '../../../utils/historialEquipo/chooseEventContent'
 import {scrollButton} from '../../../utils/historialEquipo/scrollButton'
 
 export default function EventosEquipo( {equipoId} ) {
@@ -37,7 +37,7 @@ export default function EventosEquipo( {equipoId} ) {
 
         <Timeline position="alternate" style={{width:"100%"}}>
             {console.log("final hist", historial)}
-            {historial.map((evento, i) => (chooseEventContent(evento, i<historial.length-1, i)))}
+            {historial.map((evento, i) => <ChooseEventContent evento={evento} isLast={i<historial.length-1} i={i} />)}
         </Timeline>
 
         {(window.innerHeight <= document.body.scrollHeight/4) && scrollButton(Yposition)}
