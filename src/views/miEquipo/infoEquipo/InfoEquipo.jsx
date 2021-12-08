@@ -1,4 +1,4 @@
-import "./Conformacion.css";
+import "../conformacion/Conformacion.css";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import React, { useState, useEffect } from "react";
@@ -10,7 +10,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useParams } from "react-router-dom";
 
-function Conformacion() {
+export const InfoEquipo = () => {
   const [state, setState] = React.useState("");
   const [equipo, setEquipo] = useState([]);
 
@@ -139,5 +139,3 @@ function Conformacion() {
     </Box>
   );
 }
-
-export default Conformacion;
