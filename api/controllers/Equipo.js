@@ -171,7 +171,7 @@ class EquipoController {
              equipo.createEvento({
                 tipo: -2,
                 nombreEquipo: equipo.nombre
-            }).then(() => res.status(201).send("equipo desactivado"))
+            }).then(() => res.status(201).send(equipo))
             .catch(err => res.send(err))
         } catch (error) {
             return res.status(500).send(error)
@@ -186,7 +186,7 @@ class EquipoController {
             equipo.createEvento({
                 tipo: 3,
                 nombreEquipo: equipo.nombre
-            }).then(() => res.status(200).send("equipo activado nuevamente"))
+            }).then(() => res.status(200).send(equipo))
         } catch (error) {
             return res.status(500).send(error)
         }

@@ -33,7 +33,7 @@ export const InfoEquipo = () => {
           </Alert>
         )}
       </Box>
-      <div class="Buttons">
+      <div className="Buttons">
         <div>
           <Button
             variant="contained"
