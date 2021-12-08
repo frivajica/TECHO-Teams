@@ -11,9 +11,9 @@ import { useParams } from "react-router-dom";
 
 export const InfoEquipo = () => {
   const [state, setState] = React.useState("");
-  const [equipo, setEquipo] = useState([]);
-  const equipoData = useSelector(({ equipo }) => equipo);
-
+  // const [equipo, setEquipo] = useState([]);
+  const equipo = useSelector(({ equipo }) => equipo);
+  console.log(equipo);
   const id = useParams();
 
   function click() {
@@ -64,22 +64,12 @@ export const InfoEquipo = () => {
         <div class="Titles">
           <div class="TitleNombre">
             <label>
-              {!state ? (
-                /* {equipo.nombre}*/ <p> Apoyo Escolar - Zárate</p>
-              ) : (
-                /* <del>{equipo.nombre} </del>*/ <del>
-                  <p>Apoyo Escolar - Zárate</p>{" "}
-                </del>
-              )}
+              {!state ? <p> {equipo.nombre}</p> : <del>{equipo.nombre} </del>}
             </label>
           </div>
           <div class="TitleDetalle">
             <label>
-              <p>
-                -Somos un equipo que se encarga de brindar apoyo escolar para
-                los niños y niñas de los barrios de Zárate en los que TECHO está
-                presente. -
-              </p>
+              <p>{equipo.detalles}</p>
             </label>
           </div>
         </div>
