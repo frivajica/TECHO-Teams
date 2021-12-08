@@ -52,6 +52,10 @@ class EquipoController {
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
             if (!equipo.activo) return res.send("el equipo no esta activo")
             const usr = await Usuario.findOne({ where: { idPersona: req.params.userId } })
+            const checkUsr = await UsuarioEnEquipo.findOne({
+                where: { usuarioIdPersona: usr.idPersona, equipoId: equipo.id },
+              });
+              if (checkUsr) return res.send("el usuario ya pertenece al equipo");
             await equipo.addUsuario(usr)
             const server = generateAxios(req.body.token)
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
