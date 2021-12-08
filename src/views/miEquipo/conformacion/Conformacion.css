@@ -1,12 +1,12 @@
 .conformacion {
-	width: 85%;
-	margin: 0 auto;
-	display: grid;
-	gap: 3rem;
+  width: 85%;
+  margin: 0 auto;
+  display: grid;
+  gap: 3rem;
 }
 
 .presentacion-seccion {
-	margin: 3rem 0 0 0;
+  margin: 3rem 0 0 0;
 }
 
 #modificar-roles {
@@ -16,17 +16,17 @@
 }
 
 #agregar-roles {
-	grid-row: 4;
+  grid-row: 4;
 }
 
 #agregar-roles h2 {
-	margin: 0 0 3rem 0;
+  margin: 0 0 3rem 0;
 }
 
 .divisor {
-	display: flex;
+  display: flex;
   width: 70%;
-	justify-self: center;
+  justify-self: center;
 }
 .Title {
   font-family: "Montserrat", sans-serif;
@@ -34,22 +34,19 @@
   color: inherit;
   font-weight: 400 important;
   line-height: 1.5;
-   
 }
 
 .TitleDetalle {
-    font-family: "Montserrat", sans-serif ;
-    font-size: x-large;  
-    color: inherit;
-    font-weight: 400 !important;
-    line-height: 1.5;
-
-    grid-column: 1;
-    grid-row: 2;
-  }
+  font-family: "Montserrat", sans-serif;
+  font-size: x-large;
+  color: inherit;
+  font-weight: 400 !important;
+  line-height: 1.5;
+  grid-column: 1;
+  grid-row: 2;
+}
 
 .TypDetalle {
-
   font-family: "Montserrat", sans-serif;
   font-size: small;
   grid-column: 2;
@@ -57,7 +54,6 @@
   color: inherit;
   font-weight: 400;
   line-height: 1.5;
-  
   justify-self: flex-start;
 }
 .TypEquipo {
@@ -68,25 +64,46 @@
   color: inherit;
   font-weight: 400;
   line-height: 1.5;
- 
   justify-self: flex-start;
 }
-.condicion{
- font-size: x-large;
- display: flex;
- justify-content: center;
- margin-top: 2rem;
+.condicion {
+  font-size: x-large;
+  display: flex;
+  justify-content: end;
+  margin-top: 1rem;
+  margin-right: 2rem;
+}
+
+.Buttons {
+  display: flex;
+  justify-content: center;
+  grid-template-columns: repeat(2, 20rem);
+  grid-template-rows: 5rem;
+
+  grid-gap: 1rem;
+  
+}
+.img{
+  display: flex;
+  justify-content: center!important;
+  align-items: center!important;
+  margin-left: 25rem;
+}
+
+.bgColors{
+  background-color: #81d4fa;
+  grid-template-columns: repeat(2, 20rem);
+   
 }
 
 #grid {
   justify-content: center;
   align-items: center;
   justify-items: center;
-  margin-top: 5rem;
+  margin-top: 1rem;
   display: grid;
-  grid-template-columns: repeat(3, 20rem);
+  grid-template-columns: repeat(2, 20rem);
   grid-template-rows: 5rem;
-
 
   grid-gap: 1rem;
 }

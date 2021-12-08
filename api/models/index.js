@@ -1,14 +1,15 @@
 const Equipo = require("./Equipo");
 const Usuario = require("./Usuario");
 const Role = require("./Role");
-const UsuarioEnEquipo = require("./UsuarioEnEquipo");
 const Evento = require("./Evento");
+const UsuarioEnEquipo = require("./UsuarioEnEquipo");
+const RolEnEquipo = require("./RolEnEquipo")
 
 Usuario.belongsToMany(Equipo, {through: UsuarioEnEquipo});
 Equipo.belongsToMany(Usuario, {through: UsuarioEnEquipo});
 
-//Equipo.hasMany(Role)
-//Role.belongsTo(Equipo)
+Role.belongsToMany(Equipo, {through: RolEnEquipo});
+Equipo.belongsToMany(Role, {through: RolEnEquipo});
 
 Role.hasMany(UsuarioEnEquipo, {as: "usrEnEquipo"});
 UsuarioEnEquipo.belongsTo(Role);
@@ -19,4 +20,4 @@ Evento.belongsTo(Equipo);
 Usuario.hasMany(Evento);
 Evento.belongsTo(Usuario);
 
-module.exports = { Usuario, Equipo, Role, UsuarioEnEquipo, Evento };
+module.exports = { Usuario, Equipo, Role, Evento, RolEnEquipo, UsuarioEnEquipo };

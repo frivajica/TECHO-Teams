@@ -16,7 +16,7 @@ app.use(morgan("combined"));
 
 app.use("/api", routes);
 
-db.sync({ force:false }).then(() => {
+db.sync({ force: false}).then(() => {
   upsert(Role, { id: 1 }, { nombre: "coordinador/a", id: "1" }) //el id de coordinador siempre debe ser 1
     .then(() => {
       app.listen(3001, () =>

@@ -4,7 +4,7 @@ import axios from "axios";
 import { Stack, Button, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import {chooseEventContent} from '../../../utils/historialEquipo/chooseEventContent'
+import {ChooseEventContent} from '../../../utils/historialEquipo/chooseEventContent'
 import {scrollButton} from '../../../utils/historialEquipo/scrollButton'
 
 export default function EventosEquipo( {equipoId} ) {
@@ -15,7 +15,10 @@ export default function EventosEquipo( {equipoId} ) {
     useEffect(() => {
         axios.get(`http://localhost:3001/api/equipos/${equipoId}/historial`)
         .then(res => res.data)
-        .then(hist => setHistorial(hist.reverse()));
+        .then(hist => {
+            console.log("hist antes de reverse", hist)
+            setHistorial(hist.reverse())
+        });
         window.addEventListener("scroll", () => setYposition(window.pageYOffset), { passive: true });
     }, [])
 
@@ -25,7 +28,7 @@ export default function EventosEquipo( {equipoId} ) {
         <br />
         <Stack direction="row" justifyContent="flex-start" alignItems="center" style={{width:"100%"}}>
             <h1  style={{marginLeft: "10px"}}>Historia</h1>
-            <Button onClick={() => navigate(`/miEquipo`)} style={{marginLeft: "auto", marginRight: "10px"}} variant="outlined" startIcon={<ArrowBackIosIcon />}>Volver</Button>
+            <Button onClick={() => navigate(-1)} style={{marginLeft: "auto", marginRight: "10px"}} variant="outlined" startIcon={<ArrowBackIosIcon />}>Volver</Button>
         </Stack>
 
         <br />
@@ -33,7 +36,8 @@ export default function EventosEquipo( {equipoId} ) {
         <br />
 
         <Timeline position="alternate" style={{width:"100%"}}>
-            {historial.map((evento, i) => (chooseEventContent(evento, i<historial.length-1)))}
+            {console.log("final hist", historial)}
+            {historial.map((evento, i) => <ChooseEventContent evento={evento} isLast={i<historial.length-1} i={i} />)}
         </Timeline>
 
         {(window.innerHeight <= document.body.scrollHeight/4) && scrollButton(Yposition)}

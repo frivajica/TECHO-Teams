@@ -5,6 +5,7 @@ import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineItem from '@mui/lab/TimelineItem';
 import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
@@ -13,7 +14,8 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
-export const chooseEventContent = (evento, isLast) => {
+export function ChooseEventContent({evento, isLast, i}) {
+    const fontsize = useMediaQuery('(min-width:600px)')? "1em" : "0.8em";
     let color = "text.secondary", icon = <></>, descripcion = "éste evento no pudo procesarse"
     switch (evento.tipo) {
         case -2: {
@@ -49,9 +51,9 @@ export const chooseEventContent = (evento, isLast) => {
     }
 
     return (
-        <TimelineItem justifyContent="center">
-            <TimelineOppositeContent color="text.secondary" sx={{ py: '20px', px: 2 }}>
-                {evento.createdAt.slice(0,10)}
+        <TimelineItem key={i}>
+            <TimelineOppositeContent color="text.secondary" sx={{ py: '20px', fontSize: fontsize }}>
+                {evento.createdAt.slice(8,10)+" / "+evento.createdAt.slice(5,7)+" / "+evento.createdAt.slice(0,4)}
             </TimelineOppositeContent>
             <TimelineSeparator>
                 <TimelineDot color={color} variant="outlined">
@@ -59,10 +61,8 @@ export const chooseEventContent = (evento, isLast) => {
                 </TimelineDot>
                 {isLast ? <TimelineConnector sx={{minHeight: '50px'}}/> : null}
             </TimelineSeparator>
-            <TimelineContent sx={{ py: '20px', px: 2 }}>
-                <Typography>
-                    {descripcion}
-                </Typography>
+            <TimelineContent sx={{ py: '20px', fontSize: fontsize }}>
+                {descripcion}
             </TimelineContent>
         </TimelineItem>
     )

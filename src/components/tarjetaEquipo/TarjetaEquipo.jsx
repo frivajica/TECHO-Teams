@@ -40,7 +40,7 @@ export const TarjetaEquipo = ({ nombre, inicio, final, roles, activo }) => {
           ))}
         </Box>
       </div>
-      <ArrowForwardIosIcon id="flecha-equipo" />
+      {activo && <ArrowForwardIosIcon id="flecha-equipo" />}
     </div>
   );
 };
