@@ -1,6 +1,6 @@
 const { Usuario, Evento, UsuarioEnEquipo, Equipo } = require("../models");
 const superagent = require("superagent");
-const generateAxios = require("../utils/generateAxios")
+const generateAxios = require("../utils/generateAxios");
 
 class UsuarioController {
   static getUsuarios(req, res) {
@@ -10,27 +10,38 @@ class UsuarioController {
   }
 
   static getUsuarioById(req, res) {
-    const server = generateAxios(req.headers.authorization)
-   server
-   .get(`/personas/${req.params.id}`)
-   .then(res => res.data)
-   .then(usuarioActivs => {
-     return Usuario.findOne({ where: { idPersona: req.params.id }})
-     .then(usuarioEqs => res.status(200).send({...usuarioEqs.dataValues, ...usuarioActivs}))
-    })
-   .catch((err) => res.status(500).send(err));
+    const server = generateAxios(req.headers.authorization);
+    server
+      .get(`/personas/${req.params.id}`)
+      .then((res) => res.data)
+      .then((usuarioActivs) => {
+        return Usuario.findOne({ where: { idPersona: req.params.id } }).then(
+          (usuarioEqs) =>
+            res.status(200).send({
+              ...usuarioEqs.dataValues,
+              ...usuarioActivs,
+            })
+        );
+      })
+      .catch((err) => res.status(500).send(err));
   }
 
   static getUsuarioByMail(req, res) {
-    const server = generateAxios(req.headers.authorization)
-   server
-   .get(`/personas/mail/${req.params.mail}`)
-   .then(res => res.data[0])
-   .then(usuarioActivs => {
-     return Usuario.findOne({where: { idPersona: usuarioActivs.idPersona}})
-     .then(usuarioEqs => res.status(200).send({...usuarioEqs.dataValues, ...usuarioActivs}))
-    })
-   .catch((err) => console.log({err}))
+    const server = generateAxios(req.headers.authorization);
+    server
+      .get(`/personas/mail/${req.params.mail}`)
+      .then((res) => res.data[0])
+      .then((usuarioActivs) => {
+        return Usuario.findOne({
+          where: { idPersona: usuarioActivs.idPersona },
+        }).then((usuarioEqs) =>
+          res.status(200).send({
+            ...usuarioEqs.dataValues,
+            ...usuarioActivs,
+          })
+        );
+      })
+      .catch((err) => console.log({ err }));
   }
 
   static crearUsuario(req, res) {
@@ -199,7 +210,7 @@ class UsuarioController {
           let fechasEntrada = [];
           let fechasSalida = [];
           let rolesEnEquipo = [];
-          let equipo = {}
+          let equipo = {};
           const findEvents = (tipo) => {
             return Evento.findAll({
               where: {
@@ -207,15 +218,15 @@ class UsuarioController {
                 equipoId: usrEnEquipos[i].equipoId,
                 tipo,
               },
-              order: ["createdAt"]
-            })
-          }
+              order: ["createdAt"],
+            });
+          };
 
-          fechasEntrada = await findEvents(1)
+          fechasEntrada = await findEvents(1);
 
-          fechasSalida = await findEvents(-1)
+          fechasSalida = await findEvents(-1);
 
-          rolesEnEquipo = await findEvents(2)
+          rolesEnEquipo = await findEvents(2);
 
           equipo = await Equipo.findOne({
             where: { id: usrEnEquipos[i].equipoId },
