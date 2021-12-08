@@ -39,7 +39,7 @@ export const InfoEquipo = () => {
           </Alert>
         )}
       </Box>
-      <div class="Buttons">
+      <div className="Buttons">
         <div>
           <Button
             variant="contained"
@@ -67,32 +67,32 @@ export const InfoEquipo = () => {
               }
         }
       >
-        <div class="Title">
+        <div className="Title">
           <label>
             <p>Equipos:</p>
           </label>
         </div>
         <div>
           <Box>
-            <label class="TypEquipo" gutterBottom component="div">
+            <label className="TypEquipo" component="div">
               Reparación de veredas - Nueva Córdoba
             </label>
           </Box>
         </div>
 
-        <div class="Title">
+        <div className="Title">
           <label>
             <p>Detalles:</p>
           </label>
         </div>
         <div>
-          <label class="TypDetalle">
+          <label className="TypDetalle">
             Nos encargamos de la organización y planificación de las
             construcciones que Techo lleva a cabo en el Gran Buenos Aires.
           </label>
         </div>
 
-        <div class="Title">
+        <div className="Title">
           <label>
             <p>Cantidad de Miembros:</p>
           </label>
@@ -100,7 +100,7 @@ export const InfoEquipo = () => {
         <div>
           <label>12</label>
         </div>
-        <div class="Title">
+        <div className="Title">
           <label>
             <p>Area:</p>
           </label>
@@ -108,7 +108,7 @@ export const InfoEquipo = () => {
         <div>
           <label>Vivienda y Habitat</label>
         </div>
-        <div class="Title">
+        <div className="Title">
           <label>
             <p>Pais:</p>
           </label>
@@ -116,7 +116,7 @@ export const InfoEquipo = () => {
         <div>
           <label>Argentina</label>
         </div>
-        <div class="Title">
+        <div className="Title">
           <label>
             <p>Sede:</p>
           </label>
@@ -124,7 +124,7 @@ export const InfoEquipo = () => {
         <div>
           <label>no se</label>
         </div>
-        <div class="Title">
+        <div className="Title">
           <label>
             <p>Territorio:</p>
           </label>
@@ -132,7 +132,7 @@ export const InfoEquipo = () => {
         <div>
           <label>barrio</label>
         </div>
-        <div class="img">
+        <div className="img">
           <img
             width="300"
             height="300"
