@@ -11,7 +11,9 @@ Router.get("/:id", /* checkAuth, */ EquipoController.getOneEquipo )
 
 Router.put("/:id", /* isCoordinatorHere, */ EquipoController.updateEquipo )
 
-Router.delete("/:id", /* isCoordinatorHere, */ EquipoController.deleteEquipo )
+Router.put("/desactivar/:id", /* isCoordinatorHere, */ EquipoController.deactivateEquipo )
+
+Router.put("/activar/:id", /* isCoordinatorHere, */ EquipoController.activateEquipo )
 
 Router.get("/:id/historial", /* checkAuth, */ EquipoController.getHistory )
 

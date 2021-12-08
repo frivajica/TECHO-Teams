@@ -68,11 +68,12 @@
   justify-self: flex-start;
 }
 .condicion {
-  font-size: x-large;
-  display: flex;
-  justify-content: end;
+  width: 20rem;
+  display: inline;
+ justify-content: center;
   margin-top: 1rem;
   margin-right: 2rem;
+  
 }
 
 .Buttons {
@@ -97,14 +98,18 @@
    
 }
 
+#divisor-Equipo{
+  margin: 2rem;
+}
+
+
 #grid {
   justify-content: center;
   align-items: center;
   justify-items: center;
-  margin-top: 1rem;
   display: grid;
   grid-template-columns: repeat(2, 20rem);
   grid-template-rows: 5rem;
-
+  margin: 0 15%;
   grid-gap: 1rem;
 }
