@@ -54,7 +54,7 @@ export const personas = [
   {id: 4, nombre: 'José'},
 ];
 
-export const roles = [
+export const rolesEquipo = [
   {id: 1, rol: 'Contador', persona: 'Juanito', necesario: false, img: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'},
   {id: 2, rol: 'Constructor', persona: 'José', necesario: true, img: 'https://wallpaperaccess.com/full/2213424.jpg'},
   {id: 3, rol: 'Cocinero', persona: 'Anon', necesario: false, img: 'https://techcommunity.microsoft.com/t5/image/serverpage/image-id/217078i525F6A9EF292601F/image-size/large?v=v2&px=999'},
