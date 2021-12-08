@@ -5,11 +5,16 @@ class Evento extends Sequelize.Model {}
 
 Evento.init(
   {
-    descripcion: {
-      type: Sequelize.TEXT,
+    tipo: {
+      type: Sequelize.INTEGER,
       allowNull: false
     },
-    tipo: Sequelize.INTEGER,
+    nombreEquipo: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    nombreUsuario: Sequelize.STRING,
+    nombreRol: Sequelize.STRING
   },
   { sequelize: db, modelName: "evento" }
 );

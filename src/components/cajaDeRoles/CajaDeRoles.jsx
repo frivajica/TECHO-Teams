@@ -16,8 +16,7 @@ export const CajaDeRoles = () => {
       let arr = [];
       let obj = {};
       payload.map((historia) => {
-        const rol =
-          historia.roles[historia.roles.length - 1].descripcion.slice(16);
+        const rol = historia.roles[historia.roles.length - 1].nombreRol;
         if (historia.activo && !obj[rol]) {
           obj[rol] = true;
           arr.push(rol);
