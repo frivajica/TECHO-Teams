@@ -33,19 +33,17 @@ class EquipoController {
 
     static getOneEquipo(req, res) {
         Equipo.findOne({ where: { id: req.params.id } })
-            .then(equipo => equipo.activo ? res.send(equipo) : res.send("el equipo no esta activo"))
+            .then(equipo => res.status(200).send(equipo))
             .catch(err => res.status(500).send(err));
     }
 
     static updateEquipo(req, res) {
         Equipo.update(
             req.body,
-            {
-                where: { id: req.params.id },
-                activo: true
-            },
+            { where: { id: req.params.id } },
         )
-            .then(() => res.send("equipo modificado"))
+            .then(() => Equipo.findOne({ where: { id: req.params.id } }))
+            .then(updatedEquipo => res.status(200).send(updatedEquipo))
             .catch(err => res.status(500).send(err));
     }
 
@@ -153,7 +151,7 @@ class EquipoController {
                 nombreEquipo: equipo.nombre,
                 nombreUsuario: usrInfo.nombres
             })
-            const usuario = await Usuario.findOne({ where: { id: req.params.userId }})
+            const usuario = await Usuario.findOne({ where: { id: req.params.userId } })
             await usuario.addEvento(evento)
             return res.status(201).send("usuario eliminado del equipo")
         } catch (error) {
@@ -161,15 +159,30 @@ class EquipoController {
         }
     }
 
-    static async deleteEquipo(req, res) {
+    static async deactivateEquipo(req, res) {
         try {
             await Equipo.update({ activo: false }, { where: { id: req.params.id } })
             await UsuarioEnEquipo.update({ activo: false }, { where: { equipoId: req.params.id } })
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
-            equipo.createEvento({
+             equipo.createEvento({
                 tipo: -2,
                 nombreEquipo: equipo.nombre
             }).then(() => res.status(201).send("equipo desactivado"))
+            .catch(err => res.send(err))
+        } catch (error) {
+            return res.status(500).send(error)
+        }
+    }
+
+    static async activateEquipo(req, res) {
+        try {
+            await Equipo.update({ activo: true }, { where: { id: req.params.id } })
+            await UsuarioEnEquipo.update({ activo: true }, { where: { equipoId: req.params.id } })
+            const equipo = await Equipo.findOne({ where: { id: req.params.id } })
+            equipo.createEvento({
+                tipo: 3,
+                nombreEquipo: equipo.nombre
+            }).then(() => res.status(200).send("equipo activado nuevamente"))
         } catch (error) {
             return res.status(500).send(error)
         }

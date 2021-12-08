@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import { CustomHook } from "../../hooks/CustomHook";
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
+import getToken from "../../utils/getToken"
 
 const listaAreas = [
   "",
@@ -61,7 +62,9 @@ export function CrearEquipo() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/comunidades")
+      .get("http://localhost:3001/api/comunidades", {
+        headers: { Authorization: getToken() }
+      })
       .then((res) => {
         // console.log(res.data.text);
         let comunidadArr = res.data.text;
