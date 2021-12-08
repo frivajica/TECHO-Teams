@@ -55,7 +55,7 @@ class EquipoController {
             const checkUsr = await UsuarioEnEquipo.findOne({
                 where: { usuarioIdPersona: usr.idPersona, equipoId: equipo.id },
               });
-              if (checkUsr) return res.send("el usuario ya pertenece al equipo");
+              if (checkUsr) return res.status(401).send("el usuario ya pertenece al equipo");
             await equipo.addUsuario(usr)
             const server = generateAxios(req.body.token)
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
