@@ -4,7 +4,6 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineItem from '@mui/lab/TimelineItem';
-import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
@@ -33,7 +32,7 @@ export function ChooseEventContent({evento, isLast, i}) {
         case 0: {
             color="success"
             icon=<GroupsIcon /> 
-            descripcion=`Se creó el equipo ${evento.nombreEquipo}`
+            descripcion=<>Se creó el equipo <span style={{color: "#1976D2"}}>{evento.nombreEquipo}</span></>
             break;
         }
         case 1: {
@@ -46,6 +45,12 @@ export function ChooseEventContent({evento, isLast, i}) {
             color="secondary" 
             icon=<ManageAccountsIcon /> 
             descripcion=(<>{evento.nombreUsuario} cambió su rol a <span style={{color: "#1976D2"}}>{evento.nombreRol}</span></>)
+            break;
+        }
+        case 3: {
+            color="primary" 
+            icon=<GroupsIcon /> 
+            descripcion="El equipo está habilitado nuevamente :)"
             break;
         }
     }

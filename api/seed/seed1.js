@@ -170,7 +170,13 @@ const roles = [
 ];
 
 db.sync()
-  .then(() => Equipo.bulkCreate(equipos))
+  .then(() => Equipo.bulkCreate(equipos).then(async (equipos) => {
+    for(let i = 0; i < equipos.length; i++) {
+      await equipos[i].createEvento({
+        tipo: 0,
+        nombreEquipo: equipos[i].nombre}
+        )}
+  }))
   .then(() => Usuario.bulkCreate(personas))
   .then(() => Role.bulkCreate(roles))
   .then(() => process.exit(0))
