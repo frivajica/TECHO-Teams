@@ -24,7 +24,7 @@ export const InfoEquipo = () => {
   function click() {
     state ? setState(false) : setState(true);
   }
-  console.log("ID =>", id);
+  
 
   return (
     <Box>
@@ -53,7 +53,7 @@ export const InfoEquipo = () => {
           <Button variant="contained">Historia</Button>
         </div>
       </div>
-      <Divider variant="middle" />
+      <Divider id="divisor-Equipo" variant="middle" />
       <Box
         id="grid"
         sx={

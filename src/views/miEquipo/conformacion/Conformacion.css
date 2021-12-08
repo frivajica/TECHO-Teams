@@ -97,8 +97,8 @@
    
 }
 
-#divisor{
-
+#divisor-Equipo{
+  margin: 2rem;
 }
 
 
@@ -109,6 +109,6 @@
   display: grid;
   grid-template-columns: repeat(2, 20rem);
   grid-template-rows: 5rem;
-
+  margin: 0 15%;
   grid-gap: 1rem;
 }

@@ -13,7 +13,7 @@ export const Conformacion = () => {
     dispatch(getUsuarios("teamId"));
     dispatch(getRolesInfo("teamId"));
   }, []);
-
+console.log("roles=>",roles)
   return (
     <div className="conformacion">
       <div className="presentacion-seccion">
@@ -24,7 +24,7 @@ export const Conformacion = () => {
         </p>
       </div>
       <div id="modificar-roles">
-        {roles.map((e) => (
+        {roles?.map((e) => (
           <TarjetaRoles
             key={e.id}
             id={e.id}
