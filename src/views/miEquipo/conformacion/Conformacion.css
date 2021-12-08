@@ -28,7 +28,7 @@
   width: 70%;
   justify-self: center;
 }
-.Title {
+.TitleNombre {
   font-family: "Montserrat", sans-serif;
   font-size: x-large;
   color: inherit;
@@ -38,12 +38,13 @@
 
 .TitleDetalle {
   font-family: "Montserrat", sans-serif;
-  font-size: x-large;
+  font-size: medium;
   color: inherit;
   font-weight: 400 !important;
   line-height: 1.5;
   grid-column: 1;
   grid-row: 2;
+  margin-top: 2rem;
 }
 
 .TypDetalle {
@@ -97,6 +98,7 @@
    
 }
 
+
 #divisor-Equipo{
   margin: 2rem;
 }
@@ -107,8 +109,18 @@
   align-items: center;
   justify-items: center;
   display: grid;
-  grid-template-columns: repeat(2, 20rem);
-  grid-template-rows: 5rem;
-  margin: 0 15%;
-  grid-gap: 1rem;
+  grid-template-columns: repeat(2, 25rem);
+margin: 0;
+   
+  grid-gap: 10rem;
 }
+ #CardInfogrid{
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 1%;
+  display: grid;
+  grid-template-columns: repeat(2,12rem);
+  grid-gap: 0;
+   
+ }
