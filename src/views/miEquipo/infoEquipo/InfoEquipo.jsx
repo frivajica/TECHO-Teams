@@ -5,31 +5,33 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
-import CardInfoEquipo from "./CardInfoEquipo"
+import { useSelector } from "react-redux";
+import CardInfoEquipo from "./CardInfoEquipo";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { deactivateEquipo, activateEquipo } from "../../../state/equipo";
 
 export const InfoEquipo = () => {
-  const [state, setState] = React.useState("");
-  
-
+  const dispatch = useDispatch();
+  const equipo = useSelector(({ equipo }) => equipo);
+  console.log(equipo);
   const id = useParams();
 
-  
-
   function click() {
-    state ? setState(false) : setState(true);
+    equipo.activo
+      ? dispatch(deactivateEquipo(equipo.id))
+      : dispatch(activateEquipo(equipo.id));
   }
-  
 
   return (
     <Box>
       <Box className="condicion">
-        {!state ? (
-          <Alert sx={{borderRadius:0}} variant="filled" severity="success">
+        {equipo.activo ? (
+          <Alert sx={{ borderRadius: 0 }} variant="filled" severity="success">
             Habilitado
           </Alert>
         ) : (
-          <Alert sx={{borderRadius:0}}  variant="filled" severity="error">
+          <Alert sx={{ borderRadius: 0 }} variant="filled" severity="error">
             Deshabilitado{" "}
           </Alert>
         )}
@@ -39,9 +41,9 @@ export const InfoEquipo = () => {
           <Button
             variant="contained"
             onClick={() => click()}
-            color={!state ? "error" : "success"}
+            color={equipo.activo ? "error" : "success"}
           >
-            {!state ? "Deshabilitar" : "Habilitar"}
+            {equipo.activo ? "Deshabilitar" : "Habilitar"}
           </Button>
         </div>
         <div>
@@ -52,7 +54,7 @@ export const InfoEquipo = () => {
       <Box
         id="grid"
         sx={
-          !state
+          equipo.activo
             ? { color: "#212529" }
             : {
                 bgcolor: "#9e9e9e",
@@ -64,25 +66,26 @@ export const InfoEquipo = () => {
       >
         <div class="Titles">
           <div class="TitleNombre">
-          <label>
-         {!state? /* {equipo.nombre}*/ <p> Apoyo Escolar - Zárate</p>: /* <del>{equipo.nombre} </del>*/<del><p>Apoyo Escolar - Zárate</p> </del> } 
-          </label>
+            <label>
+              {equipo.activo ? (
+                <p> {equipo.nombre}</p>
+              ) : (
+                <del>{equipo.nombre} </del>
+              )}
+            </label>
           </div>
           <div class="TitleDetalle">
-          <label>
-           <p>-Somos un equipo que se encarga de brindar apoyo escolar para los niños y niñas de los barrios de Zárate en los que TECHO está presente. -</p> 
-          </label>
-        </div>
-        </div>
-        
-        <div>
-        <CardInfoEquipo state={state}/>
-        
+            <label>
+              <p>{equipo.detalles}</p>
+            </label>
+          </div>
         </div>
 
-        
+        <div>
+          <CardInfoEquipo equipo={equipo} />
+        </div>
       </Box>
       <Divider id="divisor-Equipo" variant="middle" />
     </Box>
   );
-}
+};

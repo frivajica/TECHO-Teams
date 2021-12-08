@@ -4,38 +4,63 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Box from "@mui/material/Box";
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
-export default function CardInfoEquipo({state}) {
-  
+export default function CardInfoEquipo({ equipo }) {
+  const [pais, setPais] = useState("");
+  const [sedes, setSedes] = useState("");
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/api/regiones/paises").then((res) =>
+      res.data.map((pais) => {
+        if (pais.id === equipo.paisId) {
+          setPais(pais.nombre);
+        }
+      })
+    );
+    axios.get("http://localhost:3001/api/sedes").then((res) =>
+      res.data.map((sede) => {
+        if (sede.id === equipo.sedeId) {
+          setSedes(sede.nombre);
+        }
+      })
+    );
+  }, []);
+
   return (
     <Card sx={{ width: 500 }}>
       <CardMedia
         component="img"
         height="340"
-        image= {!state ?"http://www.columbia.edu.py/images/contenido/ID1351-I1-20190802-5d44f9b713eb4.jpg":"https:cdn.pixabay.com/photo/2012/04/12/20/12/x-30465_640.png"}
+        image={equipo.img}
         alt="green iguana"
       />
-      <CardContent    sx={
-            !state
-              ? { color: "#212529" }
-              : {
-                  bgcolor: "#9e9e9e",
-                  
-                  color: "#e0e0e0",
-                 
-                }
-          }>
-        <Box
-          id="CardInfogrid"
-       
-        >
+      <CardContent
+        sx={
+          equipo.activo
+            ? { color: "#212529" }
+            : {
+                bgcolor: "#9e9e9e",
+
+                color: "#e0e0e0",
+              }
+        }
+      >
+        <Box id="CardInfogrid">
           <div class="Title">
             <label>
               <p>Miembros:</p>
             </label>
           </div>
           <div>
-            {!state ? <label>5</label>: <del><label>5</label> </del>}
+            {equipo.activo ? (
+              <label>{equipo.cantMiembros}</label>
+            ) : (
+              <del>
+                <label>{equipo.cantMiembros}</label>{" "}
+              </del>
+            )}
           </div>
           <div class="Title">
             <label>
@@ -43,7 +68,13 @@ export default function CardInfoEquipo({state}) {
             </label>
           </div>
           <div>
-            {!state ? <label>Voluntariado</label>:<del><label>Voluntariado</label></del>}
+            {equipo.activo ? (
+              <label>{equipo.area}</label>
+            ) : (
+              <del>
+                <label>{equipo.area}</label>
+              </del>
+            )}
           </div>
           <div class="Title">
             <label>
@@ -51,7 +82,13 @@ export default function CardInfoEquipo({state}) {
             </label>
           </div>
           <div>
-            {!state?<label>Argentina</label>:<del><label>Argentina</label></del>}
+            {equipo.activo ? (
+              <label>{pais}</label>
+            ) : (
+              <del>
+                <label>{pais}</label>
+              </del>
+            )}
           </div>
           <div class="Title">
             <label>
@@ -59,7 +96,14 @@ export default function CardInfoEquipo({state}) {
             </label>
           </div>
           <div>
-           {!state?  <label>no se</label>:<del> <label>no se</label></del>}
+            {equipo.activo ? (
+              <label>{sedes}</label>
+            ) : (
+              <del>
+                {" "}
+                <label>{sedes}</label>
+              </del>
+            )}
           </div>
           <div class="Title">
             <label>
@@ -67,7 +111,13 @@ export default function CardInfoEquipo({state}) {
             </label>
           </div>
           <div>
-            {!state?<label>barrio</label>:<del><label>barrio</label></del>}
+            {equipo.activo ? (
+              <label>barrio</label>
+            ) : (
+              <del>
+                <label>barrio</label>
+              </del>
+            )}
           </div>
         </Box>
       </CardContent>
