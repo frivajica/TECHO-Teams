@@ -5,12 +5,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
-
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 export const InfoEquipo = () => {
   const [state, setState] = React.useState("");
   const [equipo, setEquipo] = useState([]);
+  const equipoData = useSelector(({ equipo }) => equipo);
 
   const id = useParams();
 
@@ -24,17 +25,16 @@ export const InfoEquipo = () => {
   function click() {
     state ? setState(false) : setState(true);
   }
-  
 
   return (
     <Box>
       <Box className="condicion">
         {!state ? (
-          <Alert sx={{borderRadius:0}} variant="filled" severity="success">
+          <Alert sx={{ borderRadius: 0 }} variant="filled" severity="success">
             Habilitado
           </Alert>
         ) : (
-          <Alert sx={{borderRadius:0}}  variant="filled" severity="error">
+          <Alert sx={{ borderRadius: 0 }} variant="filled" severity="error">
             Deshabilitado{" "}
           </Alert>
         )}
@@ -143,4 +143,4 @@ export const InfoEquipo = () => {
       </Box>
     </Box>
   );
-}
+};

@@ -13,7 +13,6 @@ export const Conformacion = () => {
     dispatch(getUsuarios("teamId"));
     dispatch(getRolesInfo("teamId"));
   }, []);
-console.log("roles=>",roles)
   return (
     <div className="conformacion">
       <div className="presentacion-seccion">
