@@ -1,15 +1,6 @@
 const { Usuario, Evento, UsuarioEnEquipo, Equipo } = require("../models");
 const superagent = require("superagent");
-const axios = require("axios");
-
-const generateAxios = (token) => {
-  const axiosInstance = axios.create({
-    baseURL: "https://sandbox.actividades.techo.org/api",
-  });
-  // Config de headers de axios para pedidos con autenticación
-  axiosInstance.defaults.headers.common.Authorization = token;
-  return axiosInstance;
-};
+const generateAxios = require("../utils/generateAxios")
 
 class UsuarioController {
   static getUsuarios(req, res) {
