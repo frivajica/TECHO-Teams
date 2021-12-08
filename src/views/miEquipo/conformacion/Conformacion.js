@@ -130,20 +130,10 @@ function Conformacion() {
         <div>
           <label>barrio</label>
         </div>
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Card sx={{ maxWidth: 900 }}>
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              height={300}
-              width={900}
-              image="https://noticiasdevillalaangostura.com/wp-content/uploads/2020/10/Asfalto-21.10-1-e1603293272248.jpg"
-              alt="green iguana"
-            />
-            <CardContent></CardContent>
-          </CardActionArea>
-        </Card>
-      </Box>
+         <div>
+         <img src="https://noticiasdevillalaangostura.com/wp-content/uploads/2020/10/Asfalto-21.10-1-e1603293272248.jpg" alt="MDN"/>
+
+         </div>
       </Box>
       
     </Box>
