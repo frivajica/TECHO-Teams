@@ -8,7 +8,10 @@ import useForm from "../../hooks/formState";
 import TextField from "@mui/material/TextField";
 import { defaultAvatar } from '../../utils/mockData'
 import { useSelector } from "react-redux";
+import {useEffect, useState } from "react"
+import { rolesGlobales } from "../../utils/mockData";
 import "./TarjetaRoles.css";
+const roles = rolesGlobales //toDo Sustituir por un axios.get
 
 export const TarjetaRoles = ({ rol, persona, necesario, img }) => {
   const { form, handleChange } = useForm();
@@ -23,14 +26,22 @@ export const TarjetaRoles = ({ rol, persona, necesario, img }) => {
       </div>
       <div className="rol-opciones">
         <FormControl id="modificar-rol" variant="standard">
-          <TextField
+        <Autocompletar
+            opciones={rolesGlobales}
+            freeSolo
+            etiqueta="Rol"
+            onChange={(e) => handleChange(e)}
+            name="Rol"
+            defVal={rol}
+          />  
+          {/* <TextField
             onChange={(e) => handleChange(e)}
             defaultValue={rol || null}
             name="rol"
             label="Rol"
             placeholder="Rol"
             variant="standard"
-          />
+          /> */}
         </FormControl>
         <div id="buscar-persona">
           <Autocompletar
