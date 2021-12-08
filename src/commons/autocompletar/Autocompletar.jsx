@@ -1,29 +1,18 @@
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-export const Autocompletar = ({ opciones, etiqueta, valorPred, onChange, nombre }) => {
+export const Autocompletar = ({ opciones, etiqueta, onChange, defVal, name }) => {
   return (
     <>
-      {valorPred ? (
         <Autocomplete
           size="small"
           options={opciones}
-          getOptionLabel={(option) => option.titulo}
-          defaultValue={valorPred}
+          getOptionLabel={(option) => option.nombre}
+          defaultValue={{nombre: defVal || ''}}
           renderInput={(params) => (
-            <TextField {...params} name={nombre} onSelect={(onChange)} variant="standard" label={etiqueta} />
+            <TextField {...params} name={name} onSelect={(onChange)} variant="standard" label={etiqueta} />
           )}
         />
-      ) : (
-        <Autocomplete
-          size="small"
-          options={opciones}
-          getOptionLabel={(option) => option.titulo}
-          renderInput={(params) => (
-            <TextField {...params} name={nombre} onSelect={onChange} variant="standard" label={etiqueta} />
-          )}
-        />
-      )}
     </>
   );
 };

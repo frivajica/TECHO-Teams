@@ -4,30 +4,28 @@ import Checkbox from "@mui/material/Checkbox";
 import ButtonBase from "@mui/material/ButtonBase";
 import { Autocompletar } from "../../commons/autocompletar/Autocompletar";
 import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
-import { opcionesPersona,  } from "../../utils/mockData";
 import useForm from "../../hooks/formState";
 import TextField from "@mui/material/TextField";
+import { defaultAvatar } from '../../utils/mockData'
+import { useSelector } from "react-redux";
 import "./TarjetaRoles.css";
 
-export const TarjetaRoles = () => {
+export const TarjetaRoles = ({ rol, persona, necesario, img }) => {
   const { form, handleChange } = useForm();
-  const handleSelect = (event) => {
-    console.log(event)
-    handleChange(event);
-  };
+  const personasEquipo = useSelector(({ equipo }) => equipo);
 
   return (
     <div className="tarjeta-roles">
       <div className="rol-imagen">
         <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
-          <img className="avatar" src={'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'} alt="Avatar de Usuario" />
+          <img className="avatar" src={ img || defaultAvatar} alt="Avatar de Usuario" />
         </ButtonBase>
       </div>
       <div className="rol-opciones">
         <FormControl id="modificar-rol" variant="standard">
           <TextField
-            onChange={handleSelect}
-            defaultValue={'opcionesRol[0].titulo'}
+            onChange={(e) => handleChange(e)}
+            defaultValue={rol || null}
             name="rol"
             label="Rol"
             placeholder="Rol"
@@ -36,16 +34,22 @@ export const TarjetaRoles = () => {
         </FormControl>
         <div id="buscar-persona">
           <Autocompletar
-            valorPred={{titulo: 'hola'}}
-            opciones={opcionesPersona}
+            opciones={personasEquipo}
             etiqueta="Persona"
-            onChange={handleSelect}
-            nombre="Persona"
+            onChange={(e) => handleChange(e)}
+            name="Persona"
+            defVal={persona}
           />
         </div>
         <FormControlLabel
           id="checkbox-rol"
-          control={<Checkbox defaultChecked={true}  onChange={handleSelect} name="necesario" />}
+          control={
+            <Checkbox
+              defaultChecked={necesario}
+              onChange={(e) => handleChange(e)}
+              name="necesario"
+            />
+          }
           label="Necesario"
         />
       </div>

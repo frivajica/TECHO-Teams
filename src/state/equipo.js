@@ -4,6 +4,7 @@ import {
     createReducer,
 } from "@reduxjs/toolkit";
 import axios from "axios"
+import { personas } from "../utils/mockData";
 
 export const setEquipo = createAction("SET_EQUIPO");
 
@@ -21,12 +22,16 @@ export const updateEquipo = createAsyncThunk("UPDATE_EQUIPO", (id, form) => {
     .catch(err => console.log(err))
 })
 
+export const getUsuarios = createAsyncThunk("GET_USUARIOS", (equipoId) => {
+    return personas;
+});
 
 const equipoReducer = createReducer({},
     {
         [setEquipo]: (state, action) => action.payload,
-        [getEquipo]: (state, action) => action.payload,
-        [updateEquipo]: (state, action) => action.payload,
+        [getEquipo.fulfilled]: (state, action) => action.payload,
+        [updateEquipo.fulfilled]: (state, action) => action.payload,
+        [getUsuarios.fulfilled]: (state, action) => action.payload,
     }
 );
 
