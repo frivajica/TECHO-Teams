@@ -1,5 +1,7 @@
 const { Equipo, Usuario, UsuarioEnEquipo, Role, RolEnEquipo } = require('../models');
 const generateAxios = require('../utils/generateAxios');
+const upsert = require('../utils/upsert');
+const Sequelize = require("sequelize");
 
 class EquipoController {
 
@@ -79,16 +81,15 @@ class EquipoController {
 
     static async addRole(req, res) {
         try {
-            const newRole = await Role.findOrCreate({where: {nombre: req.body.nombre}})
-            const equipo = await Equipo.findOne({ where: { id: req.params.id } })
-            equipo.addRole(newRole).then(() => {
-                if (req.body.necesario) {
-                    RolEnEquipo.Update({necesario: true}, {where: {equipoId: equipo.id, roleId: newRole.id}})
-                    .then(() => res.status(201).send(newRole))
-                    .catch(err => res.status(500).send(err));
-                }
-                else return res.status(201).send(newRole)
-            });
+            const equipo = await Equipo.findOne({ where: { id: req.params.id}})
+            const rol = await Role.findOrCreate({ where: {nombre: req.body.nombre}})
+            const rolEnEquipo = await RolEnEquipo.findOne({ where: { equipoId: equipo.id, roleId: rol.id }})
+            if (rolEnEquipo) RolEnEquipo.update(
+                    {cantNecesaria: req.body.cantNecesaria}, 
+                    {where: { equipoId: equipo.id, roleId: rol.id }})
+                    .then(() => res.status(201).send("cantidades necesarias actualizadas: "+req.body.cantNecesaria+" "+req.body.nombre+" necesarios"))
+            else equipo.setRole({through: {cantNecesaria: req.body.cantNecesaria}})
+                .then(() => res.status(201).send("rol",req.body.nombre,"agregado al equipo.",req.body.cantNecesaria,"necesarios"))
         } catch (error) {
             return res.status(500).send(error)
         }
@@ -96,7 +97,7 @@ class EquipoController {
 
     static async getRoles(req, res) {
         try {
-            const roles = await RolEnEquipo.findAll({ where: { equipoId: req.params.id } })
+            const roles = await equipo.getRoles()
             return res.send(roles);
         } catch (error) {
             return res.status(500).send(error)
@@ -124,8 +125,12 @@ class EquipoController {
             await usr.addEvento(evento)// <-- ^^^relaciono el evento con el equipo y con el usuario
 
             //el equipo ya no tiene el rol viejo pero si tiene el nuevo, sirve para cuando un rol es necesario.
-            await RolEnEquipo.update({satisfecho: false}, {where: {equipoId: equipo.id, roleId: oldRoleId}})
-            await RolEnEquipo.update({satisfecho: true}, {where: {equipoId: equipo.id, roleId: rol.id}})
+            if (oldRoleId) await RolEnEquipo.update(
+                { cantSatisfecha: Sequelize.literal('cantSatisfecha - 1') }, 
+                {where: {equipoId: equipo.id, roleId: oldRoleId}})
+            await RolEnEquipo.update(
+                { cantSatisfecha: Sequelize.literal('cantSatisfecha + 1') }, 
+                {where: {equipoId: equipo.id, roleId: rol.id}})
             return res.send("rol changed")
         } catch (error) {
             return res.status(500).send(error)
