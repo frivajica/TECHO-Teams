@@ -52,8 +52,12 @@ function App() {
               )
             }
           />
-          <Route exact path="/miEquipo" element={<Equipo />} />
-          <Route exact path="/miEquipo/historial" element={<EventosEquipo equipoId="1" />} />
+          <Route exact path="/miEquipo/:id" element={<Equipo />} />
+          <Route
+            exact
+            path="/miEquipo/:id/historial"
+            element={<EventosEquipo equipoId="1" />}
+          />
           <Route exact path="/crearEquipo" element={<CrearEquipo />} />
           <Route exact path="/search" element={<Search />} />
         </Routes>

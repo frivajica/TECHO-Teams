@@ -5,48 +5,45 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
-
+import { useSelector } from "react-redux";
+import CardInfoEquipo from "./CardInfoEquipo";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { deactivateEquipo, activateEquipo } from "../../../state/equipo";
 
 export const InfoEquipo = () => {
-  const [state, setState] = React.useState("");
-  const [equipo, setEquipo] = useState([]);
-
+  const dispatch = useDispatch();
+  const equipo = useSelector(({ equipo }) => equipo);
+  console.log(equipo);
   const id = useParams();
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3001/miEquipo/${id}`)
-      .then((res) => setEquipo(res.data))
-      .catch((err) => console.log(err));
-  }, []);
-
   function click() {
-    state ? setState(false) : setState(true);
+    equipo.activo
+      ? dispatch(deactivateEquipo(equipo.id))
+      : dispatch(activateEquipo(equipo.id));
   }
-  
 
   return (
     <Box>
       <Box className="condicion">
-        {!state ? (
-          <Alert sx={{borderRadius:0}} variant="filled" severity="success">
+        {equipo.activo ? (
+          <Alert sx={{ borderRadius: 0 }} variant="filled" severity="success">
             Habilitado
           </Alert>
         ) : (
-          <Alert sx={{borderRadius:0}}  variant="filled" severity="error">
+          <Alert sx={{ borderRadius: 0 }} variant="filled" severity="error">
             Deshabilitado{" "}
           </Alert>
         )}
       </Box>
-      <div class="Buttons">
+      <div className="Buttons">
         <div>
           <Button
             variant="contained"
             onClick={() => click()}
-            color={!state ? "error" : "success"}
+            color={equipo.activo ? "error" : "success"}
           >
-            {!state ? "Deshabilitar" : "Habilitar"}
+            {equipo.activo ? "Deshabilitar" : "Habilitar"}
           </Button>
         </div>
         <div>
@@ -57,7 +54,7 @@ export const InfoEquipo = () => {
       <Box
         id="grid"
         sx={
-          !state
+          equipo.activo
             ? { color: "#212529" }
             : {
                 bgcolor: "#9e9e9e",
@@ -67,80 +64,28 @@ export const InfoEquipo = () => {
               }
         }
       >
-        <div class="Title">
-          <label>
-            <p>Equipos:</p>
-          </label>
-        </div>
-        <div>
-          <Box>
-            <label class="TypEquipo" gutterBottom component="div">
-              Reparación de veredas - Nueva Córdoba
+        <div class="Titles">
+          <div class="TitleNombre">
+            <label>
+              {equipo.activo ? (
+                <p> {equipo.nombre}</p>
+              ) : (
+                <del>{equipo.nombre} </del>
+              )}
             </label>
-          </Box>
+          </div>
+          <div class="TitleDetalle">
+            <label>
+              <p>{equipo.detalles}</p>
+            </label>
+          </div>
         </div>
 
-        <div class="Title">
-          <label>
-            <p>Detalles:</p>
-          </label>
-        </div>
         <div>
-          <label class="TypDetalle">
-            Nos encargamos de la organización y planificación de las
-            construcciones que Techo lleva a cabo en el Gran Buenos Aires.
-          </label>
-        </div>
-
-        <div class="Title">
-          <label>
-            <p>Cantidad de Miembros:</p>
-          </label>
-        </div>
-        <div>
-          <label>12</label>
-        </div>
-        <div class="Title">
-          <label>
-            <p>Area:</p>
-          </label>
-        </div>
-        <div>
-          <label>Vivienda y Habitat</label>
-        </div>
-        <div class="Title">
-          <label>
-            <p>Pais:</p>
-          </label>
-        </div>
-        <div>
-          <label>Argentina</label>
-        </div>
-        <div class="Title">
-          <label>
-            <p>Sede:</p>
-          </label>
-        </div>
-        <div>
-          <label>no se</label>
-        </div>
-        <div class="Title">
-          <label>
-            <p>Territorio:</p>
-          </label>
-        </div>
-        <div>
-          <label>barrio</label>
-        </div>
-        <div class="img">
-          <img
-            width="300"
-            height="300"
-            src="https://noticiasdevillalaangostura.com/wp-content/uploads/2020/10/Asfalto-21.10-1-e1603293272248.jpg"
-            alt="MDN"
-          />
+          <CardInfoEquipo equipo={equipo} />
         </div>
       </Box>
+      <Divider id="divisor-Equipo" variant="middle" />
     </Box>
   );
-}
+};

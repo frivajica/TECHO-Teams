@@ -61,3 +61,11 @@ export const rolesEquipo = [
   {id: 4, rol: 'Cuidador', persona: 'Anon', necesario: true, img: 'https://techcommunity.microsoft.com/t5/image/serverpage/image-id/217078i525F6A9EF292601F/image-size/large?v=v2&px=999'},
   {id: 5, rol: 'Tesorero', persona: 'Natalia', necesario: true, img: 'https://ps.w.org/metronet-profile-picture/assets/icon-256x256.png?rev=2464419'},
 ];
+
+export const rolesGlobales = [
+  {id: 1, rol:'Contador'},
+  {id: 2, rol:'Constructor'},
+  {id: 3, rol:'Cocinero'},
+  {id: 4, rol:'Cuidador'},
+  {id: 5, rol:'Tesorero'},
+]
