@@ -6,6 +6,7 @@ import Home from "../../components/home/Home";
 import SignUp from "../../components/completarSignUp/SignUp";
 import Register from "../../components/Register/Register";
 import { Equipo } from "../miEquipo/Equipo";
+import EventosEquipo from "../miEquipo/historial/historial";
 import { Usuario } from "../usuario/Usuario";
 import MiInformación from "../miInformación/MiInformación";
 import { useSelector } from "react-redux";
@@ -52,6 +53,7 @@ function App() {
             }
           />
           <Route exact path="/miEquipo" element={<Equipo />} />
+          <Route exact path="/miEquipo/historial" element={<EventosEquipo equipoId="1" />} />
           <Route exact path="/crearEquipo" element={<CrearEquipo />} />
           <Route exact path="/search" element={<Search />} />
         </Routes>

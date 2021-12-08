@@ -1,66 +1,24 @@
 import Timeline from '@mui/lab/Timeline';
-import TimelineItem from '@mui/lab/TimelineItem';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineDot from '@mui/lab/TimelineDot';
-import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 import { Stack, Button, Divider } from '@mui/material';
-import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import {ChooseEventContent} from '../../../utils/historialEquipo/chooseEventContent'
+import {scrollButton} from '../../../utils/historialEquipo/scrollButton'
 
 export default function EventosEquipo( {equipoId} ) {
     const [historial, setHistorial] = useState([]);
     const [Yposition, setYposition] = useState(window.pageYOffset)
     const navigate = useNavigate();
-    const chooseEventColor = (tipo) => {
-        switch (tipo) {
-            case -1: return "error"
-            case 0: return "success"
-            case 1: return "primary"
-            case 2: return "secondary"
-        }
-    }
-    const scrollButton = () => {
-        if ( Yposition < document.body.scrollHeight/2) {
-            return (
-            <button onClick={() => window.scroll(0,document.body.scrollHeight )}>
-                <Box
-                    position="fixed"
-                    bottom="80px"
-                    left="20px"
-                    zIndex={3}
-                    style={{width:"30px", height:"30px", marginLeft: "auto"}}
-                >
-                    <KeyboardArrowDownIcon color="primary" sx={{fontSize: 100}} />
-                </Box>
-            </button>
-            )
-        }
-        else return (
-            <button onClick={() => window.scroll(0,0 )}>
-                <Box
-                    position="fixed"
-                    bottom="80px"
-                    left="20px"
-                    zIndex={3}
-                    style={{width:"30px", height:"30px", marginLeft: "auto"}}
-                >
-                    <KeyboardArrowUpIcon color="primary" sx={{fontSize: 100}} />
-                </Box>
-            </button>
-            )
-    }
 
     useEffect(() => {
         axios.get(`http://localhost:3001/api/equipos/${equipoId}/historial`)
         .then(res => res.data)
-        .then(hist => setHistorial(hist.reverse()));
+        .then(hist => {
+            console.log("hist antes de reverse", hist)
+            setHistorial(hist.reverse())
+        });
         window.addEventListener("scroll", () => setYposition(window.pageYOffset), { passive: true });
     }, [])
 
@@ -69,8 +27,8 @@ export default function EventosEquipo( {equipoId} ) {
         
         <br />
         <Stack direction="row" justifyContent="flex-start" alignItems="center" style={{width:"100%"}}>
-            <Button onClick={() => navigate(`/miEquipo`)} variant="outlined" startIcon={<ArrowBackIosIcon />} style={{marginLeft: "10px"}}>Volver</Button>
-            <h1 style={{marginLeft: "auto", marginRight: "10px"}}>Historia</h1>
+            <h1  style={{marginLeft: "10px"}}>Historia</h1>
+            <Button onClick={() => navigate(-1)} style={{marginLeft: "auto", marginRight: "10px"}} variant="outlined" startIcon={<ArrowBackIosIcon />}>Volver</Button>
         </Stack>
 
         <br />
@@ -78,21 +36,11 @@ export default function EventosEquipo( {equipoId} ) {
         <br />
 
         <Timeline position="alternate" style={{width:"100%"}}>
-            {historial.map((evento, i) => (
-                <TimelineItem key={i}>
-                    <TimelineOppositeContent color="text.secondary">
-                        {evento.createdAt.slice(0,10)}
-                    </TimelineOppositeContent>
-                    <TimelineSeparator>
-                        <TimelineDot color={chooseEventColor(evento.tipo)}/>
-                        {i<historial.length-1 ? <TimelineConnector /> : null}
-                    </TimelineSeparator>
-                    <TimelineContent>{evento.descripcion}</TimelineContent>
-                </TimelineItem>
-            ))}
+            {console.log("final hist", historial)}
+            {historial.map((evento, i) => <ChooseEventContent evento={evento} isLast={i<historial.length-1} i={i} />)}
         </Timeline>
 
-        {(window.innerHeight <= document.body.scrollHeight/4) && scrollButton()}
+        {(window.innerHeight <= document.body.scrollHeight/4) && scrollButton(Yposition)}
 
     </Stack>
     );

@@ -19,6 +19,8 @@ Router.get("/:id/usuarios", /* checkAuth, */ EquipoController.getUsers)
 
 Router.put("/:id/:userId", /* isCoordinatorHere, */  EquipoController.addUser)
 
+Router.post("/:id/agregarRol", /* isCoordinatorHere, */  EquipoController.addRole)
+
 Router.delete("/:id/:userId", /* isCoordinatorHere, */ EquipoController.removeUser)
 
 Router.put("/:id/:userId/:roleId", /* isCoordinatorHere, */ EquipoController.changeRole)
