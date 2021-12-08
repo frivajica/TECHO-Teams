@@ -4,10 +4,10 @@ import axios from "axios";
 import { Stack, Button, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import {ChooseEventContent} from '../../../utils/historialEquipo/chooseEventContent'
-import {scrollButton} from '../../../utils/historialEquipo/scrollButton'
+import { ChooseEventContent } from '../../../utils/historialEquipo/chooseEventContent'
+import { scrollButton } from '../../../utils/historialEquipo/scrollButton'
 
-export default function EventosEquipo( {equipoId} ) {
+export default function EventosEquipo( { equipoId } ) {
     const [historial, setHistorial] = useState([]);
     const [Yposition, setYposition] = useState(window.pageYOffset)
     const navigate = useNavigate();
@@ -32,11 +32,10 @@ export default function EventosEquipo( {equipoId} ) {
         </Stack>
 
         <br />
-        <Divider />
+            <Divider />
         <br />
 
         <Timeline position="alternate" style={{width:"100%"}}>
-            {console.log("final hist", historial)}
             {historial.map((evento, i) => <ChooseEventContent evento={evento} isLast={i<historial.length-1} i={i} />)}
         </Timeline>
 

@@ -5,13 +5,13 @@ class RolEnEquipo extends Sequelize.Model {}
 
 RolEnEquipo.init(
   {
-    necesario: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
+    cantNecesaria: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
     },
-    satisfecho: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
+    cantSatisfecha: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
     }
   },
   { sequelize: db, modelName: "rolenequipo" }

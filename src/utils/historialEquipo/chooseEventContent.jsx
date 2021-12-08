@@ -4,7 +4,6 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineItem from '@mui/lab/TimelineItem';
-import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';

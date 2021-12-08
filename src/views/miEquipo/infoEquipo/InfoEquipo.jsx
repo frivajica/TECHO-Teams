@@ -5,21 +5,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
-
+import CardInfoEquipo from "./CardInfoEquipo"
 import { useParams } from "react-router-dom";
 
 export const InfoEquipo = () => {
   const [state, setState] = React.useState("");
-  const [equipo, setEquipo] = useState([]);
+  
 
   const id = useParams();
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3001/miEquipo/${id}`)
-      .then((res) => setEquipo(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+  
 
   function click() {
     state ? setState(false) : setState(true);
@@ -67,80 +62,27 @@ export const InfoEquipo = () => {
               }
         }
       >
-        <div className="Title">
+        <div class="Titles">
+          <div class="TitleNombre">
           <label>
-            <p>Equipos:</p>
+         {!state? /* {equipo.nombre}*/ <p> Apoyo Escolar - Zárate</p>: /* <del>{equipo.nombre} </del>*/<del><p>Apoyo Escolar - Zárate</p> </del> } 
+          </label>
+          </div>
+          <div class="TitleDetalle">
+          <label>
+           <p>-Somos un equipo que se encarga de brindar apoyo escolar para los niños y niñas de los barrios de Zárate en los que TECHO está presente. -</p> 
           </label>
         </div>
+        </div>
+        
         <div>
-          <Box>
-            <label className="TypEquipo" component="div">
-              Reparación de veredas - Nueva Córdoba
-            </label>
-          </Box>
+        <CardInfoEquipo state={state}/>
+        
         </div>
 
-        <div className="Title">
-          <label>
-            <p>Detalles:</p>
-          </label>
-        </div>
-        <div>
-          <label className="TypDetalle">
-            Nos encargamos de la organización y planificación de las
-            construcciones que Techo lleva a cabo en el Gran Buenos Aires.
-          </label>
-        </div>
-
-        <div className="Title">
-          <label>
-            <p>Cantidad de Miembros:</p>
-          </label>
-        </div>
-        <div>
-          <label>12</label>
-        </div>
-        <div className="Title">
-          <label>
-            <p>Area:</p>
-          </label>
-        </div>
-        <div>
-          <label>Vivienda y Habitat</label>
-        </div>
-        <div className="Title">
-          <label>
-            <p>Pais:</p>
-          </label>
-        </div>
-        <div>
-          <label>Argentina</label>
-        </div>
-        <div className="Title">
-          <label>
-            <p>Sede:</p>
-          </label>
-        </div>
-        <div>
-          <label>no se</label>
-        </div>
-        <div className="Title">
-          <label>
-            <p>Territorio:</p>
-          </label>
-        </div>
-        <div>
-          <label>barrio</label>
-        </div>
-        <div className="img">
-          <img
-            width="300"
-            height="300"
-            src="https://noticiasdevillalaangostura.com/wp-content/uploads/2020/10/Asfalto-21.10-1-e1603293272248.jpg"
-            alt="MDN"
-          />
-        </div>
+        
       </Box>
+      <Divider id="divisor-Equipo" variant="middle" />
     </Box>
   );
 }
