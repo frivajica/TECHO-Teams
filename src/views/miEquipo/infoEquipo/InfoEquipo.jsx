@@ -8,22 +8,25 @@ import Alert from "@mui/material/Alert";
 import { useSelector } from "react-redux";
 import CardInfoEquipo from "./CardInfoEquipo";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { deactivateEquipo, activateEquipo } from "../../../state/equipo";
 
 export const InfoEquipo = () => {
-  const [state, setState] = React.useState("");
-  // const [equipo, setEquipo] = useState([]);
+  const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
   console.log(equipo);
   const id = useParams();
 
   function click() {
-    state ? setState(false) : setState(true);
+    equipo.activo
+      ? dispatch(deactivateEquipo(equipo.id))
+      : dispatch(activateEquipo(equipo.id));
   }
 
   return (
     <Box>
       <Box className="condicion">
-        {!state ? (
+        {equipo.activo ? (
           <Alert sx={{ borderRadius: 0 }} variant="filled" severity="success">
             Habilitado
           </Alert>
@@ -38,9 +41,9 @@ export const InfoEquipo = () => {
           <Button
             variant="contained"
             onClick={() => click()}
-            color={!state ? "error" : "success"}
+            color={equipo.activo ? "error" : "success"}
           >
-            {!state ? "Deshabilitar" : "Habilitar"}
+            {equipo.activo ? "Deshabilitar" : "Habilitar"}
           </Button>
         </div>
         <div>
@@ -51,7 +54,7 @@ export const InfoEquipo = () => {
       <Box
         id="grid"
         sx={
-          !state
+          equipo.activo
             ? { color: "#212529" }
             : {
                 bgcolor: "#9e9e9e",
@@ -64,7 +67,11 @@ export const InfoEquipo = () => {
         <div class="Titles">
           <div class="TitleNombre">
             <label>
-              {!state ? <p> {equipo.nombre}</p> : <del>{equipo.nombre} </del>}
+              {equipo.activo ? (
+                <p> {equipo.nombre}</p>
+              ) : (
+                <del>{equipo.nombre} </del>
+              )}
             </label>
           </div>
           <div class="TitleDetalle">
@@ -75,7 +82,7 @@ export const InfoEquipo = () => {
         </div>
 
         <div>
-          <CardInfoEquipo state={state} />
+          <CardInfoEquipo equipo={equipo} />
         </div>
       </Box>
       <Divider id="divisor-Equipo" variant="middle" />

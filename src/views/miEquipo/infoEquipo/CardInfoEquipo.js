@@ -5,25 +5,40 @@ import CardMedia from "@mui/material/CardMedia";
 import Box from "@mui/material/Box";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
-export default function CardInfoEquipo({ state }) {
-  const equipo = useSelector(({ equipo }) => equipo);
+export default function CardInfoEquipo({ equipo }) {
+  const [pais, setPais] = useState("");
+  const [sedes, setSedes] = useState("");
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/api/regiones/paises").then((res) =>
+      res.data.map((pais) => {
+        if (pais.id === equipo.paisId) {
+          setPais(pais.nombre);
+        }
+      })
+    );
+    axios.get("http://localhost:3001/api/sedes").then((res) =>
+      res.data.map((sede) => {
+        if (sede.id === equipo.sedeId) {
+          setSedes(sede.nombre);
+        }
+      })
+    );
+  }, []);
 
   return (
     <Card sx={{ width: 500 }}>
       <CardMedia
         component="img"
         height="340"
-        image={
-          !state
-            ? equipo.img
-            : "https:cdn.pixabay.com/photo/2012/04/12/20/12/x-30465_640.png"
-        }
+        image={equipo.img}
         alt="green iguana"
       />
       <CardContent
         sx={
-          !state
+          equipo.activo
             ? { color: "#212529" }
             : {
                 bgcolor: "#9e9e9e",
@@ -39,7 +54,7 @@ export default function CardInfoEquipo({ state }) {
             </label>
           </div>
           <div>
-            {!state ? (
+            {equipo.activo ? (
               <label>{equipo.cantMiembros}</label>
             ) : (
               <del>
@@ -53,7 +68,7 @@ export default function CardInfoEquipo({ state }) {
             </label>
           </div>
           <div>
-            {!state ? (
+            {equipo.activo ? (
               <label>{equipo.area}</label>
             ) : (
               <del>
@@ -67,11 +82,11 @@ export default function CardInfoEquipo({ state }) {
             </label>
           </div>
           <div>
-            {!state ? (
-              <label>Argentina</label>
+            {equipo.activo ? (
+              <label>{pais}</label>
             ) : (
               <del>
-                <label>Argentina</label>
+                <label>{pais}</label>
               </del>
             )}
           </div>
@@ -81,12 +96,12 @@ export default function CardInfoEquipo({ state }) {
             </label>
           </div>
           <div>
-            {!state ? (
-              <label>no se</label>
+            {equipo.activo ? (
+              <label>{sedes}</label>
             ) : (
               <del>
                 {" "}
-                <label>no se</label>
+                <label>{sedes}</label>
               </del>
             )}
           </div>
@@ -96,7 +111,7 @@ export default function CardInfoEquipo({ state }) {
             </label>
           </div>
           <div>
-            {!state ? (
+            {equipo.activo ? (
               <label>barrio</label>
             ) : (
               <del>
