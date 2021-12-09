@@ -8,23 +8,37 @@ import getToken from "../utils/getToken";
 
 export const setUsuarios = createAction("SET_USARIOS");
 
-export const getByMail = createAsyncThunk("GET_USER_BY_MAIL", (mail) => {
-  return axios
-    .get(`http://localhost:3001/api/usuarios/filtrar/mail/${mail}`, {
-      headers: { Authorization: getToken() },
-    })
-    .then((res) => res.data)
-    .catch((err) => console.log(err));
-});
+export const getByMail = createAsyncThunk(
+  "GET_USER_BY_MAIL",
+  ({ mail, errorAlert }) => {
+    return axios
+      .get(`http://localhost:3001/api/usuarios/filtrar/mail/${mail}`, {
+        headers: { Authorization: getToken() },
+      })
+      .then((res) => res.data)
+      .catch((err) => {
+        console.log("ACAAAA----->CATCH", err);
+        return errorAlert(
+          "Error",
+          "No se encontró ningún usuario registrado con ese email"
+        );
+      });
+  }
+);
 
-export const getById = createAsyncThunk("GET_USER_BY_ID", (id) => {
-  return axios
-    .get(`http://localhost:3001/api/usuarios/filtrar/id/${id}`, {
-      headers: { Authorization: getToken() },
-    })
-    .then((res) => res.data)
-    .catch((err) => console.log(err));
-});
+export const getById = createAsyncThunk(
+  "GET_USER_BY_ID",
+  ({ id, errorAlert }) => {
+    return axios
+      .get(`http://localhost:3001/api/usuarios/filtrar/id/${id}`, {
+        headers: { Authorization: getToken() },
+      })
+      .then((res) => res.data)
+      .catch(() =>
+        errorAlert("Error", "No se encontró ningún usuario con ese id")
+      );
+  }
+);
 
 const usuariosReducer = createReducer(
   {},

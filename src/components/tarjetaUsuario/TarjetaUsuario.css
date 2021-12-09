@@ -54,6 +54,16 @@
 .enEquipos {
   grid-column: 2;
   grid-row: 3;
+  text-align: center;
+  border-top-left-radius: 37px 140px;
+  border-top-right-radius: 23px 130px;
+  border-bottom-left-radius: 110px 19px;
+  border-bottom-right-radius: 120px 24px;
+  border: solid 3px #6e7491;
+  width: 70%;
+  line-height: 28px;
+  transform: rotate(-1deg);
+  box-shadow: 3px 15px 8px -10px rgb(0 0 0 / 30%);
 }
 
 @media (max-width: 700px) {
