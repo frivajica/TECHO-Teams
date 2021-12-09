@@ -1,8 +1,6 @@
 const { Equipo, Usuario, UsuarioEnEquipo, Role, RolEnEquipo } = require('../models');
 const generateAxios = require('../utils/generateAxios');
 const Sequelize = require("sequelize");
-var models = require('../models');
-
 
 class EquipoController {
 

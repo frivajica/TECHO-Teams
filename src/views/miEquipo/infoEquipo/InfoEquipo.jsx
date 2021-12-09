@@ -8,7 +8,6 @@ import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
 import { useSelector } from "react-redux";
 import CardInfoEquipo from "./CardInfoEquipo";
-import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deactivateEquipo, activateEquipo } from "../../../state/equipo";
 
@@ -16,7 +15,6 @@ export const InfoEquipo = () => {
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
   console.log(equipo);
-  const id = useParams();
 
   function click() {
     equipo.activo
