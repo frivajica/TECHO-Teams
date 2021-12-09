@@ -89,11 +89,12 @@ class EquipoController {
                     .then(res => usuariosYRol[i].dataValues.usr = res.data)
                     .catch(err => res.send(err));
             };
-            res.send({ usuariosYRol, necesarios })
+            const info = { usuariosYRol, necesarios }
+            return res.send(...info);
         } catch (error) {
             return res.status(500).send(error)
         };
-    }
+    };
 
     static async addRole(req, res) {
         try {

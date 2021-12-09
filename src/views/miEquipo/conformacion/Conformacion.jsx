@@ -41,7 +41,7 @@ export const Conformacion = () => {
             img={e.img}
           />
         ))}
-      </div>
+      </div> 
       <Divider variant="middle" className="divisor" />
       <div id="agregar-roles">
         <div id="titulo-nuevo">

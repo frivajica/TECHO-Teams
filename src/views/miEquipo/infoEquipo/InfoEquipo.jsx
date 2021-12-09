@@ -1,20 +1,22 @@
+import React from "react";
 import "../conformacion/Conformacion.css";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import CircleIcon from "@mui/icons-material/Circle";
+import Tooltip from "@mui/material/Tooltip";
 import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
 import { useSelector } from "react-redux";
 import CardInfoEquipo from "./CardInfoEquipo";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deactivateEquipo, activateEquipo } from "../../../state/equipo";
 
 export const InfoEquipo = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
+  console.log(equipo);
+  const id = useParams();
 
   function click() {
     equipo.activo
@@ -23,54 +25,33 @@ export const InfoEquipo = () => {
   }
 
   return (
-    <Box>
-      <Box className="condicion">
-        {equipo.activo ? (
-          <Alert sx={{ borderRadius: 0 }} variant="filled" severity="success">
-            Habilitado
-          </Alert>
-        ) : (
-          <Alert sx={{ borderRadius: 0 }} variant="filled" severity="error">
-            Deshabilitado{" "}
-          </Alert>
-        )}
-      </Box>
-      <div className="Buttons">
-        <div>
-          <Button
-            variant="contained"
-            onClick={() => click()}
-            color={equipo.activo ? "error" : "success"}
-          >
-            {equipo.activo ? "Deshabilitar" : "Habilitar"}
-          </Button>
-        </div>
-        <div>
-          <Button onClick={() => navigate(`/miEquipo/${equipo.id}/historia`)} variant="contained">Historia</Button>
-        </div>
-      </div>
-      <Divider id="divisor-Equipo" variant="middle" />
-      <Box
-        id="grid"
-        sx={
-          equipo.activo
-            ? { color: "#212529" }
-            : {
-                bgcolor: "#9e9e9e",
-                borderRadius: 5,
-                color: "#e0e0e0",
-                margin: 30,
-              }
-        }
-      >
+    <Box className="box-contenedor" >
+      <Box id="grid" >
         <div class="Titles">
           <div class="TitleNombre">
-            <label>
-              {equipo.activo ? (
-                <p> {equipo.nombre}</p>
-              ) : (
-                <del>{equipo.nombre} </del>
-              )}
+            <label className="Nombre-equipo">
+              <h1>
+                {" "}
+                {`${equipo.nombre} `}
+                {equipo.activo ? (
+                  <Tooltip title="Equipo activo">
+                    <CircleIcon
+                      sx={{
+                        fontSize: "medium",
+                        color: "success.main",
+                      }}
+                    />
+                  </Tooltip>
+                ) : (
+                  <Alert
+                    sx={{ borderRadius: 1, width: "100%" }}
+                    variant="filled"
+                    severity="error"
+                  >
+                    Equipo Deshabilitado
+                  </Alert>
+                )}
+              </h1>
             </label>
           </div>
           <div class="TitleDetalle">
@@ -82,6 +63,20 @@ export const InfoEquipo = () => {
 
         <div>
           <CardInfoEquipo equipo={equipo} />
+          <div className="Buttons mt">
+            <div>
+              <Button variant="contained">Historia</Button>
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                onClick={() => click()}
+                color={equipo.activo ? "error" : "success"}
+              >
+                {equipo.activo ? "Deshabilitar" : "Habilitar"}
+              </Button>
+            </div>
+          </div>
         </div>
       </Box>
       <Divider id="divisor-Equipo" variant="middle" />

@@ -41,7 +41,7 @@ class UsuarioController {
           })
         );
       })
-      .catch((err) => console.log({ err }));
+      .catch((err) => res.status(500).send(err));
   }
 
   static crearUsuario(req, res) {
