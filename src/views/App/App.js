@@ -55,8 +55,8 @@ function App() {
           <Route exact path="/miEquipo/:id" element={<Equipo />} />
           <Route
             exact
-            path="/miEquipo/:id/historial"
-            element={<EventosEquipo equipoId="1" />}
+            path="/miEquipo/:equipoId/historia"
+            element={<EventosEquipo />}
           />
           <Route exact path="/crearEquipo" element={<CrearEquipo />} />
           <Route exact path="/search" element={<Search />} />

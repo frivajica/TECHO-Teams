@@ -2,12 +2,13 @@ import Timeline from '@mui/lab/Timeline';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 import { Stack, Button, Divider } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { ChooseEventContent } from '../../../utils/historialEquipo/chooseEventContent'
 import { scrollButton } from '../../../utils/historialEquipo/scrollButton'
 
-export default function EventosEquipo( { equipoId } ) {
+export default function EventosEquipo() {
+    const { equipoId } = useParams()
     const [historial, setHistorial] = useState([]);
     const [Yposition, setYposition] = useState(window.pageYOffset)
     const navigate = useNavigate();

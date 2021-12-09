@@ -11,7 +11,7 @@ export const Autocompletar = ({ opciones, etiqueta, onChange, defVal, name, free
           getOptionLabel={(option) => option?.rol || option?.nombre}
           defaultValue={{nombre: defVal || ''}}
           renderInput={(params) => (
-            <TextField {...params} name={name} onSelect={(onChange)} variant="standard" label={etiqueta} />
+            <TextField {...params} name={name} onBlur={(onChange)} variant="standard" label={etiqueta} />
           )}
         />
     </>

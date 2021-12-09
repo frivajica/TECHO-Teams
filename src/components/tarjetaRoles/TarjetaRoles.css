@@ -23,7 +23,12 @@
   border-radius: 25px;
 }
 
-#save-icon {
+.rol-icons{
+  align-self: center;
+  justify-self: center;
+}
+
+#item-icon {
   border-radius: 100%;
   grid-column: 3;
   align-self: center;
