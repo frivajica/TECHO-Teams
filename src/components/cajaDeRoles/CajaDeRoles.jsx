@@ -15,7 +15,7 @@ export const CajaDeRoles = () => {
     dispatch(obtenerHistorial()).then(({ payload }) => {
       let arr = [];
       let obj = {};
-      payload.map((historia) => {
+      payload?.map((historia) => {
         const rol = historia.roles[historia.roles.length - 1].nombreRol;
         if (historia.activo && !obj[rol]) {
           obj[rol] = true;
