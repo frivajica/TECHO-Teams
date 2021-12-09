@@ -14,6 +14,12 @@ Equipo.belongsToMany(Role, {through: RolEnEquipo});
 Role.hasMany(UsuarioEnEquipo, {as: "usrEnEquipo"});
 UsuarioEnEquipo.belongsTo(Role);
 
+Role.hasMany(RolEnEquipo, {as: "rolEnEquipo"});
+RolEnEquipo.belongsTo(Role);
+
+Usuario.hasMany(UsuarioEnEquipo, {as: "usrEnEquipo"});
+UsuarioEnEquipo.belongsTo(Usuario);
+
 Equipo.hasMany(Evento);
 Evento.belongsTo(Equipo);
 

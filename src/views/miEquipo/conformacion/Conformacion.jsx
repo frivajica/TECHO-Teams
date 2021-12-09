@@ -8,19 +8,18 @@ import { useState } from "react";
 import ButtonBase from "@mui/material/ButtonBase";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { useParams } from "react-router-dom";
 import "./Conformacion.css";
 
 export const Conformacion = () => {
+  const {id} = useParams();
   const [mostrarNuevo, setMostrarNuevo] = useState(false);
   const dispatch = useDispatch();
   const roles = useSelector(({ rol }) => rol);
   useEffect(() => {
-    dispatch(getUsuarios("teamId"));
-    dispatch(getRolesInfo("teamId"));
+    dispatch(getUsuarios(id));
+    dispatch(getRolesInfo(id));
   }, []);
-  const toogleNuevo = () => {
-    setMostrarNuevo(!mostrarNuevo);
-  };
 
   return (
     <div className="conformacion">
@@ -48,11 +47,11 @@ export const Conformacion = () => {
         <div id="titulo-nuevo">
           <h2>Añadir rol</h2>
           {mostrarNuevo ? (
-            <ButtonBase onClick={toogleNuevo} id="item-icon">
+            <ButtonBase onClick={() => setMostrarNuevo(!mostrarNuevo)} id="item-icon">
               <RemoveIcon color="action" />
             </ButtonBase>
           ) : (
-            <ButtonBase onClick={toogleNuevo} id="item-icon">
+            <ButtonBase onClick={() => setMostrarNuevo(!mostrarNuevo)} id="item-icon">
               <AddIcon color="action" />
             </ButtonBase>
           )}
