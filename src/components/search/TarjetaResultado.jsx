@@ -56,7 +56,7 @@ export default function TarjetaResultado({ usuarios }) {
           errorAlert("Error", "El equipo no esta activo actualmente");
         res.data === "usuario agregado" && successAlert();
         res.data === "el usuario ya pertenece al equipo" &&
-          successAlert("Error", "El usuario ya esta en este equipo");
+          errorAlert("Error", "El usuario ya esta en este equipo");
       })
       .catch((err) => console.log({ err }));
   };
@@ -64,7 +64,7 @@ export default function TarjetaResultado({ usuarios }) {
   return (
     <div>
       <div className="tarjeta-usuario">
-        <div className="grid-usuario">
+        <div className="grid-usuario" id="grid-usuario-id">
           <div className="avatar-usuario">
             <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
               <img
@@ -84,7 +84,7 @@ export default function TarjetaResultado({ usuarios }) {
           </div>
 
           <div id="boton-mi-info" style={{ textAlign: "center" }}>
-            Interesado/a en:{" "}
+            <span style={{ color: "#1976D2" }}> Interesado/a en: </span>
             {usuarios.intereses
               .replace(/"/g, "")
               .replace("[", "")
@@ -97,7 +97,7 @@ export default function TarjetaResultado({ usuarios }) {
         </div>
         <div
           style={{
-            marginTop: "10px",
+            marginTop: "20px",
             display: "flex",
             justifyContent: "center",
           }}

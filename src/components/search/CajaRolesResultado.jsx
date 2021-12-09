@@ -34,9 +34,9 @@ export const CajaRolesResultado = ({ usuarios }) => {
     <div className="caja">
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }} id="roles">
         {roles[0] !== undefined &&
-          roles.map((value) => (
-            <ButtonBase id="ripple" key={value}>
-              <Chip label={value} color="primary" />
+          roles.map((value, i) => (
+            <ButtonBase id="ripple" key={i}>
+              {value && <Chip label={value} color="primary" />}
             </ButtonBase>
           ))}
       </Box>
