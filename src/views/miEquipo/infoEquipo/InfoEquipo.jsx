@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import CircleIcon from "@mui/icons-material/Circle";
 import Tooltip from "@mui/material/Tooltip";
-import axios from "axios";
 import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
 import { useSelector } from "react-redux";
@@ -26,45 +25,32 @@ export const InfoEquipo = () => {
   }
 
   return (
-    <Box className="box-contenedor">
-      {/* <Box className="condicion">
-        {equipo.activo ? (
-          <Alert sx={{ borderRadius: 0 }} variant="filled" severity="success">
-            Habilitado
-          </Alert>
-        ) : (
-          <Alert sx={{ borderRadius: 0 }} variant="filled" severity="error">
-            Deshabilitado{" "}
-          </Alert>
-        )}
-      </Box> */}
-
-      {/* <Divider id="divisor-Equipo" variant="middle" />
- */}      <Box
-        id="grid"
-        sx={
-          equipo.activo
-            ? { color: "#212529" }
-            : {
-                bgcolor: "#9e9e9e",
-                borderRadius: 5,
-                color: "#e0e0e0",
-                margin: 30,
-              }
-        }
-      >
+    <Box className="box-contenedor" >
+      <Box id="grid" >
         <div class="Titles">
           <div class="TitleNombre">
             <label className="Nombre-equipo">
-                <h1> {`${equipo.nombre} `} 
-                <Tooltip title={equipo.activo ? "Equipo activo" : "Equipo inactivo"}>
-                <CircleIcon
-                sx={{
-                  fontSize: "medium",
-                  color: equipo.activo ? "success.main" : "error.dark",
-                }}
-              />
-              </Tooltip>
+              <h1>
+                {" "}
+                {`${equipo.nombre} `}
+                {equipo.activo ? (
+                  <Tooltip title="Equipo activo">
+                    <CircleIcon
+                      sx={{
+                        fontSize: "medium",
+                        color: "success.main",
+                      }}
+                    />
+                  </Tooltip>
+                ) : (
+                  <Alert
+                    sx={{ borderRadius: 1, width: "100%" }}
+                    variant="filled"
+                    severity="error"
+                  >
+                    Equipo Deshabilitado
+                  </Alert>
+                )}
               </h1>
             </label>
           </div>
@@ -97,19 +83,3 @@ export const InfoEquipo = () => {
     </Box>
   );
 };
-
-
-/* 
-
-{equipo.activo ? (
-                <h1> {`${equipo.nombre} `} 
-                <CircleIcon
-                sx={{
-                  fontSize: "medium",
-                  color: equipo.activo ? "success.main" : "error.dark",
-                }}
-              /></h1>
-              ) : (
-                <del>{equipo.nombre} </del>
-              )}
-*/

@@ -117,6 +117,10 @@ margin-top: 4rem;
   margin-top: 1rem;
 }
 
+.foto-inactivo {
+border: #c62828 solid 10px;
+}
+
 
 #divisor-Equipo{
   margin: 2rem;
