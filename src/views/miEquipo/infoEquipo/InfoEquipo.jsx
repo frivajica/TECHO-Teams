@@ -11,8 +11,7 @@ import CardInfoEquipo from "./CardInfoEquipo";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deactivateEquipo, activateEquipo } from "../../../state/equipo";
-import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
-
+import { useNavigate } from "react-router-dom"
 export const InfoEquipo = () => {
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
@@ -76,7 +75,7 @@ export const InfoEquipo = () => {
           <CardInfoEquipo equipo={equipo} />
           <div className="Buttons mt">
             <div>
-              <Button variant="contained">Historia</Button>
+              <Button variant="contained" onClick={() => navigate(`/miEquipo/${equipo.id}/historia`)}>Historia</Button>
             </div>
             <div>
               <Button
