@@ -4,15 +4,24 @@ import { getUsuarios } from "../../../state/equipo";
 import { getRolesInfo } from "../../../state/rol";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import ButtonBase from "@mui/material/ButtonBase";
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import "./Conformacion.css";
 
 export const Conformacion = () => {
+  const [mostrarNuevo, setMostrarNuevo] = useState(false);
   const dispatch = useDispatch();
   const roles = useSelector(({ rol }) => rol);
   useEffect(() => {
     dispatch(getUsuarios("teamId"));
     dispatch(getRolesInfo("teamId"));
   }, []);
+  const toogleNuevo = () => {
+    setMostrarNuevo(!mostrarNuevo);
+  };
+
   return (
     <div className="conformacion">
       <div className="presentacion-seccion">
@@ -23,7 +32,7 @@ export const Conformacion = () => {
         </p>
       </div>
       <div id="modificar-roles">
-        {roles?.map((e) => (
+        {roles.map((e) => (
           <TarjetaRoles
             key={e.id}
             id={e.id}
@@ -33,11 +42,22 @@ export const Conformacion = () => {
             img={e.img}
           />
         ))}
-      </div>
+      </div> 
       <Divider variant="middle" className="divisor" />
       <div id="agregar-roles">
-        <h2>Añadir rol</h2>
-        <TarjetaRoles />
+        <div id="titulo-nuevo">
+          <h2>Añadir rol</h2>
+          {mostrarNuevo ? (
+            <ButtonBase onClick={toogleNuevo} id="item-icon">
+              <RemoveIcon color="action" />
+            </ButtonBase>
+          ) : (
+            <ButtonBase onClick={toogleNuevo} id="item-icon">
+              <AddIcon color="action" />
+            </ButtonBase>
+          )}
+        </div>
+        {mostrarNuevo && <TarjetaRoles />}
       </div>
     </div>
   );

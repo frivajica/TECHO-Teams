@@ -35,7 +35,7 @@ export const TarjetaEquipo = ({ final, roles, activo, equipo }) => {
           />
         </Tooltip>
       </h2>
-      <p className="num-proyectos actividad-fechas">{`Desde ${equipo.createdAt} - Hasta ${final}`}</p>
+      <p className="num-proyectos actividad-fechas">{`Desde ${inicio} - Hasta ${final}`}</p>
       <div className="roles-equipo">
         <span id="roles-titulo">Roles:</span>
         <Box

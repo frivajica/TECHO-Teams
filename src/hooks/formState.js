@@ -7,7 +7,8 @@ const useForm = (inic) => {
     event.target.type === 'checkbox'
       ? setForm({ ...form, [event.target.name]: event.target.checked })
       : setForm({ ...form, [event.target.name]: event.target.value });
-  };
+    };
+    console.log(form)
 	
   return { form, handleChange };
 };

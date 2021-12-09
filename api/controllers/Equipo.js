@@ -55,7 +55,7 @@ class EquipoController {
             const checkUsr = await UsuarioEnEquipo.findOne({
                 where: { usuarioIdPersona: usr.idPersona, equipoId: equipo.id },
               });
-              if (checkUsr) return res.send("el usuario ya pertenece al equipo");
+              if (checkUsr) return res.status(401).send("el usuario ya pertenece al equipo");
             await equipo.addUsuario(usr)
             const server = generateAxios(req.body.token)
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
@@ -129,10 +129,10 @@ class EquipoController {
             //el equipo ya no tiene el rol viejo pero si tiene el nuevo, sirve para cuando un rol es necesario.
             if (oldRoleId) await RolEnEquipo.update(
                 { cantSatisfecha: Sequelize.literal('cantSatisfecha - 1') }, 
-                {where: {equipoId: equipo.id, roleId: oldRoleId}})
+                { where: { equipoId: equipo.id, roleId: oldRoleId } })
             await RolEnEquipo.update(
                 { cantSatisfecha: Sequelize.literal('cantSatisfecha + 1') }, 
-                {where: {equipoId: equipo.id, roleId: rol.id}})
+                { where: { equipoId: equipo.id, roleId: rol.id } })
             return res.send("rol changed")
         } catch (error) {
             return res.status(500).send(error)
