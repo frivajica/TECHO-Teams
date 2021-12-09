@@ -2,6 +2,8 @@ const { Equipo, Usuario, UsuarioEnEquipo, Role, RolEnEquipo } = require('../mode
 const generateAxios = require('../utils/generateAxios');
 const upsert = require('../utils/upsert');
 const Sequelize = require("sequelize");
+var models = require('../models');
+
 
 class EquipoController {
 
@@ -71,15 +73,28 @@ class EquipoController {
         }
     }
 
-    static getUsers(req, res) {
-        Equipo.findOne({ where: { id: req.params.id } })
-            .then(equipo => {
-                equipo.getUsuarios()
-                    .then(listaUsrs => res.send(listaUsrs))
-                    .catch(err => res.status(500).send(err));
-            })
-            .catch(err => res.status(500).send(err));
-    }
+    static async getUsers (req, res) {
+        const server = generateAxios(req.body.token) //toDo investigar si existe req.token o similar
+        try {
+            let usuariosYRol = await UsuarioEnEquipo.findAll({
+                where: { equipoId: req.params.id }, 
+                include: [Role],
+            });
+            const necesarios = await RolEnEquipo.findAll({
+                where: {equipoId: req.params.id},
+                include: [Role],
+            });
+            for (let i = 0; i < usuariosYRol.length; i++) {     //Itera los usuarios para asignarles su información consultada de la api de actividades
+                await server.get(`/personas/${usuariosYRol[i].usuarioIdPersona}`)
+                    .then(res => usuariosYRol[i].dataValues.usr = res.data)
+                    .catch(err => res.send(err));
+            };
+            const info = { usuariosYRol, necesarios }
+            return res.send(...info);
+        } catch (error) {
+            return res.status(500).send(error)
+        };
+    };
 
     static async addRole(req, res) {
         try {
