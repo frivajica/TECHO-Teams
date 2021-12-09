@@ -22,8 +22,11 @@ export const updateEquipo = createAsyncThunk("UPDATE_EQUIPO", (id, form) => {
     .catch(err => console.log(err))
 })
 
-export const getUsuarios = createAsyncThunk("GET_USUARIOS", (equipoId) => {
-    return personas;
+export const getUsuarios = createAsyncThunk("GET_USUARIOS", (id) => {
+    return axios
+    .get(`http://localhost:3001/api/equipos/${id}/usuarios`)
+    .then(res => res.data)
+    .catch(err => console.log(err))
 });
 
 export const deactivateEquipo = createAsyncThunk("DEACTIVATE_EQUIPO", (id) => {

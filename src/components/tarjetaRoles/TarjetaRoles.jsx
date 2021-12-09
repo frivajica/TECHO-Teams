@@ -16,21 +16,21 @@ import ClearIcon from '@mui/icons-material/Clear';
 import "./TarjetaRoles.css";
 const roles = rolesGlobales //toDo Sustituir por un axios.get
 
-export const TarjetaRoles = ({ rol, persona, necesario, img }) => {
+export const TarjetaRoles = ({ id, rol, persona, necesario, img }) => {
   const { form, handleChange } = useForm();
   const [editMode, setEditMode] = useState(false);
   const personasEquipo = useSelector(({ equipo }) => equipo);
   const esNuevo = !(rol || persona || necesario);
   const toggleEditar = () => {
-    setEditMode(!editMode)
+    handleChange(null, id);
+    setEditMode(!editMode);
   };
   const guardarEditado = () => {
-    
-    setEditMode(!editMode)
+    setEditMode(!editMode);
   };
   const borrar = () => {
 
-    setEditMode(!editMode)
+    setEditMode(!editMode);
   };
 
   return (

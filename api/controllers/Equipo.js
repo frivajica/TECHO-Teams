@@ -1,6 +1,8 @@
 const { Equipo, Usuario, UsuarioEnEquipo, Role, RolEnEquipo } = require('../models');
 const generateAxios = require('../utils/generateAxios');
 const Sequelize = require("sequelize");
+var models = require('../models');
+
 
 class EquipoController {
 
@@ -70,9 +72,28 @@ class EquipoController {
         }
     }
 
-    static getUsers(req, res) {
-        UsuarioEnEquipo.findAll({where: {equipoId: req.params.id}, include: Role})
-    }
+    static async getUsers (req, res) {
+        const server = generateAxios(req.body.token) //toDo investigar si existe req.token o similar
+        try {
+            let usuariosYRol = await UsuarioEnEquipo.findAll({
+                where: { equipoId: req.params.id }, 
+                include: [Role],
+            });
+            const necesarios = await RolEnEquipo.findAll({
+                where: {equipoId: req.params.id},
+                include: [Role],
+            });
+            for (let i = 0; i < usuariosYRol.length; i++) {     //Itera los usuarios para asignarles su información consultada de la api de actividades
+                await server.get(`/personas/${usuariosYRol[i].usuarioIdPersona}`)
+                    .then(res => usuariosYRol[i].dataValues.usr = res.data)
+                    .catch(err => res.send(err));
+            };
+            const info = { usuariosYRol, necesarios }
+            return res.send(...info);
+        } catch (error) {
+            return res.status(500).send(error)
+        };
+    };
 
     static async addRole(req, res) {
         try {
@@ -95,7 +116,7 @@ class EquipoController {
             const usrEnEquipo = await UsuarioEnEquipo.findOne({ where: { equipoId: req.params.id, usuarioIdPersona: req.params.userId, activo: true } })
             const oldRoleId = usrEnEquipo.roleId;//guardo el viejo para saber que el equipo ya no tiene este rol
             const rol = await Role.findOne({ where: { id: req.params.roleId, activo: true } })
-            
+
             //verificar que el rol pertenezca al equipo:
             const rolesEnEquipo = await RolEnEquipo.findOne({ where: {equipoId: req.params.id, roleId: rol.id}})
             if (!rolesEnEquipo) return res.status(401).send("primero debes agregar el rol al equipo")
