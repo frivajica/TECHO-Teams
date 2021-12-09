@@ -6,8 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getByMail, getById, setUsuarios } from "../../state/usuarios";
 import TarjetaResultado from "./TarjetaResultado";
 import swal from "sweetalert";
+import { useNavigate } from "react-router";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 export default function Search() {
+  const navigate = useNavigate();
+
   const usuarios = useSelector((state) => state.usuarios);
   const dispatch = useDispatch();
   const [tipo, setTipo] = useState("");
@@ -96,6 +100,15 @@ export default function Search() {
       <div style={{ marginTop: "220px" }}>
         {usuarios.idPersona && <TarjetaResultado usuarios={usuarios} />}
       </div>
+      {/* <Button
+        onClick={() => navigate(-1)}
+        style={{ marginLeft: "auto", marginRight: "10px" }}
+        variant="outlined"
+        startIcon={<ArrowBackIosIcon />}
+        className="volverBtnSearch"
+      >
+        VOLVER
+      </Button> */}
     </div>
   );
 }

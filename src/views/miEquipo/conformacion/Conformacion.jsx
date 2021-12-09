@@ -9,16 +9,22 @@ import ButtonBase from "@mui/material/ButtonBase";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useParams } from "react-router-dom";
+import axios from "axios"
 import "./Conformacion.css";
 
 export const Conformacion = () => {
   const {id} = useParams();
   const [mostrarNuevo, setMostrarNuevo] = useState(false);
+  const [usuarios, setUsuarios] = useState([])
   const dispatch = useDispatch();
   const roles = useSelector(({ rol }) => rol);
 
   useEffect(() => {
-    dispatch(getUsuarios(id));
+    axios
+    .get(`http://localhost:3001/api/equipos/${id}/usuarios`)
+    .then(res => setUsuarios(res.data))
+    .catch(err => console.log(err))
+
     dispatch(getRolesInfo(id));
   }, []);
 

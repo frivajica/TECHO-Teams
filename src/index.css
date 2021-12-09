@@ -335,13 +335,6 @@
   box-shadow: 3px 15px 8px -10px rgb(0 0 0 / 30%);
 }
 
-/* border: solid 3px #6e7491;
-border-top-left-radius: 37px 140px;
-border-top-right-radius: 23px 130px;
-border-bottom-left-radius: 110px 19px;
-border-bottom-right-radius: 120px 24px;
-transform: rotate(-1deg);
-box-shadow: 3px 15px 8px -10px rgb(0 0 0 / 30%);
-line-height: 28px;
-width: 80%;
-text-align: center; */
+.volverBtnSearch {
+  margin: 90vh 0 0 0;
+}
