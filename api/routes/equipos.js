@@ -19,6 +19,8 @@ Router.get("/:id/historial", /* checkAuth, */ EquipoController.getHistory )
 
 Router.get("/:id/usuarios", /* checkAuth, */ EquipoController.getUsers)
 
+Router.get("/cantMiembros/:id", EquipoController.getCantMiembros)
+
 Router.put("/:id/:userId", /* isCoordinatorHere, */  EquipoController.addUser)
 
 Router.post("/:id/agregarRol", /* isCoordinatorHere, */  EquipoController.addRole)

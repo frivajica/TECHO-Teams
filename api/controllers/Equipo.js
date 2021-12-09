@@ -55,7 +55,10 @@ class EquipoController {
             const checkUsr = await UsuarioEnEquipo.findOne({
                 where: { usuarioIdPersona: usr.idPersona, equipoId: equipo.id },
               });
-              if (checkUsr) return res.status(401).send("el usuario ya pertenece al equipo");
+              if (checkUsr) {
+                  if(checkUsr.activo === false) UsuarioEnEquipo.update({activo: true}, {where: { usuarioIdPersona: usr.idPersona, equipoId: equipo.id }}) 
+                  else return res.status(401).send("el usuario ya pertenece al equipo")
+                }
             await equipo.addUsuario(usr)
             const server = generateAxios(req.body.token)
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
@@ -78,6 +81,12 @@ class EquipoController {
                     .then(listaUsrs => res.send(listaUsrs))
                     .catch(err => res.status(500).send(err));
             })
+            .catch(err => res.status(500).send(err));
+    }
+
+    static getCantMiembros(req, res) {
+        UsuarioEnEquipo.findAll({ where: { equipoId: req.params.id, activo: true } })
+            .then(usrEnEquipo => res.send(usrEnEquipo))
             .catch(err => res.status(500).send(err));
     }
 
@@ -181,7 +190,6 @@ class EquipoController {
     static async activateEquipo(req, res) {
         try {
             await Equipo.update({ activo: true }, { where: { id: req.params.id } })
-            await UsuarioEnEquipo.update({ activo: true }, { where: { equipoId: req.params.id } })
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
             equipo.createEvento({
                 tipo: 3,

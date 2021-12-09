@@ -9,6 +9,7 @@ import axios from "axios";
 export default function CardInfoEquipo({ equipo }) {
   const [pais, setPais] = useState("");
   const [sedes, setSedes] = useState("");
+  const [cantMiembros, setCantMiembros] = useState(0)
 
   useEffect(() => {
     axios.get("http://localhost:3001/api/regiones/paises").then((res) =>
@@ -24,8 +25,15 @@ export default function CardInfoEquipo({ equipo }) {
           setSedes(sede.nombre);
         }
       })
-    );
+    )
+    .catch(err => console.log(err))
   }, []);
+
+  useEffect(() =>{
+    axios.get(`http://localhost:3001/api/equipos/cantMiembros/${equipo.id}`)
+    .then(res => setCantMiembros(res.data.length))
+    .catch(err => console.log({err}))
+  }, [equipo.activo])
 
   return (
     <Card sx={{ width: 500 }}>
@@ -44,7 +52,7 @@ export default function CardInfoEquipo({ equipo }) {
             </label>
           </div>
           <div> 
-              <label>{equipo.cantMiembros}</label>
+              <label> {cantMiembros} / {equipo.cantMiembros}</label>
           </div>
           <div className="propiedades">
             <label>
