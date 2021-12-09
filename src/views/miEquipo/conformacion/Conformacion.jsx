@@ -10,17 +10,18 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import "./Conformacion.css";
 
-export const Conformacion = () => {
+export const Conformacion = ({id}) => {
   const [mostrarNuevo, setMostrarNuevo] = useState(false);
   const dispatch = useDispatch();
   const roles = useSelector(({ rol }) => rol);
-  useEffect(() => {
-    dispatch(getUsuarios("teamId"));
-    dispatch(getRolesInfo("teamId"));
-  }, []);
   const toogleNuevo = () => {
     setMostrarNuevo(!mostrarNuevo);
   };
+  
+  useEffect(() => {
+    dispatch(getUsuarios(id));
+    dispatch(getRolesInfo(id));
+  }, []);
 
   return (
     <div className="conformacion">
@@ -32,7 +33,7 @@ export const Conformacion = () => {
         </p>
       </div>
       <div id="modificar-roles">
-        {roles.map((e) => (
+        {roles?.map((e) => (
           <TarjetaRoles
             key={e.id}
             id={e.id}

@@ -16,7 +16,7 @@ export const Equipo = () => {
   return (
     <div>
       <InfoEquipo />
-      <Conformacion />
+      <Conformacion id={id} />
     </div>
   );
 };
