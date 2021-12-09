@@ -22,13 +22,6 @@ export const updateEquipo = createAsyncThunk("UPDATE_EQUIPO", (id, form) => {
     .catch(err => console.log(err))
 })
 
-export const getUsuarios = createAsyncThunk("GET_USUARIOS", (id) => {
-    return axios
-    .get(`http://localhost:3001/api/equipos/${id}/usuarios`)
-    .then(res => res.data)
-    .catch(err => console.log(err))
-});
-
 export const deactivateEquipo = createAsyncThunk("DEACTIVATE_EQUIPO", (id) => {
     return axios
     .put(`http://localhost:3001/api/equipos/desactivar/${id}`)
@@ -48,7 +41,6 @@ const equipoReducer = createReducer({},
         [setEquipo]: (state, action) => action.payload,
         [getEquipo.fulfilled]: (state, action) => action.payload,
         [updateEquipo.fulfilled]: (state, action) => action.payload,
-        [getUsuarios.fulfilled]: (state, action) => action.payload,
         [deactivateEquipo.fulfilled]: (state, action) => action.payload,
         [activateEquipo.fulfilled]: (state, action) => action.payload,
     }

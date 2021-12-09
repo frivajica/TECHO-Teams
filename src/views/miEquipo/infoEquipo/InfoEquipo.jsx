@@ -11,8 +11,11 @@ import CardInfoEquipo from "./CardInfoEquipo";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deactivateEquipo, activateEquipo } from "../../../state/equipo";
+import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import { useNavigate } from "react-router-dom"
+
 export const InfoEquipo = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
   console.log(equipo);
@@ -59,14 +62,14 @@ export const InfoEquipo = () => {
               <p>{equipo.detalles}</p>
             </label>
             <div className="Buttons mt">
-              <Link to="/search" style={{ textDecoration: "none" }}>
+             {equipo.activo && <Link to="/search" style={{ textDecoration: "none" }}>
                 <Button
                   variant="contained"
                   startIcon={<PersonAddAltOutlinedIcon />}
                 >
                   INTEGRANTE
                 </Button>
-              </Link>
+              </Link>}
             </div>
           </div>
         </div>
