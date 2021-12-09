@@ -1,6 +1,5 @@
 const { Equipo, Usuario, UsuarioEnEquipo, Role, RolEnEquipo } = require('../models');
 const generateAxios = require('../utils/generateAxios');
-const upsert = require('../utils/upsert');
 const Sequelize = require("sequelize");
 
 class EquipoController {
@@ -72,13 +71,7 @@ class EquipoController {
     }
 
     static getUsers(req, res) {
-        Equipo.findOne({ where: { id: req.params.id } })
-            .then(equipo => {
-                equipo.getUsuarios()
-                    .then(listaUsrs => res.send(listaUsrs))
-                    .catch(err => res.status(500).send(err));
-            })
-            .catch(err => res.status(500).send(err));
+        UsuarioEnEquipo.findAll({where: {equipoId: req.params.id}, include: Role})
     }
 
     static async addRole(req, res) {
@@ -97,25 +90,21 @@ class EquipoController {
         }
     }
 
-    static async getRoles(req, res) {
-        try {
-            const roles = await equipo.getRoles()
-            return res.send(roles);
-        } catch (error) {
-            return res.status(500).send(error)
-        }
-    }
-
     static async changeRole(req, res) { //Cambiar rol de usuario en un equipo
         try {
             const usrEnEquipo = await UsuarioEnEquipo.findOne({ where: { equipoId: req.params.id, usuarioIdPersona: req.params.userId, activo: true } })
             const oldRoleId = usrEnEquipo.roleId;//guardo el viejo para saber que el equipo ya no tiene este rol
             const rol = await Role.findOne({ where: { id: req.params.roleId, activo: true } })
+            
+            //verificar que el rol pertenezca al equipo:
+            const rolesEnEquipo = await RolEnEquipo.findOne({ where: {equipoId: req.params.id, roleId: rol.id}})
+            if (!rolesEnEquipo) return res.status(401).send("primero debes agregar el rol al equipo")
+            
             await usrEnEquipo.setRole(rol) //relaciono rol con tabla intermedia 
-
+            
             //info para crear evento:
-            const usr = await Usuario.findOne({ where: { idPersona: req.params.userId } })
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
+            const usr = await Usuario.findOne({ where: { idPersona: req.params.userId } })
             const server = generateAxios(req.body.token)
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
             const evento = await equipo.createEvento({

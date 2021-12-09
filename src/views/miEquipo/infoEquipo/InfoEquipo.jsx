@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
 import { useSelector } from "react-redux";
 import CardInfoEquipo from "./CardInfoEquipo";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deactivateEquipo, activateEquipo } from "../../../state/equipo";
 

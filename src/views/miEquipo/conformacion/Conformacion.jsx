@@ -17,7 +17,7 @@ export const Conformacion = ({id}) => {
   const toogleNuevo = () => {
     setMostrarNuevo(!mostrarNuevo);
   };
-  
+
   useEffect(() => {
     dispatch(getUsuarios(id));
     dispatch(getRolesInfo(id));
