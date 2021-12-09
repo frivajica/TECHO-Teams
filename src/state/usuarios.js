@@ -16,8 +16,7 @@ export const getByMail = createAsyncThunk(
         headers: { Authorization: getToken() },
       })
       .then((res) => res.data)
-      .catch((err) => {
-        console.log("ACAAAA----->CATCH", err);
+      .catch(() => {
         return errorAlert(
           "Error",
           "No se encontró ningún usuario registrado con ese email"

@@ -24,7 +24,7 @@ const persistConfig = {
   storage,
   whitelist: [
     "usuario", //aquí se enlistan los nombres
-    "usuarios", //de los reducers que queremos
+    // "usuarios", //de los reducers que queremos
     "equipo", //que persistan
     "rol",
   ],
