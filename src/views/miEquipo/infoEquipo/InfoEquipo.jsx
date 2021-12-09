@@ -1,7 +1,9 @@
+import React from "react";
 import "../conformacion/Conformacion.css";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import React, { useState, useEffect } from "react";
+import CircleIcon from "@mui/icons-material/Circle";
+import Tooltip from "@mui/material/Tooltip";
 import axios from "axios";
 import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
@@ -24,8 +26,8 @@ export const InfoEquipo = () => {
   }
 
   return (
-    <Box>
-      <Box className="condicion">
+    <Box className="box-contenedor">
+      {/* <Box className="condicion">
         {equipo.activo ? (
           <Alert sx={{ borderRadius: 0 }} variant="filled" severity="success">
             Habilitado
@@ -35,23 +37,10 @@ export const InfoEquipo = () => {
             Deshabilitado{" "}
           </Alert>
         )}
-      </Box>
-      <div className="Buttons">
-        <div>
-          <Button
-            variant="contained"
-            onClick={() => click()}
-            color={equipo.activo ? "error" : "success"}
-          >
-            {equipo.activo ? "Deshabilitar" : "Habilitar"}
-          </Button>
-        </div>
-        <div>
-          <Button variant="contained">Historia</Button>
-        </div>
-      </div>
-      <Divider id="divisor-Equipo" variant="middle" />
-      <Box
+      </Box> */}
+
+      {/* <Divider id="divisor-Equipo" variant="middle" />
+ */}      <Box
         id="grid"
         sx={
           equipo.activo
@@ -66,12 +55,17 @@ export const InfoEquipo = () => {
       >
         <div class="Titles">
           <div class="TitleNombre">
-            <label>
-              {equipo.activo ? (
-                <p> {equipo.nombre}</p>
-              ) : (
-                <del>{equipo.nombre} </del>
-              )}
+            <label className="Nombre-equipo">
+                <h1> {`${equipo.nombre} `} 
+                <Tooltip title={equipo.activo ? "Equipo activo" : "Equipo inactivo"}>
+                <CircleIcon
+                sx={{
+                  fontSize: "medium",
+                  color: equipo.activo ? "success.main" : "error.dark",
+                }}
+              />
+              </Tooltip>
+              </h1>
             </label>
           </div>
           <div class="TitleDetalle">
@@ -83,9 +77,39 @@ export const InfoEquipo = () => {
 
         <div>
           <CardInfoEquipo equipo={equipo} />
+          <div className="Buttons mt">
+            <div>
+              <Button variant="contained">Historia</Button>
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                onClick={() => click()}
+                color={equipo.activo ? "error" : "success"}
+              >
+                {equipo.activo ? "Deshabilitar" : "Habilitar"}
+              </Button>
+            </div>
+          </div>
         </div>
       </Box>
       <Divider id="divisor-Equipo" variant="middle" />
     </Box>
   );
 };
+
+
+/* 
+
+{equipo.activo ? (
+                <h1> {`${equipo.nombre} `} 
+                <CircleIcon
+                sx={{
+                  fontSize: "medium",
+                  color: equipo.activo ? "success.main" : "error.dark",
+                }}
+              /></h1>
+              ) : (
+                <del>{equipo.nombre} </del>
+              )}
+*/

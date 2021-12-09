@@ -48,7 +48,7 @@ export default function CardInfoEquipo({ equipo }) {
         }
       >
         <Box id="CardInfogrid">
-          <div class="Title">
+          <div className="propiedades">
             <label>
               <p>Miembros:</p>
             </label>
@@ -62,7 +62,7 @@ export default function CardInfoEquipo({ equipo }) {
               </del>
             )}
           </div>
-          <div class="Title">
+          <div className="propiedades">
             <label>
               <p>Area:</p>
             </label>
@@ -76,7 +76,7 @@ export default function CardInfoEquipo({ equipo }) {
               </del>
             )}
           </div>
-          <div class="Title">
+          <div className="propiedades">
             <label>
               <p>Pais:</p>
             </label>
@@ -90,7 +90,7 @@ export default function CardInfoEquipo({ equipo }) {
               </del>
             )}
           </div>
-          <div class="Title">
+          <div className="propiedades">
             <label>
               <p>Sede:</p>
             </label>
@@ -105,7 +105,7 @@ export default function CardInfoEquipo({ equipo }) {
               </del>
             )}
           </div>
-          <div class="Title">
+          <div className="propiedades">
             <label>
               <p>Territorio:</p>
             </label>

@@ -22,7 +22,7 @@ export const Conformacion = () => {
           fundamental para el funcionamiento del mismo.
         </p>
       </div>
-      <div id="modificar-roles">
+      {/* <div id="modificar-roles">
         {roles?.map((e) => (
           <TarjetaRoles
             key={e.id}
@@ -33,7 +33,7 @@ export const Conformacion = () => {
             img={e.img}
           />
         ))}
-      </div>
+      </div> */}
       <Divider variant="middle" className="divisor" />
       <div id="agregar-roles">
         <h2>Añadir rol</h2>

@@ -82,10 +82,9 @@
   justify-content: center;
   grid-template-columns: repeat(2, 20rem);
   grid-template-rows: 5rem;
-
   grid-gap: 1rem;
-  
 }
+
 .img{
   display: flex;
   justify-content: center!important;
@@ -97,6 +96,25 @@
   background-color: #81d4fa;
   grid-template-columns: repeat(2, 20rem);
    
+}
+
+.box-contenedor {
+margin-top: 4rem;
+}
+
+.Nombre-equipo {
+  font-size: large;
+  color: #1976D2;
+}
+
+.propiedades {
+  font-size: larger;
+  font-weight: 400 important;
+  color: #1976D2;
+}
+
+.mt {
+  margin-top: 1rem;
 }
 
 
