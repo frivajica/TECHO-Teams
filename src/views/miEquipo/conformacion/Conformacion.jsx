@@ -32,7 +32,7 @@ export const Conformacion = () => {
         </p>
       </div>
       <div id="modificar-roles">
-        {roles?.map((e) => (
+        {roles.map((e) => (
           <TarjetaRoles
             key={e.id}
             id={e.id}

@@ -129,10 +129,10 @@ class EquipoController {
             //el equipo ya no tiene el rol viejo pero si tiene el nuevo, sirve para cuando un rol es necesario.
             if (oldRoleId) await RolEnEquipo.update(
                 { cantSatisfecha: Sequelize.literal('cantSatisfecha - 1') }, 
-                {where: {equipoId: equipo.id, roleId: oldRoleId}})
+                { where: { equipoId: equipo.id, roleId: oldRoleId } })
             await RolEnEquipo.update(
                 { cantSatisfecha: Sequelize.literal('cantSatisfecha + 1') }, 
-                {where: {equipoId: equipo.id, roleId: rol.id}})
+                { where: { equipoId: equipo.id, roleId: rol.id } })
             return res.send("rol changed")
         } catch (error) {
             return res.status(500).send(error)

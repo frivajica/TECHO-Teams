@@ -7,15 +7,14 @@ import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
 import { useSelector } from "react-redux";
 import CardInfoEquipo from "./CardInfoEquipo";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deactivateEquipo, activateEquipo } from "../../../state/equipo";
 
 export const InfoEquipo = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
-  console.log(equipo);
-  const id = useParams();
 
   function click() {
     equipo.activo
@@ -47,7 +46,7 @@ export const InfoEquipo = () => {
           </Button>
         </div>
         <div>
-          <Button variant="contained">Historia</Button>
+          <Button onClick={() => navigate(`/miEquipo/${equipo.id}/historia`)} variant="contained">Historia</Button>
         </div>
       </div>
       <Divider id="divisor-Equipo" variant="middle" />
