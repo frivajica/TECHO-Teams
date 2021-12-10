@@ -4,17 +4,25 @@ const Sequelize = require("sequelize");
 
 class EquipoController {
 
-    static createEquipo(req, res) {
-        Equipo.create(req.body)
-            .then(newTeam => {
-                newTeam.createEvento({
-                    tipo: 0,
-                    nombreEquipo: newTeam.nombre
-                })
-                    .then(() => res.status(201).send(newTeam))
-                    .catch(err => res.status(500).send(err));
+    static async createEquipo(req, res) {
+        try {
+            /* const coordinador = await Usuario.findOne({ where: { id: req.params.coordId }})
+            if (!coordinador.isCoordinador) return res.status(404).send("el usuario no es coordinador.") */
+            const newTeam = await Equipo.create(req.body)
+
+            /* const coordRol = await Role.findOne({ where: { id: 1}})//<-- busco el rol para crear la relacion
+            const usrEnEquipo = await newTeam.addUsuario(coordinador) //<-- agrego el usuario al equipo
+            await usrEnEquipo.setRole(coordRol)//<-- le asigno el rol "coordinador" */
+
+            await newTeam.createEvento({
+                tipo: 0,
+                nombreEquipo: newTeam.nombre
             })
-            .catch(err => res.status(500).send(err));
+            return res.status(201).send(newTeam)
+        } catch (error) {
+            return res.status(500).send(error)
+        }
+        
     }
 
     static getEquipos(req, res) {
@@ -111,7 +119,7 @@ class EquipoController {
                     {cantNecesaria: req.body.cantNecesaria}, 
                     {where: { equipoId: equipo.id, roleId: rol.id }})
                     .then(() => res.status(201).send("cantidades necesarias actualizadas: "+req.body.cantNecesaria+" "+req.body.nombre+" necesarios"))
-            else equipo.setRole({through: {cantNecesaria: req.body.cantNecesaria}})
+            else equipo.setRole(rol, {through: {cantNecesaria: req.body.cantNecesaria}})
                 .then(() => res.status(201).send("rol",req.body.nombre,"agregado al equipo.",req.body.cantNecesaria,"necesarios"))
         } catch (error) {
             return res.status(500).send(error)
