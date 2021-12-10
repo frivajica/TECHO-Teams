@@ -85,6 +85,7 @@ const equipos = [
 const personas = [
   {
     idPersona: 791718,
+    isAdmin: true,
     profesion: "Psicologa",
     estudios: "Psicologia UBA",
     intereses: '["Voluntariado", "Comunicaciones"]',

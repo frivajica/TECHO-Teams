@@ -2,6 +2,7 @@
 // 1--> Al final de esa linea poner 1 "/seed1" y escribir en la consola npm run seed p/seedear seed1.js
 // 2--> Al final de esa linea poner 2 "/seed2" y escribir en la consola npm run seed p/seedear seed2.js
 // 3--> Al final de esa linea poner 3 "/seed3" y escribir en la consola npm run seed p/seedear seed3.js
+const readline = require('readline');
 
 const { Equipo, Usuario, UsuarioEnEquipo, Role } = require("../models")
 const axios = require("axios")
@@ -20,7 +21,14 @@ const getUsuarios = () => {
 
 const addUserToEquipos = async (equipo, num1, num2, token) => {
     for (let i = num1; i < num2; i++) {
-       await axios.put(`http://localhost:3001/api/equipos/${equipos[equipo].id}/${usuarios[i].idPersona}`, {token})
+       await axios.put(`http://localhost:3001/api/equipos/${equipos[equipo].id}/${usuarios[i].idPersona}`, {token, idPersona: "791718"})
+       .then(()=>{
+            readline.clearLine(process.stdout);
+            readline.cursorTo(process.stdout, 0, null)
+            const show = "equipos "+(equipo+1)+"/6"+", usuarios: "+(i-num1+1)+"/"+(num2-num1)
+            process.stdout.write(show)
+        })
+        .catch(err => console.log(err))
     }
 }
 
@@ -42,8 +50,16 @@ const getRoles = () => {
         .then(rolesArr => roles = rolesArr)
 }
 
+let loading = 0;
 const agregarRoles = async (userEq, rol, token) => {
-        await axios.put(`http://localhost:3001/api/equipos/${usuariosEnEquipos[userEq].equipoId}/${usuariosEnEquipos[userEq].usuarioIdPersona}/${roles[rol].id}`, {token})
+        await axios.put(`http://localhost:3001/api/equipos/${usuariosEnEquipos[userEq].equipoId}/${usuariosEnEquipos[userEq].usuarioIdPersona}/${roles[rol].id}`, {token, idPersona: "791718"})
+        .then(()=>{
+            readline.clearLine(process.stdout);
+            readline.cursorTo(process.stdout, 0, null)
+            const show = loading+"/20"
+            process.stdout.write(show)
+            loading++
+        })
         .catch(err => console.log(err))
     }
 
@@ -70,11 +86,12 @@ getEquipos()
             return token
         })
         .then(token => {
-            console.log("second seed done!!!")
+            console.log("\nsegunda seed lista!!!")
             getUsuarioEnEquipo()
             .then(() => 
                 getRoles()
                 .then(() => {
+                    console.log("terminando tercer seed:")
                     agregarRoles(0, 0, token)
                     agregarRoles(1, 3, token)
                     agregarRoles(2, 5, token)
