@@ -4,10 +4,11 @@ const { EquipoController } = require("../controllers");
 const {
   checkAdmin,
   checkAuth,
+  isAdminOrCoordinator,
   isAdminOrCoordinatorHere,
 } = require("../middlewares/auth");
 
-Router.post("/", /* checkAuthAndAdmin, */ EquipoController.createEquipo);
+Router.post("/create/:userId", isAdminOrCoordinator, EquipoController.createEquipo);
 
 Router.get("/", /* checkAuthAndAdmin, */ EquipoController.getEquipos);
 

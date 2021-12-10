@@ -13,6 +13,7 @@ import { CustomHook } from "../../hooks/CustomHook";
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import getToken from "../../utils/getToken";
+import { useSelector } from "react-redux";
 
 const listaAreas = [
   "",
@@ -41,6 +42,7 @@ export function CrearEquipo() {
   const descripcion = CustomHook("");
   const areas = CustomHook("");
   const [categoria, setCategoria] = useState("");
+  const loggedUser = useSelector(state => state.usuario);
 
   useEffect(() => {
     axios
@@ -113,7 +115,7 @@ export function CrearEquipo() {
     if (!pais.value || !categoria) errorAlert();
     else
       axios
-        .post("http://localhost:3001/api/equipos", {
+        .post(`http://localhost:3001/api/equipos/create/${loggedUser.idPersona}`, {
           nombre: nombre.value,
           cantMiembros: parseInt(cantidad.value),
           activo: true,

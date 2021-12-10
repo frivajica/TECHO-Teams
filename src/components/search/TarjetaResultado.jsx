@@ -49,6 +49,7 @@ export default function TarjetaResultado({ usuarios }) {
         `http://localhost:3001/api/equipos/${equipo.id}/${usuarios.idPersona}`,
         {
           token: usuario.token,
+          idPersona: usuario.idPersona
         }
       )
       .then((res) => {

@@ -27,13 +27,12 @@ const isAdminOrCoordinatorHere = async (req, res, next) => {
     }
 }
 
-const isCoordinator = (req, res, next) => {
-    UsuarioEnEquipo.findOne({where: {usuarioIdPersona: req.body.idPersona, roleId: 1}})
-    .then(usrEnEquipo => {
-        if (usrEnEquipo) return next();
-        else return res.status(401).send('El usuario no es coordinador en ningún equipo');
+const isAdminOrCoordinator = (req, res, next) => {
+    Usuario.findOne({where: {IdPersona: req.params.userId}})
+    .then(usuario => {
+        if (usuario.isAdmin || usuario.isCoordinador) return next();
+        else return res.status(401).send('El usuario no es coordinador ni admin');
     })
-    .catch(() => res.status(401).send("El usuario no pertenece a ningún equipo"));
 }
 
-module.exports = { checkAdmin, checkAuth, isAdminOrCoordinatorHere, isCoordinator };
+module.exports = { checkAdmin, checkAuth, isAdminOrCoordinatorHere, isAdminOrCoordinator };
