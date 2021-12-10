@@ -8,6 +8,8 @@ import TarjetaResultado from "./TarjetaResultado";
 import swal from "sweetalert";
 import { useNavigate } from "react-router";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 export default function Search() {
   const navigate = useNavigate();
@@ -17,6 +19,7 @@ export default function Search() {
   const [tipo, setTipo] = useState("");
   const busqueda = CustomHook("");
   //dispatch(setUsuarios({}));
+  const [trigger, setTrigger] = useState(true);
 
   const errorAlert = (
     title = "Seleccione un tipo de búsqueda",
@@ -32,10 +35,16 @@ export default function Search() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setTrigger(false);
+
     tipo === "email" &&
-      dispatch(getByMail({ mail: busqueda.value, errorAlert }));
+      dispatch(getByMail({ mail: busqueda.value, errorAlert })).then(
+        ({ payload }) => setTrigger(true)
+      );
     tipo === "id" &&
-      dispatch(getById({ id: parseInt(busqueda.value), errorAlert }));
+      dispatch(getById({ id: parseInt(busqueda.value), errorAlert })).then(
+        ({ payload }) => setTrigger(true)
+      );
     tipo === "" && errorAlert();
   };
 
@@ -97,9 +106,25 @@ export default function Search() {
           </Button>
         </div>
       </form>
-      <div style={{ marginTop: "220px" }}>
-        {usuarios.idPersona && <TarjetaResultado usuarios={usuarios} />}
-      </div>
+      {trigger ? (
+        <div style={{ marginTop: "220px" }}>
+          {usuarios.idPersona && <TarjetaResultado usuarios={usuarios} />}
+        </div>
+      ) : (
+        <div>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "320px",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        </div>
+      )}
+
       {/* <Button
         onClick={() => navigate(-1)}
         style={{ marginLeft: "auto", marginRight: "10px" }}

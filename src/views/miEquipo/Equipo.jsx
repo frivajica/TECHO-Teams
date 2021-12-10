@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { getEquipo } from "../../state/equipo.js";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 export const Equipo = () => {
   const dispatch = useDispatch();
@@ -22,6 +24,19 @@ export const Equipo = () => {
       </div>
     );
   } else {
-    return <h1>Cargando!</h1>;
+    return (
+      <div>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "320px",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </div>
+    );
   }
 };
