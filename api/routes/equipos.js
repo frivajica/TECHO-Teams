@@ -21,11 +21,13 @@ Router.get("/:id/usuarios", /* checkAuth, */ EquipoController.getUsers)
 
 Router.put("/:id/:userId", /* isCoordinatorHere, */  EquipoController.addUser)
 
+Router.get("/:id/roles", /* isCoordinatorHere, */ EquipoController.getRoles)
+
 Router.post("/:id/agregarRol", /* isCoordinatorHere, */  EquipoController.addRole)
 
 Router.delete("/:id/:userId", /* isCoordinatorHere, */ EquipoController.removeUser)
 
-Router.put("/:id/:userId/:roleId", /* isCoordinatorHere, */ EquipoController.changeRole)
+Router.put("/:id/:userId/rol", /* isCoordinatorHere, */ EquipoController.changeRole)
 
 
 module.exports = Router;

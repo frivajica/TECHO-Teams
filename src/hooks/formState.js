@@ -12,8 +12,7 @@ const useForm = (inic) => {
         : setForm({ ...form, [event.target.name]: event.target.value });
     };
   };
-  console.log(form);
-
+  
   return { form, handleChange };
 };
 
