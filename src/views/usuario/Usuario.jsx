@@ -21,7 +21,6 @@ export const Usuario = () => {
       </p>
       <Divider variant="middle" className="divisor" />
       <TabEquipoOActividades/>
-     
     </div>
   );
 };
