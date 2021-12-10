@@ -125,8 +125,8 @@ class EquipoController {
             const rol = await Role.findOne({ where: { id: req.params.roleId, activo: true } })
 
             //verificar que el rol pertenezca al equipo:
-            const rolesEnEquipo = await RolEnEquipo.findOne({ where: {equipoId: req.params.id, roleId: rol.id}})
-            if (!rolesEnEquipo) return res.status(401).send("primero debes agregar el rol al equipo")
+            /* const rolesEnEquipo = await RolEnEquipo.findOne({ where: {equipoId: req.params.id, roleId: rol.id}})
+            if (!rolesEnEquipo) return res.status(401).send("primero debes agregar el rol al equipo") */
             
             await usrEnEquipo.setRole(rol) //relaciono rol con tabla intermedia 
             
