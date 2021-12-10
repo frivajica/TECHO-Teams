@@ -17,8 +17,9 @@ Usuario.init(
       type: Sequelize.BOOLEAN,
       defaultValue: false
     },
-    areaCoord: Sequelize.INTEGER,  // id de sede/pais/ciudad
-    tipoDeArea: Sequelize.STRING, // sede/pais/ciudad?
+    areaCoord: Sequelize.INTEGER,  // id de sede
+    paisCoord: Sequelize.INTEGER, //
+    tipoDeArea: Sequelize.STRING, // sede/area?
     profesion: {
       type: Sequelize.STRING,
       allowNull: false,
