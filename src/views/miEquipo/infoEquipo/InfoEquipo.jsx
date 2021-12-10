@@ -18,7 +18,6 @@ export const InfoEquipo = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
-  console.log(equipo);
 
   function click() {
     equipo.activo
