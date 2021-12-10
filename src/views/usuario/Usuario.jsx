@@ -20,11 +20,7 @@ export const Usuario = () => {
         <span className="num-proyectos">{`${cantEquip.length} equipos`}</span>
       </p>
       <Divider variant="middle" className="divisor" />
-<<<<<<< HEAD
       <TabEquipoOActividades/>
-=======
-      <TabEquipoOActividades />
->>>>>>> d75dd5e90de7ccdb8efc045a22f66bb8ac23be77
     </div>
   );
 };
