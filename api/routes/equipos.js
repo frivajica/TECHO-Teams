@@ -8,7 +8,7 @@ const {
   isAdminOrCoordinatorHere,
 } = require("../middlewares/auth");
 
-Router.post("/create/:userId", isAdminOrCoordinator, EquipoController.createEquipo);
+Router.post("/", isAdminOrCoordinator, EquipoController.createEquipo);
 
 Router.get("/", /* checkAuthAndAdmin, */ EquipoController.getEquipos);
 

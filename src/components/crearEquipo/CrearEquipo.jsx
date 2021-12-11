@@ -115,7 +115,7 @@ export function CrearEquipo() {
     if (!pais.value || !categoria) errorAlert();
     else
       axios
-        .post(`http://localhost:3001/api/equipos/create/${loggedUser.idPersona}`, {
+        .post(`http://localhost:3001/api/equipos/`, {
           nombre: nombre.value,
           cantMiembros: parseInt(cantidad.value),
           activo: true,
@@ -125,6 +125,11 @@ export function CrearEquipo() {
           // falta la comunidad/barrio, hay que arreglar el endpoint, si categoria = oficina, va vacio
           categoria: categoria,
           area: areas.value,
+        },{
+          headers: { 
+            Authorization: loggedUser.token,
+            idPersona: loggedUser.idPersona
+          }
         })
         .then(res => {
           successAlert()

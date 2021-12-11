@@ -13,6 +13,7 @@ Evento.init(
       type: Sequelize.STRING,
       allowNull: false
     },
+    nombreCoord: Sequelize.STRING,
     nombreUsuario: Sequelize.STRING,
     nombreRol: Sequelize.STRING
   },

@@ -6,18 +6,33 @@ class EquipoController {
 
     static async createEquipo(req, res) {
         try {
-            /* const coordinador = await Usuario.findOne({ where: { id: req.params.coordId }})
-            if (!coordinador.isCoordinador) return res.status(404).send("el usuario no es coordinador.") */
+            const coordinador = await Usuario.findOne({ where: { id: req.params.userId }})
             const newTeam = await Equipo.create(req.body)
 
-            /* const coordRol = await Role.findOne({ where: { id: 1}})//<-- busco el rol para crear la relacion
             const usrEnEquipo = await newTeam.addUsuario(coordinador) //<-- agrego el usuario al equipo
-            await usrEnEquipo.setRole(coordRol)//<-- le asigno el rol "coordinador" */
+            const coordRol = await Role.findOne({ where: { id: 1}})//<-- busco el rol para crear la relacion
+            await usrEnEquipo.setRole(coordRol)//<-- le asigno el rol "coordinador"
 
-            await newTeam.createEvento({
+            //pedido a actividades para info(nombre) del coordinador :/
+            const server = generateAxios(req.headers.authorization)
+            const coordInfo = await server.get(`/personas/${req.headers.idPersona}`).then(res => res.data)
+
+            await newTeam.createEvento({//éste evento solo se utiliza en el historial del equipo
                 tipo: 0,
-                nombreEquipo: newTeam.nombre
+                nombreEquipo: newTeam.nombre,
+                nombreCoord: coordInfo.nombres
             })
+
+            //creo otro evento para guardar el rol en el historial del usuario
+            //también se mostrará en el historial del equipo
+            const evento = await coordinador.createEvento({ 
+                tipo: 2,
+                nombreEquipo: newTeam.nombre,
+                nombreUsuario: coordInfo.nombres,
+                nombreRol: coordRol.nombre
+            })
+            await newTeam.addEvento(evento)//necesitamos saber en qué equipo cumplió el rol de coordinador
+
             return res.status(201).send(newTeam)
         } catch (error) {
             return res.status(500).send(error)
@@ -59,22 +74,27 @@ class EquipoController {
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
             if (!equipo.activo) return res.send("el equipo no esta activo")
             const usr = await Usuario.findOne({ where: { idPersona: req.params.userId } })
+
             const checkUsr = await UsuarioEnEquipo.findOne({
                 where: { usuarioIdPersona: usr.idPersona, equipoId: equipo.id },
-              });
-              if (checkUsr) {
-                  if(checkUsr.activo === false) UsuarioEnEquipo.update({activo: true}, {where: { usuarioIdPersona: usr.idPersona, equipoId: equipo.id }}) 
-                  else return res.status(401).send("el usuario ya pertenece al equipo")
-                }
-            await equipo.addUsuario(usr)
+              }); 
+            if (checkUsr) { //si el usuario ya está en el equipo...
+                if(checkUsr.activo === false) await UsuarioEnEquipo.update({activo: true}, {where: { usuarioIdPersona: usr.idPersona, equipoId: equipo.id }}) 
+                else return res.status(401).send("el usuario ya pertenece al equipo")
+            }
+            else await equipo.addUsuario(usr)
+
             const server = generateAxios(req.body.token)
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
+            const coordInfo = await server.get(`/personas/${req.headers.idPersona}`).then(res => res.data) 
+
             const evento = await equipo.createEvento({//evento para el historial del equipo
                 tipo: 1,
                 nombreEquipo: equipo.nombre,
-                nombreUsuario: usrInfo.nombres
+                nombreUsuario: usrInfo.nombres,
+                nombreCoord: coordInfo.nombres
             })
-            await usr.addEvento(evento)
+            await usr.addEvento(evento)//para historial de usuario
             return res.send("usuario agregado")
         } catch (error) {
             return res.status(500).send(error)
@@ -82,7 +102,7 @@ class EquipoController {
     }
 
     static async getUsers (req, res) {
-        const server = generateAxios(req.body.token) //toDo investigar si existe req.token o similar
+        const server = generateAxios(req.body.token)
         try {
             let usuariosYRol = await UsuarioEnEquipo.findAll({
                 where: { equipoId: req.params.id }, 
@@ -143,8 +163,10 @@ class EquipoController {
             const usr = await Usuario.findOne({ where: { idPersona: req.params.userId } })
             const server = generateAxios(req.body.token)
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
+            const coordInfo = await server.get(`/personas/${req.headers.idPersona}`).then(res => res.data)
             const evento = await equipo.createEvento({
                 tipo: 2,
+                nombreCoord: coordInfo.nombres,
                 nombreEquipo: equipo.nombre,
                 nombreUsuario: usrInfo.nombres,
                 nombreRol: rol.nombre
@@ -174,9 +196,11 @@ class EquipoController {
             })
             const server = generateAxios(req.body.token)
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
+            const coordInfo = await server.get(`/personas/${req.headers.idPersona}`).then(res => res.data)
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
             const evento = await equipo.createEvento({
                 tipo: -1,
+                nombreCoord: coordInfo.nombres,
                 nombreEquipo: equipo.nombre,
                 nombreUsuario: usrInfo.nombres
             })
@@ -193,8 +217,11 @@ class EquipoController {
             await Equipo.update({ activo: false }, { where: { id: req.params.id } })
             await UsuarioEnEquipo.update({ activo: false }, { where: { equipoId: req.params.id } })
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
-             equipo.createEvento({
+            const server = generateAxios(req.headers.authorization)
+            const coordInfo = await server.get(`/personas/${req.headers.idPersona}`).then(res => res.data)
+            equipo.createEvento({
                 tipo: -2,
+                nombreCoord: coordInfo.nombres,
                 nombreEquipo: equipo.nombre
             }).then(() => res.status(201).send(equipo))
             .catch(err => res.send(err))
@@ -207,10 +234,14 @@ class EquipoController {
         try {
             await Equipo.update({ activo: true }, { where: { id: req.params.id } })
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
+            const server = generateAxios(req.headers.authorization)
+            const coordInfo = await server.get(`/personas/${req.headers.idPersona}`).then(res => res.data)
             equipo.createEvento({
                 tipo: 3,
+                nombreCoord: coordInfo.nombres,
                 nombreEquipo: equipo.nombre
-            }).then(() => res.status(200).send(equipo))
+            })
+            .then(() => res.status(200).send(equipo))
         } catch (error) {
             return res.status(500).send(error)
         }

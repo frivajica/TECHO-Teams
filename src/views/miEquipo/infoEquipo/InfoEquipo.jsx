@@ -18,11 +18,12 @@ export const InfoEquipo = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
+  const usuario = useSelector(({ usuario }) => usuario);
 
   function click() {
     equipo.activo
-      ? dispatch(deactivateEquipo(equipo.id))
-      : dispatch(activateEquipo(equipo.id));
+      ? dispatch(deactivateEquipo(equipo.id, usuario.idPersona, usuario.token))
+      : dispatch(activateEquipo(equipo.id, usuario.idPersona, usuario.token));
   }
 
   return (

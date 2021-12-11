@@ -22,16 +22,26 @@ export const updateEquipo = createAsyncThunk("UPDATE_EQUIPO", (id, form) => {
     .catch(err => console.log(err))
 })
 
-export const deactivateEquipo = createAsyncThunk("DEACTIVATE_EQUIPO", (id, idPersona) => {
+export const deactivateEquipo = createAsyncThunk("DEACTIVATE_EQUIPO", (id, idPersona, token) => {
     return axios
-    .put(`http://localhost:3001/api/equipos/desactivar/${id}`, {idPersona})
+    .put(`http://localhost:3001/api/equipos/desactivar/${id}`, {}, {
+        headers: {
+            authorization: token,
+            idPersona: idPersona
+        }
+    })
     .then(res => res.data)
     .catch(err => console.log(err))
 })
 
-export const activateEquipo = createAsyncThunk("ACTIVATE_EQUIPO", (id, idPersona) => {
+export const activateEquipo = createAsyncThunk("ACTIVATE_EQUIPO", (id, idPersona, token) => {
     return axios
-    .put(`http://localhost:3001/api/equipos/activar/${id}`, {idPersona})
+    .put(`http://localhost:3001/api/equipos/activar/${id}`, {}, {
+        headers: {
+            authorization: token,
+            idPersona: idPersona
+        }
+    })
     .then(res => res.data)
     .catch(err => console.log(err))
 })
