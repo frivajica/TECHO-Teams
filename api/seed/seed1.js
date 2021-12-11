@@ -171,20 +171,33 @@ const roles = [
 ];
 
 db.sync()
-  .then(() => Equipo.bulkCreate(equipos).then(async (equipos) => {
-    for(let i = 0; i < equipos.length; i++) {
-      await equipos[i].createEvento({
-        tipo: 0,
-        nombreEquipo: equipos[i].nombre}
-        )}
-  }))
-  .then(() => Usuario.bulkCreate(personas))
-  .then(() => Role.bulkCreate(roles))
-  .then(() => process.exit(0))
-  .catch((err) => {
-    console.log("Algo salió mal en el proceso: ", err.message);
-    process.exit(1);
-  });
+.then(() => {
+  console.log("Comenzando primer seed.")
+  Equipo.bulkCreate(equipos).then(async (equipos) => {
+      console.log("Equipos creados. Creando eventos...")
+      for(let i = 0; i < equipos.length; i++) {
+        await equipos[i].createEvento({
+            tipo: 0,
+            nombreEquipo: equipos[i].nombre
+          }).then(() => process.stdout.write("."))
+      }
+  })
+  .then(() => {
+    console.log("\nCreando personas...")
+    Usuario.bulkCreate(personas)
+    .then(() => {
+      console.log("Personas creadas")
+      console.log("Creando roles...")
+      Role.bulkCreate(roles)
+      .then(() => console.log("Roles creados"))
+      .then(() => process.exit(0))
+      .catch((err) => {
+        console.log("Algo salió mal en el proceso: ", err.message);
+        process.exit(1);
+      });
+    })
+  })
+})
 
 //LUEGO DE SEEDEAR PUEDEN LOGUEARSE CON CUALQUIERA DE ESTOS USUARIOS
 const personasActividades = [
