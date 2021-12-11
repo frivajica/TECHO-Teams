@@ -135,9 +135,9 @@ class UsuarioController {
                   }
             )
           )
-          .catch((err) => console.log("no funcionaaaa pero casi", err));
+          .catch((err) => res.status(500).send(err));
       })
-      .catch((err) => console.log("no funciono imbecciiiil", err));
+      .catch((err) => res.status(500).send(err));
   }
 
   static editarUsuario(req, res) {

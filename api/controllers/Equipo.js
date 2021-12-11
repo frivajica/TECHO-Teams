@@ -15,7 +15,7 @@ class EquipoController {
 
             //pedido a actividades para info(nombre) del coordinador :/
             const server = generateAxios(req.headers.authorization)
-            const coordInfo = await server.get(`/personas/${req.headers.idPersona}`).then(res => res.data)
+            const coordInfo = await server.get(`/personas/${req.headers.idpersona}`).then(res => res.data)
 
             await newTeam.createEvento({//éste evento solo se utiliza en el historial del equipo
                 tipo: 0,
@@ -84,9 +84,9 @@ class EquipoController {
             }
             else await equipo.addUsuario(usr)
 
-            const server = generateAxios(req.body.token)
+            const server = generateAxios(req.headers.authorization)
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
-            const coordInfo = await server.get(`/personas/${req.headers.idPersona}`).then(res => res.data) 
+            const coordInfo = await server.get(`/personas/${req.headers.idpersona}`).then(res => res.data) 
 
             const evento = await equipo.createEvento({//evento para el historial del equipo
                 tipo: 1,
@@ -102,7 +102,7 @@ class EquipoController {
     }
 
     static async getUsers (req, res) {
-        const server = generateAxios(req.body.token)
+        const server = generateAxios(req.headers.authorization)
         try {
             let usuariosYRol = await UsuarioEnEquipo.findAll({
                 where: { equipoId: req.params.id }, 
@@ -151,7 +151,7 @@ class EquipoController {
             const usrEnEquipo = await UsuarioEnEquipo.findOne({ where: { equipoId: req.params.id, usuarioIdPersona: req.params.userId, activo: true } })
             const oldRoleId = usrEnEquipo.roleId;//guardo el viejo para saber que el equipo ya no tiene este rol
             const rol = await Role.findOne({ where: { id: req.params.roleId, activo: true } })
-
+            console.log("im fine 1")
             //verificar que el rol pertenezca al equipo:
             /* const rolesEnEquipo = await RolEnEquipo.findOne({ where: {equipoId: req.params.id, roleId: rol.id}})
             if (!rolesEnEquipo) return res.status(401).send("primero debes agregar el rol al equipo") */
@@ -160,10 +160,15 @@ class EquipoController {
             
             //info para crear evento:
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
+            console.log("im fine 1.1")
             const usr = await Usuario.findOne({ where: { idPersona: req.params.userId } })
-            const server = generateAxios(req.body.token)
+            console.log("im fine 1.2")
+            const server = generateAxios(req.headers.authorization)
+            console.log("im fine 1.3")
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
-            const coordInfo = await server.get(`/personas/${req.headers.idPersona}`).then(res => res.data)
+            console.log("im fine 1.4")
+            const coordInfo = await server.get(`/personas/${req.headers.idpersona}`).then(res => res.data) 
+            console.log("im fine 1.5")
             const evento = await equipo.createEvento({
                 tipo: 2,
                 nombreCoord: coordInfo.nombres,
@@ -171,12 +176,14 @@ class EquipoController {
                 nombreUsuario: usrInfo.nombres,
                 nombreRol: rol.nombre
             })
+            console.log("im fine 2")
             await usr.addEvento(evento)// <-- ^^^relaciono el evento con el equipo y con el usuario
 
             //el equipo ya no tiene el rol viejo pero si tiene el nuevo, sirve para cuando un rol es necesario.
             if (oldRoleId) await RolEnEquipo.update(
                 { cantSatisfecha: Sequelize.literal('cantSatisfecha - 1') }, 
                 { where: { equipoId: equipo.id, roleId: oldRoleId } })
+            console.log("im fine 3")
             await RolEnEquipo.update(
                 { cantSatisfecha: Sequelize.literal('cantSatisfecha + 1') }, 
                 { where: { equipoId: equipo.id, roleId: rol.id } })
@@ -194,9 +201,9 @@ class EquipoController {
                     equipoId: req.params.id
                 }
             })
-            const server = generateAxios(req.body.token)
+            const server = generateAxios(req.headers.authorization)
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
-            const coordInfo = await server.get(`/personas/${req.headers.idPersona}`).then(res => res.data)
+            const coordInfo = await server.get(`/personas/${req.headers.idpersona}`).then(res => res.data)
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
             const evento = await equipo.createEvento({
                 tipo: -1,
@@ -218,7 +225,7 @@ class EquipoController {
             await UsuarioEnEquipo.update({ activo: false }, { where: { equipoId: req.params.id } })
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
             const server = generateAxios(req.headers.authorization)
-            const coordInfo = await server.get(`/personas/${req.headers.idPersona}`).then(res => res.data)
+            const coordInfo = await server.get(`/personas/${req.headers.idpersona}`).then(res => res.data)
             equipo.createEvento({
                 tipo: -2,
                 nombreCoord: coordInfo.nombres,
@@ -235,7 +242,7 @@ class EquipoController {
             await Equipo.update({ activo: true }, { where: { id: req.params.id } })
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
             const server = generateAxios(req.headers.authorization)
-            const coordInfo = await server.get(`/personas/${req.headers.idPersona}`).then(res => res.data)
+            const coordInfo = await server.get(`/personas/${req.headers.idpersona}`).then(res => res.data)
             equipo.createEvento({
                 tipo: 3,
                 nombreCoord: coordInfo.nombres,

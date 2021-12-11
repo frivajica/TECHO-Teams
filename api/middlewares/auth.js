@@ -11,10 +11,10 @@ const checkAuth = (req, res, next) => {
 };
 
 const isAdminOrCoordinatorHere = async (req, res, next) => {
-    const usrEnEquipo = await UsuarioEnEquipo.findOne({where: {usuarioIdPersona: req.headers.idPersona, equipoId: req.params.id, roleId: 1}})
+    const usrEnEquipo = await UsuarioEnEquipo.findOne({where: {usuarioIdPersona: req.headers.idpersona, equipoId: req.params.id, roleId: 1}})
     if (usrEnEquipo) return next();
     else {
-        const usuario = await Usuario.findOne({where: {idPersona: req.headers.idPersona}})
+        const usuario = await Usuario.findOne({where: {idPersona: req.headers.idpersona}})
         const equipo = await Equipo.findOne({where: {id: req.params.id}})
         if (
             usuario.isAdmin 

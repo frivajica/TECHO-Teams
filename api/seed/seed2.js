@@ -21,7 +21,7 @@ const getUsuarios = () => {
 
 const addUserToEquipos = async (equipo, num1, num2, token) => {
     for (let i = num1; i < num2; i++) {
-       await axios.put(`http://localhost:3001/api/equipos/${equipos[equipo].id}/${usuarios[i].idPersona}`, {token, idPersona: "791718"})
+       await axios.put(`http://localhost:3001/api/equipos/${equipos[equipo].id}/${usuarios[i].idPersona}`,{}, {headers: {authorization: token, idPersona: "791718"}})
        .then(()=>{
             readline.clearLine(process.stdout);
             readline.cursorTo(process.stdout, 0, null)
@@ -52,7 +52,7 @@ const getRoles = () => {
 
 let loading = 0;
 const agregarRoles = async (userEq, rol, token) => {
-        await axios.put(`http://localhost:3001/api/equipos/${usuariosEnEquipos[userEq].equipoId}/${usuariosEnEquipos[userEq].usuarioIdPersona}/${roles[rol].id}`, {token, idPersona: "791718"})
+        await axios.put(`http://localhost:3001/api/equipos/${usuariosEnEquipos[userEq].equipoId}/${usuariosEnEquipos[userEq].usuarioIdPersona}/${roles[rol].id}`,{}, {headers: {authorization: token, idPersona: "791718"}})
         .then(()=>{
             readline.clearLine(process.stdout);
             readline.cursorTo(process.stdout, 0, null)
@@ -60,7 +60,7 @@ const agregarRoles = async (userEq, rol, token) => {
             process.stdout.write(show)
             loading++
         })
-        .catch(err => console.log(err.message))
+        .catch(err => console.log(err))
     }
 
 
@@ -73,6 +73,15 @@ const login = async () => {
       .catch(err => console.log(err));
 }
 
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+async function waitingForApi(ms) {
+    console.log("\nesperando a la api")
+    await timeout(ms);
+    console.log("continuando")
+}
+
 getEquipos()
     .then(() => getUsuarios()
         .then(() => login())
@@ -83,6 +92,7 @@ getEquipos()
             await addUserToEquipos(2, 1, 5, token)
             await addUserToEquipos(3, 0, 6, token)
             await addUserToEquipos(4, 3, 7, token)
+            await waitingForApi(20000)
             await addUserToEquipos(5, 1, 6, token)
             return token
         })
