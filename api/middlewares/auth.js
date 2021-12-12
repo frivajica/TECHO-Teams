@@ -28,7 +28,7 @@ const isAdminOrCoordinatorHere = async (req, res, next) => {
 }
 
 const isAdminOrCoordinator = (req, res, next) => {
-    Usuario.findOne({where: {IdPersona: req.params.userId}})
+    Usuario.findOne({where: {IdPersona: req.headers.idpersona}})
     .then(usuario => {
         if (usuario.isAdmin || usuario.isCoordinador) return next();
         else return res.status(401).send('El usuario no es coordinador ni admin');
