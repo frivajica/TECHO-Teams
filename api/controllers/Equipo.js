@@ -149,26 +149,21 @@ class EquipoController {
     static async changeRole(req, res) { //Cambiar rol de usuario en un equipo
         try {
             const usrEnEquipo = await UsuarioEnEquipo.findOne({ where: { equipoId: req.params.id, usuarioIdPersona: req.params.userId, activo: true } })
-            const oldRoleId = usrEnEquipo.roleId;//guardo el viejo para saber que el equipo ya no tiene este rol
+            /* const oldRoleId = usrEnEquipo.roleId;//guardo el viejo para saber que el equipo ya no tiene este rol */
             const rol = await Role.findOne({ where: { id: req.params.roleId, activo: true } })
-            console.log("im fine 1")
             //verificar que el rol pertenezca al equipo:
             /* const rolesEnEquipo = await RolEnEquipo.findOne({ where: {equipoId: req.params.id, roleId: rol.id}})
             if (!rolesEnEquipo) return res.status(401).send("primero debes agregar el rol al equipo") */
             
+            const usr = await Usuario.findOne({ where: { idPersona: req.params.userId } })
+            if (rol.id === "1" && !usr.isCoordinador && !usr.isAdmin) return res.status(401).send("el usuario no tiene autoridad para ser coordinador")
             await usrEnEquipo.setRole(rol) //relaciono rol con tabla intermedia 
-            
+
             //info para crear evento:
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
-            console.log("im fine 1.1")
-            const usr = await Usuario.findOne({ where: { idPersona: req.params.userId } })
-            console.log("im fine 1.2")
             const server = generateAxios(req.headers.authorization)
-            console.log("im fine 1.3")
             const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
-            console.log("im fine 1.4")
-            const coordInfo = await server.get(`/personas/${req.headers.idpersona}`).then(res => res.data) 
-            console.log("im fine 1.5")
+            const coordInfo = await server.get(`/personas/${req.headers.idpersona}`).then(res => res.data)
             const evento = await equipo.createEvento({
                 tipo: 2,
                 nombreCoord: coordInfo.nombres,
@@ -176,17 +171,15 @@ class EquipoController {
                 nombreUsuario: usrInfo.nombres,
                 nombreRol: rol.nombre
             })
-            console.log("im fine 2")
             await usr.addEvento(evento)// <-- ^^^relaciono el evento con el equipo y con el usuario
 
             //el equipo ya no tiene el rol viejo pero si tiene el nuevo, sirve para cuando un rol es necesario.
-            if (oldRoleId) await RolEnEquipo.update(
+            /* if (oldRoleId) await RolEnEquipo.update(
                 { cantSatisfecha: Sequelize.literal('cantSatisfecha - 1') }, 
                 { where: { equipoId: equipo.id, roleId: oldRoleId } })
-            console.log("im fine 3")
             await RolEnEquipo.update(
                 { cantSatisfecha: Sequelize.literal('cantSatisfecha + 1') }, 
-                { where: { equipoId: equipo.id, roleId: rol.id } })
+                { where: { equipoId: equipo.id, roleId: rol.id } }) */
             return res.send("rol changed")
         } catch (error) {
             return res.status(500).send(error)
