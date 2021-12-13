@@ -4,32 +4,57 @@ import Checkbox from "@mui/material/Checkbox";
 import ButtonBase from "@mui/material/ButtonBase";
 import { Autocompletar } from "../../commons/autocompletar/Autocompletar";
 import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
-import useForm from "../../hooks/formState";
-import TextField from "@mui/material/TextField";
-import { defaultAvatar } from '../../utils/mockData'
-import { useSelector } from "react-redux";
-import {useEffect, useState } from "react"
-import { rolesGlobales } from "../../utils/mockData";
-import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ClearIcon from '@mui/icons-material/Clear';
+import useForm from "../../hooks/roleForm";
+import { defaultAvatar } from "../../utils/mockData";
+import { useState } from "react";
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ClearIcon from "@mui/icons-material/Clear";
+import getToken from "../../utils/getToken";
 import "./TarjetaRoles.css";
-const roles = rolesGlobales //toDo Sustituir por un axios.get
+import axios from "axios";
 
-export const TarjetaRoles = ({ id, rol, persona, necesario, img }) => {
-  const { form, handleChange } = useForm();
-  const [editMode, setEditMode] = useState(false);
-  const personasEquipo = useSelector(({ equipo }) => equipo);
-  const esNuevo = !(rol || persona || necesario);
-  const toggleEditar = () => {
-    handleChange(null, id);
+export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, opcPersns = [], opcRoles = [] }) => {
+  const { form, handleChange } = useForm({
+    idEquipo: id,
+    rol: {nombre: data?.role},
+    user: {id: data?.usuarioIdPersona},
+  });
+  const [editMode, setEditMode] = useState();
+  const esNuevo = !(data?.role || data?.nombreApellido || data?.necesario);
+  const guardarEditado = () => {
+    axios({
+      method: "put",
+      url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}/rol`,
+      data: { rol: form.rol.nombre, token: getToken() },
+    })
+      .then((res) => res.data)
+      .catch((err) => console.log({ err }));
     setEditMode(!editMode);
   };
-  const guardarEditado = () => {
-    setEditMode(!editMode);
+  const guardarNuevo = () => {
+    axios({
+      method: "post",
+      url: `http://localhost:3001/api/equipos/${form.idEquipo}/agregarRol`,
+      data: { nombre: form.rol.nombre, cantNecesaria: 1, },
+    })
+      .then((res) => res.data)
+      .catch((err) => console.log({ err }));
+    reRender();
   };
   const borrar = () => {
-
+    axios({
+      method: "delete",
+      url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,
+      data: { token: getToken() },
+    })
+      .then((res) => {
+        const usuariosFiltrados = state.filter(
+          (usr) => usr.usuarioIdPersona !== form.user.id
+        );
+        setState(usuariosFiltrados);
+      })
+      .catch((err) => console.log({ err }));
     setEditMode(!editMode);
   };
 
@@ -39,7 +64,7 @@ export const TarjetaRoles = ({ id, rol, persona, necesario, img }) => {
         <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
           <img
             className="avatar"
-            src={img || defaultAvatar}
+            src={data?.img || defaultAvatar}
             alt="Avatar de Usuario"
           />
         </ButtonBase>
@@ -47,46 +72,38 @@ export const TarjetaRoles = ({ id, rol, persona, necesario, img }) => {
       <div className="rol-opciones">
         <FormControl id="modificar-rol" variant="standard">
           <Autocompletar
-            opciones={roles}
+            opciones={opcRoles}
             freeSolo
             etiqueta="Rol"
-            onChange={(e) => handleChange(e)}
-            name="Rol"
-            defVal={rol}
+            disabled={disabled && !editMode}
+            onChange={handleChange}
+            name="rol"
+            defVal={data?.role?.nombre}
           />
         </FormControl>
         <div id="buscar-persona">
           <Autocompletar
-            opciones={personasEquipo}
+            opciones={opcPersns}
             etiqueta="Persona"
-            onChange={(e) => handleChange(e)}
-            name="Persona"
-            defVal={persona}
+            disabled={disabled && !editMode}
+            onChange={handleChange}
+            name="user"
+            defVal={data?.nombreApellido}
           />
         </div>
-        <FormControlLabel
-          id="checkbox-rol"
-          control={
-            <Checkbox
-              defaultChecked={necesario}
-              onChange={(e) => handleChange(e)}
-              name="necesario"
-            />
-          }
-          label="Necesario"
-        />
       </div>
       {esNuevo ? (
-      <ButtonBase onClick={guardarEditado} id="item-icon">
-        <SaveAsRoundedIcon color="action" />
-      </ButtonBase>
-      ) :(
-      editMode ? (
+        <div className="rol-icons">
+          <ButtonBase onClick={guardarNuevo} id="item-icon">
+            <SaveAsRoundedIcon color="action" />
+          </ButtonBase>
+        </div>
+      ) : editMode ? (
         <div className="rol-icons">
           <ButtonBase onClick={guardarEditado} id="item-icon">
             <SaveAsRoundedIcon color="action" />
           </ButtonBase>
-          <ButtonBase onClick={toggleEditar} id="item-icon">
+          <ButtonBase onClick={() => setEditMode(!editMode)} id="item-icon">
             <ClearIcon color="action" />
           </ButtonBase>
           <ButtonBase onClick={borrar} id="item-icon">
@@ -95,11 +112,10 @@ export const TarjetaRoles = ({ id, rol, persona, necesario, img }) => {
         </div>
       ) : (
         <div className="rol-icons">
-          <ButtonBase onClick={toggleEditar} id="item-icon">
+          <ButtonBase onClick={() => setEditMode(!editMode)} id="item-icon">
             <ModeEditOutlineIcon color="action" />
           </ButtonBase>
         </div>
-      )
       )}
     </div>
   );

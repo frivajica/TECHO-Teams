@@ -19,6 +19,7 @@ export const InfoEquipo = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
+  const usuario = useSelector(({ usuario }) => usuario);
 
   function click() {
     equipo.activo
@@ -30,7 +31,9 @@ export const InfoEquipo = () => {
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
-            dispatch(deactivateEquipo(equipo.id));
+            dispatch(
+              deactivateEquipo(equipo.id, usuario.idPersona, usuario.token)
+            );
             swal("El equipo ha sido deshabilitado!", {
               icon: "success",
             });
@@ -38,7 +41,7 @@ export const InfoEquipo = () => {
             swal("El equipo sigue habilitado");
           }
         })
-      : dispatch(activateEquipo(equipo.id));
+      : dispatch(activateEquipo(equipo.id, usuario.idPersona, usuario.token));
   }
 
   return (

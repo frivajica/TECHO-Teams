@@ -46,11 +46,12 @@ export default function TarjetaResultado({ usuarios }) {
   const addUser = () => {
     axios
       .put(
-        `http://localhost:3001/api/equipos/${equipo.id}/${usuarios.idPersona}`,
-        {
-          token: usuario.token,
-        }
-      )
+        `http://localhost:3001/api/equipos/${equipo.id}/${usuarios.idPersona}`,{}, {
+          headers: { 
+            Authorization: usuario.token,
+            idPersona: usuario.idPersona
+          }
+        })
       .then((res) => {
         res.data === "el equipo no esta activo" &&
           errorAlert("Error", "El equipo no esta activo actualmente");

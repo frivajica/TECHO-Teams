@@ -9,6 +9,19 @@ Usuario.init(
       type: Sequelize.INTEGER,
       primaryKey: true,
     },
+    isAdmin: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
+    isCoordinador: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
+    // alcance de coordinacion:
+    sedeIdCoord: Sequelize.INTEGER, 
+    paisIdCoord: Sequelize.INTEGER, 
+    areaCoord: Sequelize.STRING, 
+    // -----
     profesion: {
       type: Sequelize.STRING,
       allowNull: false,

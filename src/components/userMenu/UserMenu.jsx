@@ -6,7 +6,8 @@ import "./UserMenu.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setUsuario } from "../../state/usuario";
+import { logoutRequest, setUsuario } from "../../state/usuario";
+
 
 export const UserMenu = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export const UserMenu = () => {
   };
 
   const handleAction = () => {
-    dispatch(setUsuario({}));
+    dispatch(logoutRequest());
     navigate("/");
     handleClose();
   };

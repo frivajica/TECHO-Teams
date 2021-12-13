@@ -7,6 +7,7 @@ import { CustomHook } from "../../hooks/CustomHook";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import getToken from "../../utils/getToken";
+import { useSelector } from "react-redux";
 
 const listaAreas = [
   "",
@@ -22,6 +23,7 @@ const listaAreas = [
 ];
 
 export function CrearEquipo() {
+  const navigate = useNavigate();
   const [paises, setPaises] = useState([]);
   const pais = CustomHook("");
   const nombre = CustomHook("");
@@ -33,6 +35,7 @@ export function CrearEquipo() {
   const descripcion = CustomHook("");
   const areas = CustomHook("");
   const [categoria, setCategoria] = useState("");
+  const loggedUser = useSelector((state) => state.usuario);
 
   useEffect(() => {
     axios
@@ -60,7 +63,6 @@ export function CrearEquipo() {
         headers: { Authorization: getToken() },
       })
       .then((res) => {
-        // console.log(res.data.text);
         let comunidadArr = res.data.text;
         //.slice(0, res.data.length - 2);
         console.log(comunidadArr);
@@ -113,24 +115,37 @@ export function CrearEquipo() {
       errorAlert("Error!", "Complete correctamente la cantidad de miembros");
     else
       axios
-        .post("http://localhost:3001/api/equipos", {
-          nombre: nombre.value,
-          cantMiembros: parseInt(cantidad.value),
-          activo: true,
-          detalles: descripcion.value,
-          paisId: parseInt(pais.value),
-          sedeId: sede.value ? parseInt(sede.value) : 0,
-          // falta la comunidad/barrio, hay que arreglar el endpoint, si categoria = oficina, va vacio
-          categoria: categoria,
-          area: areas.value,
+        .post(
+          `http://localhost:3001/api/equipos/`,
+          {
+            nombre: nombre.value,
+            cantMiembros: parseInt(cantidad.value),
+            activo: true,
+            detalles: descripcion.value,
+            paisId: parseInt(pais.value),
+            sedeId: sede.value ? parseInt(sede.value) : 0,
+            // falta la comunidad/barrio, hay que arreglar el endpoint, si categoria = oficina, va vacio
+            categoria: categoria,
+            area: areas.value,
+          },
+          {
+            headers: {
+              Authorization: loggedUser.token,
+              idPersona: loggedUser.idPersona,
+            },
+          }
+        )
+        .then((res) => {
+          successAlert();
+          return res.data;
         })
-        .then(successAlert());
+        .then((equipo) => navigate(`/miEquipo/${equipo.id}`));
   };
 
   return (
     <div>
       <div id="register">
-        <h2 className="TitleRegister">Creacion de equipos</h2>
+        <h2 className="TitleRegister">CREACIÓN DE EQUIPOS</h2>
         <form onSubmit={handleSubmit}>
           <div className="contenedor-formulario">
             <label htmlFor="selector" className="label">
@@ -146,11 +161,13 @@ export function CrearEquipo() {
             </label>
             <label htmlFor="selector" className="label">
               <p>DESCRIPCION</p>
-              <TextField
+              <textarea
+                style={{ resize: "none" }}
                 className="text-field"
                 size="small"
                 type="text"
                 name="nombres"
+                rows="4"
                 {...descripcion}
                 required
               />
@@ -169,6 +186,7 @@ export function CrearEquipo() {
             <label htmlFor="selector" className="label">
               <p>PAÍS</p>
               <select {...pais} className="form-select">
+                <option></option>
                 {paises.map((pais) => (
                   <option key={pais.id} value={pais.id}>
                     {pais.nombre}
@@ -207,6 +225,7 @@ export function CrearEquipo() {
             <label htmlFor="selector" className="label">
               <p>SEDE</p>
               <select {...sede} className="form-select">
+                <option></option>
                 {sedes.map((sede) => (
                   <option key={sede.id} value={sede.id}>
                     {sede.nombre}

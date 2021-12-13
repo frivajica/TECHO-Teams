@@ -20,31 +20,35 @@ export function ChooseEventContent({evento, isLast, i}) {
         case -2: {
             color="error"
             icon=<DoDisturbIcon />
-            descripcion="El equipo fue deshabilitado :("
+            descripcion=`${evento.nombreCoord} deshabilitó el equipo :(`
             break;
         }
         case -1: {
             color="error"
             icon=<PersonRemoveIcon />
-            descripcion=`${evento.nombreUsuario} abandonó el equipo`
+            descripcion=`${evento.nombreCoord} eliminó a ${evento.nombreUsuario} del equipo`
             break;
         }
         case 0: {
             color="success"
             icon=<GroupsIcon /> 
-            descripcion=<>Se creó el equipo <span style={{color: "#1976D2"}}>{evento.nombreEquipo}</span></>
+            descripcion=<>{evento.nombreCoord} creó el equipo <span style={{color: "#1976D2"}}>{evento.nombreEquipo}</span></>
             break;
         }
         case 1: {
             color="primary" 
             icon=<PersonAddAltRoundedIcon /> 
-            descripcion=`${evento.nombreUsuario} se unió al equipo`
+            descripcion=`${evento.nombreCoord} agregó a ${evento.nombreUsuario} al equipo`
             break;
         }
         case 2: {
             color="secondary" 
             icon=<ManageAccountsIcon /> 
-            descripcion=(<>{evento.nombreUsuario} cambió su rol a <span style={{color: "#1976D2"}}>{evento.nombreRol}</span></>)
+            descripcion=
+                evento.nombreCoord ?
+                (<>{evento.nombreCoord} cambió el rol de {evento.nombreUsuario} a <span style={{color: "#1976D2"}}>{evento.nombreRol}</span></>)
+                :
+                (<>{evento.nombreUsuario} asumió el rol <span style={{color: "#1976D2"}}>{evento.nombreRol}</span></>)
             break;
         }
         case 3: {
