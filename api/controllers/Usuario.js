@@ -148,6 +148,11 @@ class UsuarioController {
     .catch((err) => res.status(500).send({err}));
   }
 
+  static borradoSuave(req,res){
+    const {idPersona}=req.body
+    Usuario.update({where:{id :idPersona}})
+  }
+  
   static editarUsuario(req, res) {
     const {
       idPais,
@@ -166,6 +171,7 @@ class UsuarioController {
       profesion,
       estudios,
       intereses,
+      
     } = req.body;
 
     console.log("buenos dias");
@@ -188,12 +194,13 @@ class UsuarioController {
         recibirMails,
         acepta_marketing,
         idUnidadOrganizacional,
+        
       })
       .set("X-API-Key", "foobar")
       .set("Accept", "application/json")
       .then((updatedUsr) => ({
         usuarioPromise: Usuario.update(
-          { profesion, estudios, intereses },
+          { profesion, estudios, intereses, },
           { where: { idPersona: req.params.id } }
         ),
         updatedUsr,
