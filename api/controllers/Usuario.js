@@ -3,10 +3,21 @@ const superagent = require("superagent");
 const generateAxios = require("../utils/generateAxios");
 
 class UsuarioController {
-  static getUsuarios(req, res) {
-    Usuario.findAll()
-      .then((userList) => res.status(200).send(userList))
-      .catch((err) => res.status(500).send(err));
+  static async getUsuarios(req, res) {
+    Usuario.findAll(/* {offset: 4, limit: 6} */) //<-- not working
+      .then(async (usersList) => {
+        let usersInfo = []
+        let i=0
+        usersList = usersList.slice(req.headers.offset,req.headers.limit);
+        const server = generateAxios(req.headers.authorization);
+        for (i; i<usersList.length; i++) {
+          await server.get(`/personas/${usersList[i].idPersona}`)
+          .then(res => res.data)
+          .then(usrInfo => usersInfo.push({...usersList[i].dataValues, ...usrInfo}))
+        }
+        return res.send(usersInfo)
+      })
+      .catch((err) => console.log(err));
   }
 
   static getUsuarioById(req, res) {

@@ -31,15 +31,15 @@ export const updateEquipo = createAsyncThunk(
 
 export const deactivateEquipo = createAsyncThunk(
   "DEACTIVATE_EQUIPO",
-  (id, idPersona, token) => {
+  (id) => {
     return axios
       .put(
-        `http://localhost:3001/api/equipos/desactivar/${id}`,
+        `http://localhost:3001/api/equipos/desactivar/${id[0]}`,
         {},
         {
           headers: {
-            authorization: token,
-            idPersona: idPersona,
+            authorization: id[2],
+            idPersona: id[1],
           },
         }
       )
