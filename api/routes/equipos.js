@@ -14,11 +14,11 @@ Router.get("/", /* checkAuthAndAdmin, */ EquipoController.getEquipos);
 
 Router.get("/:id", /* checkAuth, */ EquipoController.getOneEquipo);
 
-Router.put("/:id", isAdminOrCoordinatorHere, EquipoController.updateEquipo);
+Router.put("/:id", /* isAdminOrCoordinatorHere, */ EquipoController.updateEquipo);
 
-Router.put("/desactivar/:id", isAdminOrCoordinatorHere, EquipoController.deactivateEquipo);
+Router.put("/desactivar/:id", /* isAdminOrCoordinatorHere, */ EquipoController.deactivateEquipo);
 
-Router.put("/activar/:id", isAdminOrCoordinatorHere, EquipoController.activateEquipo);
+Router.put("/activar/:id", /* isAdminOrCoordinatorHere, */ EquipoController.activateEquipo);
 
 Router.get("/:id/historial", /* checkAuth, */ EquipoController.getHistory);
 
@@ -26,12 +26,18 @@ Router.get("/:id/usuarios", /* checkAuth, */ EquipoController.getUsers)
 
 Router.get("/cantMiembros/:id", EquipoController.getCantMiembros);
 
-Router.put("/:id/:userId", isAdminOrCoordinatorHere, EquipoController.addUser);
+Router.get("/:id/rolesEnEquipo", /* isCoordinatorHere, */ EquipoController.getRolesEnEquipo)
 
-Router.post("/:id/roles", isAdminOrCoordinatorHere, EquipoController.addRole);
+Router.get("/:id/usuariosDeEquipo", /* isCoordinatorHere, */ EquipoController.getUsuariosDeEquipo)
 
-Router.delete("/:id/:userId", isAdminOrCoordinatorHere, EquipoController.removeUser);
+Router.get("/:id/roles", /* isCoordinatorHere, */ EquipoController.getRoles)
 
-Router.put("/:id/:userId/:roleId", isAdminOrCoordinatorHere, EquipoController.changeRole);
+Router.post("/:id/agregarRol", /* isCoordinatorHere, */  EquipoController.addRole)
+
+Router.put("/:id/:userId", /* isAdminOrCoordinatorHere, */ EquipoController.addUser);
+
+Router.delete("/:id/:userId", /* isAdminOrCoordinatorHere, */ EquipoController.removeUser);
+
+Router.put("/:id/:userId/:roleId", /* isAdminOrCoordinatorHere, */ EquipoController.changeRole);
 
 module.exports = Router;

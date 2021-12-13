@@ -104,12 +104,14 @@ const personas = [
   },
   {
     idPersona: 791720,
+    isCoordinador: true,
     profesion: "Ingeniera Industrial",
     estudios: "Ingenieria UCA",
     intereses: '["Gestión de tiempo","Liderazgo","Modelo de trabajo TECHO"]',
   },
   {
     idPersona: 791721,
+    isCoordinador: true,
     profesion: "Publicista",
     estudios: "Lic. en Publicidad",
     intereses:
@@ -184,7 +186,8 @@ db.sync()
       for(let i = 0; i < equipos.length; i++) {
         await equipos[i].createEvento({
             tipo: 0,
-            nombreEquipo: equipos[i].nombre
+            nombreEquipo: equipos[i].nombre,
+            nombreCoord: "Mariana"
           }).then(() => process.stdout.write("."))
       }
   })

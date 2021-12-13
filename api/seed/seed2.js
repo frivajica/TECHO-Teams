@@ -77,9 +77,13 @@ function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 async function waitingForApi(ms) {
-    console.log("\nesperando a la api")
+    readline.clearLine(process.stdout);
+    readline.cursorTo(process.stdout, 0, null)
+    process.stdout.write("esperando a la api")
     await timeout(ms);
-    console.log("continuando")
+    readline.clearLine(process.stdout);
+    readline.cursorTo(process.stdout, 0, null)
+    process.stdout.write("continuando")
 }
 
 getEquipos()

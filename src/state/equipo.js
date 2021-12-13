@@ -4,7 +4,6 @@ import {
     createReducer,
 } from "@reduxjs/toolkit";
 import axios from "axios"
-import { personas } from "../utils/mockData";
 
 export const setEquipo = createAction("SET_EQUIPO");
 

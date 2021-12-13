@@ -1,32 +1,35 @@
 import { TarjetaRoles } from "../../../components/tarjetaRoles/TarjetaRoles";
 import Divider from "@mui/material/Divider";
-import { getUsuarios } from "../../../state/equipo";
-import { getRolesInfo } from "../../../state/rol";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import ButtonBase from "@mui/material/ButtonBase";
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import { useParams } from "react-router-dom";
-import axios from "axios"
+import getToken from "../../../utils/getToken";
+import { handlePersonas } from "../../../hooks/handlePersonas";
+import { useReRenderer } from '../../../utils/reRenderer'
 import "./Conformacion.css";
+import axios from "axios";
+
 
 export const Conformacion = () => {
-  const {id} = useParams();
+  const {renderKey, reRender} = useReRenderer();
   const [mostrarNuevo, setMostrarNuevo] = useState(false);
-  const [usuarios, setUsuarios] = useState([])
-  const dispatch = useDispatch();
+  const [infoEquipo, setInfoEquipo] = useState({});
   const roles = useSelector(({ rol }) => rol);
-
+  const idEquipo = useParams().id;
+  
   useEffect(() => {
-    axios
-    .get(`http://localhost:3001/api/equipos/${id}/usuarios`)
-    .then(res => setUsuarios(res.data))
-    .catch(err => console.log(err))
-
-    dispatch(getRolesInfo(id));
-  }, []);
+    axios({
+      method: "get",
+      url: `http://localhost:3001/api/equipos/${idEquipo}/rolesEnEquipo`,
+      headers: { authorization: getToken() },
+    })
+      .then((res) => setInfoEquipo(res.data))
+      .catch((err) => console.log(err));
+    }, []);
 
   return (
     <div className="conformacion">
@@ -37,33 +40,51 @@ export const Conformacion = () => {
           fundamental para el funcionamiento del mismo.
         </p>
       </div>
-      <div id="modificar-roles">
-        {roles?.map((e) => (
-          <TarjetaRoles
-            key={e.id}
-            id={e.id}
-            rol={e.rol}
-            persona={e.persona}
-            necesario={e.necesario}
-            img={e.img}
-          />
-        ))}
-      </div> 
+      {infoEquipo.map && (
+        <div id="modificar-roles">
+          {infoEquipo?.map((e) => (
+            <TarjetaRoles
+              data={e}
+              disabled
+              key={`${idEquipo}${e.usuarioIdPersona}${e.role}`}
+              id={idEquipo}
+              state={infoEquipo}
+              setState={setInfoEquipo}
+              opcPersns={handlePersonas(infoEquipo)}
+              opcRoles={roles}
+            />
+          ))}
+        </div>
+      )}
       <Divider variant="middle" className="divisor" />
       <div id="agregar-roles">
         <div id="titulo-nuevo">
           <h2>Añadir rol</h2>
           {mostrarNuevo ? (
-            <ButtonBase onClick={() => setMostrarNuevo(!mostrarNuevo)} id="item-icon">
+            <ButtonBase
+              onClick={() => setMostrarNuevo(!mostrarNuevo)}
+              id="item-icon"
+            >
               <RemoveIcon color="action" />
             </ButtonBase>
           ) : (
-            <ButtonBase onClick={() => setMostrarNuevo(!mostrarNuevo)} id="item-icon">
+            <ButtonBase
+              onClick={() => setMostrarNuevo(!mostrarNuevo)}
+              id="item-icon"
+            >
               <AddIcon color="action" />
             </ButtonBase>
           )}
         </div>
-        {mostrarNuevo && <TarjetaRoles />}
+        {mostrarNuevo && (
+          <TarjetaRoles
+            key={renderKey}
+            reRender={reRender}
+            opcPersns={handlePersonas(infoEquipo)}
+            opcRoles={roles}
+            id={idEquipo}
+          />
+        )}
       </div>
     </div>
   );
