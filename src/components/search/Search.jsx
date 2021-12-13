@@ -11,6 +11,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
+
 export default function Search() {
   const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ export default function Search() {
     title = "Seleccione un tipo de búsqueda",
     text = "Elija buscar por Id o Email"
   ) => {
+    dispatch(setUsuarios({}))
     swal({
       title,
       text,
@@ -39,13 +41,12 @@ export default function Search() {
 
     tipo === "email" &&
       dispatch(getByMail({ mail: busqueda.value, errorAlert })).then(
-        ({ payload }) => setTrigger(true)
-      );
+        ({ payload }) => setTrigger(true));
     tipo === "id" &&
       dispatch(getById({ id: parseInt(busqueda.value), errorAlert })).then(
-        ({ payload }) => setTrigger(true)
-      );
+        ({ payload }) => setTrigger(true));
     tipo === "" && errorAlert();
+    
   };
 
   return (

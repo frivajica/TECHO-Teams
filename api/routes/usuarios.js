@@ -14,6 +14,8 @@ Router.post("/registrar", UsuarioController.crearUsuario);
 
 Router.post("/login", UsuarioController.loginInUsuario);
 
+Router.post("/logout", UsuarioController.logoutUsuario);
+
 Router.get("/historial/:userId", UsuarioController.getHistorial);
 
 Router.post( "/registrarDesdeActividades", UsuarioController.crearUsuarioEquipos);
@@ -21,5 +23,7 @@ Router.post( "/registrarDesdeActividades", UsuarioController.crearUsuarioEquipos
 Router.put("/editarUsuario/:id", UsuarioController.editarUsuario)
 
 Router.get("/:idPersona/misEquipos", UsuarioController.getEquipos)
+
+Router.get("/misActividades", UsuarioController.getActividades)
 
 module.exports = Router;
