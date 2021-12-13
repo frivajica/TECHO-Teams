@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import "./CrearEquipo";
 import Button from "@mui/material/Button";
 import { CustomHook } from "../../hooks/CustomHook";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import getToken from "../../utils/getToken";
 import { useSelector } from "react-redux";
