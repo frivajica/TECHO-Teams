@@ -1,6 +1,4 @@
 import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import ButtonBase from "@mui/material/ButtonBase";
 import { Autocompletar } from "../../commons/autocompletar/Autocompletar";
 import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
@@ -21,7 +19,6 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
     user: {id: data?.usuarioIdPersona},
   });
   const [editMode, setEditMode] = useState();
-  const esNuevo = !(data?.role || data?.nombreApellido || data?.necesario);
   const guardarEditado = () => {
     axios({
       method: "put",
@@ -49,6 +46,7 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
       data: { token: getToken() },
     })
       .then((res) => {
+        console.log('%cMyProject%cline:51%cres', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(38, 157, 128);padding:3px;border-radius:2px', res)
         const usuariosFiltrados = state.filter(
           (usr) => usr.usuarioIdPersona !== form.user.id
         );
@@ -92,13 +90,7 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
           />
         </div>
       </div>
-      {esNuevo ? (
-        <div className="rol-icons">
-          <ButtonBase onClick={guardarNuevo} id="item-icon">
-            <SaveAsRoundedIcon color="action" />
-          </ButtonBase>
-        </div>
-      ) : editMode ? (
+      {editMode ? (
         <div className="rol-icons">
           <ButtonBase onClick={guardarEditado} id="item-icon">
             <SaveAsRoundedIcon color="action" />

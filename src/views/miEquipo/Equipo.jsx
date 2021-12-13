@@ -1,5 +1,4 @@
 import { Conformacion } from "./conformacion/Conformacion.jsx";
-import { getUsuariosEnEquipo } from "../../state/usuarios";
 import { InfoEquipo } from "./infoEquipo/InfoEquipo.jsx";
 import { useDispatch } from "react-redux";
 import { getEquipo } from "../../state/equipo.js";

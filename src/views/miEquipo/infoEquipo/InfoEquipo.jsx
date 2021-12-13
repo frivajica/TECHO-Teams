@@ -29,8 +29,8 @@ export const InfoEquipo = () => {
   return (
     <Box className="box-contenedor">
       <Box id="grid">
-        <div class="Titles">
-          <div class="TitleNombre">
+        <div className="Titles">
+          <div className="TitleNombre">
             <label className="Nombre-equipo">
               <h1>
                 {" "}
@@ -56,7 +56,7 @@ export const InfoEquipo = () => {
               </h1>
             </label>
           </div>
-          <div class="TitleDetalle">
+          <div className="TitleDetalle">
             <label>
               <p>{equipo.detalles}</p>
             </label>

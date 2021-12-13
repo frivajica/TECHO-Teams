@@ -188,53 +188,7 @@ class EquipoController {
       return res.status(500).send(error);
     }
   }
-
-  static async addRole(req, res) {
-    try {
-      const equipo = await Equipo.findOne({ where: { id: req.params.id } });
-      const rol = await Role.findOrCreate({
-        where: { nombre: req.body.nombre },
-      });
-      console.log("foo", rol[0].dataValues.id);
-      const rolEnEquipo = await RolEnEquipo.findOne({
-        where: { equipoId: equipo.id, roleId: rol[0].dataValues.id },
-      });
-      console.log("bar", rolEnEquipo);
-      if (rolEnEquipo) {
-        RolEnEquipo.update(
-          { cantNecesaria: req.body.cantNecesaria },
-          { where: { equipoId: equipo.id, roleId: rol[0].dataValues.id } }
-        ).then(() =>
-          res
-            .status(201)
-            .send(
-              "cantidades necesarias actualizadas: " +
-                req.body.cantNecesaria +
-                " " +
-                req.body.nombre +
-                " necesarios"
-            )
-        );
-      } else {
-        equipo
-          .setRole({ through: { cantNecesaria: req.body.cantNecesaria } })
-          .then(() =>
-            res
-              .status(201)
-              .send(
-                "rol",
-                req.body.nombre,
-                "agregado al equipo.",
-                req.body.cantNecesaria,
-                "necesarios"
-              )
-          );
-        };
-    } catch (error) {
-      return res.status(500).send(error);
-    }
-  }
-
+  
   static async getRoles(req, res) {
     try {
       const roles = await equipo.getRoles();
@@ -302,80 +256,98 @@ class EquipoController {
 
     static async addRole(req, res) {
         try {
+          console.log('entra')
             const equipo = await Equipo.findOne({ where: { id: req.params.id}})
             const rol = await Role.findOrCreate({ where: {nombre: req.body.nombre}})
-            const rolEnEquipo = await RolEnEquipo.findOne({ where: { equipoId: equipo.id, roleId: rol.id }})
+            const rolEnEquipo = await RolEnEquipo.findOne({ where: { equipoId: req.params.id, roleId: rol[0].dataValues.id }})
+            
             if (rolEnEquipo) RolEnEquipo.update(
-                    {cantNecesaria: req.body.cantNecesaria}, 
-                    {where: { equipoId: equipo.id, roleId: rol.id }})
-                    .then(() => res.status(201).send("cantidades necesarias actualizadas: "+req.body.cantNecesaria+" "+req.body.nombre+" necesarios"))
-            else equipo.setRole(rol, {through: {cantNecesaria: req.body.cantNecesaria}})
-                .then(() => res.status(201).send("rol",req.body.nombre,"agregado al equipo.",req.body.cantNecesaria,"necesarios"))
+              {cantNecesaria: req.body.cantNecesaria}, 
+              {where: { equipoId: req.params.id, roleId: rol[0].dataValues.id }})
+              .then(() => res.status(201).send("cantidades necesarias actualizadas: "+req.body.cantNecesaria+" "+req.body.nombre+" necesarios"))
+                    else {
+                      rol.addEquipo(equipo)
+                      .then(() => res.status(201).send("rol",req.body.nombre,"agregado al equipo.",req.body.cantNecesaria,"necesarios"))
+                      console.log('mitad', rol[0].dataValues.id)
+                    }
+                    console.log('end')
         } catch (error) {
+          console.log('fails')
             return res.status(500).send(error)
         }
   }
 
-    static async removeUser(req, res) { //Esto solo lo realiza el coord del equipo
-        try {
-            await UsuarioEnEquipo.update({ activo: false }, {
-                where: {
-                    usuarioIdPersona: req.params.userId,
-                    equipoId: req.params.id
-                }
-            })
-            const server = generateAxios(req.headers.authorization)
-            const usrInfo = await server.get(`/personas/${req.params.userId}`).then(res => res.data)
-            const coordInfo = await server.get(`/personas/${req.headers.idpersona}`).then(res => res.data)
-            const equipo = await Equipo.findOne({ where: { id: req.params.id } })
-            const evento = await equipo.createEvento({
-                tipo: -1,
-                nombreCoord: coordInfo.nombres,
-                nombreEquipo: equipo.nombre,
-                nombreUsuario: usrInfo.nombres
-            })
-            const usuario = await Usuario.findOne({ where: { id: req.params.userId } })
-            await usuario.addEvento(evento)
-            return res.status(201).send("usuario eliminado del equipo")
-        } catch (error) {
-            return res.status(500).send(error)
+	static async removeUser(req, res) {
+    //Esto solo lo realiza el coord del equipo
+    try {
+      await UsuarioEnEquipo.update(
+        { activo: false },
+        {
+          where: {
+            usuarioIdPersona: req.params.userId,
+            equipoId: req.params.id,
+          },
         }
+      );
+      const server = generateAxios(req.body.token);
+      const usrInfo = await server
+        .get(`/personas/${req.params.userId}`)
+        .then((res) => res.data);
+      const equipo = await Equipo.findOne({ where: { id: req.params.id } });
+      const evento = await equipo.createEvento({
+        tipo: -1,
+        nombreEquipo: equipo.nombre,
+        nombreUsuario: usrInfo.nombres,
+      });
+      const usuario = await Usuario.findOne({
+        where: { idPersona: req.params.userId },
+      });
+      await usuario.addEvento(evento);
+      return res.status(201).send("usuario eliminado del equipo");
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send(error);
     }
+  }
 
     static async deactivateEquipo(req, res) {
-        try {
-            await Equipo.update({ activo: false }, { where: { id: req.params.id } })
-            await UsuarioEnEquipo.update({ activo: false }, { where: { equipoId: req.params.id } })
-            const equipo = await Equipo.findOne({ where: { id: req.params.id } })
-            const server = generateAxios(req.headers.authorization)
-            const coordInfo = await server.get(`/personas/${req.headers.idpersona}`).then(res => res.data)
-            equipo.createEvento({
-                tipo: -2,
-                nombreCoord: coordInfo.nombres,
-                nombreEquipo: equipo.nombre
-            }).then(() => res.status(201).send(equipo))
-            .catch(err => res.send(err))
-        } catch (error) {
-            return res.status(500).send(error)
-        }
+    try {
+      await Equipo.update({ activo: false }, { where: { id: req.params.id } });
+      await UsuarioEnEquipo.update(
+        { activo: false },
+        { where: { equipoId: req.params.id } }
+      );
+      const equipo = await Equipo.findOne({ where: { id: req.params.id } });
+      equipo
+        .createEvento({
+          tipo: -2,
+          nombreEquipo: equipo.nombre,
+        })
+        .then(() => res.status(201).send(equipo))
+        .catch((err) => res.send(err));
+    } catch (error) {
+      return res.status(500).send(error);
     }
+  }
 
-    static async activateEquipo(req, res) {
-        try {
-            await Equipo.update({ activo: true }, { where: { id: req.params.id } })
-            const equipo = await Equipo.findOne({ where: { id: req.params.id } })
-            const server = generateAxios(req.headers.authorization)
-            const coordInfo = await server.get(`/personas/${req.headers.idpersona}`).then(res => res.data)
-            equipo.createEvento({
-                tipo: 3,
-                nombreCoord: coordInfo.nombres,
-                nombreEquipo: equipo.nombre
-            })
-            .then(() => res.status(200).send(equipo))
-        } catch (error) {
-            return res.status(500).send(error)
-        }
+	static async activateEquipo(req, res) {
+    try {
+      await Equipo.update({ activo: true }, { where: { id: req.params.id } });
+      await UsuarioEnEquipo.update(
+        { activo: true },
+        { where: { equipoId: req.params.id } }
+      );
+      const equipo = await Equipo.findOne({ where: { id: req.params.id } });
+      equipo
+        .createEvento({
+          tipo: 3,
+          nombreEquipo: equipo.nombre,
+        })
+        .then(() => res.status(200).send(equipo));
+    } catch (error) {
+      return res.status(500).send(error);
     }
+  }
 
     static getHistory(req, res) {
         Equipo.findOne({ where: { id: req.params.id } })
