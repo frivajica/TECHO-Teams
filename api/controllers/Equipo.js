@@ -150,14 +150,14 @@ class EquipoController {
         try {
             const usrEnEquipo = await UsuarioEnEquipo.findOne({ where: { equipoId: req.params.id, usuarioIdPersona: req.params.userId, activo: true } })
             /* const oldRoleId = usrEnEquipo.roleId;//guardo el viejo para saber que el equipo ya no tiene este rol */
-            const rol = await Role.findOne({ where: { id: req.params.roleId, activo: true } })
             //verificar que el rol pertenezca al equipo:
-            /* const rolesEnEquipo = await RolEnEquipo.findOne({ where: {equipoId: req.params.id, roleId: rol.id}})
+            /* const rolesEnEquipo = await RolEnEquipo.findOne({ where: {equipoId: req.params.id, roleId: req.params.roleId}})
             if (!rolesEnEquipo) return res.status(401).send("primero debes agregar el rol al equipo") */
-            
+            const rol = await Role.findOne({ where: { id: req.params.roleId, activo: true } })
             const usr = await Usuario.findOne({ where: { idPersona: req.params.userId } })
-            if (rol.id === "1" && !usr.isCoordinador && !usr.isAdmin) return res.status(401).send("el usuario no tiene autoridad para ser coordinador")
-            await usrEnEquipo.setRole(rol) //relaciono rol con tabla intermedia 
+            
+            if (rol.id === 1 && !usr.isAdmin && !usr.isCoordinador) return res.status(401).send("el usuario no tiene autoridad para ser coordinador")
+            await usrEnEquipo.setRole(rol) //asigno el rol al usuario en el equipo
 
             //info para crear evento:
             const equipo = await Equipo.findOne({ where: { id: req.params.id } })
@@ -180,7 +180,7 @@ class EquipoController {
             await RolEnEquipo.update(
                 { cantSatisfecha: Sequelize.literal('cantSatisfecha + 1') }, 
                 { where: { equipoId: equipo.id, roleId: rol.id } }) */
-            return res.send("rol changed")
+            return res.status(201).send("rol changed")
         } catch (error) {
             return res.status(500).send(error)
         }
