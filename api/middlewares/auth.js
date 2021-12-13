@@ -16,6 +16,7 @@ const isAdminOrCoordinatorHere = async (req, res, next) => {
     else {
         const usuario = await Usuario.findOne({where: {idPersona: req.headers.idpersona}})
         const equipo = await Equipo.findOne({where: {id: req.params.id}})
+        console.log('PARAMS', req.params,'HEADERS', req.headers.idPersona,'BODY', req.body)
         if (
             usuario.isAdmin 
             ||

@@ -3,20 +3,13 @@ import Divider from "@mui/material/Divider";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import ButtonBase from "@mui/material/ButtonBase";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import { useParams } from "react-router-dom";
 import getToken from "../../../utils/getToken";
 import { handlePersonas } from "../../../hooks/handlePersonas";
-import { useReRenderer } from '../../../utils/reRenderer'
 import "./Conformacion.css";
 import axios from "axios";
 
-
 export const Conformacion = () => {
-  const {renderKey, reRender} = useReRenderer();
-  const [mostrarNuevo, setMostrarNuevo] = useState(false);
   const [infoEquipo, setInfoEquipo] = useState({});
   const roles = useSelector(({ rol }) => rol);
   const idEquipo = useParams().id;
@@ -57,35 +50,6 @@ export const Conformacion = () => {
         </div>
       )}
       <Divider variant="middle" className="divisor" />
-      <div id="agregar-roles">
-        <div id="titulo-nuevo">
-          <h2>Añadir rol</h2>
-          {mostrarNuevo ? (
-            <ButtonBase
-              onClick={() => setMostrarNuevo(!mostrarNuevo)}
-              id="item-icon"
-            >
-              <RemoveIcon color="action" />
-            </ButtonBase>
-          ) : (
-            <ButtonBase
-              onClick={() => setMostrarNuevo(!mostrarNuevo)}
-              id="item-icon"
-            >
-              <AddIcon color="action" />
-            </ButtonBase>
-          )}
-        </div>
-        {mostrarNuevo && (
-          <TarjetaRoles
-            key={renderKey}
-            reRender={reRender}
-            opcPersns={handlePersonas(infoEquipo)}
-            opcRoles={roles}
-            id={idEquipo}
-          />
-        )}
-      </div>
     </div>
   );
 };

@@ -1,6 +1,4 @@
 import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import ButtonBase from "@mui/material/ButtonBase";
 import { Autocompletar } from "../../commons/autocompletar/Autocompletar";
 import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
@@ -10,18 +8,19 @@ import { useState } from "react";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useNavigate } from "react-router-dom";
 import getToken from "../../utils/getToken";
 import "./TarjetaRoles.css";
 import axios from "axios";
 
 export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, opcPersns = [], opcRoles = [] }) => {
+  const navigate = useNavigate();
   const { form, handleChange } = useForm({
     idEquipo: id,
     rol: {nombre: data?.role},
     user: {id: data?.usuarioIdPersona},
   });
   const [editMode, setEditMode] = useState();
-  const esNuevo = !(data?.role || data?.nombreApellido || data?.necesario);
   const guardarEditado = () => {
     axios({
       method: "put",
@@ -31,16 +30,6 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
       .then((res) => res.data)
       .catch((err) => console.log({ err }));
     setEditMode(!editMode);
-  };
-  const guardarNuevo = () => {
-    axios({
-      method: "post",
-      url: `http://localhost:3001/api/equipos/${form.idEquipo}/agregarRol`,
-      data: { nombre: form.rol.nombre, cantNecesaria: 1, },
-    })
-      .then((res) => res.data)
-      .catch((err) => console.log({ err }));
-    reRender();
   };
   const borrar = () => {
     axios({
@@ -61,7 +50,7 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
   return (
     <div className="tarjeta-roles">
       <div className="rol-imagen">
-        <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
+        <ButtonBase onClick={() => navigate(`${data?.usuarioIdPersona}`)} sx={{ width: 200, height: 200 }} id="ripple-avatar">
           <img
             className="avatar"
             src={data?.img || defaultAvatar}
@@ -92,13 +81,7 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
           />
         </div>
       </div>
-      {esNuevo ? (
-        <div className="rol-icons">
-          <ButtonBase onClick={guardarNuevo} id="item-icon">
-            <SaveAsRoundedIcon color="action" />
-          </ButtonBase>
-        </div>
-      ) : editMode ? (
+      {editMode ? (
         <div className="rol-icons">
           <ButtonBase onClick={guardarEditado} id="item-icon">
             <SaveAsRoundedIcon color="action" />
