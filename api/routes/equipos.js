@@ -22,7 +22,7 @@ Router.put("/activar/:id", isAdminOrCoordinatorHere, EquipoController.activateEq
 
 Router.get("/:id/historial", /* checkAuth, */ EquipoController.getHistory);
 
-Router.get("/:id/usuarios", /* checkAuth, */ EquipoController.getUsers)
+Router.get("/:id/usuarios", /* checkAuth, */ EquipoController.getUsers);
 
 Router.get("/cantMiembros/:id", EquipoController.getCantMiembros);
 
@@ -32,7 +32,10 @@ Router.get("/cantMiembros/:id", EquipoController.getCantMiembros);
 
 //Router.get("/:id/roles", /* isCoordinatorHere, */ EquipoController.getRoles) 
 
-Router.post("/:id/agregarRol", /* isCoordinatorHere, */  EquipoController.addRole)
+Router.post(
+  "/:id/agregarRol",
+  /* isCoordinatorHere, */ EquipoController.addRole
+);
 
 Router.put("/:id/:userId", isAdminOrCoordinatorHere, EquipoController.addUser);
 
