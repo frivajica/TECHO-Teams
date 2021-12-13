@@ -124,6 +124,39 @@ class EquipoController {
         };
     };
 
+    static async getRolesEnEquipo(req, res) {
+      const server = generateAxios(req.headers.authorization);
+      try {
+        let usuariosYRol = await UsuarioEnEquipo.findAll({
+          //toDo debería poder refactorizarse con magic methods de sequelize
+          where: { equipoId: req.params.id, activo: true },
+          include: [Role, Usuario],
+        });
+        let i = 0;
+        while (i < usuariosYRol.length) {
+          //Itera los usuarios para asignarles su información consultada de la api de actividades
+          await server
+            .get(`/personas/${usuariosYRol[i].usuarioIdPersona}`)
+            .then((res) => {
+              usuariosYRol[i].dataValues = {
+                //genera nuevo objeto con la data requerida
+                nombres: res.data.nombres,
+                nombreApellido: `${res.data.nombres} ${res.data.apellidoPaterno}`,
+                apellidoPaterno: res.data.apellidoPaterno,
+                apellidoMaterno: res.data.apellidoMaterno,
+                imagenUsr: usuariosYRol[i].dataValues.usuario.imagen,
+                ...usuariosYRol[i].dataValues,
+              };
+            })
+            .catch((err) => res.send(err));
+          i++;
+        }
+        return res.send(usuariosYRol);
+      } catch (error) {
+        return res.status(500).send(error);
+      }
+    };
+
   static async getUsuariosDeEquipo(req, res) {
     const server = generateAxios(req.headers.authorization);
     try {

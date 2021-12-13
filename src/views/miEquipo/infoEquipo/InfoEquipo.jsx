@@ -20,7 +20,7 @@ export const InfoEquipo = () => {
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
   const usuario = useSelector(({ usuario }) => usuario);
-
+  const idUser = usuario.idPersona;
   function click() {
     equipo.activo
       ? swal({
@@ -32,7 +32,7 @@ export const InfoEquipo = () => {
         }).then((willDelete) => {
           if (willDelete) {
             dispatch(
-              deactivateEquipo(equipo.id, usuario.idPersona, usuario.token)
+              deactivateEquipo([equipo.id, usuario.idPersona, usuario.token])
             );
             swal("El equipo ha sido deshabilitado!", {
               icon: "success",
