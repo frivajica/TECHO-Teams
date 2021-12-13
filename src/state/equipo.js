@@ -16,9 +16,14 @@ export const getEquipo = createAsyncThunk("GET_EQUIPO", (id) => {
 
 export const updateEquipo = createAsyncThunk(
   "UPDATE_EQUIPO",
-  ({ id, form }) => {
+  ({ id, form, token, idPersona }) => {
     return axios
-      .put(`http://localhost:3001/api/equipos/${id}`, form)
+      .put(`http://localhost:3001/api/equipos/${id}`, form, {
+        headers: {
+          authorization: token,
+          idPersona: idPersona,
+        },
+      })
       .then((res) => res.data)
       .catch((err) => console.log(err));
   }

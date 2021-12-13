@@ -23,6 +23,7 @@ const listaAreas = [
 ];
 
 export default function EditarEquipo() {
+  const usuario = useSelector((state) => state.usuario);
   const dispatch = useDispatch();
   const equipo = useSelector((state) => state.equipo);
   const navigate = useNavigate();
@@ -121,12 +122,21 @@ export default function EditarEquipo() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!pais.value || !categoria)
+    if (!pais.value)
       errorAlert("Error!", "Complete todos los campos requeridos");
     if (!parseInt(cantidad.value))
       errorAlert("Error!", "Complete correctamente la cantidad de miembros");
+    // if (categoria !== "Territorio" || categoria !== "Oficina")
+    //   errorAlert("Error!", "Elija un tipo de Categoria");
     else
-      dispatch(updateEquipo({ id: equipo.id, form: form }))
+      dispatch(
+        updateEquipo({
+          id: equipo.id,
+          form: form,
+          idPersona: usuario.idPersona,
+          token: usuario.token,
+        })
+      )
         .then(successAlert())
         .then(() => navigate(-1))
         .catch((err) => console.log({ err }));
