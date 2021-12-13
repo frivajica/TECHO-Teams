@@ -20,7 +20,7 @@ export const InfoEquipo = () => {
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
   const usuario = useSelector(({ usuario }) => usuario);
-
+  const idUser = usuario.idPersona;
   function click() {
     equipo.activo
       ? swal({
@@ -57,8 +57,8 @@ export const InfoEquipo = () => {
   return (
     <Box className="box-contenedor">
       <Box id="grid">
-        <div class="Titles">
-          <div class="TitleNombre">
+        <div className="Titles">
+          <div className="TitleNombre">
             <label className="Nombre-equipo">
               <h1>
                 {" "}
@@ -84,7 +84,7 @@ export const InfoEquipo = () => {
               </h1>
             </label>
           </div>
-          <div class="TitleDetalle">
+          <div className="TitleDetalle">
             <label>
               <p>{equipo.detalles}</p>
             </label>
