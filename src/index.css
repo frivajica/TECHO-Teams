@@ -260,17 +260,25 @@
   grid-row: 1;
 }
 
+.label {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .emailDiv {
   grid-column: 1;
   grid-row: 2;
-  display: flex;
+  width: 20%;
   justify-content: center;
 }
 
 .idDiv {
+  width: 20%;
+  justify-content: center;
   grid-column: 1;
   grid-row: 3;
-  margin-left: 168.8px;
 }
 
 @media (max-width: 700px) {

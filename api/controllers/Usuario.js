@@ -140,6 +140,14 @@ class UsuarioController {
       .catch((err) => res.status(500).send(err));
   }
 
+  static logoutUsuario(req, res) {
+    const server = generateAxios(req.headers.authorization);
+    server
+    .post("/logout")
+    .then(r => res.status(200).send({ success: true, mensaje: 'Sesión Cerrada' }))
+    .catch((err) => res.status(500).send({err}));
+  }
+
   static editarUsuario(req, res) {
     const {
       idPais,
@@ -244,6 +252,15 @@ class UsuarioController {
         }
       })
       .catch((err) => res.status(500).send(err));
+  }
+
+  static getActividades(req, res) {
+    const server = generateAxios(req.headers.authorization);
+    server
+    .get("/inscripciones")
+    .then(inscripciones => inscripciones.data.inscripciones)
+    .then(actividades => res.status(200).send(actividades)) //arr con actividades
+    .catch((err) => res.status(500).send(err));
   }
 
   static getEquipos(req, res) {
