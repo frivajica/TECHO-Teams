@@ -7,8 +7,6 @@ import CircleIcon from "@mui/icons-material/Circle";
 import Tooltip from "@mui/material/Tooltip";
 import moment from "moment";
 import "moment/locale/es";
-import { useDispatch } from "react-redux";
-import setEquipo from "../../state/equipo";
 import { useNavigate } from "react-router-dom";
 
 moment.locale("es");

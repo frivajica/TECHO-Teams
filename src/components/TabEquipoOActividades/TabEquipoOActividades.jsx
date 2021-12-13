@@ -37,12 +37,12 @@ export default function TabEquipoOActividades() {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider',marginTop:7,justifyContent:"center",display:"flex"}}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab  icon={<GroupsIcon />} label="Grupos" value="1" />
+            <Tab  icon={<GroupsIcon />} label="Equipos" value="1" />
             <Tab  icon={<VolunteerActivismIcon />}label="Actividades" value="2" />
           </TabList>
         </Box>
         <TabPanel value="1"><HistorialEquipos historialDeUsuario={historialDeUsuario}/></TabPanel>
-       {/* <TabPanel value="2"><HistorialEquipos actividades={actividades}/></TabPanel> */}
+       <TabPanel value="2"><HistorialEquipos actividades={actividades}/></TabPanel>
       </TabContext>
     </Box>
   );

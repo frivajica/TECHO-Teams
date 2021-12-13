@@ -14,7 +14,8 @@ import { useValidation } from "../../hooks/useValidation";
 import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setUsuario } from "../../state/usuario"
 
 const validationsForm = (form) => {
   let errors = {};
@@ -110,6 +111,7 @@ const interes = [
 ];
 
 function MiInformación() {
+  const dispatch = useDispatch()
   const usuario = useSelector((state) => state.usuario);
   const navigate = useNavigate();
   //estados para regiones
@@ -228,26 +230,26 @@ function MiInformación() {
     idUnidadOrganizacional: 0,
   };
 
-  console.log(envio);
+  console.log("EL ENVIO --->",envio);
   // ESTE POST HAY QUE VER
   const handleSubmit = (e) => {
-    // e.preventDefault();
-    // superagent
-    //   .post("https://sandbox.actividades.techo.org/api/editPersona/12345", {
-    //     ...form,
-    //     pais,
-    //     provincia,
-    //   })
-    //   .then(() => {
-    //     axios.put("ruta editar usuario db", { intereses }).then(() =>
-    //       swal({
-    //         title: "Perfil editado",
-    //         icon: "success",
-    //         timer: "2000",
-    //       })
-    //     );
-    //   })
-    //   .catch((err) => console.log(err));
+    e.preventDefault();
+
+    axios
+      .put(`http://localhost:3001/api/usuarios/editarUsuario/${usuario.idPersona}`, envio, {
+        headers: {
+          authorization: usuario.token
+        }
+      })
+      .then(res => dispatch(setUsuario(res.data)))
+      .then(() =>
+        swal({
+          title: "Perfil editado",
+          icon: "success",
+          timer: "2000",
+        })
+      )
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -350,7 +352,15 @@ function MiInformación() {
 
           <label htmlFor="selector" className="label">
             <p>PAÍS *</p>
-            <select {...pais} className="form-select">
+            <select
+              value={pais.value}
+              onChange={(e) => {
+                pais.onChange(e);
+                provincia.onChange({ target: { value: "" } });
+                localidad.onChange({ target: { value: "" } });
+              }}
+              className="form-select"
+            >
               {paises.map((pais) =>
                 // -> initialForm.pais -> 13
                 pais.id === initialForm.idPais ? (
@@ -386,22 +396,11 @@ function MiInformación() {
           <label htmlFor="selector" className="label">
             <p>PROVINCIA </p>
             <select {...provincia} className="form-select">
-              {initialForm.idPais &&
-                provincias.map((provincia) =>
-                  provincia.id === initialForm.idProvincia ? (
-                    <option
-                      key={provincia.id}
-                      value={provincia.id}
-                      selected="selected"
-                    >
-                      {provincia.nombre}
-                    </option>
-                  ) : (
-                    <option key={provincia.id} value={provincia.id}>
-                      {provincia.nombre}
-                    </option>
-                  )
-                )}
+              {provincias.map((provincia) => (
+                <option key={provincia.id} value={provincia.id}>
+                  {provincia.provincia}
+                </option>
+              ))}
             </select>
           </label>
 
@@ -436,11 +435,12 @@ function MiInformación() {
           <label htmlFor="selector" className="label">
             <p>LOCALIDAD </p>
             <select {...localidad} className="form-select">
-              {localidades.map((localidad) => (
-                <option key={localidad.id} value={localidad.id}>
-                  {localidad.localidad}
-                </option>
-              ))}
+              {provincias.length &&
+                localidades.map((localidad) => (
+                  <option key={localidad.id} value={localidad.id}>
+                    {localidad.localidad}
+                  </option>
+                ))}
             </select>
           </label>
 
