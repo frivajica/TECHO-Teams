@@ -6,7 +6,7 @@ class EquipoController {
 
     static async createEquipo(req, res) {
         try {
-            const coordinador = await Usuario.findOne({ where: { id: req.params.userId }})
+            const coordinador = await Usuario.findOne({ where: { id: req.headers.idpersona }})
             const newTeam = await Equipo.create(req.body)
 
             const usrEnEquipo = await newTeam.addUsuario(coordinador) //<-- agrego el usuario al equipo

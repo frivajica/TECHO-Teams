@@ -32,10 +32,7 @@ Router.get("/cantMiembros/:id", EquipoController.getCantMiembros);
 
 //Router.get("/:id/roles", /* isCoordinatorHere, */ EquipoController.getRoles) 
 
-Router.post(
-  "/:id/agregarRol",
-  /* isCoordinatorHere, */ EquipoController.addRole
-);
+Router.post("/:id/agregarRol", /* isCoordinatorHere, */ EquipoController.addRole);
 
 Router.put("/:id/:userId", isAdminOrCoordinatorHere, EquipoController.addUser);
 
