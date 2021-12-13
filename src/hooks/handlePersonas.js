@@ -1,7 +1,8 @@
-export const handlePersonas = (usrs) => {
+export const handlePersonas = (users) => {
+  console.log('FRONT', users)
   const personas = [];
-  const arregloPersonas = usrs.filter((item, index)=>{
-    return usrs.indexOf(item) === index;
+  const arregloPersonas = users.filter((item, index)=>{
+    return users.indexOf(item) === index;
   });
 
   arregloPersonas.forEach((e) => {

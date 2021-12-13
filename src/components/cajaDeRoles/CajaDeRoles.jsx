@@ -16,7 +16,9 @@ export const CajaDeRoles = () => {
       let arr = [];
       let obj = {};
       payload?.map((historia) => {
-        const rol = historia.roles[historia.roles.length - 1].nombreRol;
+        const rol =
+          historia.roles[historia.roles.length - 1] &&
+          historia.roles[historia.roles.length - 1].nombreRol;
         if (historia.activo && !obj[rol]) {
           obj[rol] = true;
           arr.push(rol);
@@ -29,9 +31,9 @@ export const CajaDeRoles = () => {
   return (
     <div className="caja">
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }} id="roles">
-        {roles.map((value) => (
-          <ButtonBase id="ripple" key={value}>
-            <Chip label={value} color="primary" />
+        {roles.map((value, i) => (
+          <ButtonBase id="ripple" key={i}>
+            {value && <Chip label={value} color="primary" />}
           </ButtonBase>
         ))}
       </Box>

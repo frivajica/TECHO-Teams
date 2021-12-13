@@ -36,7 +36,7 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
     axios({
       method: "post",
       url: `http://localhost:3001/api/equipos/${form.idEquipo}/agregarRol`,
-      data: { nombre: form.rol.nombre, cantNecesaria: 1 /* token: getToken() */ },
+      data: { nombre: form.rol.nombre, cantNecesaria: 1, },
     })
       .then((res) => res.data)
       .catch((err) => console.log({ err }));

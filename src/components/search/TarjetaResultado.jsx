@@ -46,19 +46,22 @@ export default function TarjetaResultado({ usuarios }) {
   const addUser = () => {
     axios
       .put(
-        `http://localhost:3001/api/equipos/${equipo.id}/${usuarios.idPersona}`,
-        {
-          token: usuario.token,
-        }
-      )
+        `http://localhost:3001/api/equipos/${equipo.id}/${usuarios.idPersona}`,{}, {
+          headers: { 
+            Authorization: usuario.token,
+            idPersona: usuario.idPersona
+          }
+        })
       .then((res) => {
         res.data === "el equipo no esta activo" &&
           errorAlert("Error", "El equipo no esta activo actualmente");
         res.data === "usuario agregado" && successAlert();
-        res.data === "el usuario ya pertenece al equipo" &&
-          errorAlert("Error", "El usuario ya esta en este equipo");
       })
-      .catch((err) => console.log({ err }));
+      .catch((err) => {
+        err.response.data === "el usuario ya pertenece al equipo" &&
+          errorAlert("Error", "El usuario ya esta en este equipo");
+        console.log({ err });
+      });
   };
 
   return (
@@ -76,7 +79,8 @@ export default function TarjetaResultado({ usuarios }) {
           </div>
           <h1 className="nombre-usuario">{`${usuarios.nombres} ${usuarios.apellidoPaterno}`}</h1>
           <div className="antiguedad-usuario">
-            Profesión: {usuarios.profesion}
+            <span style={{ color: "#1976D2" }}> Profesión: </span>
+            {usuarios.profesion}
           </div>
 
           <div className="contenedor-roles">
@@ -99,7 +103,7 @@ export default function TarjetaResultado({ usuarios }) {
           style={{
             marginTop: "20px",
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "space-around",
           }}
         >
           <Button variant="contained" startIcon={<AddIcon />} onClick={addUser}>

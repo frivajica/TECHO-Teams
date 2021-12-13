@@ -12,7 +12,8 @@ export const TarjetaUsuario = ({usuario}) => {
   const location = useLocation();
   let soyYo = `/${usuario.idPersona}` ===  location.pathname;
   const creado = usuario.createdAt.slice(0, 10);
-  const momentFromNow = moment(creado, "YYYY-MM-DD").fromNow().slice(5);
+  let momentFromNow = moment(creado, "YYYY-MM-DD").fromNow(true)
+  momentFromNow.slice(3,8) === "horas" && (momentFromNow = "menos de un día")
 
   return (
     <div className="tarjeta-usuario">

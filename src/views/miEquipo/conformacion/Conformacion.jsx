@@ -24,14 +24,7 @@ export const Conformacion = () => {
   useEffect(() => {
     axios({
       method: "get",
-      url: `http://localhost:3001/api/equipos/${idEquipo}/rolesDeEquipo`,
-      headers: { authorization: getToken() },
-    })
-      .then((res) => setInfoEquipo(res.data))
-      .catch((err) => console.log(err));
-    axios({
-      method: "get",
-      url: `http://localhost:3001/api/equipos/${idEquipo}/rolesDeEquipo`,
+      url: `http://localhost:3001/api/equipos/${idEquipo}/rolesEnEquipo`,
       headers: { authorization: getToken() },
     })
       .then((res) => setInfoEquipo(res.data))

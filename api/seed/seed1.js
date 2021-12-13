@@ -85,6 +85,7 @@ const equipos = [
 const personas = [
   {
     idPersona: 791718,
+    isAdmin: true,
     profesion: "Psicologa",
     estudios: "Psicologia UBA",
     intereses: '["Voluntariado", "Comunicaciones"]',
@@ -97,12 +98,14 @@ const personas = [
   },
   {
     idPersona: 791720,
+    isCoordinador: true,
     profesion: "Ingeniera Industrial",
     estudios: "Ingenieria UCA",
     intereses: '["Gestión de tiempo","Liderazgo","Modelo de trabajo TECHO"]',
   },
   {
     idPersona: 791721,
+    isCoordinador: true,
     profesion: "Publicista",
     estudios: "Lic. en Publicidad",
     intereses:
@@ -170,20 +173,34 @@ const roles = [
 ];
 
 db.sync()
-  .then(() => Equipo.bulkCreate(equipos).then(async (equipos) => {
-    for(let i = 0; i < equipos.length; i++) {
-      await equipos[i].createEvento({
-        tipo: 0,
-        nombreEquipo: equipos[i].nombre}
-        )}
-  }))
-  .then(() => Usuario.bulkCreate(personas))
-  .then(() => Role.bulkCreate(roles))
-  .then(() => process.exit(0))
-  .catch((err) => {
-    console.log("Algo salió mal en el proceso: ", err.message);
-    process.exit(1);
-  });
+.then(() => {
+  console.log("Comenzando primer seed.")
+  Equipo.bulkCreate(equipos).then(async (equipos) => {
+      console.log("Equipos creados. Creando eventos...")
+      for(let i = 0; i < equipos.length; i++) {
+        await equipos[i].createEvento({
+            tipo: 0,
+            nombreEquipo: equipos[i].nombre,
+            nombreCoord: "Mariana"
+          }).then(() => process.stdout.write("."))
+      }
+  })
+  .then(() => {
+    console.log("\nCreando personas...")
+    Usuario.bulkCreate(personas)
+    .then(() => {
+      console.log("Personas creadas")
+      console.log("Creando roles...")
+      Role.bulkCreate(roles)
+      .then(() => console.log("Roles creados"))
+      .then(() => process.exit(0))
+      .catch((err) => {
+        console.log("Algo salió mal en el proceso: ", err.message);
+        process.exit(1);
+      });
+    })
+  })
+})
 
 //LUEGO DE SEEDEAR PUEDEN LOGUEARSE CON CUALQUIERA DE ESTOS USUARIOS
 const personasActividades = [

@@ -6,20 +6,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { ChooseEventContent } from '../../../utils/historialEquipo/chooseEventContent'
 import { scrollButton } from '../../../utils/historialEquipo/scrollButton'
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function EventosEquipo() {
     const { equipoId } = useParams()
     const [historial, setHistorial] = useState([]);
+    const [show, setShow] = useState(false);
     const [Yposition, setYposition] = useState(window.pageYOffset)
     const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`http://localhost:3001/api/equipos/${equipoId}/historial`)
         .then(res => res.data)
-        .then(hist => {
-            console.log("hist antes de reverse", hist)
-            setHistorial(hist.reverse())
-        });
+        .then(hist => setHistorial(hist.reverse()))
+        .then(() => setShow(true));
         window.addEventListener("scroll", () => setYposition(window.pageYOffset), { passive: true });
     }, [])
 
@@ -35,11 +35,15 @@ export default function EventosEquipo() {
         <br />
             <Divider />
         <br />
-
-        <Timeline position="alternate" style={{width:"100%"}}>
-            {historial.map((evento, i) => <ChooseEventContent evento={evento} isLast={i<historial.length-1} i={i} />)}
-        </Timeline>
-
+        {show?
+            (<Timeline position="alternate" style={{width:"100%"}}>
+                {historial.map((evento, i) => <ChooseEventContent evento={evento} isLast={i<historial.length-1} i={i} />)}
+            </Timeline>)
+            :
+            (<Stack alignItems="center">
+                <CircularProgress />
+            </Stack>)
+        }
         {(window.innerHeight <= document.body.scrollHeight/4) && scrollButton(Yposition)}
 
     </Stack>
