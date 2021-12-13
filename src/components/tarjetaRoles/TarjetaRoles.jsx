@@ -8,11 +8,13 @@ import { useState } from "react";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useNavigate } from "react-router-dom";
 import getToken from "../../utils/getToken";
 import "./TarjetaRoles.css";
 import axios from "axios";
 
 export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, opcPersns = [], opcRoles = [] }) => {
+  const navigate = useNavigate();
   const { form, handleChange } = useForm({
     idEquipo: id,
     rol: {nombre: data?.role},
@@ -29,16 +31,6 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
       .catch((err) => console.log({ err }));
     setEditMode(!editMode);
   };
-  const guardarNuevo = () => {
-    axios({
-      method: "post",
-      url: `http://localhost:3001/api/equipos/${form.idEquipo}/agregarRol`,
-      data: { nombre: form.rol.nombre, cantNecesaria: 1, },
-    })
-      .then((res) => res.data)
-      .catch((err) => console.log({ err }));
-    reRender();
-  };
   const borrar = () => {
     axios({
       method: "delete",
@@ -46,7 +38,6 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
       data: { token: getToken() },
     })
       .then((res) => {
-        console.log('%cMyProject%cline:51%cres', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(38, 157, 128);padding:3px;border-radius:2px', res)
         const usuariosFiltrados = state.filter(
           (usr) => usr.usuarioIdPersona !== form.user.id
         );
@@ -59,7 +50,7 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
   return (
     <div className="tarjeta-roles">
       <div className="rol-imagen">
-        <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
+        <ButtonBase onClick={() => navigate(`${data?.usuarioIdPersona}`)} sx={{ width: 200, height: 200 }} id="ripple-avatar">
           <img
             className="avatar"
             src={data?.img || defaultAvatar}
