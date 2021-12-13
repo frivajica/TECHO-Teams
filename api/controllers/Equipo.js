@@ -81,10 +81,13 @@ class EquipoController {
     }
   }
 
-  static async getUsers(req, res) {
+  static async getUsers(req, res) {}
+
+  static async getRolesEnEquipo(req, res) {
     const server = generateAxios(req.headers.authorization);
     try {
-      let usuariosYRol = await UsuarioEnEquipo.findAll({ //toDo debería poder refactorizarse con magic methods de sequelize
+      let usuariosYRol = await UsuarioEnEquipo.findAll({
+        //toDo debería poder refactorizarse con magic methods de sequelize
         where: { equipoId: req.params.id, activo: true },
         include: [Role, Usuario],
       });
@@ -94,17 +97,51 @@ class EquipoController {
         await server
           .get(`/personas/${usuariosYRol[i].usuarioIdPersona}`)
           .then((res) => {
-						usuariosYRol[i].dataValues = { //genera nuevo objeto con la data requerida
-								nombres: res.data.nombres,
-                nombreApellido: `${res.data.nombres} ${res.data.apellidoPaterno}`,
-								apellidoPaterno: res.data.apellidoPaterno,
-								apellidoMaterno: res.data.apellidoMaterno,
-                imagenUsr: usuariosYRol[i].dataValues.usuario.imagen,
-								...usuariosYRol[i].dataValues,
-						};
+            usuariosYRol[i].dataValues = {
+              //genera nuevo objeto con la data requerida
+              nombres: res.data.nombres,
+              nombreApellido: `${res.data.nombres} ${res.data.apellidoPaterno}`,
+              apellidoPaterno: res.data.apellidoPaterno,
+              apellidoMaterno: res.data.apellidoMaterno,
+              imagenUsr: usuariosYRol[i].dataValues.usuario.imagen,
+              ...usuariosYRol[i].dataValues,
+            };
           })
           .catch((err) => res.send(err));
-					i++
+        i++;
+      }
+      return res.send(usuariosYRol);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  static async getUsuariosDeEquipo(req, res) {
+    const server = generateAxios(req.headers.authorization);
+    try {
+      let usuariosYRol = await UsuarioEnEquipo.findAll({
+        //toDo debería poder refactorizarse con magic methods de sequelize
+        where: { equipoId: req.params.id, activo: true },
+        include: [Role, Usuario],
+      });
+      let i = 0;
+      while (i < usuariosYRol.length) {
+        //Itera los usuarios para asignarles su información consultada de la api de actividades
+        await server
+          .get(`/personas/${usuariosYRol[i].usuarioIdPersona}`)
+          .then((res) => {
+            usuariosYRol[i].dataValues = {
+              //genera nuevo objeto con la data requerida
+              nombres: res.data.nombres,
+              nombreApellido: `${res.data.nombres} ${res.data.apellidoPaterno}`,
+              apellidoPaterno: res.data.apellidoPaterno,
+              apellidoMaterno: res.data.apellidoMaterno,
+              imagenUsr: usuariosYRol[i].dataValues.usuario.imagen,
+              ...usuariosYRol[i].dataValues,
+            };
+          })
+          .catch((err) => res.send(err));
+        i++;
       }
       return res.send(usuariosYRol);
     } catch (error) {
@@ -118,13 +155,15 @@ class EquipoController {
       const rol = await Role.findOrCreate({
         where: { nombre: req.body.nombre },
       });
+      console.log("foo", rol[0].dataValues.id);
       const rolEnEquipo = await RolEnEquipo.findOne({
-        where: { equipoId: equipo.id, roleId: rol.id },
+        where: { equipoId: equipo.id, roleId: rol[0].dataValues.id },
       });
-      if (rolEnEquipo)
+      console.log("bar", rolEnEquipo);
+      if (rolEnEquipo) {
         RolEnEquipo.update(
           { cantNecesaria: req.body.cantNecesaria },
-          { where: { equipoId: equipo.id, roleId: rol.id } }
+          { where: { equipoId: equipo.id, roleId: rol[0].dataValues.id } }
         ).then(() =>
           res
             .status(201)
@@ -136,7 +175,7 @@ class EquipoController {
                 " necesarios"
             )
         );
-      else
+      } else {
         equipo
           .setRole({ through: { cantNecesaria: req.body.cantNecesaria } })
           .then(() =>
@@ -150,13 +189,13 @@ class EquipoController {
                 "necesarios"
               )
           );
+        };
     } catch (error) {
       return res.status(500).send(error);
     }
   }
 
   static async getRoles(req, res) {
-    console.log('getRoles llamado')
     try {
       const roles = await equipo.getRoles();
       return res.send(roles);
@@ -210,7 +249,7 @@ class EquipoController {
       );
       return res.send("rol changed");
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return res.status(500).send(error);
     }
   }
@@ -227,7 +266,6 @@ class EquipoController {
           },
         }
       );
-      console.log(req.body)
       const server = generateAxios(req.body.token);
       const usrInfo = await server
         .get(`/personas/${req.params.userId}`)

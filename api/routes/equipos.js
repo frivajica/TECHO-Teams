@@ -21,6 +21,10 @@ Router.get("/:id/usuarios", /* checkAuth, */ EquipoController.getUsers)
 
 Router.put("/:id/:userId", /* isCoordinatorHere, */  EquipoController.addUser)
 
+Router.get("/:id/rolesDeEquipo", /* isCoordinatorHere, */ EquipoController.getRolesEnEquipo)
+
+Router.get("/:id/usuariosDeEquipo", /* isCoordinatorHere, */ EquipoController.getUsuariosDeEquipo)
+
 Router.get("/:id/roles", /* isCoordinatorHere, */ EquipoController.getRoles)
 
 Router.post("/:id/agregarRol", /* isCoordinatorHere, */  EquipoController.addRole)

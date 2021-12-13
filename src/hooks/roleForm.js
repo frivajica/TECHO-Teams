@@ -1,18 +1,13 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const useForm = (inic) => {
   const [form, setForm] = useState(inic);
-
-  const handleChange = (event, id) => {
-      if (id) {
-        setForm({ ...form, id: id });
-      } else {
-        event.target.type === "checkbox"
-          ? setForm({ ...form, [event.target.name]: event.target.checked })
-          : setForm({ ...form, [event.target.name]: event.target.value });
-      };
-    }
-  console.log('FORM', form);
+  const handleChange = (event, value, name) => {
+    event.target?.type === "checkbox"
+      ? setForm({ ...form, [name]: event.target.checked })
+      : setForm({ ...form, [name]: value });
+  };
+  console.log("FORM", form);
 
   return { form, handleChange };
 };

@@ -1,32 +1,42 @@
 import { TarjetaRoles } from "../../../components/tarjetaRoles/TarjetaRoles";
 import Divider from "@mui/material/Divider";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import ButtonBase from "@mui/material/ButtonBase";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { defaultAvatar } from "../../../utils/mockData";
 import { useParams } from "react-router-dom";
 import getToken from "../../../utils/getToken";
 import { handlePersonas } from "../../../hooks/handlePersonas";
+import { useReRenderer } from '../../../utils/reRenderer'
 import "./Conformacion.css";
 import axios from "axios";
 
+
 export const Conformacion = () => {
+  const {renderKey, reRender} = useReRenderer();
   const [mostrarNuevo, setMostrarNuevo] = useState(false);
-  const roles = useSelector(({ rol }) => rol);
   const [infoEquipo, setInfoEquipo] = useState({});
+  const roles = useSelector(({ rol }) => rol);
   const idEquipo = useParams().id;
+  
   useEffect(() => {
     axios({
       method: "get",
-      url: `http://localhost:3001/api/equipos/${idEquipo}/usuarios`,
+      url: `http://localhost:3001/api/equipos/${idEquipo}/rolesDeEquipo`,
       headers: { authorization: getToken() },
     })
       .then((res) => setInfoEquipo(res.data))
       .catch((err) => console.log(err));
-  }, []);
+    axios({
+      method: "get",
+      url: `http://localhost:3001/api/equipos/${idEquipo}/rolesDeEquipo`,
+      headers: { authorization: getToken() },
+    })
+      .then((res) => setInfoEquipo(res.data))
+      .catch((err) => console.log(err));
+    }, []);
 
   return (
     <div className="conformacion">
@@ -42,16 +52,13 @@ export const Conformacion = () => {
           {infoEquipo?.map((e) => (
             <TarjetaRoles
               data={e}
-              key={e.usuarioIdPersona}
+              disabled
+              key={`${idEquipo}${e.usuarioIdPersona}${e.role}`}
               id={idEquipo}
               state={infoEquipo}
               setState={setInfoEquipo}
-              rol={e.role}
-              persona={e.nombreApellido}
               opcPersns={handlePersonas(infoEquipo)}
               opcRoles={roles}
-              necesario={e.necesario}
-              img={e.imagenUsr || defaultAvatar}
             />
           ))}
         </div>
@@ -76,7 +83,15 @@ export const Conformacion = () => {
             </ButtonBase>
           )}
         </div>
-        {mostrarNuevo && <TarjetaRoles />}
+        {mostrarNuevo && (
+          <TarjetaRoles
+            key={renderKey}
+            reRender={reRender}
+            opcPersns={handlePersonas(infoEquipo)}
+            opcRoles={roles}
+            id={idEquipo}
+          />
+        )}
       </div>
     </div>
   );
