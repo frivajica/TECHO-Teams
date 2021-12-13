@@ -106,6 +106,8 @@ export function CrearEquipo() {
     });
   };
 
+  console.log(loggedUser.idPersona);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -130,7 +132,7 @@ export function CrearEquipo() {
           },
           {
             headers: {
-              Authorization: loggedUser.token,
+              authorization: loggedUser.token,
               idPersona: loggedUser.idPersona,
             },
           }

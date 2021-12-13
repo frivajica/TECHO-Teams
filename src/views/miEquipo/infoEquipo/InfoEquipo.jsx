@@ -32,7 +32,11 @@ export const InfoEquipo = () => {
         }).then((willDelete) => {
           if (willDelete) {
             dispatch(
-              deactivateEquipo(equipo.id, usuario.idPersona, usuario.token)
+              deactivateEquipo({
+                id: equipo.id,
+                idPersona: usuario.idPersona,
+                token: usuario.token,
+              })
             );
             swal("El equipo ha sido deshabilitado!", {
               icon: "success",
@@ -41,7 +45,13 @@ export const InfoEquipo = () => {
             swal("El equipo sigue habilitado");
           }
         })
-      : dispatch(activateEquipo(equipo.id, usuario.idPersona, usuario.token));
+      : dispatch(
+          activateEquipo({
+            id: equipo.id,
+            idPersona: usuario.idPersona,
+            token: usuario.token,
+          })
+        );
   }
 
   return (

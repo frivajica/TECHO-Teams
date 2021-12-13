@@ -14,7 +14,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { logoutRequest } from "../../state/usuario";
 import { useNavigate } from "react-router";
 
-
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -34,6 +33,25 @@ function getStyles(name, personName, theme) {
         : theme.typography.fontWeightMedium,
   };
 }
+
+const listaEstudios = [
+  "",
+  "Finanzas/Contabilidad",
+  "Administración/Economía",
+  "Ingeniería",
+  "Derecho/Abogacía",
+  "Ciencias Sociales",
+  "Sociogía",
+  "Historia",
+  "Arte",
+  "Recursos Humanos",
+  "Psicología/Psiquiatría",
+  "Medicina",
+  "Diseño",
+  "Arquitectura",
+  "Ciencias Exactas",
+  "Informática/Programación",
+];
 
 const interes = [
   "Voluntariado",
@@ -135,7 +153,7 @@ function SignUp() {
         <div className="subtitlereg">Completa tu registro en EQUIPOS!</div>
 
         <form onSubmit={handleSubmit}>
-          <label for="profesion" className="label">
+          <label htmlFor="profesion" className="label">
             PROFESION
           </label>
           <input
@@ -151,21 +169,22 @@ function SignUp() {
             ""
           )}
 
-          <label for="estudios" className="label">
-            ESTUDIOS
+          <label htmlFor="selector" className="label">
+            <p>ESTUDIOS</p>
+            <select {...estudios} className="form-control">
+              {listaEstudios.map((estudio, i) => (
+                <option key={i} value={estudio}>
+                  {estudio}
+                </option>
+              ))}
+            </select>
           </label>
-          <input
-            {...estudios}
-            type="text"
-            name="estudios"
-            id="estudios"
-            className="form-control"
-          />
-          {/* {estudiosErr ? <div className="errorFormMsg">{estudiosErr}</div> : ""} */}
+
           <InputLabel id="demo-multiple-chip-label">
             TEMATICAS/AREAS DE INTERES EN TECHO
           </InputLabel>
           <Select
+            style={{ width: "100%" }}
             labelId="demo-multiple-chip-label"
             id="demo-multiple-chip"
             multiple
@@ -192,16 +211,6 @@ function SignUp() {
             ))}
           </Select>
           {interesErr ? <div className="errorFormMsg">{interesErr}</div> : ""}
-          {/* <label for="selector" className="label">
-            <p>INTERESES EN TECHO</p>
-            <select id="selector" className="form-control" {...interes}>
-              <option label=" "></option>
-              <option className="option">Mentoreo</option>
-              <option className="option">Comunicacion Social</option>
-              <option className="option">Otra opcion</option>
-            </select>
-          </label>
-          {interesErr ? <div className="errorFormMsg">{interesErr}</div> : ""} */}
           <br />
           <button type="submit" className="button">
             SIGUIENTE

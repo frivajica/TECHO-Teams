@@ -31,7 +31,7 @@ export const updateEquipo = createAsyncThunk(
 
 export const deactivateEquipo = createAsyncThunk(
   "DEACTIVATE_EQUIPO",
-  (id, idPersona, token) => {
+  ({ id, idPersona, token }) => {
     return axios
       .put(
         `http://localhost:3001/api/equipos/desactivar/${id}`,
@@ -44,13 +44,13 @@ export const deactivateEquipo = createAsyncThunk(
         }
       )
       .then((res) => res.data)
-      .catch((err) => console.log(err));
+      .catch((err) => console.log({ err }));
   }
 );
 
 export const activateEquipo = createAsyncThunk(
   "ACTIVATE_EQUIPO",
-  (id, idPersona, token) => {
+  ({ id, idPersona, token }) => {
     return axios
       .put(
         `http://localhost:3001/api/equipos/activar/${id}`,

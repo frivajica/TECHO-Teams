@@ -409,7 +409,6 @@ function MiInformación() {
             <p>ESTUDIOS</p>
             <select {...estudios} className="form-select">
               {listaEstudios.map((estudio, i) =>
-                // -> initialForm.pais -> 13
                 estudio === initialForm.estudios ? (
                   <option key={i} value={estudio} selected="selected">
                     {estudio}
