@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
-import "./CrearEquipo";
 import Button from "@mui/material/Button";
 import { CustomHook } from "../../hooks/CustomHook";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import getToken from "../../utils/getToken";
+import { useDispatch, useSelector } from "react-redux";
+import { updateEquipo } from "../../state/equipo";
 
 const listaAreas = [
   "",
@@ -21,18 +22,21 @@ const listaAreas = [
   "Vivienda y Habitat",
 ];
 
-export function CrearEquipo() {
+export default function EditarEquipo() {
+  const dispatch = useDispatch();
+  const equipo = useSelector((state) => state.equipo);
+  const navigate = useNavigate();
   const [paises, setPaises] = useState([]);
-  const pais = CustomHook("");
-  const nombre = CustomHook("");
+  const pais = CustomHook(equipo.paisId);
+  const nombre = CustomHook(equipo.nombre);
   const [sedes, setSedes] = useState([]);
-  const sede = CustomHook("");
-  const cantidad = CustomHook("");
+  const sede = CustomHook(equipo.sedeId);
+  const cantidad = CustomHook(equipo.cantMiembros);
   const [comunidades, setComunidades] = useState([]);
   const comunidad = CustomHook("");
-  const descripcion = CustomHook("");
-  const areas = CustomHook("");
-  const [categoria, setCategoria] = useState("");
+  const descripcion = CustomHook(equipo.detalles);
+  const areas = CustomHook(equipo.area);
+  const [categoria, setCategoria] = useState(equipo.categoria);
 
   useEffect(() => {
     axios
@@ -44,13 +48,7 @@ export function CrearEquipo() {
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/sedes")
-      .then((res) =>
-        setSedes(
-          res.data.filter(
-            (sedesPais) => sedesPais.id_pais.toString() === pais.value
-          )
-        )
-      )
+      .then((res) => setSedes(res.data))
       .catch((err) => console.log(err));
   }, [pais.value]);
 
@@ -85,8 +83,8 @@ export function CrearEquipo() {
 
   const successAlert = () => {
     swal({
-      title: "Equipo creado con exito!",
-      text: "El equipo fue incorporado a la plataforma",
+      title: "Guardado!",
+      text: "Los datos fueron modificados con exito",
       icon: "success",
       timer: "5000",
     });
@@ -104,6 +102,22 @@ export function CrearEquipo() {
     });
   };
 
+  let form = {
+    nombre: nombre.value,
+    cantMiembros: parseInt(cantidad.value),
+    activo: equipo.activo,
+    detalles: descripcion.value,
+    paisId: parseInt(pais.value),
+    sedeId: sede.value ? parseInt(sede.value) : 0,
+    territorioId: null,
+    // falta la comunidad/barrio, hay que arreglar el endpoint, si categoria = oficina, va vacio
+    categoria: categoria,
+    area: areas.value,
+    img: equipo.img,
+  };
+
+  console.log(form);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -112,25 +126,16 @@ export function CrearEquipo() {
     if (!parseInt(cantidad.value))
       errorAlert("Error!", "Complete correctamente la cantidad de miembros");
     else
-      axios
-        .post("http://localhost:3001/api/equipos", {
-          nombre: nombre.value,
-          cantMiembros: parseInt(cantidad.value),
-          activo: true,
-          detalles: descripcion.value,
-          paisId: parseInt(pais.value),
-          sedeId: sede.value ? parseInt(sede.value) : 0,
-          // falta la comunidad/barrio, hay que arreglar el endpoint, si categoria = oficina, va vacio
-          categoria: categoria,
-          area: areas.value,
-        })
-        .then(successAlert());
+      dispatch(updateEquipo({ id: equipo.id, form: form }))
+        .then(successAlert())
+        .then(() => navigate(-1))
+        .catch((err) => console.log({ err }));
   };
 
   return (
     <div>
       <div id="register">
-        <h2 className="TitleRegister">Creacion de equipos</h2>
+        <h2 className="TitleRegister">Edición de datos de equipos</h2>
         <form onSubmit={handleSubmit}>
           <div className="contenedor-formulario">
             <label htmlFor="selector" className="label">
@@ -182,7 +187,7 @@ export function CrearEquipo() {
                 <label>
                   <input
                     id="radio-button"
-                    name="categoria"
+                    name="oficina"
                     type="radio"
                     value={categoria}
                     onChange={() => setCategoria("Oficina")}
@@ -195,7 +200,7 @@ export function CrearEquipo() {
                 <label>
                   <input
                     id="radio-button"
-                    name="categoria"
+                    name="territorio"
                     type="radio"
                     value={categoria}
                     onChange={() => setCategoria("Territorio")}
@@ -244,16 +249,17 @@ export function CrearEquipo() {
               marginTop: "50px",
             }}
           >
-            <Link style={{ textDecoration: "none" }} to="/">
-              <Button variant="text">VOLVER</Button>
-            </Link>
+            <Button variant="text" onClick={() => navigate(-1)}>
+              VOLVER
+            </Button>
+
             <Button
               id="ingresar"
               size="medium"
               variant="outlined"
               type="submit"
             >
-              CREAR EQUIPO
+              GUARDAR
             </Button>
           </div>
         </form>

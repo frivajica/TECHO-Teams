@@ -12,16 +12,32 @@ import { useParams, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deactivateEquipo, activateEquipo } from "../../../state/equipo";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 
 export const InfoEquipo = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
 
   function click() {
     equipo.activo
-      ? dispatch(deactivateEquipo(equipo.id))
+      ? swal({
+          title: "¿Estás seguro?",
+          text: "Una vez que lo deshabilites se eliminarán a los integrantes del grupo",
+          icon: "warning",
+          buttons: ["Cancelar", "Ok"],
+          dangerMode: true,
+        }).then((willDelete) => {
+          if (willDelete) {
+            dispatch(deactivateEquipo(equipo.id));
+            swal("El equipo ha sido deshabilitado!", {
+              icon: "success",
+            });
+          } else {
+            swal("El equipo sigue habilitado");
+          }
+        })
       : dispatch(activateEquipo(equipo.id));
   }
 
@@ -60,14 +76,16 @@ export const InfoEquipo = () => {
               <p>{equipo.detalles}</p>
             </label>
             <div className="Buttons mt">
-             {equipo.activo && <Link to="/search" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="contained"
-                  startIcon={<PersonAddAltOutlinedIcon />}
-                >
-                  INTEGRANTE
-                </Button>
-              </Link>}
+              {equipo.activo && (
+                <Link to="/search" style={{ textDecoration: "none" }}>
+                  <Button
+                    variant="contained"
+                    startIcon={<PersonAddAltOutlinedIcon />}
+                  >
+                    INTEGRANTE
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -76,7 +94,12 @@ export const InfoEquipo = () => {
           <CardInfoEquipo equipo={equipo} />
           <div className="Buttons mt">
             <div>
-              <Button variant="contained" onClick={() => navigate(`/miEquipo/${equipo.id}/historia`)}>Historia</Button>
+              <Button
+                variant="contained"
+                onClick={() => navigate(`/miEquipo/${equipo.id}/historia`)}
+              >
+                Historia
+              </Button>
             </div>
             <div>
               <Button
@@ -85,6 +108,14 @@ export const InfoEquipo = () => {
                 color={equipo.activo ? "error" : "success"}
               >
                 {equipo.activo ? "Deshabilitar" : "Habilitar"}
+              </Button>
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                onClick={() => navigate(`/miEquipo/${equipo.id}/editar`)}
+              >
+                EDITAR
               </Button>
             </div>
           </div>

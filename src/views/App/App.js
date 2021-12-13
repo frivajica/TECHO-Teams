@@ -12,6 +12,7 @@ import MiInformación from "../miInformación/MiInformación";
 import { useSelector } from "react-redux";
 import { CrearEquipo } from "../../components/crearEquipo/CrearEquipo";
 import Search from "../../components/search/Search";
+import EditarEquipo from "../../components/editarEquipo/EditarEquipo";
 function App() {
   const usuario = useSelector((state) => state.usuario);
 
@@ -53,6 +54,7 @@ function App() {
             }
           />
           <Route exact path="/miEquipo/:id" element={<Equipo />} />
+          <Route exact path="/miEquipo/:id/editar" element={<EditarEquipo />} />
           <Route
             exact
             path="/miEquipo/:equipoId/historia"
