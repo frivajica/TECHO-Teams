@@ -7,13 +7,13 @@ import { getByMail, getById, setUsuarios } from "../../state/usuarios";
 
 import swal from "sweetalert";
 import { useNavigate } from "react-router";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
 
-function UsersForAdmin() {
+import UsersForAdmin from "./listaUsuarios"
+
+function SearchAdmin() {
   const navigate = useNavigate();
 
+  const [rows, setRows] = React.useState([{idPersona: 0, nombres: "cargando"}])
   const usuarios = useSelector((state) => state.usuarios);
   const dispatch = useDispatch();
   const [tipo, setTipo] = useState("");
@@ -40,10 +40,10 @@ function UsersForAdmin() {
 
     tipo === "email" &&
       dispatch(getByMail({ mail: busqueda.value, errorAlert })).then(
-        ({ payload }) => setTrigger(true));
+        ({ payload }) => setRows([payload]));
     tipo === "id" &&
       dispatch(getById({ id: parseInt(busqueda.value), errorAlert })).then(
-        ({ payload }) => setTrigger(true));
+        ({ payload }) => setRows([payload]));
     tipo === "" && errorAlert();
     
   };
@@ -107,18 +107,12 @@ function UsersForAdmin() {
         </div>
       </form>
   
-
-      {/* <Button
-        onClick={() => navigate(-1)}
-        style={{ marginLeft: "auto", marginRight: "10px" }}
-        variant="outlined"
-        startIcon={<ArrowBackIosIcon />}
-        className="volverBtnSearch"
-      >
-        VOLVER
-      </Button> */}
+      <div style={{marginTop:300,width:"80%"}}>
+        <UsersForAdmin setRows={setRows} rows={rows} />
+      </div>
+     
     </div>
   );
 }
 
-export default UsersForAdmin;
+export default SearchAdmin;
