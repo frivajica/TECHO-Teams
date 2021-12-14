@@ -106,6 +106,8 @@ export function CrearEquipo() {
     });
   };
 
+  console.log(loggedUser.idPersona);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 

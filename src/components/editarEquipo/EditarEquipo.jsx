@@ -14,7 +14,7 @@ const listaAreas = [
   "Voluntariado",
   "Comunicaciones",
   "Desarrollo de Fondos",
-  "Gestión Comunitaria",
+  "Gestion comunitaria",
   "Administración y Finanzas",
   "Legal",
   "Investigación",
@@ -161,7 +161,7 @@ export default function EditarEquipo() {
             </label>
             <label htmlFor="selector" className="label">
               <p>DESCRIPCION</p>
-              <TextField
+              <textarea
                 className="text-field"
                 size="small"
                 type="text"
@@ -196,6 +196,7 @@ export default function EditarEquipo() {
               <div className="radio" onClick={toggleTerrit}>
                 <label>
                   <input
+                    checked={categoria === "Oficina"}
                     id="radio-button"
                     name="oficina"
                     type="radio"
@@ -209,6 +210,7 @@ export default function EditarEquipo() {
               <div className="radio" onClick={toggleTerrito}>
                 <label>
                   <input
+                    checked={categoria === "Territorio"}
                     id="radio-button"
                     name="territorio"
                     type="radio"

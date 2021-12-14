@@ -180,8 +180,6 @@ class UsuarioController {
       intereses,
     } = req.body;
 
-    console.log("buenos dias");
-
     superagent
       .post(
         `https://sandbox.actividades.techo.org/api/editPersona/${req.params.id}`
@@ -203,12 +201,13 @@ class UsuarioController {
       })
       .set("X-API-Key", "foobar")
       .set("Accept", "application/json")
+      .set("Authorization", `Bearer ${req.headers.authorization}`)
       .then((updatedUsr) => ({
         usuarioPromise: Usuario.update(
           { profesion, estudios, intereses },
           { where: { idPersona: req.params.id } }
         ),
-        updatedUsr,
+        updatedUsr: JSON.parse(updatedUsr.text),
       }))
       .then(({ usuarioPromise, updatedUsr }) => {
         return usuarioPromise
@@ -216,7 +215,7 @@ class UsuarioController {
           .then((personaUpd) =>
             res
               .status(200)
-              .send({ ...personaUpd.dataValues, ...updatedUsr.request._data })
+              .send({ ...personaUpd.dataValues, ...updatedUsr.persona, token: req.headers.authorization})
           );
       })
       .catch((err) => console.log({ err }));
