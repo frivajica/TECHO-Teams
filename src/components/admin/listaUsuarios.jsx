@@ -31,7 +31,6 @@ export default function UsersForAdmin({ setRows, rows }) {
           row.idPersona === usuario.idPersona ? { ...row, isCoord: !row.is } : row
         )
       );
-
     },
     []
   );
