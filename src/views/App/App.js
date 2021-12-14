@@ -39,7 +39,7 @@ function App() {
           />
           <Route
             exact
-            path={`/${usuario.idPersona}`}
+            path={`/:idPersona`}
             element={
               usuario.nombres && !usuario.intereses ? <SignUp /> : <Usuario />
             }

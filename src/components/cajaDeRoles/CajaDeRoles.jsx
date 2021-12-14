@@ -4,15 +4,17 @@ import { obtenerHistorial } from "../../state/historialDeUsuario";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
+import { useParams } from 'react-router-dom'
 import "./CajaDeRoles.css";
 
 export const CajaDeRoles = () => {
+  const { idPersona } = useParams();
   const dispatch = useDispatch();
   const historialDeUsuario = useSelector((state) => state.historialDeUsuario);
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
-    dispatch(obtenerHistorial()).then(({ payload }) => {
+    dispatch(obtenerHistorial(idPersona)).then(({ payload }) => {
       let arr = [];
       let obj = {};
       payload?.map((historia) => {

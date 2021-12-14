@@ -6,7 +6,7 @@ import "./UserMenu.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { logoutRequest, setUsuario } from "../../state/usuario";
+import { logoutRequest } from "../../state/usuario";
 
 
 export const UserMenu = () => {
@@ -15,17 +15,14 @@ export const UserMenu = () => {
   const usuario = useSelector((state) => state.usuario);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleAction = () => {
     dispatch(logoutRequest());
     navigate("/");
     handleClose();
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };

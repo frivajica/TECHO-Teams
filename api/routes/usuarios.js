@@ -1,6 +1,7 @@
 const express = require("express");
 const Router = express.Router();
 const { UsuarioController } = require("../controllers");
+const { checkAdmin } = require("../middlewares/auth");
 
 Router.get("/", UsuarioController.getUsuarios);
 
@@ -15,6 +16,8 @@ Router.post("/registrar", UsuarioController.crearUsuario);
 Router.post("/login", UsuarioController.loginInUsuario);
 
 Router.post("/logout", UsuarioController.logoutUsuario);
+
+Router.put('/:idPersona/toggleAdmin', checkAdmin, UsuarioController.toggleAdmin);
 
 Router.get("/historial/:userId", UsuarioController.getHistorial);
 
