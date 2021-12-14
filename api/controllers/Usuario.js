@@ -1,4 +1,5 @@
 const { Usuario, Evento, UsuarioEnEquipo, Equipo } = require("../models");
+const Sequelize = require("sequelize");
 const superagent = require("superagent");
 const generateAxios = require("../utils/generateAxios");
 
@@ -219,6 +220,13 @@ class UsuarioController {
           );
       })
       .catch((err) => console.log({ err }));
+  }
+
+  static changeCoordAuth(req, res) {
+    Usuario.update(
+      { isCoord: Sequelize.literal('NOT isCoord') }, 
+      { where: { idPersona: req.params.id } }
+    );
   }
 
   static getHistorial(req, res) {

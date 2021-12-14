@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import { CrearEquipo } from "../../components/crearEquipo/CrearEquipo";
 import Search from "../../components/search/Search";
 import EditarEquipo from "../../components/editarEquipo/EditarEquipo";
-import UsersForAdmin from "../../components/admin/users";
+import UsersForAdmin from "../../components/admin/listaUsuarios";
 
 function App() {
   const usuario = useSelector((state) => state.usuario);
