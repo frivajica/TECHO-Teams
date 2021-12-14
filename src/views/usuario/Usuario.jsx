@@ -4,6 +4,8 @@ import Divider from "@mui/material/Divider";
 import { TarjetaUsuario } from "../../components/tarjetaUsuario/TarjetaUsuario";
 import { HistorialEquipos } from "../../components/historialEquipos/HistorialEquipos";
 import TabEquipoOActividades from "../../components/TabEquipoOActividades/TabEquipoOActividades";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 export const Usuario = () => {
   const historialDeUsuario = useSelector((state) => state.historialDeUsuario);
@@ -12,17 +14,24 @@ export const Usuario = () => {
     (equipo) => equipo.activo === true
   );
 
-    return (
-      <div className="contenedor">
-        <TarjetaUsuario usuario={usuario} />
-        <Divider variant="middle" className="divisor" />
+  return (
+    <div className="contenedor">
+      <TarjetaUsuario usuario={usuario} />
+      <Divider variant="middle" className="divisor" />
+
+      {cantEquip.length === 0 ? (
+        <Box className="participaciones">
+          <CircularProgress />
+        </Box>
+      ) : (
         <p className="participaciones">
           Participando en{" "}
           <span className="num-proyectos">{`${cantEquip.length} equipos`}</span>
         </p>
-        <Divider variant="middle" className="divisor" />
-        <TabEquipoOActividades />
-      </div>
-    );
-  
+      )}
+
+      <Divider variant="middle" className="divisor" />
+      <TabEquipoOActividades />
+    </div>
+  );
 };
