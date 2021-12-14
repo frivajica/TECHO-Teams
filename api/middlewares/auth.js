@@ -1,10 +1,10 @@
 const { UsuarioEnEquipo, Usuario, Equipo } = require("../models");
 
 const checkAdmin = async (req, res, next) => {
-  console.log(req.body)
-  const usuario = await Usuario.findOne({ where: { idPersona: req.body.idPersona } });
-  if (usuario.isAdmin) return next();
-  return res.status(401).send("Usuario no es admin");
+  console.log('HEADERS', req.headers);
+    const usuario = await Usuario.findOne({where: {idPersona: req.headers.idpersona}})
+    if (usuario.isAdmin) return next();
+    return res.status(401).send('Usuario no es admin');
 };
 
 const checkAuth = (req, res, next) => {

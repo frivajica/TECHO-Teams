@@ -227,6 +227,13 @@ class UsuarioController {
       .catch((err) => console.log({ err }));
   }
 
+  static changeCoordAuth(req, res) {
+    Usuario.update(
+      { isCoord: Sequelize.literal('NOT isCoord') }, 
+      { where: { idPersona: req.params.id } }
+    );
+  }
+
   static getHistorial(req, res) {
     let historiales = [];
     UsuarioEnEquipo.findAll({ where: { usuarioIdPersona: req.params.userId } })

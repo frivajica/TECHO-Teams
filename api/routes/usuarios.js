@@ -25,6 +25,8 @@ Router.post( "/registrarDesdeActividades", UsuarioController.crearUsuarioEquipos
 
 Router.put("/editarUsuario/:id", UsuarioController.editarUsuario)
 
+Router.put("/setCoord/:id", checkAdmin, UsuarioController.changeCoordAuth)
+
 Router.get("/:idPersona/misEquipos", UsuarioController.getEquipos)
 
 Router.get("/misActividades", UsuarioController.getActividades)
