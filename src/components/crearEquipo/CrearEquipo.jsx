@@ -9,18 +9,6 @@ import swal from "sweetalert";
 import getToken from "../../utils/getToken";
 import { useSelector } from "react-redux";
 
-// const listaAreas = [
-//   "Voluntariado",
-//   "Comunicaciones",
-//   "Desarrollo de Fondos",
-//   "Gestión Comunitaria",
-//   "Administración y Finanzas",
-//   "Legal",
-//   "Investigación",
-//   "Regional/Generalista",
-//   "Vivienda y Habitat",
-// ];
-
 export function CrearEquipo() {
   const navigate = useNavigate();
   const [paises, setPaises] = useState([]);
@@ -80,7 +68,7 @@ export function CrearEquipo() {
       .get("http://localhost:3001/api/areas")
       .then((res) => setArea(res.data))
       .catch((err) => console.log(err));
-  });
+  }, []);
 
   let toggleTerrit = () => {
     var element = document.getElementById("Territo");

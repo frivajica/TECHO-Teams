@@ -8,6 +8,8 @@ import MenuItem from "@mui/material/MenuItem";
 import swal from "sweetalert";
 import { CustomHook } from "../../hooks/CustomHook";
 import axios from "axios";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 const BuscadorEquipos = () => {
   const errorAlert = () => {
@@ -19,22 +21,12 @@ const BuscadorEquipos = () => {
     });
   };
 
-  const listaAreas = [
-    "Voluntariado",
-    "Comunicaciones",
-    "Desarrollo de Fondos",
-    "Gestión Comunitaria",
-    "Administración y Finanzas",
-    "Legal",
-    "Investigación",
-    "Regional/Generalista",
-    "Vivienda y Habitat",
-  ];
   const [trigger, setTrigger] = useState(true);
   const [equipos, setEquipos] = useState([]);
   const filtros = ["Sede", "Area", "Nombre"];
   const [paises, setPaises] = useState([]);
   const [sedes, setSedes] = useState([]);
+  const [areas, setAreas] = useState([]);
   const filtro = CustomHook("Nombre");
   const pais = CustomHook("");
   const sede = CustomHook("");
@@ -42,9 +34,15 @@ const BuscadorEquipos = () => {
   const nombre = CustomHook("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/regiones/paises")
-      .then((res) => setPaises(res.data))
+    const pedidos = [
+      axios.get("http://localhost:3001/api/regiones/paises"),
+      axios.get("http://localhost:3001/api/areas"),
+    ];
+    Promise.all(pedidos)
+      .then((resp) => {
+        setPaises(resp[0].data);
+        setAreas(resp[1].data);
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -83,8 +81,8 @@ const BuscadorEquipos = () => {
       .then((res) => {
         setEquipos(res.data);
         setTrigger(true);
-        !res.data.length && errorAlert()
-      }) 
+        !res.data.length && errorAlert();
+      })
       .catch((err) => console.log(err));
   };
 
@@ -162,9 +160,9 @@ const BuscadorEquipos = () => {
                 name="areas"
                 {...area}
               >
-                {listaAreas.map((area, i) => (
-                  <MenuItem key={i} value={area}>
-                    {area}
+                {areas.map((area) => (
+                  <MenuItem key={area.id} value={area.nombre}>
+                    {area.nombre}
                   </MenuItem>
                 ))}
               </TextField>
@@ -193,20 +191,27 @@ const BuscadorEquipos = () => {
       </div>
       {trigger ? (
         <>
-         {equipos.some(e => e.activo === true) ? <h5 className="texto-equipo">EQUIPOS ACTIVOS:</h5> : null}
+          {equipos.some((e) => e.activo === true) ? (
+            <h5 className="texto-equipo">EQUIPOS ACTIVOS:</h5>
+          ) : null}
           <div className="contenedor-equipo">
             {equipos.map(
               (equipo) =>
                 equipo.activo && <EquipoCard key={equipo.id} equipo={equipo} />
             )}
           </div>
-          {equipos.some(e => e.activo === false) ? <h5 className="texto-equipo">EQUIPOS INACTIVOS:</h5> : null}
+          {equipos.some((e) => e.activo === false) ? (
+            <h5 className="texto-equipo">EQUIPOS INACTIVOS:</h5>
+          ) : null}
           <div className="contenedor-equipo">
             {equipos.map(
               (equipo) =>
                 !equipo.activo && <EquipoCard key={equipo.id} equipo={equipo} />
             )}
           </div>
+     {/*      <Stack spacing={2}>
+            <Pagination count={10} />
+          </Stack> */}
         </>
       ) : (
         <div>
