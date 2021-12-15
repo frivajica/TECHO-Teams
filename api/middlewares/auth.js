@@ -18,8 +18,9 @@ const isAdminOrCoordinatorHere = async (req, res, next) => {
       roleId: 1,
     },
   });
-  if (usrEnEquipo) return next();
-  else {
+  if (usrEnEquipo) { 
+    return next(); 
+  } else {
     const usuario = await Usuario.findOne({
       where: { idPersona: req.headers.idpersona },
     });
@@ -29,12 +30,13 @@ const isAdminOrCoordinatorHere = async (req, res, next) => {
       (usuario.areaCoord === equipo.area &&
         usuario.paisIdCoord === equipo.paisId) ||
       usuario.sedeIdCoord === equipo.sede
-    )
+    ) {
       return next();
-    else
+    } else {
       return res
         .status(401)
         .send("El usuario no tiene acceso como coordinador");
+    }
   }
 };
 
