@@ -14,18 +14,14 @@ function SearchAdmin() {
   const navigate = useNavigate();
 
   const [rows, setRows] = React.useState([{idPersona: 0, nombres: "cargando"}])
-  const usuarios = useSelector((state) => state.usuarios);
   const dispatch = useDispatch();
   const [tipo, setTipo] = useState("");
   const busqueda = CustomHook("");
-  //dispatch(setUsuarios({}));
-  const [trigger, setTrigger] = useState(true);
 
   const errorAlert = (
     title = "Seleccione un tipo de búsqueda",
     text = "Elija buscar por Id o Email"
   ) => {
-    dispatch(setUsuarios({}))
     swal({
       title,
       text,
@@ -36,7 +32,6 @@ function SearchAdmin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setTrigger(false);
 
     tipo === "email" &&
       dispatch(getByMail({ mail: busqueda.value, errorAlert })).then(

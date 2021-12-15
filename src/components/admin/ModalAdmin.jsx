@@ -12,7 +12,7 @@ export default function ModalAdmin({ show,usarioSelec,setShow }) {
   const [open, setOpen] = React.useState(true);
   const [paises, setPaises] = useState([]);
   const [sedes, setSedes] = useState({});
-  const [pais, setPais]= useState({});
+  const [pais, setPais]= useState(usarioSelec.paisIdCoord);
   const checkbox= usarioSelec.isCoordinador ?<Checkbox checked  /> : <Checkbox />
   const style = {
     position: "absolute",
@@ -39,30 +39,31 @@ export default function ModalAdmin({ show,usarioSelec,setShow }) {
       .then((res) =>
         setSedes(
           res.data.filter(
-            (sedesPais) => sedesPais.id_pais.toString() === pais.value
+            (sedesPais) => sedesPais.id_pais.toString() === pais
           )
         )
       )
       .catch((err) => console.log(err));
-  }, [pais.value]);
+  }, [pais]);
 
   return (
     <div>
       <Modal  onClose={()=> setShow(false)} open={show}>
         <Grid sx={style} direction="columm">
+
           <Grid item>
             <FormControlLabel control={checkbox} label="¿Es Coordinador?" />
           </Grid>
+
           <Grid item>
             <InputLabel id="">Pais</InputLabel>
-            <Select defaultValue={usarioSelec.paisIdCoord} sx={{ minWidth: "15rem" }} >
-
+            <Select value={pais} sx={{ minWidth: "15rem" }} >
             {paises.map((pais) => (
                   <MenuItem key={pais.id} value={pais.id}>
                     {pais.nombre}
                   </MenuItem>
                 ))}
-          </Select>
+            </Select>
           </Grid>
 
         </Grid>

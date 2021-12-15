@@ -94,7 +94,7 @@ export default function UsersForAdmin({ setRows, rows }) {
       .get("http://localhost:3001/api/usuarios", {
         headers: { authorization: usuario.token, offset: 0, limit: 2 },
       })
-      .then((res) => res.data)
+      .then((res) => {console.log(res.data); return res.data})
       .then((users) => setRows(users))
       .catch((err) => console.error(err));
   }, []);
