@@ -4,14 +4,13 @@ import { obtenerHistorial } from "../../state/historialDeUsuario";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
-import { useParams } from 'react-router-dom'
+import { useParams } from "react-router-dom";
 import "./CajaDeRoles.css";
 import Skeleton from "@mui/material/Skeleton";
 
 export const CajaDeRoles = () => {
   const { idPersona } = useParams();
   const dispatch = useDispatch();
-  const historialDeUsuario = useSelector((state) => state.historialDeUsuario);
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
@@ -29,20 +28,23 @@ export const CajaDeRoles = () => {
       });
       setRoles(arr);
     });
-  }, []);
+  }, [idPersona]);
 
   return (
     <div className="caja">
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }} id="roles">
-        {!roles.length ? ([1,2].map((n)=>   <Skeleton key={n} sx={{width:120,height:50, borderRadius:5}} /> )
-       
-        ) : (
-          roles.map((value, i) => (
-            <ButtonBase id="ripple" key={i}>
-              {value && <Chip label={value} color="primary" />}
-            </ButtonBase>
-          ))
-        )}
+        {!roles.length
+          ? [1, 2].map((n) => (
+              <Skeleton
+                key={n}
+                sx={{ width: 120, height: 50, borderRadius: 5 }}
+              />
+            ))
+          : roles.map((value, i) => (
+              <ButtonBase id="ripple" key={i}>
+                {value && <Chip label={value} color="primary" />}
+              </ButtonBase>
+            ))}
       </Box>
     </div>
   );

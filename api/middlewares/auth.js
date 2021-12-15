@@ -1,7 +1,6 @@
 const { UsuarioEnEquipo, Usuario, Equipo } = require("../models");
 
 const checkAdmin = async (req, res, next) => {
-  console.log('HEADERS', req.headers);
     const usuario = await Usuario.findOne({where: {idPersona: req.headers.idpersona}})
     if (usuario.isAdmin) return next();
     return res.status(401).send('Usuario no es admin');
@@ -25,14 +24,6 @@ const isAdminOrCoordinatorHere = async (req, res, next) => {
       where: { idPersona: req.headers.idpersona },
     });
     const equipo = await Equipo.findOne({ where: { id: req.params.id } });
-    console.log(
-      "PARAMS",
-      req.params,
-      "HEADERS",
-      req.headers.idPersona,
-      "BODY",
-      req.body
-    );
     if (
       usuario.isAdmin ||
       (usuario.areaCoord === equipo.area &&

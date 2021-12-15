@@ -8,10 +8,12 @@ import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import GroupsIcon from '@mui/icons-material/Groups';
 import {HistorialEquipos} from "../historialEquipos/HistorialEquipos"
 import { useSelector } from "react-redux";
+import { useLocation } from 'react-router';
 import axios from 'axios';
 import getToken from '../../utils/getToken';
 
 export default function TabEquipoOActividades() {
+  const location = useLocation();
   const [value, setValue] = useState('1');
   const historialDeUsuario = useSelector((state) => state.historialDeUsuario);
   const [actividades, setActividades] = useState([])
@@ -26,7 +28,7 @@ export default function TabEquipoOActividades() {
    .then(res => res.data)
    .then(misActividades => setActividades(misActividades))
    .catch(err => console.log({err}))
-  }, [])
+  }, [location.pathname])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
