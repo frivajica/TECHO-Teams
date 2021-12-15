@@ -8,25 +8,6 @@ import getToken from "../utils/getToken";
 
 export const setUsuario = createAction("SET_USARIO");
 
-// export const makeAdmin = createAsyncThunk("MAKE_ADMIN", (targetUserId) => {
-//   return axios
-//     .post(`http://localhost:3001/api/usuarios/${targetUserId}/makeAdmin`, {
-//       //Donde targetUserId es la id del usuario al que se le otorgarán permisos de admin
-//       headers: {
-//         authorization: getToken(),
-//       },
-//     })
-//     .then((res) => {
-//       if (res.data.error)
-//         errorAlert(
-//           "Error de logueo",
-//           "Recorda verificar tu email para ingresar"
-//         );
-//       else return res.data;
-//     })
-//     .catch(() => errorAlert());
-// });
-
 export const loginRequest = createAsyncThunk(
   "LOGIN",
   ({ mail, password, errorAlert }) => {

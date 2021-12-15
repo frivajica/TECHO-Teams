@@ -251,10 +251,14 @@ class EquipoController {
       const usrInfo = await server
         .get(`/personas/${req.params.userId}`)
         .then((res) => res.data);
+      const coordInfo = await server
+        .get(`/personas/${req.headers.idpersona}`)
+        .then((res) => res.data);
       const evento = await equipo.createEvento({
         tipo: 2,
         nombreEquipo: equipo.nombre,
         nombreUsuario: usrInfo.nombres,
+        nombreCoord: coordInfo.nombres,
         nombreRol: rol.nombre,
       });
       await usr.addEvento(evento); // <-- ^^^relaciono el evento con el equipo y con el usuario
@@ -349,11 +353,15 @@ class EquipoController {
       const usrInfo = await server
         .get(`/personas/${req.params.userId}`)
         .then((res) => res.data);
+      const coordInfo = await server
+        .get(`/personas/${req.headers.idpersona}`)
+        .then((res) => res.data);
       const equipo = await Equipo.findOne({ where: { id: req.params.id } });
       const evento = await equipo.createEvento({
         tipo: -1,
         nombreEquipo: equipo.nombre,
         nombreUsuario: usrInfo.nombres,
+        nombreCoord: coordInfo.nombres
       });
       const usuario = await Usuario.findOne({
         where: { idPersona: req.params.userId },

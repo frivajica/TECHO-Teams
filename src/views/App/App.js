@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import { CrearEquipo } from "../../components/crearEquipo/CrearEquipo";
 import Search from "../../components/search/Search";
 import EditarEquipo from "../../components/editarEquipo/EditarEquipo";
-import UsersForAdmin from "../../components/admin/users";
+import SearchAdmin from "../../components/admin/users";
 
 function App() {
   const usuario = useSelector((state) => state.usuario);
@@ -39,7 +39,7 @@ function App() {
           />
           <Route
             exact
-            path={`/${usuario.idPersona}`}
+            path={`/:idPersona`}
             element={
               usuario.nombres && !usuario.intereses ? <SignUp /> : <Usuario />
             }
@@ -64,7 +64,7 @@ function App() {
           />
           <Route exact path="/crearEquipo" element={<CrearEquipo />} />
           <Route exact path="/search" element={<Search />} />
-          <Route exact path="/admin" element={<UsersForAdmin />} />
+          <Route exact path="/admin" element={<SearchAdmin />} />
         </Routes>
       </div>
       <Footer />
