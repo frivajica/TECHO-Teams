@@ -9,19 +9,6 @@ import getToken from "../../utils/getToken";
 import { useDispatch, useSelector } from "react-redux";
 import { updateEquipo } from "../../state/equipo";
 
-// const listaAreas = [
-//   "",
-//   "Voluntariado",
-//   "Comunicaciones",
-//   "Desarrollo de Fondos",
-//   "Gestion comunitaria",
-//   "Administración y Finanzas",
-//   "Legal",
-//   "Investigación",
-//   "Regional/Generalista",
-//   "Vivienda y Habitat",
-// ];
-
 export default function EditarEquipo() {
   const usuario = useSelector((state) => state.usuario);
   const dispatch = useDispatch();
@@ -78,7 +65,7 @@ export default function EditarEquipo() {
       .get("http://localhost:3001/api/areas")
       .then((res) => setArea(res.data))
       .catch((err) => console.log(err));
-  });
+  }, []);
 
   let toggleTerrit = () => {
     var element = document.getElementById("Territo");
