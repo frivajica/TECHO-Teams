@@ -23,8 +23,7 @@ export default function UsersForAdmin({ setRows, rows }) {
       setTimeout(() => {
         setRows((prevRows) => prevRows.filter((row) => row.id !== id));
       });
-    },
-    []
+    }, []
   );
 
   const toggleCoord = React.useCallback(
