@@ -8,12 +8,12 @@ import Grid from "@mui/material/Grid";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from '@mui/material/MenuItem';
 
-export default function ModalAdmin({ show,usarioSelec,setShow }) {
+export default function ModalAdmin({ show, usuarioSelec, setShow }) {
   const [open, setOpen] = React.useState(true);
   const [paises, setPaises] = useState([]);
   const [sedes, setSedes] = useState({});
   const [pais, setPais]= useState({});
-  const checkbox= usarioSelec.isCoordinador ?<Checkbox checked  /> : <Checkbox />
+  const checkbox= usuarioSelec.isCoordinador ?<Checkbox checked  /> : <Checkbox />
   const style = {
     position: "absolute",
     top: "50%",
@@ -55,7 +55,7 @@ export default function ModalAdmin({ show,usarioSelec,setShow }) {
           </Grid>
           <Grid item>
             <InputLabel id="">Pais</InputLabel>
-            <Select defaultValue={usarioSelec.paisIdCoord} sx={{ minWidth: "15rem" }} >
+            <Select defaultValue={usuarioSelec.paisIdCoord} sx={{ minWidth: "15rem" }} >
 
             {paises.map((pais) => (
                   <MenuItem key={pais.id} value={pais.id}>

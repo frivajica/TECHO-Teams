@@ -4,14 +4,19 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SecurityIcon from "@mui/icons-material/Security";
 import { useEffect } from "react";
 import axios from "axios";
+import { ModalToggleAdmin } from "./ModalToggleAdmin"
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import ModalAdmin from "./ModalAdmin";
+const pageSize = 2;
+
 export default function UsersForAdmin({ setRows, rows }) {
   const [page, setPage] = React.useState(0);
   const usuario = useSelector((state) => state.usuario);
+  const targetUser = useSelector(({usuarios}) => usuarios);
   const [show, setShow] = React.useState(false);
-  const [usarioSelec, setUsarioSelec]= React.useState({})
+  const [showMakeAdmin, setShowMakeAdmin] = React.useState(false);
+  const [usuarioSelec, setUsuarioSelec]= React.useState({});
 
   const deleteUser = React.useCallback(
     (id) => () => {
@@ -24,8 +29,21 @@ export default function UsersForAdmin({ setRows, rows }) {
 
   const toggleCoord = React.useCallback(
     (usuario) => () => {
-      setUsarioSelec(usuario)
+      setUsuarioSelec(usuario)
       setShow(true)
+      setRows((rows) =>
+        rows.map((row) =>
+          row.idPersona === usuario.idPersona ? { ...row, isCoord: !row.is } : row
+        )
+      );
+    },
+    []
+  );
+
+  const toggleAdmin = React.useCallback(
+    (usuario) => () => {
+      setUsuarioSelec(usuario)
+      setShowMakeAdmin(true)
       setRows((rows) =>
         rows.map((row) =>
           row.idPersona === usuario.idPersona ? { ...row, isCoord: !row.is } : row
@@ -74,7 +92,8 @@ export default function UsersForAdmin({ setRows, rows }) {
           />,
           <GridActionsCellItem
             icon={<SecurityIcon />}
-            label="Toggle Admin"
+            label="Ajustes de Administrador"
+            onClick={toggleAdmin(params.row)}
             showInMenu
           />,
           <GridActionsCellItem
@@ -86,18 +105,18 @@ export default function UsersForAdmin({ setRows, rows }) {
         ],
       },
     ],
-    [deleteUser, toggleCoord]
+    [deleteUser, toggleCoord, toggleAdmin]
   );
 
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/usuarios", {
-        headers: { authorization: usuario.token, offset: 0, limit: 2 },
+        headers: { authorization: usuario.token, offset: page * pageSize, limit: page * pageSize + pageSize },
       })
       .then((res) => res.data)
       .then((users) => setRows(users))
       .catch((err) => console.error(err));
-  }, []);
+  }, [targetUser]);
 
   return (
     <div>
@@ -107,9 +126,10 @@ export default function UsersForAdmin({ setRows, rows }) {
         getRowId={(row) => row.idPersona}
         autoHeight={true}
         hideFooter
-        pagesize={2}
+        pagesize={pageSize}
       />
-      <ModalAdmin setShow={setShow} show={show} usarioSelec={usarioSelec} /> 
+      <ModalAdmin setShow={setShow} show={show} usuarioSelec={usuarioSelec} /> 
+      <ModalToggleAdmin setShow={setShowMakeAdmin} show={showMakeAdmin} usuarioSelec={usuarioSelec} /> 
       <Button onClick={() => pageChange(page - 1)}>anterior</Button>
       <Button onClick={() => pageChange(page + 1)}>siguiente</Button>
     </div>
