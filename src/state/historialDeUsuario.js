@@ -5,9 +5,8 @@ import {
   } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const obtenerHistorial = createAsyncThunk("OBTENER_HISTORIAL", (_, thunkAPI) => {
-    const { usuario } = thunkAPI.getState()
-    return axios.get(`http://localhost:3001/api/usuarios/historial/${usuario.idPersona}`)
+export const obtenerHistorial = createAsyncThunk("OBTENER_HISTORIAL", (idPersona) => {
+    return axios.get(`http://localhost:3001/api/usuarios/historial/${idPersona}`)
     .then(res => res.data)
     .catch(err => console.log({err}))
 })
@@ -19,4 +18,3 @@ const historialDeUsuarioReducer = createReducer([],
   );
   
 export default historialDeUsuarioReducer;
-  

@@ -8,13 +8,12 @@ import { useState } from "react";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import getToken from "../../utils/getToken";
 import "./TarjetaRoles.css";
 import axios from "axios";
 
 export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, opcPersns = [], opcRoles = [] }) => {
-  const navigate = useNavigate();
   const { form, handleChange } = useForm({
     idEquipo: id,
     rol: {nombre: data?.role},
@@ -50,13 +49,15 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
   return (
     <div className="tarjeta-roles">
       <div className="rol-imagen">
-        <ButtonBase onClick={() => navigate(`${data?.usuarioIdPersona}`)} sx={{ width: 200, height: 200 }} id="ripple-avatar">
-          <img
-            className="avatar"
-            src={data?.img || defaultAvatar}
-            alt="Avatar de Usuario"
-          />
-        </ButtonBase>
+        <Link to={`/${data?.usuarioIdPersona}`}>
+          <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
+            <img
+              className="avatar"
+              src={data?.img || defaultAvatar}
+              alt="Avatar de Usuario"
+            />
+          </ButtonBase>
+        </Link>
       </div>
       <div className="rol-opciones">
         <FormControl id="modificar-rol" variant="standard">

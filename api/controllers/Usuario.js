@@ -1,6 +1,7 @@
 const { Usuario, Evento, UsuarioEnEquipo, Equipo } = require("../models");
-const superagent = require("superagent");
 const generateAxios = require("../utils/generateAxios");
+const superagent = require("superagent");
+const Sequelize = require("sequelize");
 
 class UsuarioController {
   static async getUsuarios(req, res) {
@@ -54,6 +55,12 @@ class UsuarioController {
       })
       .catch((err) => res.status(500).send(err));
   }
+
+  static toggleAdmin(req, res) {
+    Usuario.update({ isAdmin: Sequelize.literal('NOT isAdmin') }, 
+      { where: { idPersona: req.params.idPersona }, }
+    ).then(() => res.status(200).send('Se cambió el status de admin'));
+  };
 
   static crearUsuario(req, res) {
     const {
@@ -218,6 +225,20 @@ class UsuarioController {
           );
       })
       .catch((err) => console.log({ err }));
+  }
+
+  static changeCoordAuth(req, res) {
+    Usuario.update(
+      { 
+        isCoordinador: req.body.isCoordinador, 
+        sedeIdCoord: req.body.sedeCoord || null, 
+        paisIdCoord: req.body.paisIdCoord || null,
+        areaCoord: req.body.areaCoord || null
+      }, 
+      { where: { idPersona: req.params.id } }
+    )
+    .then(() => res.send("autoridades de coordinador actualizadas"))
+    .catch(err => res.status(500).send(err))
   }
 
   static getHistorial(req, res) {
