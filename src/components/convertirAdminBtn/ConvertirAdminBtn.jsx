@@ -1,7 +1,6 @@
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { useSelector, useDispatch } from "react-redux";
 import { getById } from "../../state/usuarios";
-import getToken from "../../utils/getToken";
 import Button from "@mui/material/Button";
 import axios from "axios";
 

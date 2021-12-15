@@ -4,6 +4,7 @@ const RoleController = require("./Role");
 const RegionesController = require("./Regiones");
 const SedesController = require("./Sedes");
 const ComunidadesController = require("./Comunidades");
+const AreasController = require("./Areas");
 
 module.exports = {
   EquipoController,
@@ -12,4 +13,5 @@ module.exports = {
   RegionesController,
   SedesController,
   ComunidadesController,
+  AreasController,
 };

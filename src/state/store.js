@@ -27,6 +27,7 @@ const persistConfig = {
     // "usuarios", //de los reducers que queremos
     "equipo", //que persistan
     "rol",
+    "historialDeUsuario"
   ],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);

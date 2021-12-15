@@ -9,18 +9,17 @@ import swal from "sweetalert";
 import getToken from "../../utils/getToken";
 import { useSelector } from "react-redux";
 
-const listaAreas = [
-  "",
-  "Voluntariado",
-  "Comunicaciones",
-  "Desarrollo de Fondos",
-  "Gestión Comunitaria",
-  "Administración y Finanzas",
-  "Legal",
-  "Investigación",
-  "Regional/Generalista",
-  "Vivienda y Habitat",
-];
+// const listaAreas = [
+//   "Voluntariado",
+//   "Comunicaciones",
+//   "Desarrollo de Fondos",
+//   "Gestión Comunitaria",
+//   "Administración y Finanzas",
+//   "Legal",
+//   "Investigación",
+//   "Regional/Generalista",
+//   "Vivienda y Habitat",
+// ];
 
 export function CrearEquipo() {
   const navigate = useNavigate();
@@ -33,6 +32,7 @@ export function CrearEquipo() {
   const [comunidades, setComunidades] = useState([]);
   const comunidad = CustomHook("");
   const descripcion = CustomHook("");
+  const [area, setArea] = useState([]);
   const areas = CustomHook("");
   const [categoria, setCategoria] = useState("");
   const loggedUser = useSelector((state) => state.usuario);
@@ -75,6 +75,13 @@ export function CrearEquipo() {
       .catch((err) => console.log(err));
   }, [pais.value]);
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/areas")
+      .then((res) => setArea(res.data))
+      .catch((err) => console.log(err));
+  });
+
   let toggleTerrit = () => {
     var element = document.getElementById("Territo");
     element.style.pointerEvents = "none";
@@ -105,8 +112,6 @@ export function CrearEquipo() {
       timer: "5000",
     });
   };
-
-  console.log(loggedUser.idPersona);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -239,6 +244,7 @@ export function CrearEquipo() {
             <label htmlFor="selector" className="label" id="Territo">
               <p>BARRIO (solo si la categoria es "Territorio")</p>
               <select {...comunidad} className="form-select">
+                <option></option>
                 {comunidades.map((comunidad) => (
                   <option key={comunidad.id} value={comunidad.id}>
                     {comunidad.nombre}
@@ -250,9 +256,10 @@ export function CrearEquipo() {
             <label htmlFor="selector" className="label">
               <p>ÁREA</p>
               <select {...areas} className="form-select">
-                {listaAreas.map((area, i) => (
-                  <option key={i} value={area}>
-                    {area}
+                <option></option>
+                {area.map((area) => (
+                  <option key={area.id} value={area.nombre}>
+                    {area.nombre}
                   </option>
                 ))}
               </select>
