@@ -11,7 +11,7 @@ export default function UsersForAdmin({ setRows, rows }) {
   const [page, setPage] = React.useState(0);
   const usuario = useSelector((state) => state.usuario);
   const [show, setShow] = React.useState(false);
-  const[usarioSelec,setUsarioSelec]= React.useState({})
+  const [usarioSelec, setUsarioSelec]= React.useState({})
 
   const deleteUser = React.useCallback(
     (id) => () => {
@@ -79,7 +79,7 @@ export default function UsersForAdmin({ setRows, rows }) {
           />,
           <GridActionsCellItem
             icon={<SecurityIcon />}
-            label="Hacer Coordinador"
+            label="Ajustes de Coordinador"
             onClick={toggleCoord(params.row)}
             showInMenu
           />,

@@ -27,11 +27,7 @@ export default function ModalAdmin({ show,usarioSelec,setShow }) {
   };
 
   useEffect(() => {
-
-    console.log("USUARIO SELECT",usarioSelec)
-
     axios
-    
       .get("http://localhost:3001/api/regiones/paises")
       .then((res) => setPaises(res.data))
       .catch((err) => console.log(err));
