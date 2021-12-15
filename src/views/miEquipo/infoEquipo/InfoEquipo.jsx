@@ -16,11 +16,28 @@ import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 export const InfoEquipo = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
   const usuario = useSelector(({ usuario }) => usuario);
+  const historialDeUsuario = useSelector(
+    ({ historialDeUsuario }) => historialDeUsuario
+  )
   const idUser = usuario.idPersona;
+
+  const coordinaEquipos = () => {
+    const equipo = historialDeUsuario.filter(
+      historial =>
+        (historial.equipo.id == id &&
+        historial.roles[0]?.nombreRol == "coordinador/a")
+    );
+    return (equipo.length || usuario.isAdmin || usuario.isCoordinador) ? true : false;
+  };
+
+  console.log("elhistorial", historialDeUsuario)
+
+
   function click() {
     equipo.activo
       ? swal({
@@ -89,7 +106,7 @@ export const InfoEquipo = () => {
               <p>{equipo.detalles}</p>
             </label>
             <div className="Buttons mt">
-              {equipo.activo && (
+              {(equipo.activo && coordinaEquipos()) && (
                 <Link to="/search" style={{ textDecoration: "none" }}>
                   <Button
                     variant="contained"
@@ -114,6 +131,8 @@ export const InfoEquipo = () => {
                 Historia
               </Button>
             </div>
+            { coordinaEquipos() &&
+            <>
             <div>
               <Button
                 variant="contained"
@@ -130,7 +149,7 @@ export const InfoEquipo = () => {
               >
                 EDITAR
               </Button>
-            </div>
+            </div></>}
           </div>
         </div>
       </Box>

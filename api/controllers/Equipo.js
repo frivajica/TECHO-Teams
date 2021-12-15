@@ -54,15 +54,22 @@ class EquipoController {
   }
 
   static getEquipos(req, res) {
-    Equipo.findAll()
-      .then((teamList) => {
-        let listaEquipos = [];
-        for (let team of teamList) {
-          if (team.activo) listaEquipos.push(team);
-        }
-        return listaEquipos;
-      })
-      .then((listaEquipos) => res.status(200).send(listaEquipos))
+    let { filtro, valor } = req.query
+    let key
+    switch (filtro) {
+      case "Sede":
+        key = "sedeId"
+        valor = parseInt(valor)
+        break;
+      case "Area":
+        key = "area"
+        break;
+      case "Nombre":
+        key = "nombre"
+        break;
+    }
+    Equipo.findAll({ where: { [key]: key === "nombre" ? { [Op.like]: `%${valor}%` } : valor } })
+      .then(equipos => res.status(200).send(equipos))
       .catch((err) => res.status(500).send(err));
   }
 
@@ -300,10 +307,10 @@ class EquipoController {
             .status(201)
             .send(
               "cantidades necesarias actualizadas: " +
-                req.body.cantNecesaria +
-                " " +
-                req.body.nombre +
-                " necesarios"
+              req.body.cantNecesaria +
+              " " +
+              req.body.nombre +
+              " necesarios"
             )
         );
       else {

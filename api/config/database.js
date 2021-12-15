@@ -7,4 +7,5 @@ const db = new Sequelize("bwgpm6fqaz25rnk0nnmj", "uglfayeryrkjedwt", "WVymCqqIln
   timezone: "-03:00",
 });
 
+
 module.exports = db;

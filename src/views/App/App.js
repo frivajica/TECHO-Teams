@@ -14,6 +14,7 @@ import { CrearEquipo } from "../../components/crearEquipo/CrearEquipo";
 import Search from "../../components/search/Search";
 import EditarEquipo from "../../components/editarEquipo/EditarEquipo";
 import UsersForAdmin from "../../components/admin/users";
+import BuscadorEquipos from "../buscadorEquipos/BuscadorEquipos"
 
 function App() {
   const usuario = useSelector((state) => state.usuario);
@@ -65,6 +66,7 @@ function App() {
           <Route exact path="/crearEquipo" element={<CrearEquipo />} />
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/admin" element={<UsersForAdmin />} />
+          <Route exact path="/buscarEquipos" element={<BuscadorEquipos />} />
         </Routes>
       </div>
       <Footer />
