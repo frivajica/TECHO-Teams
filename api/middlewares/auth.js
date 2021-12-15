@@ -29,8 +29,8 @@ const isAdminOrCoordinatorHere = async (req, res, next) => {
       usuario.isAdmin ||
       (usuario.areaCoord === equipo.area &&
         usuario.paisIdCoord === equipo.paisId) ||
-      usuario.sedeIdCoord === equipo.sede
-    ) {
+        usuario.sedeIdCoord === equipo.sede
+        ) {
       return next();
     } else {
       return res

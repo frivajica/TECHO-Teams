@@ -25,8 +25,11 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
   const guardarEditado = () => {
     axios({
       method: "put",
-      url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}/rol`,
-      data: { rol: form.rol.nombre, token: getToken() },
+      url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}/${form.rol.id}`,
+      headers: { 
+        idpersona: yo.idPersona, 
+        authorization: getToken() 
+      },
     })
       .then((res) => res.data)
       .catch((err) => console.log({ err }));
@@ -38,7 +41,6 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
       method: "delete",
       url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,
       headers: {idpersona: yo.idPersona, authorization: getToken()},
-      // data: { token: getToken() },
     })
       .then((res) => {
         const usuariosFiltrados = state.filter(

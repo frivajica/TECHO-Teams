@@ -239,14 +239,14 @@ class EquipoController {
         },
       });
       usrEnEquipo.activo === false &&
-        res.status(401).send("El rol esta desactivado");
+      res.status(401).send("El rol esta desactivado");
 
       const oldRoleId = usrEnEquipo.roleId; //guardo el viejo para saber que el equipo ya no tiene este rol
       const rol = await Role.findOne({
         where: { id: req.params.roleId },
       });
       rol.activo === false && res.status(401).send("El rol esta desactivado");
-
+      
       await usrEnEquipo.setRole(rol); //relaciono rol con tabla intermedia
 
       //info para crear evento:
