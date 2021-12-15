@@ -44,7 +44,6 @@ export const getByMail = createAsyncThunk(
   }
 );
 
-
 export const getById = createAsyncThunk(
   "GET_USER_BY_ID",
   ({ id, errorAlert }) => {    
