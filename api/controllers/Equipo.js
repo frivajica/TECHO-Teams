@@ -229,13 +229,17 @@ class EquipoController {
         where: {
           equipoId: req.params.id,
           usuarioIdPersona: req.params.userId,
-          activo: true,
         },
       });
+      usrEnEquipo.activo === false &&
+        res.status(401).send("El rol esta desactivado");
+
       const oldRoleId = usrEnEquipo.roleId; //guardo el viejo para saber que el equipo ya no tiene este rol
       const rol = await Role.findOne({
-        where: { nombre: req.body.rol, activo: true },
+        where: { id: req.params.roleId },
       });
+      rol.activo === false && res.status(401).send("El rol esta desactivado");
+
       await usrEnEquipo.setRole(rol); //relaciono rol con tabla intermedia
 
       //info para crear evento:
@@ -243,7 +247,7 @@ class EquipoController {
         where: { idPersona: req.params.userId },
       });
       const equipo = await Equipo.findOne({ where: { id: req.params.id } });
-      const server = generateAxios(req.body.token);
+      const server = generateAxios(req.headers.authorization);
       const usrInfo = await server
         .get(`/personas/${req.params.userId}`)
         .then((res) => res.data);
@@ -341,7 +345,7 @@ class EquipoController {
           },
         }
       );
-      const server = generateAxios(req.body.token);
+      const server = generateAxios(req.headers.authorization);
       const usrInfo = await server
         .get(`/personas/${req.params.userId}`)
         .then((res) => res.data);

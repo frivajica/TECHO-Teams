@@ -3,21 +3,22 @@ const Usuario = require("./Usuario");
 const Role = require("./Role");
 const Evento = require("./Evento");
 const UsuarioEnEquipo = require("./UsuarioEnEquipo");
-const RolEnEquipo = require("./RolEnEquipo")
+const RolEnEquipo = require("./RolEnEquipo");
+const Area = require("./Area");
 
-Usuario.belongsToMany(Equipo, {through: UsuarioEnEquipo});
-Equipo.belongsToMany(Usuario, {through: UsuarioEnEquipo});
+Usuario.belongsToMany(Equipo, { through: UsuarioEnEquipo });
+Equipo.belongsToMany(Usuario, { through: UsuarioEnEquipo });
 
-Role.belongsToMany(Equipo, {through: RolEnEquipo});
-Equipo.belongsToMany(Role, {through: RolEnEquipo});
+Role.belongsToMany(Equipo, { through: RolEnEquipo });
+Equipo.belongsToMany(Role, { through: RolEnEquipo });
 
-Role.hasMany(UsuarioEnEquipo, {as: "usrEnEquipo"});
+Role.hasMany(UsuarioEnEquipo, { as: "usrEnEquipo" });
 UsuarioEnEquipo.belongsTo(Role);
 
-Role.hasMany(RolEnEquipo, {as: "rolEnEquipo"});
+Role.hasMany(RolEnEquipo, { as: "rolEnEquipo" });
 RolEnEquipo.belongsTo(Role);
 
-Usuario.hasMany(UsuarioEnEquipo, {as: "usrEnEquipo"});
+Usuario.hasMany(UsuarioEnEquipo, { as: "usrEnEquipo" });
 UsuarioEnEquipo.belongsTo(Usuario);
 
 Equipo.hasMany(Evento);
@@ -26,4 +27,12 @@ Evento.belongsTo(Equipo);
 Usuario.hasMany(Evento);
 Evento.belongsTo(Usuario);
 
-module.exports = { Usuario, Equipo, Role, Evento, RolEnEquipo, UsuarioEnEquipo };
+module.exports = {
+  Usuario,
+  Equipo,
+  Role,
+  Evento,
+  RolEnEquipo,
+  UsuarioEnEquipo,
+  Area,
+};

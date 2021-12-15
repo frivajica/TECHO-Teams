@@ -9,18 +9,18 @@ import getToken from "../../utils/getToken";
 import { useDispatch, useSelector } from "react-redux";
 import { updateEquipo } from "../../state/equipo";
 
-const listaAreas = [
-  "",
-  "Voluntariado",
-  "Comunicaciones",
-  "Desarrollo de Fondos",
-  "Gestion comunitaria",
-  "Administración y Finanzas",
-  "Legal",
-  "Investigación",
-  "Regional/Generalista",
-  "Vivienda y Habitat",
-];
+// const listaAreas = [
+//   "",
+//   "Voluntariado",
+//   "Comunicaciones",
+//   "Desarrollo de Fondos",
+//   "Gestion comunitaria",
+//   "Administración y Finanzas",
+//   "Legal",
+//   "Investigación",
+//   "Regional/Generalista",
+//   "Vivienda y Habitat",
+// ];
 
 export default function EditarEquipo() {
   const usuario = useSelector((state) => state.usuario);
@@ -36,6 +36,7 @@ export default function EditarEquipo() {
   const [comunidades, setComunidades] = useState([]);
   const comunidad = CustomHook("");
   const descripcion = CustomHook(equipo.detalles);
+  const [area, setArea] = useState([]);
   const areas = CustomHook(equipo.area);
   const [categoria, setCategoria] = useState(equipo.categoria);
 
@@ -71,6 +72,13 @@ export default function EditarEquipo() {
       })
       .catch((err) => console.log(err));
   }, [pais.value]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/areas")
+      .then((res) => setArea(res.data))
+      .catch((err) => console.log(err));
+  });
 
   let toggleTerrit = () => {
     var element = document.getElementById("Territo");
@@ -126,8 +134,6 @@ export default function EditarEquipo() {
       errorAlert("Error!", "Complete todos los campos requeridos");
     if (!parseInt(cantidad.value))
       errorAlert("Error!", "Complete correctamente la cantidad de miembros");
-    // if (categoria !== "Territorio" || categoria !== "Oficina")
-    //   errorAlert("Error!", "Elija un tipo de Categoria");
     else
       dispatch(
         updateEquipo({
@@ -224,6 +230,7 @@ export default function EditarEquipo() {
             <label htmlFor="selector" className="label">
               <p>SEDE</p>
               <select {...sede} className="form-select">
+                <option></option>
                 {sedes.map((sede) => (
                   <option key={sede.id} value={sede.id}>
                     {sede.nombre}
@@ -245,10 +252,11 @@ export default function EditarEquipo() {
 
             <label htmlFor="selector" className="label">
               <p>ÁREA</p>
+              <option></option>
               <select {...areas} className="form-select">
-                {listaAreas.map((area, i) => (
-                  <option key={i} value={area}>
-                    {area}
+                {area.map((area) => (
+                  <option key={area.id} value={area.nombre}>
+                    {area.nombre}
                   </option>
                 ))}
               </select>

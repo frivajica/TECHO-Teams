@@ -5,7 +5,7 @@
 // 3--> Al final de esa linea poner 3 "/seed3" y escribir en la consola npm run seed p/seedear seed3.js
 
 const db = require("../config/database");
-const { Equipo, Usuario, Role } = require("../models");
+const { Equipo, Usuario, Role, Area } = require("../models");
 
 const equipos = [
   {
@@ -178,35 +178,69 @@ const roles = [
   },
 ];
 
-db.sync()
-.then(() => {
-  console.log("Comenzando primer seed.")
-  Equipo.bulkCreate(equipos).then(async (equipos) => {
-      console.log("Equipos creados. Creando eventos...")
-      for(let i = 0; i < equipos.length; i++) {
-        await equipos[i].createEvento({
+const areas = [
+  {
+    nombre: "Voluntariado",
+  },
+  {
+    nombre: "Comunicaciones",
+  },
+  {
+    nombre: "Desarrollo de Fondos",
+  },
+  {
+    nombre: "Gestión Comunitaria",
+  },
+  {
+    nombre: "Administración y Finanzas",
+  },
+  {
+    nombre: "Legal",
+  },
+  {
+    nombre: "Investigación",
+  },
+  {
+    nombre: "Regional/Generalista",
+  },
+  {
+    nombre: "Vivienda y Habitat",
+  },
+];
+
+db.sync().then(() => {
+  console.log("Comenzando primer seed.");
+  Equipo.bulkCreate(equipos)
+    .then(async (equipos) => {
+      console.log("Equipos creados. Creando eventos...");
+      for (let i = 0; i < equipos.length; i++) {
+        await equipos[i]
+          .createEvento({
             tipo: 0,
             nombreEquipo: equipos[i].nombre,
-            nombreCoord: "Mariana"
-          }).then(() => process.stdout.write("."))
+            nombreCoord: "Mariana",
+          })
+          .then(() => process.stdout.write("."));
       }
-  })
-  .then(() => {
-    console.log("\nCreando personas...")
-    Usuario.bulkCreate(personas)
-    .then(() => {
-      console.log("Personas creadas")
-      console.log("Creando roles...")
-      Role.bulkCreate(roles)
-      .then(() => console.log("Roles creados"))
-      .then(() => process.exit(0))
-      .catch((err) => {
-        console.log("Algo salió mal en el proceso: ", err.message);
-        process.exit(1);
-      });
     })
-  })
-})
+    .then(() => {
+      console.log("\nCreando personas...");
+      Usuario.bulkCreate(personas).then(() => {
+        console.log("Personas creadas");
+        console.log("Creando roles...");
+        Role.bulkCreate(roles)
+          .then(() => console.log("Roles creados"))
+          .then(() => {
+            console.log("Creando Areas");
+            Area.bulkCreate(areas).then(() => process.exit(0));
+          })
+          .catch((err) => {
+            console.log("Algo salió mal en el proceso: ", err.message);
+            process.exit(1);
+          });
+      });
+    });
+});
 
 //LUEGO DE SEEDEAR PUEDEN LOGUEARSE CON CUALQUIERA DE ESTOS USUARIOS
 const personasActividades = [
