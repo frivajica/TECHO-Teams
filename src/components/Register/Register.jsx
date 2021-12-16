@@ -3,7 +3,7 @@ import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,9 +17,9 @@ import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
 
-/* const Input = styled('input')({
-  display: 'none',
-}); */
+const Input = styled("input")({
+  display: "none",
+});
 
 const initialForm = {
   nombres: "",
@@ -235,6 +235,7 @@ function Register() {
     telefono: "0",
     sexo: genero,
     idUnidadOrganizacional: 0,
+    imagen: document.getElementById("fotoDePerfil").value
   };
 
   const handleSubmit = (e) => {
@@ -249,12 +250,12 @@ function Register() {
     } else {
       axios
         .post("http://localhost:3001/api/usuarios/registrar", envio)
-        .then((res) => console.log(res.data))
+        .then((res) => res.data)
         .then(() => successAlert())
         .then(() => navigate("/"))
         .catch((err) => {
-          console.log({ err })
-          errorAlert("Es posible que el mail ingresado ya esté registrado")
+          console.log({ err });
+          errorAlert("Es posible que el mail ingresado ya esté registrado");
         });
     }
   };
@@ -506,8 +507,17 @@ function Register() {
           </label>
           <label htmlFor="fotoDePerfil" className="label">
             <p>IMAGEN DE PERFIL</p>
-        <input type="file" name="fotoDePerfil" />
-      </label>
+            <Input
+              accept="image/*"
+              id="fotoDePerfil"
+              multiple
+              type="file"
+              name="fotoDePerfil"
+            />
+            <Button variant="contained" component="span">
+              Cargar
+            </Button>
+          </label>
           <label htmlFor="selector" className="label">
             <p>GÉNERO </p>
             <div className="radio">

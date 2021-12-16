@@ -18,7 +18,6 @@ import AdminView from "./views/AdminView/AdminView";
 
 function App() {
   const usuario = useSelector((state) => state.usuario);
-  const navigate = useNavigate();
   return (
     <div>
       <Navbar />
@@ -49,7 +48,7 @@ function App() {
             exact
             path={`/:idPersona`}
             element={
-              usuario.nombres && !usuario.intereses ? <SignUp /> : <Usuario />
+              usuario.nombres && !usuario.intereses ? <SignUp /> : (usuario.nombres ? <Usuario /> : <NotFound />)
             }
           />
           <Route
@@ -65,10 +64,7 @@ function App() {
           />
           <Route exact path="/miEquipo/:id" element={<Equipo />} />
           <Route exact path="/miEquipo/:id/editar" element={usuario.isAdmin || usuario.isCoordinador ? <EditarEquipo /> : <NotFound />} />
-          <Route
-            exact
-            path="/miEquipo/:equipoId/historia"
-            element={<EventosEquipo />}
+          <Route exact path="/miEquipo/:equipoId/historia" element={<EventosEquipo />}
           />
           <Route exact path="/crearEquipo" element={usuario.isAdmin || usuario.isCoordinador ? <CrearEquipo /> : <NotFound />} />
           <Route exact path="/search" element={usuario.isAdmin || usuario.isCoordinador ? <Search /> : <NotFound />} />

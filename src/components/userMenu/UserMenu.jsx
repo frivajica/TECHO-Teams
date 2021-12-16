@@ -61,15 +61,15 @@ export const UserMenu = () => {
         {/* {(usuario.cargo === "Coordinador" || usuario.cargo === "Admin") && (
           <MenuItem onClick={handleClose}>Mis Equipos</MenuItem> ------>ESTO VA?????
         )} */}
-        {usuario.isAdmin && (
+        {(usuario.isAdmin || usuario.isCoordinador) && (
           <>
           <MenuItem onClick={() => navigate("/buscarEquipos")}>
             <SearchIcon className="color" />Equipos
           </MenuItem>
-          <MenuItem onClick={() => navigate("/admin")}>
+          {usuario.isAdmin && <MenuItem onClick={() => navigate("/admin")}>
             <SecurityIcon className="color" />
             AdminLand
-          </MenuItem>
+          </MenuItem>}
           <MenuItem onClick={() => navigate("/crearEquipo")}> 
           <GroupAddIcon className="color" /> Crear Equipo
           </MenuItem>

@@ -18,14 +18,14 @@ export default function ModalCoord({
   sedes,
   setSedes,
   setRows,
-  setOpen
+  setOpen,
 }) {
   const [isCoord, setIsCoord] = useState(null);
   const [areas, setAreas] = useState([]);
   const [area, setArea] = useState(null);
-  const [sede, setSede] = useState({id: null, nombre: null});
-  const [pais, setPais] = useState({id: null, nombre: null});
-  const [disabled, setDisabled] = useState(true)
+  const [sede, setSede] = useState({ id: null, nombre: null });
+  const [pais, setPais] = useState({ id: null, nombre: null });
+  const [disabled, setDisabled] = useState(true);
   const style = {
     position: "absolute",
     top: "50%",
@@ -37,7 +37,7 @@ export default function ModalCoord({
     boxShadow: 24,
     p: 4,
   };
-  
+
   function HandleSubmit() {
     axios
       .put(
@@ -54,17 +54,25 @@ export default function ModalCoord({
       )
       .then(() => {
         setRows((rows) =>
-          rows.map((row) =>
-            row.idPersona === usuarioSelec.idPersona? 
-            {
-              ...row,
-              nombreSedeCoord: sede.nombre,
-              paisIdCoord: pais.nombre,
-              areaCoord: area,
-              nombrePaisCoord: isCoord,
+          rows.map((row) => {
+            if (row.idPersona === usuarioSelec.idPersona)
+            
+             { 
+              paises.map(p => {if(p.id === pais.id) pais.nombre = p.nombre})
+              sedes.map(s =>{if(s.id === sede.id) sede.nombre = s.nombre}) 
+              return {
+                ...row,
+                isCoordinador: isCoord,
+                nombreSedeCoord: sede.nombre,
+                sedeIdCoord: sede.id,
+                paisIdCoord: pais.id,
+                areaCoord: area,
+                nombrePaisCoord: pais.nombre,
+              }}
+            else {
+              return row;
             }
-            : row
-            )
+          })
         );
         setShow(false);
         setOpen(true);
@@ -72,12 +80,12 @@ export default function ModalCoord({
       .catch((err) => console.log(err));
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     axios
       .get("http://localhost:3001/api/areas")
       .then((res) => setAreas(res.data))
       .catch((err) => console.log(err));
-  },[])
+  }, []);
 
   useEffect(() => {
     axios
@@ -90,28 +98,32 @@ export default function ModalCoord({
 
   useEffect(() => {
     setIsCoord(usuarioSelec.isCoordinador);
-    setPais({id:usuarioSelec.paisIdCoord,nombre:usuarioSelec.nombrePaisCoord});
+    setPais({
+      id: usuarioSelec.paisIdCoord,
+      nombre: usuarioSelec.nombrePaisCoord,
+    });
     setArea(usuarioSelec.areaCoord);
-    setSede({id:usuarioSelec.sedeIdCoord,nombre:usuarioSelec.nombreSedeCoord});
+    setSede({
+      id: usuarioSelec.sedeIdCoord,
+      nombre: usuarioSelec.nombreSedeCoord,
+    });
   }, [show]);
 
   useEffect(() => {
     if (!isCoord) {
-      setDisabled(true)
-      setPais({id: null, nombre: null });
+      setDisabled(true);
+      setPais({ id: null, nombre: null });
       setArea(null);
-      setSede({id: null, nombre: null });
+      setSede({ id: null, nombre: null });
+    } else {
+      setDisabled(false);
     }
-    else {
-      setDisabled(false)
-    }
-  }, [isCoord])
+  }, [isCoord]);
 
   return (
     <div>
       <Modal onClose={() => setShow(false)} open={show}>
         <Grid sx={style} direction="columm">
-
           <Grid item>
             <FormControlLabel
               control={
@@ -127,13 +139,13 @@ export default function ModalCoord({
           <Grid item>
             <InputLabel id="">Pais</InputLabel>
             <Select
-              onChange={(e) => setPais({id:e.target.value, nombre: null})}
+              onChange={(e) => setPais({ id: e.target.value, nombre: null })}
               value={pais.id}
               sx={{ minWidth: "15rem" }}
               disabled={disabled}
             >
               {paises.map((pais) => (
-                <MenuItem key={pais.id}  name={pais.nombre}  value={pais.id}>
+                <MenuItem key={pais.id} value={pais.id}>
                   {pais.nombre}
                 </MenuItem>
               ))}
@@ -143,14 +155,14 @@ export default function ModalCoord({
           <Grid item>
             <InputLabel id="">Sede</InputLabel>
             <Select
-              onChange={(e) => setSede({id:e.target.value, nombre: e.target.name})}
+              onChange={(e) => setSede({ id: e.target.value, nombre: null })}
               defaultValue={usuarioSelec.sedeIdCoord}
               value={sede.id}
               disabled={disabled}
               sx={{ minWidth: "15rem" }}
             >
               {sedes.map((sede) => (
-                <MenuItem key={sede.id} name={sede.nombre} value={sede.id}>
+                <MenuItem key={sede.id} value={sede.id}>
                   {sede.nombre}
                 </MenuItem>
               ))}
