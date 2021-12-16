@@ -64,11 +64,21 @@ export default function UsersForAdmin({ setRows, rows }) {
         headers: { authorization: usuario.token, offset, limit },
       })
       .then((res) => res.data)
-      .then((users) => {
-        users.map((user) => {
+      .then(async (users) => {
+        const sedes = await axios.get("http://localhost:3001/api/sedes").then((res) => res.data);
+        users.map((user, i) => {
+          let nombrePaisCoord = "";
+          let nombreSedeCoord = "";
+
           paises.map((pais) => {
-            if (pais.id === user.paisIdCoord) user.paisIdCoord = pais.nombre;
+            if (pais.id === user.paisIdCoord) nombrePaisCoord = pais.nombre
           });
+
+          sedes.map((sedesPais) => {
+            if (sedesPais.id === user.sedeIdCoord) nombreSedeCoord = sedesPais.nombre;
+          });
+          users[i] = { ...user, nombrePaisCoord, nombreSedeCoord };
+          console.log("users[i]", users[i]);
         });
         setRows(users);
         setPage(newPage);
@@ -78,14 +88,13 @@ export default function UsersForAdmin({ setRows, rows }) {
 
   const columns = React.useMemo(
     () => [
-      { field: "nombres", type: "string", width: 300 },
-
+      { field: "nombres", type: "string", width: 200 },
       { field: "mail", type: "email", width: 300 },
-      { field: "isAdmin", type: "boolean", width: 120 },
-      { field: "isCoordinador", type: "boolean", width: 120 },
-      { field: "areaCoord", type: "string", width: 120 },
-      { field: "nombrePaisCoord", type: "string", width: 120 },
-      { field: "nombreSedeCoord", type: "string", width: 120 },
+      { field: "isAdmin",headerName:"Admin", type: "boolean", width: 120 },
+      { field: "isCoordinador", headerName: "Coordinador", type: "boolean", width: 120 },
+      { field: "areaCoord", headerName:"Área de Coordinación",type: "string", width: 120 },
+      { field: "nombrePaisCoord",headerName:"País de Coordinación", type: "string", width: 120 },
+      { field: "nombreSedeCoord",headerName:"Sede de Coordinación", type: "string", width: 120 },
       {
         field: "acciones",
         type: "actions",
