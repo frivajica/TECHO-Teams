@@ -21,7 +21,7 @@ export default function EditarEquipo() {
   const sede = CustomHook(equipo.sedeId);
   const cantidad = CustomHook(equipo.cantMiembros);
   const [comunidades, setComunidades] = useState([]);
-  const comunidad = CustomHook("");
+  const comunidad = CustomHook(equipo.territorioId);
   const descripcion = CustomHook(equipo.detalles);
   const [area, setArea] = useState([]);
   const areas = CustomHook(equipo.area);
@@ -44,21 +44,13 @@ export default function EditarEquipo() {
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/comunidades", {
-        headers: { Authorization: getToken() },
+        headers: { authorization: getToken() },
       })
       .then((res) => {
-        // console.log(res.data.text);
-        let comunidadArr = res.data.text;
-        //.slice(0, res.data.length - 2);
-        console.log(comunidadArr);
-        return setComunidades(
-          comunidadArr.filter(
-            (comunidadesPais) => comunidadesPais.id_pais === pais.value
-          )
-        );
+        return setComunidades(res.data);
       })
       .catch((err) => console.log(err));
-  }, [pais.value]);
+  }, []);
 
   useEffect(() => {
     axios
@@ -105,14 +97,11 @@ export default function EditarEquipo() {
     detalles: descripcion.value,
     paisId: parseInt(pais.value),
     sedeId: sede.value ? parseInt(sede.value) : 0,
-    territorioId: null,
-    // falta la comunidad/barrio, hay que arreglar el endpoint, si categoria = oficina, va vacio
+    territorioId: categoria === "Territorio" ? parseInt(comunidad.value) : null,
     categoria: categoria,
     area: areas.value,
     img: equipo.img,
   };
-
-  console.log(form);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -135,6 +124,7 @@ export default function EditarEquipo() {
         .catch((err) => console.log({ err }));
   };
 
+  console.log(comunidades);
   return (
     <div>
       <div id="register">
@@ -229,6 +219,7 @@ export default function EditarEquipo() {
             <label htmlFor="selector" className="label" id="Territo">
               <p>BARRIO (solo si la categoria es "Territorio")</p>
               <select {...comunidad} className="form-select">
+                <option></option>
                 {comunidades.map((comunidad) => (
                   <option key={comunidad.id} value={comunidad.id}>
                     {comunidad.nombre}

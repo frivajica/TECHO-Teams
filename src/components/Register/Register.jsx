@@ -208,10 +208,10 @@ function Register() {
     });
   };
 
-  const errorAlert = () => {
+  const errorAlert = (msg) => {
     swal({
       title: "Error",
-      text: "Complete los campos obligatorios correctamente",
+      text: msg,
       button: "Aceptar",
       icon: "error",
     });
@@ -232,27 +232,25 @@ function Register() {
     idUnidadOrganizacional: 0,
   };
 
-  console.log(envio);
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (Object.keys(errors).length !== 0) {
-      return errorAlert();
+      return errorAlert("Complete los campos obligatorios correctamente");
     } else if (!pais.value) {
-      return errorAlert();
+      return errorAlert("Complete los campos obligatorios correctamente");
     } else if (!intereses.length) {
-      return errorAlert();
+      return errorAlert("Complete los campos obligatorios correctamente");
     } else {
       axios
         .post("http://localhost:3001/api/usuarios/registrar", envio)
-        .then((res) => {
-          console.log(res.data);
-          return res.data;
-        })
-        .then(successAlert())
-        .then(navigate("/"))
-        .catch((err) => console.log({ err }));
+        .then((res) => console.log(res.data))
+        .then(() => successAlert())
+        .then(() => navigate("/"))
+        .catch((err) => {
+          console.log({ err })
+          errorAlert("Es posible que el mail ingresado ya esté registrado")
+        });
     }
   };
 
