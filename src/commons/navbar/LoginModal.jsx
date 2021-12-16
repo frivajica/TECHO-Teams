@@ -100,7 +100,6 @@ const LoginModal = ({ open, handleClose }) => {
           <br />
           <form onSubmit={handleLoginClick}>
             <Box id="formBox">
-              <Typography component="h2"> Mail: </Typography>
               <TextField
                 size="small"
                 fullWidth
@@ -110,7 +109,6 @@ const LoginModal = ({ open, handleClose }) => {
               />
               <br />
               <br />
-              <Typography component="h2"> Contraseña: </Typography>
               <TextField
                 type="password"
                 size="small"
