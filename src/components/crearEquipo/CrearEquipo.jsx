@@ -9,18 +9,6 @@ import swal from "sweetalert";
 import getToken from "../../utils/getToken";
 import { useSelector } from "react-redux";
 
-// const listaAreas = [
-//   "Voluntariado",
-//   "Comunicaciones",
-//   "Desarrollo de Fondos",
-//   "Gestión Comunitaria",
-//   "Administración y Finanzas",
-//   "Legal",
-//   "Investigación",
-//   "Regional/Generalista",
-//   "Vivienda y Habitat",
-// ];
-
 export function CrearEquipo() {
   const navigate = useNavigate();
   const [paises, setPaises] = useState([]);

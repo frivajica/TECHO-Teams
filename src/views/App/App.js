@@ -17,6 +17,7 @@ import UsersForAdmin from "../../components/admin/users";
 import BuscadorEquipos from "../buscadorEquipos/BuscadorEquipos";
 import SearchAdmin from "../../components/admin/users";
 import NotFound from "../notFound/NotFound";
+import AdminView from "../../components/admin/AdminView";
 
 function App() {
   const usuario = useSelector((state) => state.usuario);
@@ -78,6 +79,7 @@ function App() {
           <Route exact path="/admin" element={<SearchAdmin />} />
           {/* <Route exact path="/404" element={<NotFound />} /> */}
           <Route path="*" element={<NotFound />} />
+          <Route exact path="/admin" element={<AdminView />} />
         </Routes>
       </div>
       <Footer />

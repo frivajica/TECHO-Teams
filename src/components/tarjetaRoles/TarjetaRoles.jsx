@@ -5,6 +5,7 @@ import SaveAsRoundedIcon from "@mui/icons-material/SaveAsRounded";
 import useForm from "../../hooks/roleForm";
 import { defaultAvatar } from "../../utils/mockData";
 import { useState } from "react";
+import { useSelector } from 'react-redux'
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -19,22 +20,27 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
     rol: {nombre: data?.role},
     user: {id: data?.usuarioIdPersona},
   });
+  const yo = useSelector(({usuario}) => usuario);
   const [editMode, setEditMode] = useState();
   const guardarEditado = () => {
     axios({
       method: "put",
-      url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}/rol`,
-      data: { rol: form.rol.nombre, token: getToken() },
+      url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}/${form.rol.id}`,
+      headers: { 
+        idpersona: yo.idPersona, 
+        authorization: getToken() 
+      },
     })
       .then((res) => res.data)
       .catch((err) => console.log({ err }));
     setEditMode(!editMode);
   };
   const borrar = () => {
+    console.log('%cMyProject%cline:34%cform', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(38, 157, 128);padding:3px;border-radius:2px', form)
     axios({
       method: "delete",
       url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,
-      data: { token: getToken() },
+      headers: {idpersona: yo.idPersona, authorization: getToken()},
     })
       .then((res) => {
         const usuariosFiltrados = state.filter(

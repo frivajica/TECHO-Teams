@@ -9,19 +9,6 @@ import getToken from "../../utils/getToken";
 import { useDispatch, useSelector } from "react-redux";
 import { updateEquipo } from "../../state/equipo";
 
-// const listaAreas = [
-//   "",
-//   "Voluntariado",
-//   "Comunicaciones",
-//   "Desarrollo de Fondos",
-//   "Gestion comunitaria",
-//   "Administración y Finanzas",
-//   "Legal",
-//   "Investigación",
-//   "Regional/Generalista",
-//   "Vivienda y Habitat",
-// ];
-
 export default function EditarEquipo() {
   const usuario = useSelector((state) => state.usuario);
   const dispatch = useDispatch();
