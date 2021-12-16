@@ -29,7 +29,7 @@ export const InfoEquipo = () => {
   const coordinaEquipos = () => {
     const equipo = historialDeUsuario.filter(
       historial =>
-        (historial.equipo.id == id &&
+        (historial.equipo?.id == id &&
         historial.roles[0]?.nombreRol == "coordinador/a")
     );
     return (equipo.length || usuario.isAdmin || usuario.isCoordinador) ? true : false;
@@ -143,12 +143,14 @@ export const InfoEquipo = () => {
               </Button>
             </div>
             <div>
-              <Button
-                variant="contained"
-                onClick={() => navigate(`/miEquipo/${equipo.id}/editar`)}
-              >
-                EDITAR
-              </Button>
+              {equipo.activo &&
+                <Button
+                  variant="contained"
+                  onClick={() => navigate(`/miEquipo/${equipo.id}/editar`)}
+                >
+                  EDITAR
+                </Button>
+              }
             </div></>}
           </div>
         </div>

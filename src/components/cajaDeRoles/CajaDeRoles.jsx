@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { obtenerHistorial } from "../../state/historialDeUsuario";
+import { rolesListos } from '../../state/cargaDeRoles'
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
@@ -9,11 +10,12 @@ import "./CajaDeRoles.css";
 import Skeleton from "@mui/material/Skeleton";
 
 export const CajaDeRoles = () => {
+  const rolesCargados = useSelector(({cargaDeRoles}) => cargaDeRoles);
   const { idPersona } = useParams();
   const dispatch = useDispatch();
   const [roles, setRoles] = useState([]);
-
   useEffect(() => {
+    dispatch(rolesListos(false));
     dispatch(obtenerHistorial(idPersona)).then(({ payload }) => {
       let arr = [];
       let obj = {};
@@ -27,13 +29,14 @@ export const CajaDeRoles = () => {
         }
       });
       setRoles(arr);
+      dispatch(rolesListos(true));
     });
   }, [idPersona]);
 
   return (
     <div className="caja">
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }} id="roles">
-        {!roles.length
+        {!rolesCargados
           ? [1, 2].map((n) => (
               <Skeleton
                 key={n}
