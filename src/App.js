@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { Routes, Route, useNavigate, Router } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Navbar from "./commons/navbar/Navbar";
 import Footer from "./commons/footer/Footer";
 import Home from "./components/home/Home";
@@ -15,7 +14,7 @@ import Search from "./components/search/Search";
 import EditarEquipo from "./components/editarEquipo/EditarEquipo";
 import BuscadorEquipos from "./views/buscadorEquipos/BuscadorEquipos";
 import NotFound from "./views/notFound/NotFound";
-import AdminView from "./components/admin/AdminView";
+import AdminView from "./views/AdminView/AdminView";
 
 function App() {
   const usuario = useSelector((state) => state.usuario);

@@ -7,12 +7,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SecurityIcon from "@mui/icons-material/Security";
 import { useEffect } from "react";
 import axios from "axios";
-import { ModalToggleAdmin } from "./ModalToggleAdmin"
+import { ModalToggleAdmin } from "../ModalToggleAdmin"
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
-import ModalCoord from "./ModalCoord";
-import {changeIdToName} from './changeIdToName';
-import loading from './loadingRows';
+import ModalCoord from "../ModalCoord";
+import {changeIdToName} from '../changeIdToName';
+import loading from '../loadingRows';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -171,7 +171,13 @@ export default function ListaUsuarios({ setRows, rows }) {
         sedes={sedes}
         setSedes={setSedes}
       />
-      <ModalToggleAdmin setShow={setShowMakeAdmin} show={showMakeAdmin} usuarioSelec={usuarioSelec} /> 
+      <ModalToggleAdmin 
+        setShow={setShowMakeAdmin} 
+        show={showMakeAdmin} 
+        usuarioSelec={usuarioSelec} 
+        rows={rows} 
+        setRows={setRows}
+      /> 
 
       <Snackbar 
         open={open} 

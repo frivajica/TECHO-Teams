@@ -2,7 +2,7 @@ import Modal from "@mui/material/Modal";
 import Grid from "@mui/material/Grid";
 import { ConvertirAdminBtn } from '../convertirAdminBtn/ConvertirAdminBtn'
 
-export const  ModalToggleAdmin = ({ show, usuarioSelec, setShow }) => {
+export const  ModalToggleAdmin = ({ show, usuarioSelec, setShow, rows, setRows }) => {
   const style = {
     position: "absolute",
     display: "flex",
@@ -22,7 +22,7 @@ export const  ModalToggleAdmin = ({ show, usuarioSelec, setShow }) => {
     <div>
       <Modal  onClose={()=> setShow(false)} open={show}>
         <Grid sx={style} direction="columm">
-          <ConvertirAdminBtn user={usuarioSelec} />
+          <ConvertirAdminBtn user={usuarioSelec} setRows={setRows} />
         </Grid>
       </Modal>
     </div>
