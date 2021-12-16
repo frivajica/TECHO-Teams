@@ -13,20 +13,17 @@ import Box from "@mui/material/Box";
 
 
 export default function Search() {
-  const navigate = useNavigate();
-
   const usuarios = useSelector((state) => state.usuarios);
   const dispatch = useDispatch();
   const [tipo, setTipo] = useState("");
   const busqueda = CustomHook("");
-  //dispatch(setUsuarios({}));
   const [trigger, setTrigger] = useState(true);
 
   const errorAlert = (
     title = "Seleccione un tipo de búsqueda",
     text = "Elija buscar por Id o Email"
   ) => {
-    dispatch(setUsuarios({}))
+    dispatch(setUsuarios({}));
     swal({
       title,
       text,

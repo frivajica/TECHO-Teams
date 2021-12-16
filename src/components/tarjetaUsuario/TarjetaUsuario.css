@@ -51,21 +51,6 @@
   justify-self: center;
 }
 
-#boton-es-admin{
-  grid-column: 4;
-  grid-row: 3;
-  width: 15em;
-  justify-self: center;
-}
-
-#boton-no-es-admin{
-  background-color: #fcb616;
-  grid-column: 4;
-  grid-row: 3;
-  width: 15em;
-  justify-self: center;
-}
-
 .enEquipos {
   grid-column: 2;
   grid-row: 3;
