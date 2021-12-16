@@ -13,16 +13,21 @@ import Button from "@mui/material/Button";
 import ModalCoord from "./ModalCoord";
 import {changeIdToName} from './changeIdToName';
 import loading from './loadingRows';
-const pageSize = 2;
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+const pageSize = 5;
 
 export default function ListaUsuarios({ setRows, rows }) {
   const [page, setPage] = React.useState(0);
   const usuario = useSelector((state) => state.usuario);
-  const [show, setShow] = React.useState(false);
   const [showMakeAdmin, setShowMakeAdmin] = React.useState(false);
   const [usuarioSelec, setUsuarioSelec]= React.useState({});
   const [paises, setPaises] = React.useState([]);
   const [sedes, setSedes] = React.useState([]);
+  const [show, setShow] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
    
   const deleteUser = React.useCallback(
     (id) => () => {
@@ -52,8 +57,8 @@ export default function ListaUsuarios({ setRows, rows }) {
     if (newPage < 0) return;
     setPage(newPage);
     setRows(loading);
-    let offset = (newPage + 1) * 2 - 2;
-    let limit = (newPage + 1) * 2;
+    let offset = (newPage + 1) * pageSize - pageSize;
+    let limit = (newPage + 1) * pageSize;
     axios
       .get("http://localhost:3001/api/usuarios", {
         headers: { authorization: usuario.token, offset, limit },
@@ -104,6 +109,18 @@ export default function ListaUsuarios({ setRows, rows }) {
     [deleteUser, toggleCoord, toggleAdmin]
   );
 
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+  
+    setOpen(false);
+  };
+
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/regiones/paises")
@@ -127,10 +144,7 @@ export default function ListaUsuarios({ setRows, rows }) {
   }, []);
 
   return (
-    <div>
-      <Button onClick={() => pageChange(page - 1)}>anterior</Button>
-      {page+1}
-      <Button onClick={() => pageChange(page + 1)}>siguiente</Button>
+    <div style={{display: "flex", flexDirection: "column", alignItems: "center" }}>
       <DataGrid
         columns={columns}
         rows={rows}
@@ -138,9 +152,16 @@ export default function ListaUsuarios({ setRows, rows }) {
         autoHeight={true}
         hideFooter
         pagesize={pageSize}
+        sx={{width: "100%"}}
       />
+      <div style={{marginTop:"40px"}}>
+        <Button onClick={() => pageChange(page - 1)}><ChevronLeftIcon />anterior</Button>
+        {" página "+(page+1)}
+        <Button onClick={() => pageChange(page + 1)}>siguiente<ChevronRightIcon /></Button>
+      </div>
      
       <ModalCoord
+        setOpen={setOpen}
         setRows={setRows}
         usuario={usuario}
         setShow={setShow}
@@ -151,6 +172,19 @@ export default function ListaUsuarios({ setRows, rows }) {
         setSedes={setSedes}
       />
       <ModalToggleAdmin setShow={setShowMakeAdmin} show={showMakeAdmin} usuarioSelec={usuarioSelec} /> 
+
+      <Snackbar 
+        open={open} 
+        autoHideDuration={4000} 
+        onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              autoridades de coordinador actualizadas
+            </Alert>
+      </Snackbar>
     </div>
   );
 }
