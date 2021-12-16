@@ -99,7 +99,7 @@ export default function ListaUsuarios({ setRows, rows }) {
       { field: "isCoordinador", headerName: "Coordinador", type: "boolean", width: 120 },
       { field: "areaCoord", headerName:"Área de Coordinación",type: "string", width: 120 },
       { field: "nombrePaisCoord",headerName:"País de Coordinación", type: "string", width: 120 },
-      { field: "nombreSedeCoord",headerName:"Sede de Coordinación", type: "string", width: 120 },
+      { field: "nombreSedeCoord",headerName:"Sede de Coordinación", type: "string", width: 120 }
     ],
     [deleteUser, toggleCoord, toggleAdmin]
   );
