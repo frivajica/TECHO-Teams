@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
-export default function ModalAdmin({
+export default function ModalCoord({
   show,
   usuarioSelec,
   setShow,
@@ -48,7 +48,6 @@ useEffect(()=>{
 },[])
 
   useEffect(() => {
-    console.log("PAIS",pais)
     axios
       .get("http://localhost:3001/api/sedes")
       .then((res) =>
@@ -78,10 +77,7 @@ useEffect(()=>{
   };
 
   function HandleSubmit() {
-    console.log("sede", sede);
-
     axios
-
       .put(
         `http://localhost:3001/api/usuarios/setCoord/${usuarioSelec.idPersona}`,
         {
@@ -94,7 +90,7 @@ useEffect(()=>{
           headers: { idPersona: usuario.idPersona },
         }
       )
-      .then((res) => {
+      .then(() => {
         setShow(false);
         setRows((rows) =>
           rows.map((row) =>
@@ -134,7 +130,7 @@ useEffect(()=>{
           <Grid item>
             <InputLabel id="">Pais</InputLabel>
             <Select
-              onChange={(e) => {console.log("E =>>>>>>>>>",e);setPais({id:e.target.value, nombre: e.target.name})}}
+              onChange={(e) => setPais({id:e.target.value, nombre: e.target.name})}
               defaultValue={usuarioSelec.paisIdCoord}
               sx={{ minWidth: "15rem" }}
             >
@@ -175,7 +171,6 @@ useEffect(()=>{
               ))}
             </Select>
           </Grid>
-          {console.log("isCOORD", isCoord)}
           <Button variant="outlined" onClick={() => HandleSubmit()}>
             Guardar
           </Button>
