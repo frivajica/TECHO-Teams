@@ -13,11 +13,10 @@ import axios from 'axios';
 import getToken from '../../utils/getToken';
 
 export default function TabEquipoOActividades() {
-  const location = useLocation();
+  const { pathname } = useLocation();
   const [value, setValue] = useState('1');
   const historialDeUsuario = useSelector((state) => state.historialDeUsuario);
-  const [actividades, setActividades] = useState([])
-
+  const [actividades, setActividades] = useState([]);
   useEffect(() => {
    axios
    .get("http://localhost:3001/api/usuarios/misActividades", {
@@ -28,7 +27,7 @@ export default function TabEquipoOActividades() {
    .then(res => res.data)
    .then(misActividades => setActividades(misActividades))
    .catch(err => console.log({err}))
-  }, [location.pathname])
+  }, [pathname])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

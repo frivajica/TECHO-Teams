@@ -5,10 +5,15 @@ import { getByMail, getById } from "../../state/usuarios";
 import { useDispatch } from "react-redux";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 export default function Search({setRows}) {
     const busqueda = CustomHook("");
-    const [tipo, setTipo] = useState("");
+    const [tipo, setTipo] = useState("email");
     const dispatch = useDispatch();
 
     const errorAlert = (
@@ -39,60 +44,43 @@ export default function Search({setRows}) {
 
     return (
         <form className="searchDiv" onSubmit={handleSubmit}>
-            <div id="buscarPor">
-            <label htmlFor="selector" className="label" required>
-                <p className="buscarParrafo">BUSCAR POR </p>
-                <div className="radio emailDiv">
-                <label>
-                    <input
-                    id="radio-button"
-                    name="categoria"
-                    type="radio"
-                    value={tipo}
-                    onChange={() => setTipo("email")}
-                    />
-                    EMAIL
-                </label>
-                </div>
-
-                <div className="radio idDiv">
-                <label>
-                    <input
-                    id="radio-button"
-                    name="categoria"
-                    type="radio"
-                    value={tipo}
-                    onChange={() => setTipo("id")}
-                    />
-                    ID
-                </label>
-                </div>
-            </label>
-            </div>
-            <div className="divSearchInput">
-            <label htmlFor="selector" className="label searchInput">
-                <TextField
-                placeholder="Buscar"
-                className="text-field"
-                size="small"
-                type="text"
-                name="nombre"
-                {...busqueda}
-                required
-                />
-            </label>
-            </div>
-            <div className="buscarBtn">
-            <Button
-                id="ingresar"
-                size="medium"
-                variant="outlined"
-                type="submit"
-                style={{ boxShadow: "3px 15px 8px -10px rgb(0 0 0 / 30%)" }}
+          <FormControl sx={{marginLeft: "20%", position: "flex-start"}}>
+            <FormLabel>BUSCAR POR: </FormLabel>
+            <RadioGroup
+              row
+              aria-label="tipo-de-busqueda"
+              defaultValue="email"
+              name="radio-buttons-group"
             >
-                BUSCAR
-            </Button>
-            </div>
+              <FormControlLabel value={"email"} control={<Radio onClick={() => setTipo("email")} />} label="Email" />
+              <FormControlLabel value={"id"} control={<Radio onClick={() => setTipo("id")} />} label="ID" />
+            </RadioGroup>
+          </FormControl>
+          
+          <div className="divSearchInput">
+          <label htmlFor="selector" className="label searchInput">
+              <TextField
+              placeholder="Buscar"
+              className="text-field"
+              size="small"
+              type="text"
+              name="nombre"
+              {...busqueda}
+              required
+              />
+          </label>
+          </div>
+          <div className="buscarBtn">
+          <Button
+              id="ingresar"
+              size="medium"
+              variant="outlined"
+              type="submit"
+              sx={{position: "flex-end"}}
+          >
+              BUSCAR
+          </Button>
+          </div>
         </form>
     )
 }

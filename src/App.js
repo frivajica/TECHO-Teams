@@ -1,14 +1,13 @@
-import { useEffect } from "react";
-import { Routes, Route, useNavigate, Router } from "react-router-dom";
-import Navbar from "../../commons/navbar/Navbar";
-import Footer from "../../commons/footer/Footer";
-import Home from "../../components/home/Home";
-import SignUp from "../../components/completarSignUp/SignUp";
-import Register from "../../components/Register/Register";
-import { Equipo } from "../miEquipo/Equipo";
-import EventosEquipo from "../miEquipo/historial/historial";
-import { Usuario } from "../usuario/Usuario";
-import MiInformación from "../miInformación/MiInformación";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import Navbar from "./commons/navbar/Navbar";
+import Footer from "./commons/footer/Footer";
+import Home from "./components/home/Home";
+import SignUp from "./components/completarSignUp/SignUp";
+import Register from "./components/Register/Register";
+import { Equipo } from "./views/miEquipo/Equipo";
+import EventosEquipo from "./views/miEquipo/historial/historial";
+import { Usuario } from "./views/usuario/Usuario";
+import MiInformación from "./views/miInformación/MiInformación";
 import { useSelector } from "react-redux";
 import { CrearEquipo } from "../../components/crearEquipo/CrearEquipo";
 import Search from "../../components/search/Search";
@@ -66,20 +65,27 @@ function App() {
             }
           />
           <Route exact path="/miEquipo/:id" element={<Equipo />} />
-          <Route exact path="/miEquipo/:id/editar" element={<EditarEquipo />} />
+          <Route exact path="/miEquipo/:id/editar" element={usuario.isAdmin || usuario.isCoordinador ? <EditarEquipo /> : <NotFound />} />
           <Route
             exact
             path="/miEquipo/:equipoId/historia"
             element={<EventosEquipo />}
           />
+<<<<<<< HEAD:src/views/App/App.js
           <Route exact path="/crearEquipo" element={<CrearEquipo />} />
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/buscarEquipos" element={<BuscadorEquipos />} />
           <Route exact path="/crearArea" element={<CrearArea />} />
           <Route exact path="/crearRol" element={<CrearRol />} />
           <Route exact path="/404" element={<NotFound />} />
+=======
+          <Route exact path="/crearEquipo" element={usuario.isAdmin || usuario.isCoordinador ? <CrearEquipo /> : <NotFound />} />
+          <Route exact path="/search" element={usuario.isAdmin || usuario.isCoordinador ? <Search /> : <NotFound />} />
+          <Route exact path="/buscarEquipos" element={usuario.isAdmin || usuario.isCoordinador ? <BuscadorEquipos /> : <NotFound />} />
+          {/* <Route exact path="/404" element={<NotFound />} /> */}
+>>>>>>> a8a7da9d099161c7f34e752814096997ec25c085:src/App.js
           <Route path="*" element={<NotFound />} />
-          <Route exact path="/admin" element={<AdminView />} />
+          <Route exact path="/admin" element={usuario.isAdmin? <AdminView /> : <NotFound />} />
         </Routes>
       </div>
       <Footer />

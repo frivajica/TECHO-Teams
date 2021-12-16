@@ -384,12 +384,6 @@ class EquipoController {
   static async deactivateEquipo(req, res) {
     try {
       await Equipo.update({ activo: false }, { where: { id: req.params.id } });
-      await UsuarioEnEquipo.update(
-        { activo: false },
-        {
-          where: { equipoId: req.params.id },
-        }
-      );
       const equipo = await Equipo.findOne({ where: { id: req.params.id } });
       const server = generateAxios(req.headers.authorization);
       const coordInfo = await server
@@ -411,15 +405,6 @@ class EquipoController {
   static async activateEquipo(req, res) {
     try {
       await Equipo.update({ activo: true }, { where: { id: req.params.id } });
-      await UsuarioEnEquipo.update(
-        { activo: true },
-        {
-          where: {
-            equipoId: req.params.id,
-            usuarioIdPersona: req.headers.idpersona,
-          },
-        }
-      );
       const equipo = await Equipo.findOne({ where: { id: req.params.id } });
       const server = generateAxios(req.headers.authorization);
       const coordInfo = await server
