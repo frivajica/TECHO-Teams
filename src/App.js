@@ -1,21 +1,21 @@
 import { useEffect } from "react";
 import { Routes, Route, useNavigate, Router } from "react-router-dom";
-import Navbar from "../../commons/navbar/Navbar";
-import Footer from "../../commons/footer/Footer";
-import Home from "../../components/home/Home";
-import SignUp from "../../components/completarSignUp/SignUp";
-import Register from "../../components/Register/Register";
-import { Equipo } from "../miEquipo/Equipo";
-import EventosEquipo from "../miEquipo/historial/historial";
-import { Usuario } from "../usuario/Usuario";
-import MiInformación from "../miInformación/MiInformación";
+import Navbar from "./commons/navbar/Navbar";
+import Footer from "./commons/footer/Footer";
+import Home from "./components/home/Home";
+import SignUp from "./components/completarSignUp/SignUp";
+import Register from "./components/Register/Register";
+import { Equipo } from "./views/miEquipo/Equipo";
+import EventosEquipo from "./views/miEquipo/historial/historial";
+import { Usuario } from "./views/usuario/Usuario";
+import MiInformación from "./views/miInformación/MiInformación";
 import { useSelector } from "react-redux";
-import { CrearEquipo } from "../../components/crearEquipo/CrearEquipo";
-import Search from "../../components/search/Search";
-import EditarEquipo from "../../components/editarEquipo/EditarEquipo";
-import BuscadorEquipos from "../buscadorEquipos/BuscadorEquipos";
-import NotFound from "../notFound/NotFound";
-import AdminView from "../../components/admin/AdminView";
+import { CrearEquipo } from "./components/crearEquipo/CrearEquipo";
+import Search from "./components/search/Search";
+import EditarEquipo from "./components/editarEquipo/EditarEquipo";
+import BuscadorEquipos from "./views/buscadorEquipos/BuscadorEquipos";
+import NotFound from "./views/notFound/NotFound";
+import AdminView from "./components/admin/AdminView";
 
 function App() {
   const usuario = useSelector((state) => state.usuario);
@@ -65,18 +65,18 @@ function App() {
             }
           />
           <Route exact path="/miEquipo/:id" element={<Equipo />} />
-          <Route exact path="/miEquipo/:id/editar" element={<EditarEquipo />} />
+          <Route exact path="/miEquipo/:id/editar" element={usuario.isAdmin || usuario.isCoordinador ? <EditarEquipo /> : <NotFound />} />
           <Route
             exact
             path="/miEquipo/:equipoId/historia"
             element={<EventosEquipo />}
           />
-          <Route exact path="/crearEquipo" element={<CrearEquipo />} />
-          <Route exact path="/search" element={<Search />} />
-          <Route exact path="/buscarEquipos" element={<BuscadorEquipos />} />
+          <Route exact path="/crearEquipo" element={usuario.isAdmin || usuario.isCoordinador ? <CrearEquipo /> : <NotFound />} />
+          <Route exact path="/search" element={usuario.isAdmin || usuario.isCoordinador ? <Search /> : <NotFound />} />
+          <Route exact path="/buscarEquipos" element={usuario.isAdmin || usuario.isCoordinador ? <BuscadorEquipos /> : <NotFound />} />
           {/* <Route exact path="/404" element={<NotFound />} /> */}
           <Route path="*" element={<NotFound />} />
-          <Route exact path="/admin" element={<AdminView />} />
+          <Route exact path="/admin" element={usuario.isAdmin? <AdminView /> : <NotFound />} />
         </Routes>
       </div>
       <Footer />
