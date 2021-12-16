@@ -3,7 +3,6 @@ import {
   DataGrid,
   GridActionsCellItem,
 } from "@mui/x-data-grid";
-import SecurityIcon from "@mui/icons-material/Security";
 import { useEffect } from "react";
 import axios from "axios";
 import { ModalToggleAdmin } from "./ModalToggleAdmin"
@@ -14,6 +13,8 @@ import {changeIdToName} from './changeIdToName';
 import loading from './loadingRows';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import SecurityIcon from "@mui/icons-material/Security";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 const pageSize = 5;
@@ -77,7 +78,7 @@ export default function ListaUsuarios({ setRows, rows }) {
             showInMenu
           />,
           <GridActionsCellItem
-            icon={<SecurityIcon />}
+            icon={<ManageAccountsIcon />}
             label="Ajustes de Coordinador"
             onClick={toggleCoord(params.row)}
             showInMenu
