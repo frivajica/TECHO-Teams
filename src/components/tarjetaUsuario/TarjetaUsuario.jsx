@@ -17,7 +17,7 @@ export const TarjetaUsuario = () => {
   const creado = usuario.createdAt?.slice(0, 10);
   let momentFromNow = moment(creado, "YYYY-MM-DD").fromNow(true);
   momentFromNow.slice(3, 8) === "horas" && (momentFromNow = "menos de un día");
-
+console.log("la imagennn", usuario.imagen)
   return (
     <div className="tarjeta-usuario">
       <div className="grid-usuario">
@@ -25,7 +25,7 @@ export const TarjetaUsuario = () => {
           <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
             <img
               className="avatar"
-              src={!usuario.imagen ? u.avatar : usuario.imagen}
+              src={usuario.imagen ? `${process.env.PUBLIC_URL}/uploads/perfil/${usuario.imagen}` : u.avatar}
               alt="Avatar de Usuario"
             />
           </ButtonBase>

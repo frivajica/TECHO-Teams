@@ -1,6 +1,6 @@
 const express = require("express");
 const Router = express.Router();
-const { UsuarioController } = require("../controllers");
+const { UsuarioController, upload } = require("../controllers");
 const { checkAdmin } = require("../middlewares/auth");
 
 Router.get("/", UsuarioController.getUsuarios);
@@ -11,7 +11,7 @@ Router.get("/filtrar/mail/:mail", UsuarioController.getUsuarioByMail)
 
 Router.post("/", UsuarioController.crearUsuarioEquipos);
 
-Router.post("/registrar", UsuarioController.crearUsuario);
+Router.post("/registrar", upload, UsuarioController.crearUsuario);
 
 Router.post("/login", UsuarioController.loginInUsuario);
 

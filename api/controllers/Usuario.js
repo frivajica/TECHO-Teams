@@ -2,6 +2,18 @@ const { Usuario, Evento, UsuarioEnEquipo, Equipo } = require("../models");
 const generateAxios = require("../utils/generateAxios");
 const superagent = require("superagent");
 const Sequelize = require("sequelize");
+const multer  = require('multer')
+let fs = require('fs-extra');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, "public/uploads/perfil");
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      cb(null, `${uniqueSuffix}-${file.originalname}`)
+    }
+  })
+const upload = multer({ storage: storage })
 
 class UsuarioController {
   static async getUsuarios(req, res) {
@@ -86,6 +98,8 @@ class UsuarioController {
       intereses,
     } = req.body;
 
+    console.log("---->", req.file)
+
     superagent
       .post("https://sandbox.actividades.techo.org/api/register")
       .send({
@@ -116,9 +130,12 @@ class UsuarioController {
           profesion,
           estudios,
           intereses,
+          imagen: req.file.filename
         }).then((user) => res.status(201).send(user));
       })
-      .catch((err) => res.status(500).send(err));
+      .catch((err) => {
+        console.log({err})
+        res.status(500).send(err)});
   }
 
   static crearUsuarioEquipos(req, res) {
@@ -305,4 +322,4 @@ class UsuarioController {
   }
 }
 
-module.exports = UsuarioController;
+module.exports = {UsuarioController, upload: upload.single("fotoDePerfil")}

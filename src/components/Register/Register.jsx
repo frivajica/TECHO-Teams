@@ -3,6 +3,7 @@ import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
+import { styled } from '@mui/material/styles';
 
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
@@ -15,6 +16,10 @@ import "./Register.css";
 import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
+
+/* const Input = styled('input')({
+  display: 'none',
+}); */
 
 const initialForm = {
   nombres: "",
@@ -260,7 +265,7 @@ function Register() {
     <div id="register">
       <h2 className="TitleRegister">¡Completa estos datos para registrarte!</h2>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} enctype="multipart/form-data">
         <div className="contenedor-formulario">
           <label htmlFor="selector" className="label">
             <p>EMAIL *</p>
@@ -501,7 +506,10 @@ function Register() {
               ))}
             </Select>
           </label>
-
+          <label htmlFor="fotoDePerfil" className="label">
+            <p>IMAGEN DE PERFIL</p>
+        <input type="file" name="fotoDePerfil" />
+      </label>
           <label htmlFor="selector" className="label">
             <p>GÉNERO </p>
             <div className="radio">
