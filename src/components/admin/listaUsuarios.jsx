@@ -1,5 +1,9 @@
 import * as React from "react";
-import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  selectedGridRowsSelector,
+} from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SecurityIcon from "@mui/icons-material/Security";
 import { useEffect } from "react";
@@ -11,7 +15,10 @@ export default function UsersForAdmin({ setRows, rows }) {
   const [page, setPage] = React.useState(0);
   const usuario = useSelector((state) => state.usuario);
   const [show, setShow] = React.useState(false);
-  const [usarioSelec, setUsarioSelec]= React.useState({})
+  const [paises, setPaises] = React.useState([]);
+  const [sedes, setSedes] = React.useState([]);
+
+  const [usuarioSelec, setUsuarioSelec] = React.useState({});
 
   const deleteUser = React.useCallback(
     (id) => () => {
@@ -24,13 +31,8 @@ export default function UsersForAdmin({ setRows, rows }) {
 
   const toggleCoord = React.useCallback(
     (usuario) => () => {
-      setUsarioSelec(usuario)
-      setShow(true)
-      setRows((rows) =>
-        rows.map((row) =>
-          row.idPersona === usuario.idPersona ? { ...row, isCoord: !row.is } : row
-        )
-      );
+      setUsuarioSelec(usuario);
+      setShow(true);
     },
     []
   );
@@ -46,6 +48,11 @@ export default function UsersForAdmin({ setRows, rows }) {
       })
       .then((res) => res.data)
       .then((users) => {
+        users.map((user) => {
+          paises.map((pais) => {
+            if (pais.id === user.paisIdCoord) user.paisIdCoord = pais.nombre;
+          });
+        });
         setRows(users);
         setPage(newPage);
       })
@@ -55,13 +62,13 @@ export default function UsersForAdmin({ setRows, rows }) {
   const columns = React.useMemo(
     () => [
       { field: "nombres", type: "string", width: 300 },
-      { field: "edad", type: "number" },
+
       { field: "mail", type: "email", width: 300 },
       { field: "isAdmin", type: "boolean", width: 120 },
       { field: "isCoordinador", type: "boolean", width: 120 },
       { field: "areaCoord", type: "string", width: 120 },
-      { field: "paisIdCoord", type: "number", width: 120 },
-      { field: "sedeIdCoord", type: "number", width: 120 },
+      { field: "nombrePaisCoord", type: "string", width: 120 },
+      { field: "nombreSedeCoord", type: "string", width: 120 },
       {
         field: "acciones",
         type: "actions",
@@ -91,12 +98,49 @@ export default function UsersForAdmin({ setRows, rows }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/usuarios", {
-        headers: { authorization: usuario.token, offset: 0, limit: 2 },
+      .get("http://localhost:3001/api/regiones/paises")
+      .then((res) => {
+        setPaises(res.data);
+        return res.data;
       })
-      .then((res) => res.data)
-      .then((users) => setRows(users))
-      .catch((err) => console.error(err));
+      .then((paises) => {
+        axios
+          .get("http://localhost:3001/api/usuarios", {
+            headers: { authorization: usuario.token, offset: 0, limit: 2 },
+          })
+          .then((res) => res.data)
+
+          .then(async (users) => {
+            const sedes = await axios
+              .get("http://localhost:3001/api/sedes")
+              .then((res) => res.data);
+
+            users.map((user, i) => {
+              let nombrePaisCoord = "";
+              let nombreSedeCoord = "";
+
+              paises.map((pais) => {
+                if (pais.id === user.paisIdCoord) {
+                  nombrePaisCoord = pais.nombre;
+                }
+              });
+
+              sedes.map((sedesPais) => {
+                if (sedesPais.id === user.sedeIdCoord)
+                  nombreSedeCoord = sedesPais.nombre;
+              });
+              users[i] = { ...user, nombrePaisCoord, nombreSedeCoord };
+              console.log("users[i]", users[i]);
+            });
+
+            console.log("USERS =>", users);
+            return users;
+          })
+          .then((users) => setRows(users))
+          .catch((err) => console.error(err));
+      })
+
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -109,7 +153,16 @@ export default function UsersForAdmin({ setRows, rows }) {
         hideFooter
         pagesize={2}
       />
-      <ModalAdmin setShow={setShow} show={show} usarioSelec={usarioSelec} /> 
+      <ModalAdmin
+        setRows={setRows}
+        usuario={usuario}
+        setShow={setShow}
+        show={show}
+        usuarioSelec={usuarioSelec}
+        paises={paises}
+        sedes={sedes}
+        setSedes={setSedes}
+      />
       <Button onClick={() => pageChange(page - 1)}>anterior</Button>
       <Button onClick={() => pageChange(page + 1)}>siguiente</Button>
     </div>
