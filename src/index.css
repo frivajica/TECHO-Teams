@@ -1,6 +1,6 @@
 * {
   font-family: "Montserrat", sans-serif !important;
-  font-weight: 700 !important ;
+  font-weight: 500 !important ;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -157,6 +157,7 @@
   text-align: center;
   color: white;
   font-size: 2em;
+  font-weight: 700 !important;
 }
 
 #demo-multiple-chip-label {
@@ -384,4 +385,25 @@
 
 .volverBtnSearch {
   margin: 90vh 0 0 0;
+}
+
+/* --------------------------------NotFound------------------------------- */
+
+.divH1notFound {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.h1NotFound {
+  color: #007bff !important;
+  padding-bottom: 20px;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-top: 3%;
+  text-align: center;
 }

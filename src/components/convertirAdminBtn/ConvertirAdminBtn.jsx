@@ -5,6 +5,7 @@ import { getById } from "../../state/usuarios";
 import Button from "@mui/material/Button";
 import "./ConvertirAdminBtn.css";
 import axios from "axios";
+import { successAlert, errorAlert } from "../../utils/alerts"
 
 export const ConvertirAdminBtn = ({ user }) => {
   const dispatch = useDispatch();
@@ -13,13 +14,20 @@ export const ConvertirAdminBtn = ({ user }) => {
   const target = user || usr;
   const [style, setStyle] = useState(target?.isAdmin);
   const toogleAdminStatus = async () => {
-    await axios({
-      method: "PUT",
-      headers: { idPersona: yo.idPersona },
-      url: `http://localhost:3001/api/usuarios/${target.idPersona}/toggleAdmin`,
-    });
-    dispatch(getById({ id: target.idPersona }));
-    setStyle(!style);
+    try {
+      await axios({
+        method: "PUT",
+        headers: { idPersona: yo.idPersona },
+        url: `http://localhost:3001/api/usuarios/${target.idPersona}/toggleAdmin`,
+      });
+      dispatch(getById({ id: target.idPersona }));
+      successAlert("Hecho!", 
+      "El status de administrador de este usuario fue modificado con éxito!"
+      );
+      setStyle(!style);
+    } catch {
+      errorAlert("Oops!", "Algo malió sal].");
+    }
   };
 
   return (

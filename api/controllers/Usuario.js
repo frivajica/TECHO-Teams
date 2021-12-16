@@ -245,17 +245,19 @@ class UsuarioController {
   }
 
   static changeCoordAuth(req, res) {
+
+    
     Usuario.update(
       { 
         isCoordinador: req.body.isCoordinador, 
-        sedeIdCoord: req.body.sedeCoord || null, 
+        sedeIdCoord: req.body.sedeIdCoord || null, 
         paisIdCoord: req.body.paisIdCoord || null,
         areaCoord: req.body.areaCoord || null
       }, 
       { where: { idPersona: req.params.id } }
     )
     .then(() => res.send("autoridades de coordinador actualizadas"))
-    .catch(err => res.status(500).send(err))
+    .catch(err => console.log(err))
   }
 
   static getHistorial(req, res) {

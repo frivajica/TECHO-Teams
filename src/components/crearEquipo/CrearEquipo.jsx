@@ -48,20 +48,13 @@ export function CrearEquipo() {
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/comunidades", {
-        headers: { Authorization: getToken() },
+        headers: { authorization: getToken() },
       })
       .then((res) => {
-        let comunidadArr = res.data.text;
-        //.slice(0, res.data.length - 2);
-        console.log(comunidadArr);
-        return setComunidades(
-          comunidadArr.filter(
-            (comunidadesPais) => comunidadesPais.id_pais === pais.value
-          )
-        );
+        return setComunidades(res.data);
       })
       .catch((err) => console.log(err));
-  }, [pais.value]);
+  }, []);
 
   useEffect(() => {
     axios
@@ -101,6 +94,8 @@ export function CrearEquipo() {
     });
   };
 
+  console.log(typeof comunidad.value);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -119,7 +114,8 @@ export function CrearEquipo() {
             detalles: descripcion.value,
             paisId: parseInt(pais.value),
             sedeId: sede.value ? parseInt(sede.value) : 0,
-            // falta la comunidad/barrio, hay que arreglar el endpoint, si categoria = oficina, va vacio
+            territorioId:
+              categoria === "Territorio" ? parseInt(comunidad.value) : null,
             categoria: categoria,
             area: areas.value,
           },
@@ -233,11 +229,12 @@ export function CrearEquipo() {
               <p>BARRIO (solo si la categoria es "Territorio")</p>
               <select {...comunidad} className="form-select">
                 <option></option>
-                {comunidades.map((comunidad) => (
-                  <option key={comunidad.id} value={comunidad.id}>
-                    {comunidad.nombre}
-                  </option>
-                ))}
+                {comunidades.length &&
+                  comunidades.map((comunidad) => (
+                    <option key={comunidad.id} value={comunidad.id}>
+                      {comunidad.nombre}
+                    </option>
+                  ))}
               </select>
             </label>
 

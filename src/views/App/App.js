@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Router } from "react-router-dom";
 import Navbar from "../../commons/navbar/Navbar";
 import Footer from "../../commons/footer/Footer";
 import Home from "../../components/home/Home";
@@ -13,13 +13,13 @@ import { useSelector } from "react-redux";
 import { CrearEquipo } from "../../components/crearEquipo/CrearEquipo";
 import Search from "../../components/search/Search";
 import EditarEquipo from "../../components/editarEquipo/EditarEquipo";
-import UsersForAdmin from "../../components/admin/users";
-import BuscadorEquipos from "../buscadorEquipos/BuscadorEquipos"
-import SearchAdmin from "../../components/admin/users";
+import BuscadorEquipos from "../buscadorEquipos/BuscadorEquipos";
+import NotFound from "../notFound/NotFound";
+import AdminView from "../../components/admin/AdminView";
 
 function App() {
   const usuario = useSelector((state) => state.usuario);
-
+  const navigate = useNavigate();
   return (
     <div>
       <Navbar />
@@ -33,12 +33,19 @@ function App() {
             }
           />
           {/* VER DE PRIVATIZAR RUTA SOLO PARA QUIENES NO TENGAN INTERESES */}
-          <Route exact path="/completarRegistro" element={<SignUp />} />
+          <Route
+            exact
+            path="/completarRegistro"
+            element={
+              usuario.nombres && usuario.intereses ? <Home /> : <SignUp />
+            }
+          />
           <Route
             exact
             path="/registro"
             element={!usuario.nombres ? <Register /> : <Home />}
           />
+
           <Route
             exact
             path={`/:idPersona`}
@@ -67,7 +74,9 @@ function App() {
           <Route exact path="/crearEquipo" element={<CrearEquipo />} />
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/buscarEquipos" element={<BuscadorEquipos />} />
-          <Route exact path="/admin" element={<SearchAdmin />} />
+          {/* <Route exact path="/404" element={<NotFound />} /> */}
+          <Route path="*" element={<NotFound />} />
+          <Route exact path="/admin" element={<AdminView />} />
         </Routes>
       </div>
       <Footer />
