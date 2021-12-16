@@ -13,12 +13,11 @@ import { useSelector } from "react-redux";
 import { CrearEquipo } from "../../components/crearEquipo/CrearEquipo";
 import Search from "../../components/search/Search";
 import EditarEquipo from "../../components/editarEquipo/EditarEquipo";
-import UsersForAdmin from "../../components/admin/users";
 import BuscadorEquipos from "../buscadorEquipos/BuscadorEquipos";
-import SearchAdmin from "../../components/admin/users";
 import NotFound from "../notFound/NotFound";
 import AdminView from "../../components/admin/AdminView";
-
+import CrearArea from "../../components/crearArea/CrearArea";
+import CrearRol from "../../components/crearRol/CrearRol";
 function App() {
   const usuario = useSelector((state) => state.usuario);
   const navigate = useNavigate();
@@ -76,8 +75,9 @@ function App() {
           <Route exact path="/crearEquipo" element={<CrearEquipo />} />
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/buscarEquipos" element={<BuscadorEquipos />} />
-          <Route exact path="/admin" element={<SearchAdmin />} />
-          {/* <Route exact path="/404" element={<NotFound />} /> */}
+          <Route exact path="/crearArea" element={<CrearArea />} />
+          <Route exact path="/crearRol" element={<CrearRol />} />
+          <Route exact path="/404" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
           <Route exact path="/admin" element={<AdminView />} />
         </Routes>

@@ -23,7 +23,7 @@ class ComunidadesController {
       const finalData = JSON.parse(fixedJSON);
       return res.status(200).send(finalData);
     } catch (err) {
-      return res.status(500).send(error);
+      return res.status(500).send(err);
     }
   }
 }
