@@ -44,9 +44,10 @@ export default function Search({setRows}) {
 
     return (
         <form className="searchDiv" onSubmit={handleSubmit}>
-          <FormControl sx={{marginLeft: "20%"}}>
+          <FormControl sx={{marginLeft: "20%", position: "flex-start"}}>
             <FormLabel>BUSCAR POR: </FormLabel>
             <RadioGroup
+              row
               aria-label="tipo-de-busqueda"
               defaultValue="email"
               name="radio-buttons-group"
@@ -55,6 +56,7 @@ export default function Search({setRows}) {
               <FormControlLabel value={"id"} control={<Radio onClick={() => setTipo("id")} />} label="ID" />
             </RadioGroup>
           </FormControl>
+          
           <div className="divSearchInput">
           <label htmlFor="selector" className="label searchInput">
               <TextField
@@ -74,6 +76,7 @@ export default function Search({setRows}) {
               size="medium"
               variant="outlined"
               type="submit"
+              sx={{position: "flex-end"}}
           >
               BUSCAR
           </Button>

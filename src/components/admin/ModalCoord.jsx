@@ -58,10 +58,11 @@ export default function ModalCoord({
             row.idPersona === usuarioSelec.idPersona? 
             {
               ...row,
+              isCoordinador: isCoord,
+              paisIdCoord: pais.id,
               nombreSedeCoord: sede.nombre,
-              paisIdCoord: pais.nombre,
-              areaCoord: area,
-              nombrePaisCoord: isCoord,
+              nombrePaisCoord: pais.nombre,
+              areaCoord: area
             }
             : row
             )
