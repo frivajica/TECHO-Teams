@@ -238,6 +238,7 @@ function Register() {
     //imagen: document.getElementById("fotoDePerfil").value
   };
 
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -248,6 +249,7 @@ function Register() {
     } else if (!intereses.length) {
       return errorAlert("Complete los campos obligatorios correctamente");
     } else {
+      console.log("el envio", envio)
       axios
         .post("http://localhost:3001/api/usuarios/registrar", envio)
         .then((res) => res.data)
