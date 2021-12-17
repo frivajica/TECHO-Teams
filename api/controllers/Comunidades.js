@@ -7,7 +7,6 @@ class ComunidadesController {
       "https://comunidades.techo.org/comunidades/getComunidades/13"
     );
     try {
-      console.log("---->", data);
       const fixingData = data
         .replace(/\\n/g, "\\n")
         .replace(/\\'/g, "\\'")
