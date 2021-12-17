@@ -64,6 +64,7 @@ const usuariosReducer = createReducer(
     [setUsuarios]: (state, action) => action.payload,
     [getByMail.fulfilled]: (state, action) => action.payload,
     [getById.fulfilled]: (state, action) => action.payload,
+    [getById.rejected]: (state, action) => ({notFound: true}),
   }
 );
 

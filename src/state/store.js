@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 import logger from "redux-logger";
 import equipoReducer from "./equipo";
 import rolReducer from "./rol";
+import cargaDeRolesReducer from "./cargaDeRoles";
 import usuarioReducer from "./usuario";
 import usuariosReducer from "./usuarios";
 import historialDeUsuarioReducer from "./historialDeUsuario";
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   usuarios: usuariosReducer,
   equipo: equipoReducer,
   rol: rolReducer,
+  cargaDeRoles: cargaDeRolesReducer,
   historialDeUsuario: historialDeUsuarioReducer,
   historialDeResultado: historialDeResultadoReducer,
 });
@@ -27,7 +29,7 @@ const persistConfig = {
     // "usuarios", //de los reducers que queremos
     "equipo", //que persistan
     "rol",
-    "historialDeUsuario"
+    "historialDeUsuario",
   ],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -12,8 +12,18 @@
   width: 100vw;
   overflow: hidden;
   word-wrap: break-word;
-  margin-top: 4vh;
-  margin-bottom: 4vh;
+  margin: 4vh 0;
+  font-size: 1.4em;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.participaciones div {
+  width: 35rem;
+  overflow: hidden;
+  word-wrap: break-word;
+  margin: 4vh 0;
   font-size: 1.4em;
   text-align: center;
 }

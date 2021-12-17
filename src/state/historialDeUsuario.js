@@ -1,20 +1,21 @@
 import {
-    createAction,
-    createAsyncThunk,
-    createReducer,
-  } from "@reduxjs/toolkit";
+  createAsyncThunk,
+  createReducer,
+} from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const obtenerHistorial = createAsyncThunk("OBTENER_HISTORIAL", (idPersona) => {
-    return axios.get(`http://localhost:3001/api/usuarios/historial/${idPersona}`)
-    .then(res => res.data)
-    .catch(err => console.log({err}))
-})
+export const obtenerHistorial = createAsyncThunk(
+  "OBTENER_HISTORIAL",
+  (idPersona) => {
+    return axios
+      .get(`http://localhost:3001/api/usuarios/historial/${idPersona}`)
+      .then((res) => res.data)
+      .catch((err) => console.log({ err }));
+  }
+);
 
-const historialDeUsuarioReducer = createReducer([],
-    {
-      [obtenerHistorial.fulfilled]: (state, action) => action.payload,
-    }
-  );
-  
+const historialDeUsuarioReducer = createReducer([], {
+  [obtenerHistorial.fulfilled]: (state, action) => action.payload,
+});
+
 export default historialDeUsuarioReducer;
