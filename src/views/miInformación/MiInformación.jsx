@@ -15,7 +15,7 @@ import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setUsuario } from "../../state/usuario"
+import { setUsuario } from "../../state/usuario";
 
 const validationsForm = (form) => {
   let errors = {};
@@ -111,7 +111,7 @@ const interes = [
 ];
 
 function MiInformación() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const usuario = useSelector((state) => state.usuario);
   const navigate = useNavigate();
   //estados para regiones
@@ -230,18 +230,22 @@ function MiInformación() {
     idUnidadOrganizacional: 0,
   };
 
-  console.log("EL ENVIO --->",envio);
+  console.log("EL ENVIO --->", envio);
   // ESTE POST HAY QUE VER
   const handleSubmit = (e) => {
     e.preventDefault();
 
     axios
-      .put(`http://localhost:3001/api/usuarios/editarUsuario/${usuario.idPersona}`, envio, {
-        headers: {
-          authorization: usuario.token
+      .put(
+        `http://localhost:3001/api/usuarios/editarUsuario/${usuario.idPersona}`,
+        envio,
+        {
+          headers: {
+            authorization: usuario.token,
+          },
         }
-      })
-      .then(res => dispatch(setUsuario(res.data)))
+      )
+      .then((res) => dispatch(setUsuario(res.data)))
       .then(() =>
         swal({
           title: "Perfil editado",
@@ -421,16 +425,6 @@ function MiInformación() {
             </select>
           </label>
 
-          {/* <label htmlFor="selector" className="label">
-            <p>ESTUDIOS</p>
-            <TextField
-              className="text-field"
-              size="small"
-              id="fullWidth"
-              {...estudios}
-            />
-          </label> */}
-
           <label htmlFor="selector" className="label">
             <p>LOCALIDAD </p>
             <select {...localidad} className="form-select">
@@ -472,61 +466,6 @@ function MiInformación() {
               ))}
             </Select>
           </label>
-
-          {/* <label htmlFor="selector" className="label">
-            <p>GÉNERO </p>
-            <div className="radio">
-              <label>
-                <input
-                  id="radio-button"
-                  name="genero"
-                  type="radio"
-                  value={genero}
-                  onChange={() => setGenero("Masculino")}
-                />
-                Masculino
-              </label>
-            </div>
-
-            <div className="radio">
-              <label>
-                <input
-                  id="radio-button"
-                  name="genero"
-                  type="radio"
-                  value={genero}
-                  onChange={() => setGenero("Femenino")}
-                />
-                Femenino
-              </label>
-            </div>
-
-            <div className="radio">
-              <label>
-                <input
-                  id="radio-button"
-                  type="radio"
-                  name="genero"
-                  value={genero}
-                  onChange={() => setGenero("Otrx")}
-                />
-                Otrx
-              </label>
-            </div>
-
-            <div className="radio">
-              <label>
-                <input
-                  id="radio-button"
-                  type="radio"
-                  name="genero"
-                  value={genero}
-                  onChange={() => setGenero("Prefiero no decirlo")}
-                />
-                Prefiero no decirlo
-              </label>
-            </div>
-          </label> */}
         </div>
 
         <div id="form-fondo">
@@ -539,20 +478,22 @@ function MiInformación() {
             />
             Acepto recibir notificaciones por email
           </label>
-          <Link style={{ textDecoration: "none" }} to="/">
-            <Button variant="text">VOLVER</Button>
-          </Link>
+
+          <Button variant="text" onClick={() => navigate(-1)}>
+            VOLVER
+          </Button>
+
           <Button id="ingresar" size="medium" variant="outlined" type="submit">
             GUARDAR
           </Button>
-          <Button
+          {/* <Button
             className="redButton"
             size="medium"
             variant="outlined"
             id="ingresar"
           >
             ELIMINAR MI CUENTA
-          </Button>
+          </Button> */}
         </div>
       </form>
     </div>

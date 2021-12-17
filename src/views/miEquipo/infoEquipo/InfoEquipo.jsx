@@ -126,7 +126,7 @@ export const InfoEquipo = () => {
             <div>
               <Button
                 variant="contained"
-                onClick={() => navigate(`/miEquipo/${equipo.id}/historia`)}
+                onClick={() => navigate(`/equipo/${equipo.id}/historia`)}
               >
                 Historia
               </Button>
@@ -146,7 +146,7 @@ export const InfoEquipo = () => {
               {equipo.activo &&
                 <Button
                   variant="contained"
-                  onClick={() => navigate(`/miEquipo/${equipo.id}/editar`)}
+                  onClick={() => navigate(`/equipo/${equipo.id}/editar`)}
                 >
                   EDITAR
                 </Button>

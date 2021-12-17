@@ -130,7 +130,7 @@ export function CrearEquipo() {
           successAlert();
           return res.data;
         })
-        .then((equipo) => navigate(`/miEquipo/${equipo.id}`));
+        .then((equipo) => navigate(`/equipo/${equipo.id}`));
   };
 
   return (
