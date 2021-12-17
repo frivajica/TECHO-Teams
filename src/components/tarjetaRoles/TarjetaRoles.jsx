@@ -51,6 +51,34 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
       .catch((err) => console.log({ err }));
     setEditMode(!editMode);
   };
+  console.log('%cMyProject%cline:53%cyo', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(3, 101, 100);padding:3px;border-radius:2px', yo)
+  const ModoEdicion = () => {
+    return (
+    <div className="rol-opciones">
+      <FormControl id="modificar-rol" variant="standard">
+        <Autocompletar
+          opciones={opcRoles}
+          freeSolo
+          etiqueta="Rol"
+          disabled={disabled && !editMode}
+          onChange={handleChange}
+          name="rol"
+          defVal={data?.role?.nombre}
+        />
+      </FormControl>
+      <div id="buscar-persona">
+        <Autocompletar
+          opciones={opcPersns}
+          etiqueta="Persona"
+          disabled={disabled && !editMode}
+          onChange={handleChange}
+          name="user"
+          defVal={data?.nombreApellido}
+        />
+      </div>
+    </div>
+    )
+  }
 
   return (
     <div className="tarjeta-roles">
@@ -65,29 +93,12 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
           </ButtonBase>
         </Link>
       </div>
-      <div className="rol-opciones">
-        <FormControl id="modificar-rol" variant="standard">
-          <Autocompletar
-            opciones={opcRoles}
-            freeSolo
-            etiqueta="Rol"
-            disabled={disabled && !editMode}
-            onChange={handleChange}
-            name="rol"
-            defVal={data?.role?.nombre}
-          />
-        </FormControl>
-        <div id="buscar-persona">
-          <Autocompletar
-            opciones={opcPersns}
-            etiqueta="Persona"
-            disabled={disabled && !editMode}
-            onChange={handleChange}
-            name="user"
-            defVal={data?.nombreApellido}
-          />
+      {editMode ? <ModoEdicion /> : (
+        <div className="rol-opciones">
+          <h2 id="modificar-rol">{data?.role?.nombre || "Sin rol asignado"}</h2>
+          <h2 id="buscar-persona">{data?.nombreApellido || "Persona no asignada"}</h2>
         </div>
-      </div>
+      )}
       {editMode ? (
         <div className="rol-icons">
           <ButtonBase onClick={guardarEditado} id="item-icon">
@@ -101,6 +112,7 @@ export const TarjetaRoles = ({ disabled, reRender, state, setState, data, id, op
           </ButtonBase>
         </div>
       ) : (
+        (yo.isAdmin || yo.isCoordinador) &&
         <div className="rol-icons">
           <ButtonBase onClick={() => setEditMode(!editMode)} id="item-icon">
             <ModeEditOutlineIcon color="action" />
