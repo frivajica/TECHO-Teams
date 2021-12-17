@@ -174,6 +174,7 @@ export default function ModalCoord({
             <Select
               onChange={(e) => setArea(e.target.value)}
               defaultValue={usuarioSelec.areaCoord}
+              value={area}
               disabled={disabled}
               sx={{ minWidth: "15rem" }}
             >

@@ -3,18 +3,18 @@ import {
   DataGrid,
   GridActionsCellItem,
 } from "@mui/x-data-grid";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SecurityIcon from "@mui/icons-material/Security";
 import { useEffect } from "react";
 import axios from "axios";
-import { ModalToggleAdmin } from "../ModalToggleAdmin"
+import { ModalToggleAdmin } from "./ModalToggleAdmin"
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
-import ModalCoord from "../ModalCoord";
-import {changeIdToName} from '../changeIdToName';
-import loading from '../loadingRows';
+import ModalCoord from "./ModalCoord";
+import {changeIdToName} from './changeIdToName';
+import loading from './loadingRows';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import SecurityIcon from "@mui/icons-material/Security";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 const pageSize = 5;
@@ -28,14 +28,6 @@ export default function ListaUsuarios({ setRows, rows }) {
   const [sedes, setSedes] = React.useState([]);
   const [show, setShow] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-   
-  const deleteUser = React.useCallback(
-    (id) => () => {
-      setTimeout(() => {
-        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-      });
-    }, []
-  );
 
   const toggleCoord = React.useCallback(
     (usuario) => () => {
@@ -80,18 +72,13 @@ export default function ListaUsuarios({ setRows, rows }) {
         width: 120,
         getActions: (params) => [
           <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={deleteUser(params.id)}
-          />,
-          <GridActionsCellItem
             icon={<SecurityIcon />}
             label="Ajustes de Administrador"
             onClick={toggleAdmin(params.row)}
             showInMenu
           />,
           <GridActionsCellItem
-            icon={<SecurityIcon />}
+            icon={<ManageAccountsIcon />}
             label="Ajustes de Coordinador"
             onClick={toggleCoord(params.row)}
             showInMenu
@@ -106,7 +93,7 @@ export default function ListaUsuarios({ setRows, rows }) {
       { field: "nombrePaisCoord",headerName:"País de Coordinación", type: "string", width: 120 },
       { field: "nombreSedeCoord",headerName:"Sede de Coordinación", type: "string", width: 120 }
     ],
-    [deleteUser, toggleCoord, toggleAdmin]
+    [toggleCoord, toggleAdmin]
   );
 
   const Alert = React.forwardRef(function Alert(props, ref) {
@@ -117,7 +104,6 @@ export default function ListaUsuarios({ setRows, rows }) {
     if (reason === "clickaway") {
       return;
     }
-  
     setOpen(false);
   };
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import ListaUsuarios from "../../components/admin/ListaUsuarios/ListaUsuarios"
+import ListaUsuarios from "../../components/admin/ListaUsuarios"
 import loading from '../../components/admin/loadingRows';
 import Search from '../../components/admin/Search'
 

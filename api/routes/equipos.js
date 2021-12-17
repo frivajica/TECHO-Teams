@@ -4,6 +4,7 @@ const { EquipoController } = require("../controllers");
 const {
   checkAdmin,
   checkAuth,
+  belongsToEquipo,
   isAdminOrCoordinator,
   isAdminOrCoordinatorHere,
 } = require("../middlewares/auth");
@@ -12,7 +13,7 @@ Router.post("/", isAdminOrCoordinator, EquipoController.createEquipo);
 
 Router.get("/", /* checkAuthAndAdmin, */ EquipoController.getEquipos);
 
-Router.get("/:id", /* checkAuth, */ EquipoController.getOneEquipo);
+Router.get("/:id", belongsToEquipo, EquipoController.getOneEquipo);
 
 Router.put("/:id", isAdminOrCoordinatorHere, EquipoController.updateEquipo);
 

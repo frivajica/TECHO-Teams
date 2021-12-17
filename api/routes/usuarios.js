@@ -11,7 +11,7 @@ Router.get("/filtrar/mail/:mail", UsuarioController.getUsuarioByMail)
 
 Router.post("/", UsuarioController.crearUsuarioEquipos);
 
-Router.post("/registrar", upload, UsuarioController.crearUsuario);
+Router.post("/registrar", /* upload, */ UsuarioController.crearUsuario);
 
 Router.post("/login", UsuarioController.loginInUsuario);
 
