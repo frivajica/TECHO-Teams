@@ -20,7 +20,7 @@ const EquipoCard = ({ equipo }) => {
 
 
   return (
-    <Card sx={{ width: 345 }} onClick={() => navigate(`/miEquipo/${equipo.id}`)}>
+    <Card sx={{ width: 345 }} onClick={() => navigate(`/equipo/${equipo.id}`)}>
       <CardActionArea>
         <CardMedia
           component="img"

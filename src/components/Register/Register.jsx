@@ -17,9 +17,9 @@ import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
 
-const Input = styled("input")({
+/* const Input = styled("input")({
   display: "none",
-});
+}); */
 
 const initialForm = {
   nombres: "",
@@ -235,7 +235,7 @@ function Register() {
     telefono: "0",
     sexo: genero,
     idUnidadOrganizacional: 0,
-    imagen: document.getElementById("fotoDePerfil").value
+    //imagen: document.getElementById("fotoDePerfil").value
   };
 
   const handleSubmit = (e) => {
@@ -508,7 +508,7 @@ function Register() {
               ))}
             </Select>
           </label>
-          <label htmlFor="fotoDePerfil" className="label">
+          {/* <label htmlFor="fotoDePerfil" className="label">
             <p>IMAGEN DE PERFIL</p>
             <Input
               accept="image/*"
@@ -520,7 +520,7 @@ function Register() {
             <Button variant="contained" component="span">
               Cargar
             </Button>
-          </label>
+          </label> */}
           <label htmlFor="selector" className="label">
             <p>GÉNERO </p>
             <div className="radio">

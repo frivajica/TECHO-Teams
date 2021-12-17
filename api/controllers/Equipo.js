@@ -48,29 +48,31 @@ class EquipoController {
 
       return res.status(201).send(newTeam);
     } catch (error) {
-      return console.log("ACAAAA ----->", error);
-      //res.status(500).send(error);
+      res.status(500).send(error);
     }
   }
 
   static getEquipos(req, res) {
-    let { filtro, valor } = req.query
+    let { filtro, valor, pais } = req.query
     let key
     switch (filtro) {
       case "Sede":
-        key = "sedeId"
-        valor = parseInt(valor)
+        Equipo.findAll({ where: {sedeId: parseInt(valor)}})
+          .then(equipos => res.status(200).send(equipos))
+          .catch((err) => res.status(500).send(err));
         break;
       case "Area":
+        Equipo.findAll({ where: {area: valor, paisId: pais}})
+          .then(equipos => res.status(200).send(equipos))
+          .catch((err) => res.status(500).send(err));
         key = "area"
         break;
       case "Nombre":
-        key = "nombre"
-        break;
-    }
-    Equipo.findAll({ where: { [key]: key === "nombre" ? { [Op.like]: `%${valor}%` } : valor } })
+        Equipo.findAll({ where: {nombre: { [Op.like]: `%${valor}%` } }})
       .then(equipos => res.status(200).send(equipos))
       .catch((err) => res.status(500).send(err));
+        break;
+    }
   }
 
   static getOneEquipo(req, res) {
@@ -239,14 +241,14 @@ class EquipoController {
         },
       });
       usrEnEquipo.activo === false &&
-      res.status(401).send("El rol esta desactivado");
+        res.status(401).send("El rol esta desactivado");
 
       const oldRoleId = usrEnEquipo.roleId; //guardo el viejo para saber que el equipo ya no tiene este rol
       const rol = await Role.findOne({
         where: { id: req.params.roleId },
       });
       rol.activo === false && res.status(401).send("El rol esta desactivado");
-      
+
       await usrEnEquipo.setRole(rol); //relaciono rol con tabla intermedia
 
       //info para crear evento:
@@ -282,7 +284,6 @@ class EquipoController {
       );
       return res.send("rol changed");
     } catch (error) {
-      console.log(error);
       return res.status(500).send(error);
     }
   }
@@ -297,7 +298,6 @@ class EquipoController {
 
   static async addRole(req, res) {
     try {
-      console.log("entra");
       const equipo = await Equipo.findOne({ where: { id: req.params.id } });
       const rol = await Role.findOrCreate({
         where: { nombre: req.body.nombre },
@@ -376,7 +376,6 @@ class EquipoController {
       await usuario.addEvento(evento);
       return res.status(201).send("usuario eliminado del equipo");
     } catch (error) {
-      console.log(error);
       return res.status(500).send(error);
     }
   }
