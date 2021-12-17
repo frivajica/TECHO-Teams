@@ -2,33 +2,36 @@ const { Usuario, Evento, UsuarioEnEquipo, Equipo } = require("../models");
 const generateAxios = require("../utils/generateAxios");
 const superagent = require("superagent");
 const Sequelize = require("sequelize");
-const multer  = require('multer')
-let fs = require('fs-extra');
+const multer = require("multer");
+let fs = require("fs-extra");
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "public/uploads/perfil");
-    },
-    filename: function (req, file, cb) {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-      cb(null, `${uniqueSuffix}-${file.originalname}`)
-    }
-  })
-const upload = multer({ storage: storage })
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads/perfil");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, `${uniqueSuffix}-${file.originalname}`);
+  },
+});
+const upload = multer({ storage: storage });
 
 class UsuarioController {
   static async getUsuarios(req, res) {
     Usuario.findAll(/* {offset: 4, limit: 6} */) //<-- not working
       .then(async (usersList) => {
-        let usersInfo = []
-        let i=0
-        usersList = usersList.slice(req.headers.offset,req.headers.limit);
+        let usersInfo = [];
+        let i = 0;
+        usersList = usersList.slice(req.headers.offset, req.headers.limit);
         const server = generateAxios(req.headers.authorization);
-        for (i; i<usersList.length; i++) {
-          await server.get(`/personas/${usersList[i].idPersona}`)
-          .then(res => res.data)
-          .then(usrInfo => usersInfo.push({...usersList[i].dataValues, ...usrInfo}))
+        for (i; i < usersList.length; i++) {
+          await server
+            .get(`/personas/${usersList[i].idPersona}`)
+            .then((res) => res.data)
+            .then((usrInfo) =>
+              usersInfo.push({ ...usersList[i].dataValues, ...usrInfo })
+            );
         }
-        return res.send(usersInfo)
+        return res.send(usersInfo);
       })
       .catch((err) => console.log(err));
   }
@@ -69,10 +72,11 @@ class UsuarioController {
   }
 
   static toggleAdmin(req, res) {
-    Usuario.update({ isAdmin: Sequelize.literal('NOT isAdmin') }, 
-      { where: { idPersona: req.params.idPersona }, }
-    ).then(() => res.status(200).send('Se cambió el status de admin'));
-  };
+    Usuario.update(
+      { isAdmin: Sequelize.literal("NOT isAdmin") },
+      { where: { idPersona: req.params.idPersona } }
+    ).then(() => res.status(200).send("Se cambió el status de admin"));
+  }
 
   static crearUsuario(req, res) {
     const {
@@ -97,8 +101,6 @@ class UsuarioController {
       estudios,
       intereses,
     } = req.body;
-
-    console.log("---->", req.file)
 
     superagent
       .post("https://sandbox.actividades.techo.org/api/register")
@@ -130,12 +132,13 @@ class UsuarioController {
           profesion,
           estudios,
           intereses,
-          imagen: req.file.filename
+          // imagen: req.file.filename,
         }).then((user) => res.status(201).send(user));
       })
       .catch((err) => {
-        console.log({err})
-        res.status(500).send(err)});
+        console.log({ err });
+        res.status(500).send(err);
+      });
   }
 
   static crearUsuarioEquipos(req, res) {
@@ -178,9 +181,11 @@ class UsuarioController {
   static logoutUsuario(req, res) {
     const server = generateAxios(req.headers.authorization);
     server
-    .post("/logout")
-    .then(r => res.status(200).send({ success: true, mensaje: 'Sesión Cerrada' }))
-    .catch((err) => res.status(500).send({err}));
+      .post("/logout")
+      .then((r) =>
+        res.status(200).send({ success: true, mensaje: "Sesión Cerrada" })
+      )
+      .catch((err) => res.status(500).send({ err }));
   }
 
   static editarUsuario(req, res) {
@@ -236,28 +241,28 @@ class UsuarioController {
         return usuarioPromise
           .then(() => Usuario.findOne({ where: { idPersona: req.params.id } }))
           .then((personaUpd) =>
-            res
-              .status(200)
-              .send({ ...personaUpd.dataValues, ...updatedUsr.persona, token: req.headers.authorization})
+            res.status(200).send({
+              ...personaUpd.dataValues,
+              ...updatedUsr.persona,
+              token: req.headers.authorization,
+            })
           );
       })
       .catch((err) => console.log({ err }));
   }
 
   static changeCoordAuth(req, res) {
-
-    
     Usuario.update(
-      { 
-        isCoordinador: req.body.isCoordinador, 
-        sedeIdCoord: req.body.sedeIdCoord || null, 
+      {
+        isCoordinador: req.body.isCoordinador,
+        sedeIdCoord: req.body.sedeIdCoord || null,
         paisIdCoord: req.body.paisIdCoord || null,
-        areaCoord: req.body.areaCoord || null
-      }, 
+        areaCoord: req.body.areaCoord || null,
+      },
       { where: { idPersona: req.params.id } }
     )
-    .then(() => res.send("autoridades de coordinador actualizadas"))
-    .catch(err => console.log(err))
+      .then(() => res.send("autoridades de coordinador actualizadas"))
+      .catch((err) => console.log(err));
   }
 
   static getHistorial(req, res) {
@@ -307,10 +312,10 @@ class UsuarioController {
   static getActividades(req, res) {
     const server = generateAxios(req.headers.authorization);
     server
-    .get("/inscripciones")
-    .then(inscripciones => inscripciones.data.inscripciones)
-    .then(actividades => res.status(200).send(actividades)) //arr con actividades
-    .catch((err) => res.status(500).send(err));
+      .get("/inscripciones")
+      .then((inscripciones) => inscripciones.data.inscripciones)
+      .then((actividades) => res.status(200).send(actividades)) //arr con actividades
+      .catch((err) => res.status(500).send(err));
   }
 
   static getEquipos(req, res) {
@@ -324,4 +329,4 @@ class UsuarioController {
   }
 }
 
-module.exports = {UsuarioController, upload: upload.single("fotoDePerfil")}
+module.exports = { UsuarioController, upload: upload.single("fotoDePerfil") };

@@ -11,6 +11,11 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { Stack } from "@mui/material";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 export default function Search() {
   const navigate = useNavigate();
@@ -71,36 +76,27 @@ export default function Search() {
       <br />
       <div style={{ display: "flex", justifyContent: "center" }}>
         <form className="searchDiv" onSubmit={handleSubmit}>
-          <div id="buscarPor">
-            <label htmlFor="selector" className="label" required>
-              <p className="buscarParrafo">BUSCAR POR </p>
-              <div className="radio emailDiv">
-                <label>
-                  <input
-                    id="radio-button"
-                    name="categoria"
-                    type="radio"
-                    value={tipo}
-                    onChange={() => setTipo("email")}
-                  />
-                  EMAIL
-                </label>
-              </div>
+          <FormControl sx={{ marginLeft: "20%", position: "flex-start" }}>
+            <FormLabel>BUSCAR POR: </FormLabel>
+            <RadioGroup
+              row
+              aria-label="tipo-de-busqueda"
+              defaultValue="email"
+              name="radio-buttons-group"
+            >
+              <FormControlLabel
+                value={"email"}
+                control={<Radio onClick={() => setTipo("email")} />}
+                label="Email"
+              />
+              <FormControlLabel
+                value={"id"}
+                control={<Radio onClick={() => setTipo("id")} />}
+                label="ID"
+              />
+            </RadioGroup>
+          </FormControl>
 
-              <div className="radio idDiv">
-                <label>
-                  <input
-                    id="radio-button"
-                    name="categoria"
-                    type="radio"
-                    value={tipo}
-                    onChange={() => setTipo("id")}
-                  />
-                  ID
-                </label>
-              </div>
-            </label>
-          </div>
           <div className="divSearchInput">
             <label htmlFor="selector" className="label searchInput">
               <TextField
@@ -120,12 +116,13 @@ export default function Search() {
               size="medium"
               variant="outlined"
               type="submit"
-              style={{ boxShadow: "3px 15px 8px -10px rgb(0 0 0 / 30%)" }}
+              sx={{ position: "flex-end" }}
             >
               BUSCAR
             </Button>
           </div>
         </form>
+
         {trigger ? (
           <div style={{ marginTop: "220px" }}>
             {usuarios.idPersona && <TarjetaResultado usuarios={usuarios} />}

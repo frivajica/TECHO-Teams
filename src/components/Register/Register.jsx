@@ -235,8 +235,10 @@ function Register() {
     telefono: "0",
     sexo: genero,
     idUnidadOrganizacional: 0,
-    imagen: document.getElementById("fotoDePerfil").value
+    //imagen: document.getElementById("fotoDePerfil").value,
   };
+
+  console.log(envio);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -470,16 +472,6 @@ function Register() {
             </select>
           </label>
 
-          {/* <label htmlFor="selector" className="label">
-            <p>ESTUDIOS</p>
-            <TextField
-              className="text-field"
-              size="small"
-              id="fullWidth"
-              {...estudios}
-            />
-          </label> */}
-
           <label htmlFor="selector" className="label">
             <p>TEMÁTICAS/ÁREAS DE INTÉRES *</p>
             <Select
@@ -508,7 +500,7 @@ function Register() {
               ))}
             </Select>
           </label>
-          <label htmlFor="fotoDePerfil" className="label">
+          {/* <label htmlFor="fotoDePerfil" className="label">
             <p>IMAGEN DE PERFIL</p>
             <Input
               accept="image/*"
@@ -520,7 +512,7 @@ function Register() {
             <Button variant="contained" component="span">
               Cargar
             </Button>
-          </label>
+          </label> */}
           <label htmlFor="selector" className="label">
             <p>GÉNERO </p>
             <div className="radio">
