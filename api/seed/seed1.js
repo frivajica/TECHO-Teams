@@ -218,7 +218,7 @@ db.sync().then(() => {
           .createEvento({
             tipo: 0,
             nombreEquipo: equipos[i].nombre,
-            nombreCoord: "Mariana",
+            nombreCoord: "Mariana Gutierrez",
           })
           .then(() => process.stdout.write("."));
       }

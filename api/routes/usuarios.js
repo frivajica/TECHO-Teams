@@ -31,4 +31,6 @@ Router.get("/:idPersona/misEquipos", UsuarioController.getEquipos)
 
 Router.get("/misActividades", UsuarioController.getActividades)
 
+Router.get("/:idPersona/puedeEditar", UsuarioController.getCanEditUser)
+
 module.exports = Router;

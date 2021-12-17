@@ -56,7 +56,7 @@ export const Equipo = () => {
           .catch((err) => console.log(err))
         }
     }) */
-  .catch((err) => console.log(err));
+    .catch((err) => console.log(err));
   }, []);
 
 

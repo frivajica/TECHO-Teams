@@ -310,7 +310,7 @@ class UsuarioController {
     .get("/inscripciones")
     .then(inscripciones => inscripciones.data.inscripciones)
     .then(actividades => res.status(200).send(actividades)) //arr con actividades
-    .catch((err) => res.status(500).send(err));
+    .catch(err => res.status(500).send(err));
   }
 
   static getEquipos(req, res) {
@@ -319,8 +319,30 @@ class UsuarioController {
         usuarioIdPersona: req.params.idPersona,
       },
     })
-      .then((usrEquipos) => res.status(200).send(usrEquipos))
-      .catch((err) => res.status(500).send({ err }));
+      .then(usrEquipos => res.status(200).send(usrEquipos))
+      .catch(err => res.status(500).send({ err }));
+  }
+
+  static async getCanEditUser(req, res) {
+    try {
+      const equiposCoord = await UsuarioEnEquipo.findAll({
+        where: {usuarioIdPersona: req.headers.idpersona, roleId: 1, activo: true}, //equipos que coordina el usuario logeado 
+      })
+      const equiposUser = await UsuarioEnEquipo.findAll({
+        where: {usuarioIdPersona: req.params.idPersona, activo: true}, //equipos que coordina el usuario que quiere modificar
+      })
+      let answer = false;
+      console.log("equipos user:", equiposUser)
+      console.log("equipos coord:", equiposCoord)
+      equiposUser.map(usrEquipo => {//si coordina algún equipo en el que esté el usuario, puede modificar el usuario (como pidió el cliente)
+        equiposCoord.map(usrEquipoCoord => {if (usrEquipo.equipoId === usrEquipoCoord.equipoId) answer = true})
+      })
+      return res.send(answer)
+    } 
+    catch (error) {
+      console.log(error);
+      res.status(500).send(error)
+    }
   }
 }
 
