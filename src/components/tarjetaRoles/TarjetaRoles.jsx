@@ -15,7 +15,7 @@ import getToken from "../../utils/getToken";
 import "./TarjetaRoles.css";
 import axios from "axios";
 
-export const TarjetaRoles = ({ disabled, reRender, state, data, id, opcPersns = [], opcRoles = [] }) => {
+export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [] }) => {
   const dispatch = useDispatch();
   const { form, handleChange } = useForm({
     idEquipo: id,
@@ -49,7 +49,7 @@ export const TarjetaRoles = ({ disabled, reRender, state, data, id, opcPersns = 
       })
       .catch((err) => console.log({ err }));
     setEditMode(!editMode);
-  };
+  }; 
   
   return (
     <div className="tarjeta-roles">
