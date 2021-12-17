@@ -33,7 +33,7 @@ class EquipoController {
         //éste evento solo se utiliza en el historial del equipo
         tipo: 0,
         nombreEquipo: newTeam.nombre,
-        nombreCoord: coordInfo.nombres,
+        nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
       });
 
       //creo otro evento para guardar el rol en el historial del usuario
@@ -41,36 +41,38 @@ class EquipoController {
       const evento = await coordinador.createEvento({
         tipo: 2,
         nombreEquipo: newTeam.nombre,
-        nombreUsuario: coordInfo.nombres,
+        nombreUsuario: coordInfo.nombres+coordInfo.apellidoPaterno,
         nombreRol: coordRol.nombre,
       });
       await newTeam.addEvento(evento); //necesitamos saber en qué equipo cumplió el rol de coordinador
 
       return res.status(201).send(newTeam);
     } catch (error) {
-      return console.log("ACAAAA ----->", error);
-      //res.status(500).send(error);
+      res.status(500).send(error);
     }
   }
 
   static getEquipos(req, res) {
-    let { filtro, valor } = req.query
+    let { filtro, valor, pais } = req.query
     let key
     switch (filtro) {
       case "Sede":
-        key = "sedeId"
-        valor = parseInt(valor)
+        Equipo.findAll({ where: {sedeId: parseInt(valor)}})
+          .then(equipos => res.status(200).send(equipos))
+          .catch((err) => res.status(500).send(err));
         break;
       case "Area":
+        Equipo.findAll({ where: {area: valor, paisId: pais}})
+          .then(equipos => res.status(200).send(equipos))
+          .catch((err) => res.status(500).send(err));
         key = "area"
         break;
       case "Nombre":
-        key = "nombre"
-        break;
-    }
-    Equipo.findAll({ where: { [key]: key === "nombre" ? { [Op.like]: `%${valor}%` } : valor } })
+        Equipo.findAll({ where: {nombre: { [Op.like]: `%${valor}%` } }})
       .then(equipos => res.status(200).send(equipos))
       .catch((err) => res.status(500).send(err));
+        break;
+    }
   }
 
   static getOneEquipo(req, res) {
@@ -119,8 +121,8 @@ class EquipoController {
         //evento para el historial del equipo
         tipo: 1,
         nombreEquipo: equipo.nombre,
-        nombreUsuario: usrInfo.nombres,
-        nombreCoord: coordInfo.nombres,
+        nombreUsuario: usrInfo.nombres+usrInfo.apellidoPaterno,
+        nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
       });
       await usr.addEvento(evento); //para historial de usuario
       return res.send("usuario agregado");
@@ -239,14 +241,14 @@ class EquipoController {
         },
       });
       usrEnEquipo.activo === false &&
-      res.status(401).send("El rol esta desactivado");
+        res.status(401).send("El rol esta desactivado");
 
       const oldRoleId = usrEnEquipo.roleId; //guardo el viejo para saber que el equipo ya no tiene este rol
       const rol = await Role.findOne({
         where: { id: req.params.roleId },
       });
       rol.activo === false && res.status(401).send("El rol esta desactivado");
-      
+
       await usrEnEquipo.setRole(rol); //relaciono rol con tabla intermedia
 
       //info para crear evento:
@@ -264,8 +266,8 @@ class EquipoController {
       const evento = await equipo.createEvento({
         tipo: 2,
         nombreEquipo: equipo.nombre,
-        nombreUsuario: usrInfo.nombres,
-        nombreCoord: coordInfo.nombres,
+        nombreUsuario: usrInfo.nombres+usrInfo.apellidoPaterno,
+        nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
         nombreRol: rol.nombre,
       });
       await usr.addEvento(evento); // <-- ^^^relaciono el evento con el equipo y con el usuario
@@ -282,7 +284,6 @@ class EquipoController {
       );
       return res.send("rol changed");
     } catch (error) {
-      console.log(error);
       return res.status(500).send(error);
     }
   }
@@ -297,7 +298,6 @@ class EquipoController {
 
   static async addRole(req, res) {
     try {
-      console.log("entra");
       const equipo = await Equipo.findOne({ where: { id: req.params.id } });
       const rol = await Role.findOrCreate({
         where: { nombre: req.body.nombre },
@@ -367,8 +367,8 @@ class EquipoController {
       const evento = await equipo.createEvento({
         tipo: -1,
         nombreEquipo: equipo.nombre,
-        nombreUsuario: usrInfo.nombres,
-        nombreCoord: coordInfo.nombres
+        nombreUsuario: usrInfo.nombres+usrInfo.apellidoPaterno,
+        nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno
       });
       const usuario = await Usuario.findOne({
         where: { idPersona: req.params.userId },
@@ -376,7 +376,6 @@ class EquipoController {
       await usuario.addEvento(evento);
       return res.status(201).send("usuario eliminado del equipo");
     } catch (error) {
-      console.log(error);
       return res.status(500).send(error);
     }
   }
@@ -392,7 +391,7 @@ class EquipoController {
       equipo
         .createEvento({
           tipo: -2,
-          nombreCoord: coordInfo.nombres,
+          nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
           nombreEquipo: equipo.nombre,
         })
         .then(() => res.status(201).send(equipo))
@@ -413,7 +412,7 @@ class EquipoController {
       equipo
         .createEvento({
           tipo: 3,
-          nombreCoord: coordInfo.nombres,
+          nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
           nombreEquipo: equipo.nombre,
         })
         .then(() => res.status(200).send(equipo));

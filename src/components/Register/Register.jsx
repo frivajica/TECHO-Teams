@@ -17,9 +17,9 @@ import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
 
-const Input = styled("input")({
+/* const Input = styled("input")({
   display: "none",
-});
+}); */
 
 const initialForm = {
   nombres: "",
@@ -235,7 +235,7 @@ function Register() {
     telefono: "0",
     sexo: genero,
     idUnidadOrganizacional: 0,
-    // imagen: document.getElementById("fotoDePerfil").value
+    //imagen: document.getElementById("fotoDePerfil").value
   };
 
   const handleSubmit = (e) => {
@@ -248,7 +248,6 @@ function Register() {
     } else if (!intereses.length) {
       return errorAlert("Complete los campos obligatorios correctamente");
     } else {
-      console.log('%cMyProject%cline:250%cenvio', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(153, 80, 84);padding:3px;border-radius:2px', envio)
       axios
         .post("http://localhost:3001/api/usuarios/registrar", envio)
         .then((res) => res.data)
@@ -470,16 +469,6 @@ function Register() {
               ))}
             </select>
           </label>
-
-          {/* <label htmlFor="selector" className="label">
-            <p>ESTUDIOS</p>
-            <TextField
-              className="text-field"
-              size="small"
-              id="fullWidth"
-              {...estudios}
-            />
-          </label> */}
 
           <label htmlFor="selector" className="label">
             <p>TEMÁTICAS/ÁREAS DE INTÉRES *</p>

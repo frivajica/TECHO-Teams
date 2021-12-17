@@ -16,7 +16,7 @@ export const TarjetaEquipo = ({ final, roles, activo, equipo, puedeVer }) => {
   const navigate = useNavigate();
 
   const showEquipo = () => {
-    navigate(`/miEquipo/${equipo.id}`);
+    navigate(`/equipo/${equipo.id}`);
   };
 
   return (
