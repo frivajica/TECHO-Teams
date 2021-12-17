@@ -15,7 +15,8 @@ import EditarEquipo from "./components/editarEquipo/EditarEquipo";
 import BuscadorEquipos from "./views/buscadorEquipos/BuscadorEquipos";
 import NotFound from "./views/notFound/NotFound";
 import AdminView from "./views/AdminView/AdminView";
-
+import CrearArea from "./components/crearArea/CrearArea";
+import CrearRol from "./components/crearRol/CrearRol";
 function App() {
   const usuario = useSelector((state) => state.usuario);
   return (
@@ -64,14 +65,49 @@ function App() {
           />
           <Route exact path="/miEquipo/:id" element={<Equipo />} />
           <Route exact path="/miEquipo/:id/editar" element={usuario.isAdmin || usuario.isCoordinador ? <EditarEquipo /> : <NotFound />} />
-          <Route exact path="/miEquipo/:equipoId/historia" element={<EventosEquipo />}
+          <Route exact path="/miEquipo/:equipoId/historia" element={<EventosEquipo />} />
+          <Route
+            exact
+            path="/crearEquipo"
+            element={
+              usuario.isAdmin || usuario.isCoordinador ? (
+                <CrearEquipo />
+              ) : (
+                <NotFound />
+              )
+            }
           />
-          <Route exact path="/crearEquipo" element={usuario.isAdmin || usuario.isCoordinador ? <CrearEquipo /> : <NotFound />} />
-          <Route exact path="/search" element={usuario.isAdmin || usuario.isCoordinador ? <Search /> : <NotFound />} />
-          <Route exact path="/buscarEquipos" element={usuario.isAdmin || usuario.isCoordinador ? <BuscadorEquipos /> : <NotFound />} />
+          <Route
+            exact
+            path="/search"
+            element={
+              usuario.isAdmin || usuario.isCoordinador ? (
+                <Search />
+              ) : (
+                <NotFound />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/buscarEquipos"
+            element={
+              usuario.isAdmin || usuario.isCoordinador ? (
+                <BuscadorEquipos />
+              ) : (
+                <NotFound />
+              )
+            }
+          />
           {/* <Route exact path="/404" element={<NotFound />} /> */}
+          <Route exact path="/crearArea" element={<CrearArea />} />
+          <Route exact path="/crearRol" element={<CrearRol />} />
           <Route path="*" element={<NotFound />} />
-          <Route exact path="/admin" element={usuario.isAdmin? <AdminView /> : <NotFound />} />
+          <Route
+            exact
+            path="/admin"
+            element={usuario.isAdmin ? <AdminView /> : <NotFound />}
+          />
         </Routes>
       </div>
       <Footer />

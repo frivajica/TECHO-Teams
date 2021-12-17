@@ -379,6 +379,7 @@ function Register() {
           <label htmlFor="selector" className="label">
             <p>PAÍS *</p>
             <select {...pais} className="form-select">
+              <option></option>
               {paises.map((pais) => (
                 <option key={pais.id} value={pais.id}>
                   {pais.nombre}
@@ -405,6 +406,7 @@ function Register() {
           <label htmlFor="selector" className="label">
             <p>PROVINCIA </p>
             <select {...provincia} className="form-select">
+              <option></option>
               {provincias.map((provincia) => (
                 <option key={provincia.id} value={provincia.id}>
                   {provincia.provincia}
@@ -431,6 +433,7 @@ function Register() {
           <label htmlFor="selector" className="label">
             <p>LOCALIDAD </p>
             <select {...localidad} className="form-select">
+              <option></option>
               {localidades.map((localidad) => (
                 <option key={localidad.id} value={localidad.id}>
                   {localidad.localidad}
