@@ -248,6 +248,7 @@ function Register() {
     } else if (!intereses.length) {
       return errorAlert("Complete los campos obligatorios correctamente");
     } else {
+      console.log('%cMyProject%cline:250%cenvio', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(153, 80, 84);padding:3px;border-radius:2px', envio)
       axios
         .post("http://localhost:3001/api/usuarios/registrar", envio)
         .then((res) => res.data)

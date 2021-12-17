@@ -98,7 +98,7 @@ class UsuarioController {
       intereses,
     } = req.body;
 
-    console.log("---->", req.file)
+    // console.log("---->", req.file)
 
     superagent
       .post("https://sandbox.actividades.techo.org/api/register")
@@ -130,7 +130,7 @@ class UsuarioController {
           profesion,
           estudios,
           intereses,
-          imagen: req.file.filename
+          // imagen: req.file.filename
         }).then((user) => res.status(201).send(user));
       })
       .catch((err) => {
@@ -263,47 +263,47 @@ class UsuarioController {
   static getHistorial(req, res) {
     let historiales = [];
     UsuarioEnEquipo.findAll({ where: { usuarioIdPersona: req.params.userId } })
-      .then(async (usrEnEquipos) => {
-        for (let i = 0; i < usrEnEquipos.length; i++) {
-          let fechasEntrada = [];
-          let fechasSalida = [];
-          let rolesEnEquipo = [];
-          let equipo = {};
-          const findEvents = (tipo) => {
-            return Evento.findAll({
-              where: {
-                usuarioIdPersona: req.params.userId,
-                equipoId: usrEnEquipos[i].equipoId,
-                tipo,
-              },
-              order: ["createdAt"],
-            });
-          };
-
-          fechasEntrada = await findEvents(1);
-
-          fechasSalida = await findEvents(-1);
-
-          rolesEnEquipo = await findEvents(2);
-
-          equipo = await Equipo.findOne({
-            where: { id: usrEnEquipos[i].equipoId },
+    .then(async (usrEnEquipos) => {
+      if (usrEnEquipos.length === 0) {return res.send([])}
+      for (let i = 0; i < usrEnEquipos.length; i++) {
+        let fechasEntrada = [];
+        let fechasSalida = [];
+        let rolesEnEquipo = [];
+        let equipo = {};
+        const findEvents = (tipo) => {
+          return Evento.findAll({
+            where: {
+              usuarioIdPersona: req.params.userId,
+              equipoId: usrEnEquipos[i].equipoId,
+              tipo,
+            },
+            order: ["createdAt"],
           });
-
-          let historialDeEquipo = {
-            entradas: fechasEntrada,
-            salidas: fechasSalida,
-            roles: rolesEnEquipo,
-            activo: usrEnEquipos[i].activo,
-            equipo,
-          };
-          historiales.push(historialDeEquipo);
-          if (i === usrEnEquipos.length - 1) res.send(historiales);
-        }
-      })
-      .catch((err) => res.status(500).send(err));
+        };
+        fechasEntrada = await findEvents(1);
+        
+        fechasSalida = await findEvents(-1);
+        
+        rolesEnEquipo = await findEvents(2);
+        
+        equipo = await Equipo.findOne({
+          where: { id: usrEnEquipos[i].equipoId },
+        });
+        
+        let historialDeEquipo = {
+          entradas: fechasEntrada,
+          salidas: fechasSalida,
+          roles: rolesEnEquipo,
+          activo: usrEnEquipos[i].activo,
+          equipo,
+        };
+        historiales.push(historialDeEquipo);
+        if (i === usrEnEquipos.length - 1) res.send(historiales);
+      }
+    })
+    .catch((err) => res.status(500).send(err));
   }
-
+  
   static getActividades(req, res) {
     const server = generateAxios(req.headers.authorization);
     server
