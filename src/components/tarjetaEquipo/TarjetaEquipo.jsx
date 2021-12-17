@@ -8,12 +8,11 @@ import Tooltip from "@mui/material/Tooltip";
 import moment from "moment";
 import "moment/locale/es";
 import { useNavigate } from "react-router-dom";
-
 moment.locale("es");
 
-export const TarjetaEquipo = ({ final, roles, activo, equipo }) => {
+export const TarjetaEquipo = ({ final, roles, activo, equipo, puedeVer }) => {
   const inicio = moment(equipo.createdAt).format("DD MMMM YYYY");
-  final = final !== "actualidad" ? moment(final).format("DD MMMM YYYY") : final;
+  final = final !== "la actualidad" ? moment(final).format("DD MMMM YYYY") : final;
   const navigate = useNavigate();
 
   const showEquipo = () => {
@@ -47,7 +46,7 @@ export const TarjetaEquipo = ({ final, roles, activo, equipo }) => {
           ))}
         </Box>
       </div>
-      {activo && (
+      {puedeVer && (
         <ArrowForwardIosIcon id="flecha-equipo" onClick={showEquipo} />
       )}
     </div>

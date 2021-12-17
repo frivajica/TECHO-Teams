@@ -1,6 +1,5 @@
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
 import { getById } from "../../state/usuarios";
 import Button from "@mui/material/Button";
 import "./ConvertirAdminBtn.css";
@@ -12,7 +11,6 @@ export const ConvertirAdminBtn = ({ user, setRows }) => {
   const usr = useSelector(({ usuarios }) => usuarios);
   const yo = useSelector(({ usuario }) => usuario);
   const target = user || usr;
-  const [style, setStyle] = useState(target?.isAdmin);
   const toogleAdminStatus = async () => {
     try {
       await axios({
@@ -25,7 +23,6 @@ export const ConvertirAdminBtn = ({ user, setRows }) => {
       successAlert("Hecho!", 
       "El status de administrador de este usuario fue modificado con éxito!"
       );
-      setStyle(!style);
     } catch {
       errorAlert("Oops!", "Algo malió sal].");
     }
@@ -33,12 +30,12 @@ export const ConvertirAdminBtn = ({ user, setRows }) => {
 
   return (
     <Button
-      id={style ? "boton-es-admin" : "boton-no-es-admin"}
+      id={target?.isAdmin ? "boton-es-admin" : "boton-no-es-admin"}
       onClick={toogleAdminStatus}
       variant="contained"
       endIcon={<PeopleAltIcon />}
     >
-      {style ? "Quitar permisos de Admin" : "Hacer Admin"}
+      {target?.isAdmin ? "Quitar permisos de Admin" : "Hacer Admin"}
     </Button>
   );
 };

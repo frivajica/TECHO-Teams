@@ -9,9 +9,11 @@ import { TarjetaUsuario } from "../../components/tarjetaUsuario/TarjetaUsuario";
 import TabEquipoOActividades from "../../components/TabEquipoOActividades/TabEquipoOActividades";
 import CircularProgress from "@mui/material/CircularProgress";
 import NotFound from "../notFound/NotFound";
+import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/material/Box";
 
 export const Usuario = () => {
+  const rolesCargados = useSelector(({ cargaDeRoles }) => cargaDeRoles);
   const [trigger, setTrigger] = useState(true);
   const id = useParams().idPersona;
   const dispatch = useDispatch();
@@ -45,14 +47,22 @@ export const Usuario = () => {
     <div className="contenedor">
       <TarjetaUsuario usuario={usuarios} />
       <Divider variant="middle" className="divisor" />
-      {cantEquip.length === 0 ? (
+      {!rolesCargados ? (
         <Box className="participaciones">
           <CircularProgress />
         </Box>
       ) : (
         <p className="participaciones">
-          Participando en{" "}
-          <span className="num-proyectos">{`${cantEquip.length} equipos`}</span>
+          {rolesCargados ? (
+            <div>
+              Participando en{" "}
+              <span className="num-proyectos">{`${cantEquip.length} equipos`}</span>
+            </div>
+          ) : (
+            <div>
+              <Skeleton />
+            </div>
+          )}
         </p>
       )}
       <Divider variant="middle" className="divisor" />
