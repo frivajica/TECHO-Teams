@@ -21,9 +21,12 @@ export const Equipo = () => {
 
   useEffect(() => {
     dispatch(getRoles());
-    dispatch(getEquipo(id))
+    console.log("id personita", usuario.idPersona )
+    dispatch(getEquipo({id, idpersona: usuario.idPersona, token: usuario.token}))
     .then(({payload}) => payload)
-    .then(equipo => {
+    .then(equipo => equipo? setPermitido(true):setPermitido(false))
+    .then(() => setTrigger(true))
+    /* .then(equipo => {
       if (
         usuario.isAdmin ||
         usuario.sedeIdCoord === equipo.sedeId ||
@@ -52,7 +55,7 @@ export const Equipo = () => {
           .then(() => setTrigger(true))
           .catch((err) => console.log(err))
         }
-    })
+    }) */
   .catch((err) => console.log(err));
   }, []);
 
