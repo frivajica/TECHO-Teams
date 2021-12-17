@@ -7,11 +7,12 @@ import axios from "axios";
 
 export const setEquipo = createAction("SET_EQUIPO");
 
-export const getEquipo = createAsyncThunk("GET_EQUIPO", (id) => {
+export const getEquipo = createAsyncThunk("GET_EQUIPO", ({ id, idpersona, token }) => {
+  console.log("id personaa", idpersona)
   return axios
-    .get(`http://localhost:3001/api/equipos/${id}`)
+    .get(`http://localhost:3001/api/equipos/${id}`, {headers: {authorization: token, idpersona}})
     .then((res) => res.data)
-    .catch((err) => console.log(err));
+    .catch((err) => {console.log(err); return false});
 });
 
 export const updateEquipo = createAsyncThunk(
@@ -72,6 +73,7 @@ const equipoReducer = createReducer(
   {
     [setEquipo]: (state, action) => action.payload,
     [getEquipo.fulfilled]: (state, action) => action.payload,
+    [getEquipo.rejected]: (state, action) => action.payload,
     [updateEquipo.fulfilled]: (state, action) => action.payload,
     [deactivateEquipo.fulfilled]: (state, action) => action.payload,
     [activateEquipo.fulfilled]: (state, action) => action.payload,

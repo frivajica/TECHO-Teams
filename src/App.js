@@ -63,9 +63,9 @@ function App() {
               )
             }
           />
-          <Route exact path="/miEquipo/:id" element={<Equipo />} />
-          <Route exact path="/miEquipo/:id/editar" element={usuario.isAdmin || usuario.isCoordinador ? <EditarEquipo /> : <NotFound />} />
-          <Route exact path="/miEquipo/:equipoId/historia" element={<EventosEquipo />} />
+          <Route exact path="/equipo/:id" element={<Equipo />} />
+          <Route exact path="/equipo/:id/editar" element={usuario.isAdmin || usuario.isCoordinador ? <EditarEquipo /> : <NotFound />} />
+          <Route exact path="/equipo/:equipoId/historia" element={<EventosEquipo />} />
           <Route
             exact
             path="/crearEquipo"

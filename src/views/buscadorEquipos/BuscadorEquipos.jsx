@@ -76,7 +76,7 @@ const BuscadorEquipos = () => {
     }
     axios
       .get(
-        `http://localhost:3001/api/equipos/?filtro=${filtro.value}&valor=${valor}`
+        `http://localhost:3001/api/equipos/?filtro=${filtro.value}&valor=${valor}&pais=${pais.value}`
       )
       .then((res) => {
         setEquipos(res.data);
@@ -151,6 +151,7 @@ const BuscadorEquipos = () => {
               </>
             )}
             {filtro.value === "Area" && (
+              <>
               <TextField
                 select
                 label="Area"
@@ -166,6 +167,23 @@ const BuscadorEquipos = () => {
                   </MenuItem>
                 ))}
               </TextField>
+              <TextField
+              select
+              label="Pais"
+              size="small"
+              type="text"
+              style={{ width: "20%" }}
+              name="paises"
+              required
+              {...pais}
+            >
+              {paises.map((pais) => (
+                <MenuItem key={pais.id} value={pais.id}>
+                  {pais.nombre}
+                </MenuItem>
+              ))}
+            </TextField>
+            </>
             )}
             {filtro.value === "Nombre" && (
               <TextField

@@ -269,6 +269,9 @@ class UsuarioController {
     let historiales = [];
     UsuarioEnEquipo.findAll({ where: { usuarioIdPersona: req.params.userId } })
       .then(async (usrEnEquipos) => {
+        if (usrEnEquipos.length === 0) {
+          return res.send([]);
+        }
         for (let i = 0; i < usrEnEquipos.length; i++) {
           let fechasEntrada = [];
           let fechasSalida = [];
@@ -284,7 +287,6 @@ class UsuarioController {
               order: ["createdAt"],
             });
           };
-
           fechasEntrada = await findEvents(1);
 
           fechasSalida = await findEvents(-1);

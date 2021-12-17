@@ -17,9 +17,9 @@ import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
 
-const Input = styled("input")({
+/* const Input = styled("input")({
   display: "none",
-});
+}); */
 
 const initialForm = {
   nombres: "",
@@ -235,10 +235,8 @@ function Register() {
     telefono: "0",
     sexo: genero,
     idUnidadOrganizacional: 0,
-    //imagen: document.getElementById("fotoDePerfil").value,
+    //imagen: document.getElementById("fotoDePerfil").value
   };
-
-  console.log(envio);
 
   const handleSubmit = (e) => {
     e.preventDefault();
