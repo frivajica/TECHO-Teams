@@ -7,7 +7,7 @@ class ComunidadesController {
       "https://comunidades.techo.org/comunidades/getComunidades/13"
     );
     try {
-      console.log("---->", data);
+      console.log("---->", data, typeof data);
       const fixingData = data
         .replace(/\\n/g, "\\n")
         .replace(/\\'/g, "\\'")
@@ -17,8 +17,8 @@ class ComunidadesController {
         .replace(/\\t/g, "\\t")
         .replace(/\\b/g, "\\b")
         .replace(/\\f/g, "\\f")
-        .replaceAll(" ", "")
-        .replaceAll("\n", "");
+        .replace(/ /g, "")
+        .replace(/\n/g, "");
 
       const fixedJSON = fixingData.slice(0, fixingData.length - 2) + "]";
       const finalData = JSON.parse(fixedJSON);
