@@ -17,9 +17,9 @@ export default function CardInfoEquipo({ equipo }) {
       axios.get("http://localhost:3001/api/regiones/paises"),
       axios.get("http://localhost:3001/api/sedes"),
       axios.get(`http://localhost:3001/api/equipos/cantMiembros/${equipo.id}`),
-      /* axios.get("http://localhost:3001/api/comunidades", {
+      axios.get("http://localhost:3001/api/comunidades", {
         headers: { authorization: getToken() },
-      }) */,
+      }),
     ];
     Promise.all(promesas)
       .then((respuestas) => {
@@ -30,11 +30,11 @@ export default function CardInfoEquipo({ equipo }) {
           (sede) => sede.id === equipo.sedeId && setSedes(sede.nombre)
         );
         setCantMiembros(respuestas[2].data.length);
-       /*  respuestas[3].data.map(
+        respuestas[3].data.map(
           (barrio) =>
             parseInt(barrio.id) === equipo.territorioId &&
             setTerritorio(barrio.nombre)
-        ) */;
+        );
       })
       .catch((err) => console.log({ err }));
   }, []);
