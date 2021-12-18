@@ -7,16 +7,7 @@ class ComunidadesController {
       "https://comunidades.techo.org/comunidades/getComunidades/13"
     );
     try {
-      console.log("---->", data, typeof data);
       const fixingData = data
-        .replace(/\\n/g, "\\n")
-        .replace(/\\'/g, "\\'")
-        .replace(/\\"/g, '\\"')
-        .replace(/\\&/g, "\\&")
-        .replace(/\\r/g, "\\r")
-        .replace(/\\t/g, "\\t")
-        .replace(/\\b/g, "\\b")
-        .replace(/\\f/g, "\\f")
         .replace(/ /g, "")
         .replace(/\n/g, "");
 
