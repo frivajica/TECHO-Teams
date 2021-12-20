@@ -1,70 +1,28 @@
-# Getting Started with Create React App
+![logop5](https://p5-hall-of-fame.s3.amazonaws.com/p5logo.png)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# ![logo Techo](https://techo.org/wp-content/uploads/2021/09/logo-techo.svg) - Plataforma de Gestión de Equipos
 
-## Available Scripts
+Proyecto profesional del coding bootcamp de Plataforma5. Consistió en el desarrollo de una plataforma de gestión de equipos para TECHO Argentina.
+Hasta antes de este proyecto, TECHO contaba con información, en su base de datos, de sus voluntarios y las actividades en las que participaron. El desarrollo de esta plataforma permitió agregar información de los equipos de trabajo, de los roles de los voluntarios en los equipos y nueva información personal de los voluntarios. Además, el proyecto implicó la integración con la API de actividades con la que TECHO contaba.
 
-In the project directory, you can run:
+### Características y funcionalidades implementadas:
 
-### `npm start`
+- Conectarse con la API del sistema de actividades de TECHO para obtener datos de las personas.
+- Registro de nuevos usarios y logueo.
+- Perfil de usuario: visualización y modificación de sus datos; visualización de equipos en los que participa y participó; visualización de actividades en las que participó.
+- Equipos: visualización de datos del equipo, integrantes y roles; ver historial de equipo; agregar o quitar integrantes; deshabilitar y habilitar equipos; modificar roles de integrantes.
+- Asignación de jerarquías de usuario: voluntario/a de equipo, coordinador/a de equipo, coordinador/a general y administrador/a.
+- Funciones de coordinador/a: crear equipos, modificar equipos, agregar integrantes, habilitar/deshabilitar equipos.
+- Funciones de administrador/a: junto con las de coordinador/a, designar coordinadores y administradores.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Tecnologías utilizadas:
+#### Front-end:
+- React
+- Redux
+- Material UI
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### Back-end:
+- NodeJS
+- Express
+- MySQL
+- Sequelize
