@@ -39,5 +39,5 @@ This can be changed to a local based work modifying the **/api/config/database.j
 
 ---
 
-[TECHO's main site](techo.org)
+[TECHO's main site](techo.org) \
 [TECHO's GitHub account](https://github.com/techo)
