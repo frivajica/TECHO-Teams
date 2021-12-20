@@ -1,3 +1,9 @@
+<div align="center">
+	<img src="/src/assets/imagenes/home/banner.png" alt="TECHO Banner"/>
+</div>
+
+---
+
 # TECHO-Teams
 
 This project was made using ReactJs, Redux, MaterialUI, Express, Sequelize and MySQL.
@@ -30,3 +36,8 @@ Seeds the database with a set of mock data for testing purposes.
 
 This project's database settings include the use of a cluster to perform CRUD operations in real time.\
 This can be changed to a local based work modifying the **/api/config/database.js** file.
+
+---
+
+[TECHO's main site](techo.org)
+[TECHO's GitHub account](https://github.com/techo)
