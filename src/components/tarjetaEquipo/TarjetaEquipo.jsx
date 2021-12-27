@@ -10,8 +10,8 @@ import "moment/locale/es";
 import { useNavigate } from "react-router-dom";
 moment.locale("es");
 
-export const TarjetaEquipo = ({ final, roles, activo, equipo, puedeVer }) => {
-  const inicio = moment(equipo.createdAt).format("DD MMMM YYYY");
+export const TarjetaEquipo = ({ inicio, final, roles, activo, equipo, puedeVer }) => {
+  inicio = moment(inicio).format("DD MMMM YYYY")
   final = final !== "la actualidad" ? moment(final).format("DD MMMM YYYY") : final;
   const navigate = useNavigate();
 

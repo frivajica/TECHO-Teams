@@ -40,8 +40,8 @@ class EquipoController {
       const evento1 = await equipo.createEvento({
           //el coordinador se une al equipo
           tipo: 1,
-          nombreEquipo: equipo.nombre,
-          nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno
+          nombreEquipo: newTeam.nombre,
+          nombreUsuario: coordInfo.nombres+" "+coordInfo.apellidoPaterno
         });
       await coordinador.addEvento(evento1); //fecha en la que se unió al equipo, se utiliza en el historial de equipos
 

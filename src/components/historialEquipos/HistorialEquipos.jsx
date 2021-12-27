@@ -2,20 +2,16 @@ import "./HistorialEquipos.css";
 import { TarjetaEquipo } from "../tarjetaEquipo/TarjetaEquipo";
 import TarjetaActividad from "../tarjetaActividad/TarjetaActividad";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import Skeleton from "./Skeleton";
 
 export const HistorialEquipos = ({ historialDeUsuario, actividades }) => {
   const rolesCargados = useSelector(({ cargaDeRoles }) => cargaDeRoles);
-  const datosDeUsuario = useSelector(({ usuarios }) => usuarios);
   const seleccionado = historialDeUsuario || actividades;
-  const idPersona = parseInt(useParams().idPersona);
   const salida = (e) => {
-    if (e.salidas.length === e.entradas.length) return e.salidas[e.salidas.length - 1];
-    //else if (!e.equipo.activo) return e.equipo.updatedAt;
-    else return "la actualidad";
+    if (e.activo) return "la actualidad";
+    else return e.salidas[e.salidas.length - 1]?.createdAt;
   };
-  let equipoOActividades = () => {
+  const equipoOActividades = () => {
     if (seleccionado === actividades && actividades.length === 0) {
       return "Todavía no participaste en ninguna actividad";
     }
@@ -39,9 +35,11 @@ export const HistorialEquipos = ({ historialDeUsuario, actividades }) => {
           {!rolesCargados
             ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => <Skeleton key={n} />)
             : equipoOActividades() || seleccionado.map((e, i) => {
+                console.log("this is e",e)
                 return seleccionado === historialDeUsuario ? (
                   <TarjetaEquipo
                     key={i}
+                    inicio={e.entradas[0]?.createdAt}
                     final={salida(e)}
                     roles={e.roles}
                     puedeVer={e.activo}
