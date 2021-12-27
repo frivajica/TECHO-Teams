@@ -30,21 +30,30 @@ class EquipoController {
         .then((res) => res.data);
 
       await newTeam.createEvento({
+        //se crea el equipo
         //éste evento solo se utiliza en el historial del equipo
         tipo: 0,
         nombreEquipo: newTeam.nombre,
         nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
       });
 
+      const evento1 = await equipo.createEvento({
+          //el coordinador se une al equipo
+          tipo: 1,
+          nombreEquipo: equipo.nombre,
+          nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno
+        });
+      await coordinador.addEvento(evento1); //fecha en la que se unió al equipo, se utiliza en el historial de equipos
+
       //creo otro evento para guardar el rol en el historial del usuario
       //también se mostrará en el historial del equipo
-      const evento = await coordinador.createEvento({
+      const evento2 = await coordinador.createEvento({
         tipo: 2,
         nombreEquipo: newTeam.nombre,
         nombreUsuario: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
         nombreRol: coordRol.nombre,
       });
-      await newTeam.addEvento(evento); //necesitamos saber en qué equipo cumplió el rol de coordinador
+      await newTeam.addEvento(evento2); //lo relacionamos tambíen con el equipo
 
       return res.status(201).send(newTeam);
     } catch (error) {

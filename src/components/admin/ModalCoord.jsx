@@ -26,6 +26,7 @@ export default function ModalCoord({
   const [sede, setSede] = useState({ id: null, nombre: null });
   const [pais, setPais] = useState({ id: null, nombre: null });
   const [disabled, setDisabled] = useState(true);
+  const [paisRequired, setPaisRequired] = useState(false);
   const style = {
     position: "absolute",
     top: "50%",
@@ -39,6 +40,7 @@ export default function ModalCoord({
   };
 
   function HandleSubmit() {
+    if (area && !pais.id) return setPaisRequired(true)
     axios
       .put(
         `http://localhost:3001/api/usuarios/setCoord/${usuarioSelec.idPersona}`,
@@ -88,6 +90,7 @@ export default function ModalCoord({
   }, []);
 
   useEffect(() => {
+    if (!pais.id) setArea(null)
     axios
       .get("http://localhost:3001/api/sedes")
       .then((res) =>
@@ -137,9 +140,10 @@ export default function ModalCoord({
           </Grid>
 
           <Grid item>
-            <InputLabel id="">Pais</InputLabel>
+            {paisRequired ? <p style={{color: 'red', fontSize: '0.8em'}}>Necesitas especificar un país para el área.</p> : null}
+            <InputLabel id="">País</InputLabel>
             <Select
-              onChange={(e) => setPais({ id: e.target.value, nombre: null })}
+              onChange={(e) => {setPais({ id: e.target.value, nombre: null }); setPaisRequired(false)}}
               value={pais.id}
               sx={{ minWidth: "15rem" }}
               disabled={disabled}
@@ -175,7 +179,7 @@ export default function ModalCoord({
               onChange={(e) => setArea(e.target.value)}
               defaultValue={usuarioSelec.areaCoord}
               value={area}
-              disabled={disabled}
+              disabled={(disabled)}
               sx={{ minWidth: "15rem" }}
             >
               {areas.map((Area) => (

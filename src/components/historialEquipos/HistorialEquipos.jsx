@@ -11,9 +11,8 @@ export const HistorialEquipos = ({ historialDeUsuario, actividades }) => {
   const seleccionado = historialDeUsuario || actividades;
   const idPersona = parseInt(useParams().idPersona);
   const salida = (e) => {
-    if (e.salidas.length === e.entradas.length)
-      return e.salidas[e.salidas.length - 1];
-    else if (!e.equipo.activo) return e.equipo.updatedAt;
+    if (e.salidas.length === e.entradas.length) return e.salidas[e.salidas.length - 1];
+    //else if (!e.equipo.activo) return e.equipo.updatedAt;
     else return "la actualidad";
   };
   let equipoOActividades = () => {
