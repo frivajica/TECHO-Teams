@@ -37,7 +37,7 @@ const validationsForm = (form) => {
   let errors = {};
   let regexName = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
   let regexMail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
-  let regexDocu = /^[a-zA-Z0-9_.-]*$/;
+  let regexDocu = /^[0-9]*$/;
   let regexTelefono = /^[0-9]*$/;
 
   if (!form.mail.trim()) {
@@ -237,6 +237,8 @@ function Register() {
     idUnidadOrganizacional: 0,
     //imagen: document.getElementById("fotoDePerfil").value
   };
+
+  console.log(errors);
 
   const handleSubmit = (e) => {
     e.preventDefault();
