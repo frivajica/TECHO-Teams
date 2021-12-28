@@ -1,5 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import Button from "@mui/material/Button";
 import { useSpring, animated } from "react-spring/";
 import Modal from "@mui/material/Modal";
@@ -57,13 +59,24 @@ const errorAlert = (title = "Login fallido", text = "Intentalo nuevamente") => {
     icon: "error",
   });
 };
+const successAlert = () => {
+  swal({
+    title: "¡Bienvenidx!",
+    text: "Te has logeado correctamente!",
+    icon: "success",
+    timer: "5000",
+  });
+};
 
 const LoginModal = ({ open, handleClose }) => {
   const mail = CustomHook("");
   const password = CustomHook("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const usuario = useSelector((state) => state.usuario);
+  const usuarios = useSelector((state) => state.usuarios);
+ 
+
+
 
   const handleLoginClick = (e) => {
     e.preventDefault();
@@ -72,9 +85,12 @@ const LoginModal = ({ open, handleClose }) => {
         mail: mail.value,
         password: password.value,
         errorAlert,
+        successAlert,
+        
       })
     ).then(() => handleClose());
   };
+ 
 
   return (
     <Modal
@@ -96,9 +112,11 @@ const LoginModal = ({ open, handleClose }) => {
           >
             BIENVENIDX A TECHO
           </Typography>
+
           <hr />
           <br />
           <form onSubmit={handleLoginClick}>
+
             <Box id="formBox">
               <TextField
                 size="small"
