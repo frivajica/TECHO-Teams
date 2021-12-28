@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logoutRequest, setUsuario } from "../../state/usuario";
+import Swal from 'sweetalert2'
 
 export const UserMenu = () => {
   const navigate = useNavigate();
@@ -22,9 +23,25 @@ export const UserMenu = () => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const alertLogut =()=>{
+    Swal.fire({
+  title: '¡Gracias por tu trabajo!',
+  text: '¡Te esperamos pronto!',
+  imageUrl: 'https://www.expoknews.com/wp-content/uploads/2020/05/techo-.png',
+  imageWidth: 400,
+  imageHeight: 200,
+  imageAlt: 'Techo Logout',
+  background: '#fff url(https://www.telam.com.ar/thumbs/bluesteel/advf/imagenes/2021/10/6176c8368d3b4_900.jpg)',
+  color:"#FFFFFF",
+  confirmButtonText:"Hasta pronto",
+  timer:5000,
+
+})
+  }
   const handleAction = () => {
     dispatch(logoutRequest());
     navigate("/");
+    alertLogut()
     handleClose();
   };
   const handleClose = () => {

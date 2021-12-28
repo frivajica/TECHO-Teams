@@ -10,7 +10,7 @@ export const setUsuario = createAction("SET_USARIO");
 
 export const loginRequest = createAsyncThunk(
   "LOGIN",
-  ({ mail, password, errorAlert }) => {
+  ({ mail, password, errorAlert,successAlert}) => {
     return axios
       .post("http://localhost:3001/api/usuarios/login", {
         mail,
@@ -22,7 +22,12 @@ export const loginRequest = createAsyncThunk(
             "Error de logueo",
             "Recorda verificar tu email para ingresar"
           );
-        else return res.data;
+        else {
+          successAlert(
+            "Biendenidx",
+            "Te has logeadx correctamente!"
+          )
+          return res.data;}
       })
       .catch(() => errorAlert());
   }
