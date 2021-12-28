@@ -62,7 +62,7 @@ export const UserMenu = () => {
           <MenuItem onClick={handleClose}>Mis Equipos</MenuItem> ------>ESTO VA?????
         )} */}
         {(usuario.isAdmin || usuario.isCoordinador) && (
-          <>
+          <div>
           <MenuItem onClick={() => navigate("/buscarEquipos")}>
             <SearchIcon className="color" />Equipos
           </MenuItem>
@@ -73,7 +73,7 @@ export const UserMenu = () => {
           <MenuItem onClick={() => navigate("/crearEquipo")}> 
           <GroupAddIcon className="color" /> Crear Equipo
           </MenuItem>
-          </>
+          </div>
         )}
         <MenuItem onClick={handleAction}><LogoutIcon className="color" />Cerrar Sesión</MenuItem>
       </Menu>

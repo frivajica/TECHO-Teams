@@ -16,15 +16,7 @@ import getToken from "../../utils/getToken";
 import "./TarjetaRoles.css";
 import axios from "axios";
 
-export const TarjetaRoles = ({
-  disabled,
-  reRender,
-  state,
-  data,
-  id,
-  opcPersns = [],
-  opcRoles = [],
-}) => {
+export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [] }) => {
   const dispatch = useDispatch();
   const { form, handleChange } = useForm({
     idEquipo: id,
@@ -51,7 +43,7 @@ export const TarjetaRoles = ({
     dispatch(infoRolesEquipo(form.idEquipo));
   };
   const borrar = () => {
-    dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
+    // dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
     axios({
       method: "delete",
       url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,

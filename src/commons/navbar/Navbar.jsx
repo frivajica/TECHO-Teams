@@ -27,12 +27,12 @@ const Navbar = () => {
           {usuario.nombres ? (
               <UserMenu />   
           ) : (
-            <>
+            <div>
               <Button onClick={handleOpen} color="inherit" sx={{ mr: 5 }}>
                 INGRESAR
               </Button>
               <LoginModal open={open} handleClose={handleClose} />
-            </>
+            </div>
           )}
         </Toolbar>
       </AppBar>
