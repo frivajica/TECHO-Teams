@@ -23,7 +23,7 @@ export const CajaDeRoles = () => {
         const rol =
           historia.roles[historia.roles.length - 1] &&
           historia.roles[historia.roles.length - 1].nombreRol;
-        if (historia.activo && !obj[rol]) {
+        if (historia.activo && historia.equipo.activo &&!obj[rol]) {
           obj[rol] = true;
           arr.push(rol);
         }

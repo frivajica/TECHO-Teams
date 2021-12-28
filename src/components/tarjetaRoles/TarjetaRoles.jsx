@@ -16,7 +16,7 @@ import getToken from "../../utils/getToken";
 import "./TarjetaRoles.css";
 import axios from "axios";
 
-export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [] }) => {
+export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state }) => {
   const dispatch = useDispatch();
   const { form, handleChange } = useForm({
     idEquipo: id,
@@ -28,7 +28,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [] }) => {
   const [error, setError] = useState(false);
 
   const guardarEditado = async () => {
-    if (form.rol.id === 1 && !data.usuario.isCoordinador) return setError(true)
+    if (form.rol.id === 1 && !data.usuario.isCoordinador && !data.usuario.isAdmin) return setError(true)
 
     setEditMode(!editMode);
     if (form.rol.id && form.user.id && form.idEquipo) await axios({
@@ -43,7 +43,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [] }) => {
     dispatch(infoRolesEquipo(form.idEquipo));
   };
   const borrar = () => {
-    // dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
+    dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
     axios({
       method: "delete",
       url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,
