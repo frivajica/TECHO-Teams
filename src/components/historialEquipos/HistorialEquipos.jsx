@@ -24,6 +24,18 @@ export const HistorialEquipos = ({ historialDeUsuario, actividades }) => {
     return false;
   };
 
+  const filterRoles = (roles) => {
+    let obj = {}, arr = [];
+    //roles = roles.slice().reverse()
+    roles.map((value, i) => {
+      if (!obj[value.nombreRol]) {
+        arr.push(value)
+        obj[value.nombreRol] = true
+      }
+    })
+    return arr;
+  }
+
   return (
     <div className="contenedor-historial">
       <div className="historial">
@@ -41,7 +53,7 @@ export const HistorialEquipos = ({ historialDeUsuario, actividades }) => {
                     key={i}
                     inicio={e.entradas[0]?.createdAt}
                     final={salida(e)}
-                    roles={e.roles}
+                    roles={filterRoles(e.roles)}
                     puedeVer={e.activo}
                     activo={e.equipo?.activo}
                     equipo={e.equipo}

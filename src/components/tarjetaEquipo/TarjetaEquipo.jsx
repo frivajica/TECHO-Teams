@@ -39,9 +39,9 @@ export const TarjetaEquipo = ({ inicio, final, roles, activo, equipo, puedeVer }
           sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
           id="lista-roles"
         >
-          {roles.map((value) => (
+          {roles.slice().reverse().map((value, i) => (
             <ButtonBase id="ripple" key={value.nombreRol}>
-              <Chip label={value.nombreRol} color="primary" />
+              <Chip label={value.nombreRol} style={{backgroundColor: i === 0 ? "#1976d2" : "#80aaee", color: "white"}} />
             </ButtonBase>
           ))}
         </Box>
