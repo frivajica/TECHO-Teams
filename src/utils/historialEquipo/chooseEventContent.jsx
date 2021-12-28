@@ -38,7 +38,11 @@ export function ChooseEventContent({evento, isLast, i}) {
         case 1: {
             color="primary" 
             icon=<PersonAddAltRoundedIcon /> 
-            descripcion=`${evento.nombreCoord} agregó a ${evento.nombreUsuario} al equipo`
+            descripcion=
+                evento.nombreCoord ?
+                (`${evento.nombreCoord} agregó a ${evento.nombreUsuario} al equipo`)
+                :
+                (`${evento.nombreUsuario} se unió al equipo`)
             break;
         }
         case 2: {

@@ -30,21 +30,30 @@ class EquipoController {
         .then((res) => res.data);
 
       await newTeam.createEvento({
+        //se crea el equipo
         //éste evento solo se utiliza en el historial del equipo
         tipo: 0,
         nombreEquipo: newTeam.nombre,
-        nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
+        nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
       });
+
+      const evento1 = await equipo.createEvento({
+          //el coordinador se une al equipo
+          tipo: 1,
+          nombreEquipo: newTeam.nombre,
+          nombreUsuario: coordInfo.nombres+" "+coordInfo.apellidoPaterno
+        });
+      await coordinador.addEvento(evento1); //fecha en la que se unió al equipo, se utiliza en el historial de equipos
 
       //creo otro evento para guardar el rol en el historial del usuario
       //también se mostrará en el historial del equipo
-      const evento = await coordinador.createEvento({
+      const evento2 = await coordinador.createEvento({
         tipo: 2,
         nombreEquipo: newTeam.nombre,
-        nombreUsuario: coordInfo.nombres+coordInfo.apellidoPaterno,
+        nombreUsuario: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
         nombreRol: coordRol.nombre,
       });
-      await newTeam.addEvento(evento); //necesitamos saber en qué equipo cumplió el rol de coordinador
+      await newTeam.addEvento(evento2); //lo relacionamos tambíen con el equipo
 
       return res.status(201).send(newTeam);
     } catch (error) {
@@ -121,8 +130,8 @@ class EquipoController {
         //evento para el historial del equipo
         tipo: 1,
         nombreEquipo: equipo.nombre,
-        nombreUsuario: usrInfo.nombres+usrInfo.apellidoPaterno,
-        nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
+        nombreUsuario: usrInfo.nombres+" "+usrInfo.apellidoPaterno,
+        nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
       });
       await usr.addEvento(evento); //para historial de usuario
       return res.send("usuario agregado");
@@ -266,8 +275,8 @@ class EquipoController {
       const evento = await equipo.createEvento({
         tipo: 2,
         nombreEquipo: equipo.nombre,
-        nombreUsuario: usrInfo.nombres+usrInfo.apellidoPaterno,
-        nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
+        nombreUsuario: usrInfo.nombres+" "+usrInfo.apellidoPaterno,
+        nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
         nombreRol: rol.nombre,
       });
       await usr.addEvento(evento); // <-- ^^^relaciono el evento con el equipo y con el usuario
@@ -367,8 +376,8 @@ class EquipoController {
       const evento = await equipo.createEvento({
         tipo: -1,
         nombreEquipo: equipo.nombre,
-        nombreUsuario: usrInfo.nombres+usrInfo.apellidoPaterno,
-        nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno
+        nombreUsuario: usrInfo.nombres+" "+usrInfo.apellidoPaterno,
+        nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno
       });
       const usuario = await Usuario.findOne({
         where: { idPersona: req.params.userId },
@@ -391,7 +400,7 @@ class EquipoController {
       equipo
         .createEvento({
           tipo: -2,
-          nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
+          nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
           nombreEquipo: equipo.nombre,
         })
         .then(() => res.status(201).send(equipo))
@@ -412,7 +421,7 @@ class EquipoController {
       equipo
         .createEvento({
           tipo: 3,
-          nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
+          nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
           nombreEquipo: equipo.nombre,
         })
         .then(() => res.status(200).send(equipo));
