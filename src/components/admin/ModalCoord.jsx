@@ -126,7 +126,7 @@ export default function ModalCoord({
   return (
     <div>
       <Modal onClose={() => setShow(false)} open={show}>
-        <Grid sx={style} direction="columm">
+        <Grid sx={style} >
           <Grid item>
             <FormControlLabel
               control={

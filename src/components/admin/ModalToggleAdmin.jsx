@@ -21,7 +21,7 @@ export const  ModalToggleAdmin = ({ show, usuarioSelec, setShow, rows, setRows }
   return (
     <div>
       <Modal  onClose={()=> setShow(false)} open={show}>
-        <Grid sx={style} direction="columm">
+        <Grid sx={style} >
           <ConvertirAdminBtn user={usuarioSelec} setRows={setRows} />
         </Grid>
       </Modal>
