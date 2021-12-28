@@ -11,14 +11,14 @@ export default function CardInfoEquipo({ equipo }) {
   const [sedes, setSedes] = useState("-");
   const [cantMiembros, setCantMiembros] = useState(0);
   const [territorio, setTerritorio] = useState("-");
-
+  console.log("ACAAAAAAAA", equipo.territorioId);
   useEffect(() => {
     const promesas = [
       axios.get("http://localhost:3001/api/regiones/paises"),
       axios.get("http://localhost:3001/api/sedes"),
       axios.get(`http://localhost:3001/api/equipos/cantMiembros/${equipo.id}`),
       axios.get("http://localhost:3001/api/comunidades", {
-        headers: { authorization: getToken() },
+        headers: { authorization: getToken(), pais: equipo.paisId },
       }),
     ];
     Promise.all(promesas)

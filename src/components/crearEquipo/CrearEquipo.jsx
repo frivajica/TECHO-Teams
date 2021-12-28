@@ -46,15 +46,16 @@ export function CrearEquipo() {
   }, [pais.value]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/comunidades", {
-        headers: { authorization: getToken() },
-      })
-      .then((res) => {
-        return setComunidades(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    pais.value &&
+      axios
+        .get("http://localhost:3001/api/comunidades", {
+          headers: { authorization: getToken(), pais: pais.value },
+        })
+        .then((res) => {
+          return setComunidades(res.data);
+        })
+        .catch((err) => console.log(err));
+  }, [pais.value]);
 
   useEffect(() => {
     axios
@@ -93,8 +94,6 @@ export function CrearEquipo() {
       timer: "5000",
     });
   };
-
-  console.log(typeof comunidad.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();

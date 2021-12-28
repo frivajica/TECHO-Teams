@@ -44,13 +44,13 @@ export default function EditarEquipo() {
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/comunidades", {
-        headers: { authorization: getToken() },
+        headers: { authorization: getToken(), pais: pais.value },
       })
       .then((res) => {
         return setComunidades(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [pais.value]);
 
   useEffect(() => {
     axios
@@ -124,7 +124,6 @@ export default function EditarEquipo() {
         .catch((err) => console.log({ err }));
   };
 
-  console.log(comunidades);
   return (
     <div>
       <div id="register">

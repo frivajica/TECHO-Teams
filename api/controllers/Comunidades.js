@@ -2,9 +2,10 @@ const generateAxios = require("../utils/generateAxios");
 
 class ComunidadesController {
   static async comunidades(req, res) {
+    console.log("---------------> ACAAAA", req.headers.pais);
     const server = generateAxios(req.headers.authorization);
     const { data } = await server.get(
-      "https://comunidades.techo.org/comunidades/getComunidades/13"
+      `https://comunidades.techo.org/comunidades/getComunidades/${req.headers.pais}`
     );
     try {
       const fixingData = data
