@@ -39,7 +39,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [] }) => {
     dispatch(infoRolesEquipo(form.idEquipo));
   };
   const borrar = () => {
-    dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
+    // dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
     axios({
       method: "delete",
       url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,
