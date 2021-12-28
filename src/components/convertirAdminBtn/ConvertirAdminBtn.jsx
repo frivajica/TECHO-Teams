@@ -29,12 +29,12 @@ export const ConvertirAdminBtn = ({ user }) => {
 
   return (
     <Button
-      id={target?.isAdmin ? "boton-es-admin" : "boton-no-es-admin"}
+      id={usr?.isAdmin ? "boton-es-admin" : "boton-no-es-admin"}
       onClick={toogleAdminStatus}
       variant="contained"
       endIcon={<PeopleAltIcon />}
     >
-      {target?.isAdmin ? "Quitar permisos de Admin" : "Hacer Admin"}
+      {usr?.isAdmin ? "Quitar permisos de Admin" : "Hacer Admin"}
     </Button>
   );
 };
