@@ -33,7 +33,11 @@ export const TarjetaRoles = ({
   });
   const yo = useSelector(({ usuario }) => usuario);
   const [editMode, setEditMode] = useState();
+  const [error, setError] = useState(false);
+
   const guardarEditado = async () => {
+    if (form.rol.id === 1 && !data.usuario.isCoordinador) return setError(true)
+
     setEditMode(!editMode);
     if (form.rol.id && form.user.id && form.idEquipo) await axios({
       method: "put",
@@ -82,12 +86,14 @@ export const TarjetaRoles = ({
       </div>
       {editMode ? (
         <div className="rol-opciones">
+          {error ? (<p style={{ color: 'red', fontSize: '0.8em' }}>El usuario no puede ser coordinador, {yo.isAdmin ? 'necesitas darle autoridad en la sección AdminLand.': 'consulte a un admin para darle autoridad.'}</p>) : null}
           <FormControl id="modificar-rol" variant="standard">
             <Autocompletar
               opciones={opcRoles}
               freeSolo
               etiqueta="Rol"
               onChange={handleChange}
+              setError={setError}
               name="rol"
               defVal={form.rol?.nombre}
             />

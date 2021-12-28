@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-export const Autocompletar = ({ disabled, opciones, etiqueta, onChange, defVal, name, freeSolo }) => {
+export const Autocompletar = ({ disabled, opciones, etiqueta, onChange, defVal, name, freeSolo, setError }) => {
   return (
     <>
         <Autocomplete
@@ -11,7 +11,7 @@ export const Autocompletar = ({ disabled, opciones, etiqueta, onChange, defVal, 
           disabled={disabled}
           getOptionLabel={(option) => option?.rol || option?.nombre}
           defaultValue={{nombre: defVal || ''}}
-          onChange={(e,val) => onChange(e, val, name)}
+          onChange={(e,val) => {onChange(e, val, name); setError(false)}}
           renderInput={(params) => (
             <TextField {...params} variant="standard" label={etiqueta} />
           )}
