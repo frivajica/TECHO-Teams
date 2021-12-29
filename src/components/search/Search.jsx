@@ -21,9 +21,9 @@ export default function Search() {
   const navigate = useNavigate();
   const usuarios = useSelector((state) => state.usuarios);
   const dispatch = useDispatch();
-  const [tipo, setTipo] = useState("");
+  const [tipo, setTipo] = useState("email");
   const busqueda = CustomHook("");
-  const [trigger, setTrigger] = useState(true);
+  const [trigger, setTrigger] = useState("");
 
   const errorAlert = (
     title = "Seleccione un tipo de búsqueda",
@@ -128,7 +128,9 @@ export default function Search() {
             {usuarios.idPersona && <TarjetaResultado usuarios={usuarios} />}
           </div>
         ) : (
-          <div>
+          (trigger === false) 
+          &&
+          (<div>
             <Box
               sx={{
                 display: "flex",
@@ -139,7 +141,7 @@ export default function Search() {
             >
               <CircularProgress />
             </Box>
-          </div>
+          </div>)
         )}
       </div>
     </Stack>
