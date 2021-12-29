@@ -337,7 +337,10 @@ function MiInformación() {
             <TextField
               className="text-field"
               size="small"
-              type="text"
+              type="number"
+              inputProps={{
+                min: 0,
+              }}
               name="dni"
               onBlur={handleBlur}
               onChange={handleChanges}
@@ -393,7 +396,10 @@ function MiInformación() {
             <TextField
               className="text-field"
               size="small"
-              type="text"
+              type="number"
+              inputProps={{
+                min: 0,
+              }}
               name="telefonoMovil"
               onBlur={handleBlur}
               onChange={handleChanges}
