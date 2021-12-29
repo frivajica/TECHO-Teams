@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { ButtonBase } from "@mui/material";
 import { CajaRolesResultado } from "./CajaRolesResultado";
+import capitalize from "../../utils/capitalize"
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
@@ -76,12 +77,12 @@ export default function TarjetaResultado({ usuarios }) {
             <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
               <img
                 className="avatar"
-                src={!usuarios.imagen ? defaultAvatar : usuarios.imagen}
+                src={!usuarios.imagen ? defaultAvatar : `${process.env.PUBLIC_URL}/uploads/perfil/${usuarios.imagen}`}  
                 alt="Avatar de Usuario"
               />
             </ButtonBase>
           </div>
-          <h1 className="nombre-usuario">{`${usuarios.nombres} ${usuarios.apellidoPaterno}`}</h1>
+          <h1 className="nombre-usuario">{`${capitalize(usuarios.nombres)} ${capitalize(usuarios.apellidoPaterno)}`}</h1>
           <div className="antiguedad-usuario">
             <span style={{ color: "#1976D2" }}> Profesión: </span>
             {usuarios.profesion}

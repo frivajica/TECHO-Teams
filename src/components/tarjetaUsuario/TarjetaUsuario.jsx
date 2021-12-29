@@ -5,6 +5,7 @@ import { defaultAvatar } from "../../utils/mockData";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Skeletonn from "@mui/material/Skeleton";
+import capitalize from "../../utils/capitalize"
 import "./TarjetaUsuario.css";
 import moment from "moment";
 import "moment/locale/es";
@@ -37,7 +38,7 @@ export const TarjetaUsuario = () => {
         </div>
         <h1 className="nombre-usuario">
           {usuario.nombres ? (
-            `${usuario.nombres} ${usuario.apellidoPaterno}`
+            `${capitalize(usuario.nombres)} ${capitalize(usuario.apellidoPaterno)}`
           ) : (
             <Skeletonn />
           )}
