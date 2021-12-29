@@ -45,4 +45,6 @@ Equipo.init(
   { sequelize: db, modelName: "equipos" }
 );
 
+Equipo.addHook("beforeSave", equipo => equipo.nombre = equipo.nombre.charAt(0).toUpperCase() + equipo.nombre.substring(1))
+
 module.exports = Equipo;
