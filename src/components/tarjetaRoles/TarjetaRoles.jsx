@@ -16,6 +16,7 @@ import getToken from "../../utils/getToken";
 import swal from "sweetalert";
 import "./TarjetaRoles.css";
 import axios from "axios";
+import capitalize from "../../utils/capitalize"
 
 export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state }) => {
   const dispatch = useDispatch();
@@ -112,7 +113,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
         <div className="rol-opciones">
           <h3 id="modificar-rol">{form.rol?.nombre || "Sin rol asignado"}</h3>
           <h3 id="buscar-persona">
-            {data?.nombreApellido || "Persona no asignada"}
+            {capitalize(data?.nombreApellido) || "Persona no asignada"}
           </h3>
         </div>
       )}
