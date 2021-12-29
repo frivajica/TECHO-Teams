@@ -1,6 +1,6 @@
 const express = require("express");
 const Router = express.Router();
-const { EquipoController } = require("../controllers");
+const { EquipoController, uploadEquipo } = require("../controllers");
 const {
   checkAdmin,
   checkAuth,
@@ -9,13 +9,13 @@ const {
   isAdminOrCoordinatorHere,
 } = require("../middlewares/auth");
 
-Router.post("/", isAdminOrCoordinator, EquipoController.createEquipo);
+Router.post("/", isAdminOrCoordinator, uploadEquipo, EquipoController.createEquipo);
 
 Router.get("/", /* checkAuthAndAdmin, */ EquipoController.getEquipos);
 
 Router.get("/:id", belongsToEquipo, EquipoController.getOneEquipo);
 
-Router.put("/:id", isAdminOrCoordinatorHere, EquipoController.updateEquipo);
+Router.put("/:id", isAdminOrCoordinatorHere, uploadEquipo, EquipoController.updateEquipo);
 
 Router.put("/desactivar/:id", isAdminOrCoordinatorHere, EquipoController.deactivateEquipo);
 

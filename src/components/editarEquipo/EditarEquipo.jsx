@@ -3,7 +3,7 @@ import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { CustomHook } from "../../hooks/CustomHook";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import getToken from "../../utils/getToken";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,7 @@ export default function EditarEquipo() {
   const dispatch = useDispatch();
   const equipo = useSelector((state) => state.equipo);
   const navigate = useNavigate();
+  const [imagenEquipo, setImagenEquipo] = useState({})
   const [paises, setPaises] = useState([]);
   const pais = CustomHook(equipo.paisId);
   const nombre = CustomHook(equipo.nombre);
@@ -90,7 +91,7 @@ export default function EditarEquipo() {
     });
   };
 
-  let form = {
+ /*  let form = {
     nombre: nombre.value,
     cantMiembros: parseInt(cantidad.value),
     activo: equipo.activo,
@@ -100,8 +101,23 @@ export default function EditarEquipo() {
     territorioId: categoria === "Territorio" ? parseInt(comunidad.value) : null,
     categoria: categoria,
     area: areas.value,
-    img: equipo.img,
-  };
+  }; */
+  const data = new FormData()
+  data.set("nombre", nombre.value)
+  data.set("cantMiembros", cantidad.value)
+  data.set("activo", equipo.activo)
+  data.set("detalles", descripcion.value)
+  data.set("paisId", pais.value)
+  data.set("sedeId", sede.value ? sede.value : 0)
+  data.set("territorioId", categoria === "Territorio" ? comunidad.value : null)
+  data.set("categoria", categoria)
+  data.set("area", areas.value)
+
+
+  const handleImagen = (e) => {
+    e.preventDefault();
+    setImagenEquipo(e.target.files[0])
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -110,11 +126,12 @@ export default function EditarEquipo() {
       errorAlert("Error!", "Complete todos los campos requeridos");
     if (!parseInt(cantidad.value))
       errorAlert("Error!", "Complete correctamente la cantidad de miembros");
-    else
+    else{
+    if(imagenEquipo.name) data.set("fotoDeEquipo", imagenEquipo, imagenEquipo.name)
       dispatch(
         updateEquipo({
           id: equipo.id,
-          form: form,
+          form: data,
           idPersona: usuario.idPersona,
           token: usuario.token,
         })
@@ -122,14 +139,14 @@ export default function EditarEquipo() {
         .then(successAlert())
         .then(() => navigate(-1))
         .catch((err) => console.log({ err }));
+      }
   };
 
-  console.log(comunidades);
   return (
     <div>
       <div id="register">
         <h2 className="TitleRegister">Edición de datos de equipos</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} enctype="multipart/form-data">
           <div className="contenedor-formulario">
             <label htmlFor="selector" className="label">
               <p>NOMBRE DEL EQUIPO</p>
@@ -239,6 +256,18 @@ export default function EditarEquipo() {
                 ))}
               </select>
             </label>
+
+            <label htmlFor="fotoDeEquipo" className="label">
+            <p>IMAGEN DE EQUIPO</p>
+            <input
+              accept="image/*"
+              id="fotoDeEquipo"
+              type="file"
+              name="fotoDeEquipo"
+              onChange={handleImagen}
+              style={{color: "#dc3545"}}
+            />
+          </label>
           </div>
           <div
             style={{

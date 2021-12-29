@@ -2,7 +2,6 @@ import { ConvertirAdminBtn } from "../../components/convertirAdminBtn/ConvertirA
 import { BotonMiInfo } from "../../components/botonMiInfo/BotonMiInfo";
 import { CajaDeRoles } from "../cajaDeRoles/CajaDeRoles";
 import { defaultAvatar } from "../../utils/mockData";
-import ButtonBase from "@mui/material/ButtonBase";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Skeletonn from "@mui/material/Skeleton";
@@ -17,31 +16,38 @@ export const TarjetaUsuario = () => {
   const soyYo = yo.idPersona === parseInt(useParams().idPersona);
   const creado = usuario.email_verified_at ? usuario.email_verified_at?.slice(0, 10): usuario.createdAt?.slice(0, 10);
   let momentFromNow = moment(creado, "YYYY-MM-DD").fromNow(true);
-  if (momentFromNow.slice(3, 8) === "horas") momentFromNow = "menos de un día";
 
+  momentFromNow.slice(3, 8) === "horas" && (momentFromNow = "menos de un día");
+  
   return (
     <div className="tarjeta-usuario">
       <div className="grid-usuario">
         <div className="avatar-usuario">
-          <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
-            <img
-              className="avatar"
-              src={!usuario.imagen ? defaultAvatar : `${process.env.PUBLIC_URL}/uploads/perfil/${usuario.imagen}`}
-              alt="Avatar de Usuario"
-            />
-          </ButtonBase>
+          <div sx={{ width: 200, height: 200 }} id="ripple-avatar">
+              <img
+                className="avatar"
+                src={
+                  !usuario.imagen
+                    ? defaultAvatar
+                    : `${process.env.PUBLIC_URL}/uploads/perfil/${usuario.imagen}`
+                }
+                alt="Avatar de Usuario"
+              />
+            </div>
         </div>
-        <h1 className="nombre-usuario">{
-          usuario.nombres
-            ? `${usuario.nombres} ${usuario.apellidoPaterno}`
-            : <Skeletonn />
-        }</h1>
+        <h1 className="nombre-usuario">
+          {usuario.nombres ? (
+            `${usuario.nombres} ${usuario.apellidoPaterno}`
+          ) : (
+            <Skeletonn />
+          )}
+        </h1>
         <div className="contenedor-roles">
           <CajaDeRoles />
         </div>
-        <h4 className="antiguedad-usuario">{
-          usuario.nombres ? ` Antigüedad: ${momentFromNow}` : <Skeletonn />
-        }</h4>
+        <h4 className="antiguedad-usuario">
+          {usuario.nombres ? ` Antigüedad: ${momentFromNow}` : <Skeletonn />}
+        </h4>
         {soyYo ? <BotonMiInfo /> : <ConvertirAdminBtn />}
       </div>
     </div>

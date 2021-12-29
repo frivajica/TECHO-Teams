@@ -53,7 +53,7 @@ export default function CardInfoEquipo({ equipo }) {
         height="340"
         image={
           equipo.img
-            ? equipo.img
+            ? `${process.env.PUBLIC_URL}/uploads/equipos/${equipo.img}`
             : "https://media.discordapp.net/attachments/912709181306449925/918618477298864129/grupo.png"
         }
         alt="sin imagen"
