@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 
 export function CrearEquipo() {
   const navigate = useNavigate();
+  const [imagenEquipo, setImagenEquipo] = useState({})
   const [paises, setPaises] = useState([]);
   const pais = CustomHook("");
   const nombre = CustomHook("");
@@ -94,7 +95,21 @@ export function CrearEquipo() {
     });
   };
 
-  console.log(typeof comunidad.value);
+  const handleImagen = (e) => {
+    e.preventDefault();
+    setImagenEquipo(e.target.files[0])
+  }
+  
+  const data = new FormData()
+  data.append("nombre", nombre.value)
+  data.append("cantMiembros", cantidad.value)
+  data.append("activo", true)
+  data.append("detalles", descripcion.value)
+  data.append("paisId", pais.value)
+  data.append("sedeId", sede.value ? sede.value : 0)
+  data.append("territorioId", categoria === "Territorio" ? comunidad.value : null)
+  data.append("categoria", categoria)
+  data.append("area", areas.value)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -103,22 +118,12 @@ export function CrearEquipo() {
       errorAlert("Error!", "Complete todos los campos requeridos");
     if (!parseInt(cantidad.value))
       errorAlert("Error!", "Complete correctamente la cantidad de miembros");
-    else
+    else {
+    if(imagenEquipo.name) data.append("fotoDeEquipo", imagenEquipo, imagenEquipo.name)
       axios
         .post(
-          `http://localhost:3001/api/equipos/`,
-          {
-            nombre: nombre.value,
-            cantMiembros: parseInt(cantidad.value),
-            activo: true,
-            detalles: descripcion.value,
-            paisId: parseInt(pais.value),
-            sedeId: sede.value ? parseInt(sede.value) : 0,
-            territorioId:
-              categoria === "Territorio" ? parseInt(comunidad.value) : null,
-            categoria: categoria,
-            area: areas.value,
-          },
+          `http://localhost:3001/api/equipos/`, 
+            data,
           {
             headers: {
               authorization: loggedUser.token,
@@ -130,14 +135,16 @@ export function CrearEquipo() {
           successAlert();
           return res.data;
         })
-        .then((equipo) => navigate(`/equipo/${equipo.id}`));
+        .then((equipo) => navigate(`/equipo/${equipo.id}`))
+        .catch(err => console.log({err}))
+      }
   };
 
   return (
     <div>
       <div id="register">
         <h2 className="TitleRegister">CREACIÓN DE EQUIPOS</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} enctype="multipart/form-data">
           <div className="contenedor-formulario">
             <label htmlFor="selector" className="label">
               <p>NOMBRE DEL EQUIPO</p>
@@ -249,6 +256,18 @@ export function CrearEquipo() {
                 ))}
               </select>
             </label>
+
+            <label htmlFor="fotoDeEquipo" className="label">
+            <p>IMAGEN DE EQUIPO</p>
+            <input
+              accept="image/*"
+              id="fotoDeEquipo"
+              type="file"
+              name="fotoDeEquipo"
+              onChange={handleImagen}
+              style={{color: "#dc3545"}}
+            />
+          </label>
           </div>
           <div
             style={{

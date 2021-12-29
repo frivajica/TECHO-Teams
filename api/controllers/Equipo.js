@@ -1,13 +1,19 @@
-const {
-  Equipo,
-  Usuario,
-  UsuarioEnEquipo,
-  Role,
-  RolEnEquipo,
-} = require("../models");
+const { Equipo, Usuario, UsuarioEnEquipo, Role, RolEnEquipo } = require("../models");
 const generateAxios = require("../utils/generateAxios");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
+const multer = require("multer");
+let fs = require("fs-extra");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads/equipos");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, `${uniqueSuffix}-${file.originalname}`);
+  },
+});
+const upload = multer({ storage: storage });
 
 class EquipoController {
   static async createEquipo(req, res) {
@@ -15,7 +21,15 @@ class EquipoController {
       const coordinador = await Usuario.findOne({
         where: { idPersona: req.headers.idpersona },
       });
-      const newTeam = await Equipo.create(req.body);
+      //las siguientes propiedades llegan como string
+      //se convierten a su type original
+      req.body.cantMiembros = parseInt(req.body.cantMiembros)
+      req.body.activo = JSON.parse(req.body.activo)
+      req.body.paisId = parseInt(req.body.paisId)
+      req.body.sedeId = parseInt(req.body.sedeId)
+      req.body.territorioId = req.body.territorioId === "null" ? null : parseInt(req.body.territorioId)
+
+      const newTeam = await Equipo.create({...req.body, img: req.file && req.file.filename});
 
       const usrEnEquipo = await newTeam
         .addUsuario(coordinador)
@@ -82,7 +96,14 @@ class EquipoController {
   }
 
   static updateEquipo(req, res) {
-    Equipo.update(req.body, { where: { id: req.params.id } })
+    //las siguientes propiedades llegan como string
+    //se convierten a su type original
+    req.body.cantMiembros = parseInt(req.body.cantMiembros)
+    req.body.activo = JSON.parse(req.body.activo)
+    req.body.paisId = parseInt(req.body.paisId)
+    req.body.sedeId = parseInt(req.body.sedeId)
+    req.body.territorioId = req.body.territorioId === "null" ? null : parseInt(req.body.territorioId)
+    Equipo.update({...req.body, img: req.file && req.file.filename}, { where: { id: req.params.id } })
       .then(() => Equipo.findOne({ where: { id: req.params.id } }))
       .then((updatedEquipo) => res.status(200).send(updatedEquipo))
       .catch((err) => res.status(500).send(err));
@@ -429,4 +450,4 @@ class EquipoController {
   }
 }
 
-module.exports = EquipoController;
+module.exports = { EquipoController, uploadEquipo: upload.single("fotoDeEquipo") };

@@ -120,6 +120,7 @@ function MiInformación() {
   const [localidades, setLocalidades] = useState([]);
   console.log(provincias);
   //inputs
+  const [imagenPerfil, setImagenPerfil] = useState({});
   const [recibirMails, setRecibirMails] = useState(
     usuario.recibirMails === 1 ? 1 : 0
   );
@@ -215,30 +216,37 @@ function MiInformación() {
     });
   };
 
-  let envio = {
-    ...form,
-    idPais: parseInt(pais.value),
-    idProvincia: parseInt(provincia.value),
-    idLocalidad: parseInt(localidad.value),
-    estudios: estudios.value,
-    intereses: JSON.stringify(intereses),
-    apellidoMaterno: apellidoMaterno.value,
-    acepta_marketing: recibirMails,
-    recibirMails: recibirMails,
-    telefono: "0",
-    sexo: genero,
-    idUnidadOrganizacional: 0,
+  const handleImagenPerfil = e => {
+    e.preventDefault();
+    setImagenPerfil(e.target.files[0])
   };
 
-  console.log("EL ENVIO --->", envio);
+  //FormData.set() transforma en string los integer y booleans, 
+  //por lo que en el back se convierten a su tipo original
+  const data = new FormData()
+  for(let campo in form) {
+    data.set(`${campo}`, form[campo])
+  }
+  data.set("idPais", pais.value)
+  data.set("idProvincia", provincia.value)
+  data.set("idLocalidad", localidad.value)
+  data.set("estudios", estudios.value)
+  data.set("intereses", JSON.stringify(intereses))
+  data.set("apellidoMaterno", apellidoMaterno.value)
+  data.set("acepta_marketing", recibirMails)
+  data.set("recibirMails", recibirMails)
+  data.set("telefono", "0")
+  data.set("sexo", genero)
+  data.set("idUnidadOrganizacional", 0)
+
   // ESTE POST HAY QUE VER
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    if(imagenPerfil.name) data.set("fotoDePerfil", imagenPerfil, imagenPerfil.name)
     axios
       .put(
         `http://localhost:3001/api/usuarios/editarUsuario/${usuario.idPersona}`,
-        envio,
+        data,
         {
           headers: {
             authorization: usuario.token,
@@ -270,7 +278,7 @@ function MiInformación() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} enctype="multipart/form-data">
         <div className="contenedor-formulario">
           <label htmlFor="selector" className="label">
             <p>NOMBRES *</p>
@@ -465,6 +473,17 @@ function MiInformación() {
                 </MenuItem>
               ))}
             </Select>
+          </label>
+          <label htmlFor="fotoDePerfil" className="label">
+            <p>IMAGEN DE PERFIL</p>
+            <input
+              accept="image/*"
+              id="fotoDePerfil"
+              type="file"
+              name="fotoDePerfil"
+              onChange={handleImagenPerfil}
+              style={{color: "#dc3545"}}
+            />
           </label>
         </div>
 
