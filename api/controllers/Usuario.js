@@ -132,7 +132,7 @@ class UsuarioController {
           profesion,
           estudios,
           intereses,
-          // imagen: req.file.filename,
+          imagen: req.file && req.file.filename,
         }).then((user) => res.status(201).send(user));
       })
       .catch((err) => {
@@ -189,6 +189,14 @@ class UsuarioController {
   }
 
   static editarUsuario(req, res) {
+    //las siguientes propiedades llegan como string
+    //se convierten a su type original
+    req.body.idPais = parseInt(req.body.idPais)
+    req.body.idProvincia = parseInt(req.body.idProvincia)
+    req.body.idLocalidad = parseInt(req.body.idLocalidad)
+    req.body.recibirMails = JSON.parse(req.body.recibirMails)
+    req.body.acepta_marketing = JSON.parse(req.body.acepta_marketing)
+    req.body.idUnidadOrganizacional = JSON.parse(req.body.idUnidadOrganizacional)
     const {
       idPais,
       idProvincia,
@@ -232,7 +240,7 @@ class UsuarioController {
       .set("Authorization", `Bearer ${req.headers.authorization}`)
       .then((updatedUsr) => ({
         usuarioPromise: Usuario.update(
-          { profesion, estudios, intereses },
+          { profesion, estudios, intereses, imagen: req.file && req.file.filename },
           { where: { idPersona: req.params.id } }
         ),
         updatedUsr: JSON.parse(updatedUsr.text),

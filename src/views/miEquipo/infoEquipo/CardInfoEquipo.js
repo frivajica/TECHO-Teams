@@ -11,14 +11,14 @@ export default function CardInfoEquipo({ equipo }) {
   const [sedes, setSedes] = useState("-");
   const [cantMiembros, setCantMiembros] = useState(0);
   const [territorio, setTerritorio] = useState("-");
-
+  console.log("ACAAAAAAAA", equipo.territorioId);
   useEffect(() => {
     const promesas = [
       axios.get("http://localhost:3001/api/regiones/paises"),
       axios.get("http://localhost:3001/api/sedes"),
       axios.get(`http://localhost:3001/api/equipos/cantMiembros/${equipo.id}`),
       axios.get("http://localhost:3001/api/comunidades", {
-        headers: { authorization: getToken() },
+        headers: { authorization: getToken(), pais: equipo.paisId },
       }),
     ];
     Promise.all(promesas)
@@ -53,7 +53,7 @@ export default function CardInfoEquipo({ equipo }) {
         height="340"
         image={
           equipo.img
-            ? equipo.img
+            ? `${process.env.PUBLIC_URL}/uploads/equipos/${equipo.img}`
             : "https://media.discordapp.net/attachments/912709181306449925/918618477298864129/grupo.png"
         }
         alt="sin imagen"
@@ -102,7 +102,7 @@ export default function CardInfoEquipo({ equipo }) {
             </label>
           </div>
           <div>
-            <label>{territorio}</label>
+            <label>{territorio.replace(/([A-Z])/g, " $1")}</label>
           </div>
         </Box>
       </CardContent>

@@ -13,8 +13,10 @@ import { Link } from "react-router-dom";
 import { infoRolesEquipo } from "../../state/cargaDeRoles";
 import { setRol } from "../../state/cargaDeRoles";
 import getToken from "../../utils/getToken";
+import swal from "sweetalert";
 import "./TarjetaRoles.css";
 import axios from "axios";
+import capitalize from "../../utils/capitalize"
 
 export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state }) => {
   const dispatch = useDispatch();
@@ -25,6 +27,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
   });
   const yo = useSelector(({ usuario }) => usuario);
   const [editMode, setEditMode] = useState();
+  const [confirm, setConfirm] = useState(false);
   const [error, setError] = useState(false);
 
   const guardarEditado = async () => {
@@ -43,25 +46,37 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
     dispatch(infoRolesEquipo(form.idEquipo));
   };
   const borrar = () => {
-    dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
-    axios({
-      method: "delete",
-      url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,
-      headers: { idpersona: yo.idPersona, authorization: getToken() },
+    swal({
+      title: "¿Estás seguro?",
+      text: "Esta acción se quedara guardada en el historial del equipo",
+      icon: "warning",
+      buttons: ["Cancelar", "Ok"],
+      dangerMode: true,
     })
-      .catch((err) => console.log({ err }));
-    setEditMode(!editMode);
+    .then((willDelete) => {
+      if (willDelete) {
+        dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
+        axios({
+          method: "delete",
+          url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,
+          headers: { idpersona: yo.idPersona, authorization: getToken() },
+        })
+          .catch((err) => console.log({ err }));
+      }
+      setEditMode(!editMode);
+    }) 
   };
 
   return (
     <div className="tarjeta-roles">
       <div className="rol-imagen">
+        {console.log("this is the img", data.imagenUsr)}
         {yo.isAdmin || yo.isCoordinador ? (
           <Link to={`/${data?.usuarioIdPersona}`}>
             <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
               <img
                 className="avatar"
-                src={data?.img || defaultAvatar}
+                src={data?.imagenUsr ? `${process.env.PUBLIC_URL}/uploads/perfil/${data?.imagenUsr}` : defaultAvatar}
                 alt="Avatar de Usuario"
               />
             </ButtonBase>
@@ -70,7 +85,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
           <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
             <img
               className="avatar"
-              src={data?.img || defaultAvatar}
+              src={data?.imagenUsr ? `${process.env.PUBLIC_URL}/uploads/perfil/${data?.imagenUsr}` : defaultAvatar}
               alt="Avatar de Usuario"
             />
           </ButtonBase>
@@ -98,7 +113,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
         <div className="rol-opciones">
           <h3 id="modificar-rol">{form.rol?.nombre || "Sin rol asignado"}</h3>
           <h3 id="buscar-persona">
-            {data?.nombreApellido || "Persona no asignada"}
+            {capitalize(data?.nombreApellido) || "Persona no asignada"}
           </h3>
         </div>
       )}

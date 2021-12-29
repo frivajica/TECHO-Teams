@@ -8,7 +8,7 @@ import { getRoles } from "../../state/rol";
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import NotFound from "../../views/notFound/NotFound";
+import NotAllowed from "../../views/miEquipo/NotAllowed";
 import axios from "axios";
 
 export const Equipo = () => {
@@ -20,7 +20,6 @@ export const Equipo = () => {
 
   useEffect(() => {
     dispatch(getRoles());
-    console.log("id personita", usuario.idPersona )
     dispatch(getEquipo({id, idpersona: usuario.idPersona, token: usuario.token}))
     .then(({payload}) => payload)
     .then(equipo => equipo? setPermitido(true):setPermitido(false))
@@ -38,7 +37,7 @@ export const Equipo = () => {
         </div>
       );
     } else {
-      return <NotFound />;
+      return <NotAllowed />;
     }
   } else {
     return (

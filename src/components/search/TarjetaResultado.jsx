@@ -1,11 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { ButtonBase } from "@mui/material";
-import { usuario as u } from "../../utils/mockData";
 import { CajaRolesResultado } from "./CajaRolesResultado";
+import capitalize from "../../utils/capitalize"
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
+import { defaultAvatar } from "../../utils/mockData";
+
 import swal from "sweetalert";
 
 export default function TarjetaResultado({ usuarios }) {
@@ -46,12 +48,15 @@ export default function TarjetaResultado({ usuarios }) {
   const addUser = () => {
     axios
       .put(
-        `http://localhost:3001/api/equipos/${equipo.id}/${usuarios.idPersona}`,{}, {
-          headers: { 
+        `http://localhost:3001/api/equipos/${equipo.id}/${usuarios.idPersona}`,
+        {},
+        {
+          headers: {
             Authorization: usuario.token,
-            idPersona: usuario.idPersona
-          }
-        })
+            idPersona: usuario.idPersona,
+          },
+        }
+      )
       .then((res) => {
         res.data === "el equipo no esta activo" &&
           errorAlert("Error", "El equipo no esta activo actualmente");
@@ -72,12 +77,12 @@ export default function TarjetaResultado({ usuarios }) {
             <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
               <img
                 className="avatar"
-                src={!usuarios.imagen ? u.avatar : usuarios.imagen}
+                src={!usuarios.imagen ? defaultAvatar : `${process.env.PUBLIC_URL}/uploads/perfil/${usuarios.imagen}`}  
                 alt="Avatar de Usuario"
               />
             </ButtonBase>
           </div>
-          <h1 className="nombre-usuario">{`${usuarios.nombres} ${usuarios.apellidoPaterno}`}</h1>
+          <h1 className="nombre-usuario">{`${capitalize(usuarios.nombres)} ${capitalize(usuarios.apellidoPaterno)}`}</h1>
           <div className="antiguedad-usuario">
             <span style={{ color: "#1976D2" }}> Profesión: </span>
             {usuarios.profesion}
