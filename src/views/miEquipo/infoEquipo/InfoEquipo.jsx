@@ -24,7 +24,6 @@ export const InfoEquipo = () => {
   const historialDeUsuario = useSelector(
     ({ historialDeUsuario }) => historialDeUsuario
   )
-  const idUser = usuario.idPersona;
 
   const coordinaEquipos = () => {
     const equipo = historialDeUsuario.filter(
@@ -35,14 +34,12 @@ export const InfoEquipo = () => {
     return (equipo.length || usuario.isAdmin || usuario.isCoordinador) ? true : false;
   };
 
-  console.log("elhistorial", historialDeUsuario)
-
 
   function click() {
     equipo.activo
       ? swal({
           title: "¿Estás seguro?",
-          text: "Una vez que lo deshabilites se eliminarán a los integrantes del grupo",
+          text: "Puedes volver a habilitarlo en cualquier momento",
           icon: "warning",
           buttons: ["Cancelar", "Ok"],
           dangerMode: true,

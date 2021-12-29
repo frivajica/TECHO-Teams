@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { infoRolesEquipo } from "../../state/cargaDeRoles";
 import { setRol } from "../../state/cargaDeRoles";
 import getToken from "../../utils/getToken";
+import swal from "sweetalert";
 import "./TarjetaRoles.css";
 import axios from "axios";
 
@@ -25,6 +26,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
   });
   const yo = useSelector(({ usuario }) => usuario);
   const [editMode, setEditMode] = useState();
+  const [confirm, setConfirm] = useState(false);
   const [error, setError] = useState(false);
 
   const guardarEditado = async () => {
@@ -43,14 +45,25 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
     dispatch(infoRolesEquipo(form.idEquipo));
   };
   const borrar = () => {
-    dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
-    axios({
-      method: "delete",
-      url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,
-      headers: { idpersona: yo.idPersona, authorization: getToken() },
+    swal({
+      title: "¿Estás seguro?",
+      text: "Esta acción se quedara guardada en el historial del equipo",
+      icon: "warning",
+      buttons: ["Cancelar", "Ok"],
+      dangerMode: true,
     })
-      .catch((err) => console.log({ err }));
-    setEditMode(!editMode);
+    .then((willDelete) => {
+      if (willDelete) {
+        dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
+        axios({
+          method: "delete",
+          url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,
+          headers: { idpersona: yo.idPersona, authorization: getToken() },
+        })
+          .catch((err) => console.log({ err }));
+      }
+      setEditMode(!editMode);
+    }) 
   };
 
   return (
