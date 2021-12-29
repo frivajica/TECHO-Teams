@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 
 export function CrearEquipo() {
   const navigate = useNavigate();
-  const [imagenEquipo, setImagenEquipo] = useState({})
+  const [imagenEquipo, setImagenEquipo] = useState({});
   const [paises, setPaises] = useState([]);
   const pais = CustomHook("");
   const nombre = CustomHook("");
@@ -47,15 +47,16 @@ export function CrearEquipo() {
   }, [pais.value]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/comunidades", {
-        headers: { authorization: getToken() },
-      })
-      .then((res) => {
-        return setComunidades(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    pais.value &&
+      axios
+        .get("http://localhost:3001/api/comunidades", {
+          headers: { authorization: getToken(), pais: pais.value },
+        })
+        .then((res) => {
+          return setComunidades(res.data);
+        })
+        .catch((err) => console.log(err));
+  }, [pais.value]);
 
   useEffect(() => {
     axios
@@ -97,19 +98,22 @@ export function CrearEquipo() {
 
   const handleImagen = (e) => {
     e.preventDefault();
-    setImagenEquipo(e.target.files[0])
-  }
-  
-  const data = new FormData()
-  data.append("nombre", nombre.value)
-  data.append("cantMiembros", cantidad.value)
-  data.append("activo", true)
-  data.append("detalles", descripcion.value)
-  data.append("paisId", pais.value)
-  data.append("sedeId", sede.value ? sede.value : 0)
-  data.append("territorioId", categoria === "Territorio" ? comunidad.value : null)
-  data.append("categoria", categoria)
-  data.append("area", areas.value)
+    setImagenEquipo(e.target.files[0]);
+  };
+
+  const data = new FormData();
+  data.append("nombre", nombre.value);
+  data.append("cantMiembros", cantidad.value);
+  data.append("activo", true);
+  data.append("detalles", descripcion.value);
+  data.append("paisId", pais.value);
+  data.append("sedeId", sede.value ? sede.value : 0);
+  data.append(
+    "territorioId",
+    categoria === "Territorio" ? comunidad.value : null
+  );
+  data.append("categoria", categoria);
+  data.append("area", areas.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -119,25 +123,22 @@ export function CrearEquipo() {
     if (!parseInt(cantidad.value))
       errorAlert("Error!", "Complete correctamente la cantidad de miembros");
     else {
-    if(imagenEquipo.name) data.append("fotoDeEquipo", imagenEquipo, imagenEquipo.name)
+      if (imagenEquipo.name)
+        data.append("fotoDeEquipo", imagenEquipo, imagenEquipo.name);
       axios
-        .post(
-          `http://localhost:3001/api/equipos/`, 
-            data,
-          {
-            headers: {
-              authorization: loggedUser.token,
-              idPersona: loggedUser.idPersona,
-            },
-          }
-        )
+        .post(`http://localhost:3001/api/equipos/`, data, {
+          headers: {
+            authorization: loggedUser.token,
+            idPersona: loggedUser.idPersona,
+          },
+        })
         .then((res) => {
           successAlert();
           return res.data;
         })
         .then((equipo) => navigate(`/equipo/${equipo.id}`))
-        .catch(err => console.log({err}))
-      }
+        .catch((err) => console.log({ err }));
+    }
   };
 
   return (
@@ -258,16 +259,16 @@ export function CrearEquipo() {
             </label>
 
             <label htmlFor="fotoDeEquipo" className="label">
-            <p>IMAGEN DE EQUIPO</p>
-            <input
-              accept="image/*"
-              id="fotoDeEquipo"
-              type="file"
-              name="fotoDeEquipo"
-              onChange={handleImagen}
-              style={{color: "#dc3545"}}
-            />
-          </label>
+              <p>IMAGEN DE EQUIPO</p>
+              <input
+                accept="image/*"
+                id="fotoDeEquipo"
+                type="file"
+                name="fotoDeEquipo"
+                onChange={handleImagen}
+                style={{ color: "#dc3545" }}
+              />
+            </label>
           </div>
           <div
             style={{
