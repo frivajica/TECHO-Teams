@@ -56,12 +56,13 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
   return (
     <div className="tarjeta-roles">
       <div className="rol-imagen">
+        {console.log("this is the img", data.imagenUsr)}
         {yo.isAdmin || yo.isCoordinador ? (
           <Link to={`/${data?.usuarioIdPersona}`}>
             <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
               <img
                 className="avatar"
-                src={data?.img || defaultAvatar}
+                src={data?.imagenUsr ? `${process.env.PUBLIC_URL}/uploads/perfil/${data?.imagenUsr}` : defaultAvatar}
                 alt="Avatar de Usuario"
               />
             </ButtonBase>
@@ -70,7 +71,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
           <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">
             <img
               className="avatar"
-              src={data?.img || defaultAvatar}
+              src={data?.imagenUsr ? `${process.env.PUBLIC_URL}/uploads/perfil/${data?.imagenUsr}` : defaultAvatar}
               alt="Avatar de Usuario"
             />
           </ButtonBase>
