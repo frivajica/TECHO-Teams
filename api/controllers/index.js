@@ -1,5 +1,5 @@
-const EquipoController = require("./Equipo");
-const {UsuarioController, upload} = require("./Usuario");
+const { EquipoController, uploadEquipo } = require("./Equipo");
+const { UsuarioController, upload } = require("./Usuario");
 const RoleController = require("./Role");
 const RegionesController = require("./Regiones");
 const SedesController = require("./Sedes");
@@ -14,5 +14,6 @@ module.exports = {
   SedesController,
   ComunidadesController,
   AreasController,
-  upload
+  upload,
+  uploadEquipo
 };

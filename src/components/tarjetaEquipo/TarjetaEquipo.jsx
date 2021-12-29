@@ -10,8 +10,8 @@ import "moment/locale/es";
 import { useNavigate } from "react-router-dom";
 moment.locale("es");
 
-export const TarjetaEquipo = ({ final, roles, activo, equipo, puedeVer }) => {
-  const inicio = moment(equipo.createdAt).format("DD MMMM YYYY");
+export const TarjetaEquipo = ({ inicio, final, roles, activo, equipo, puedeVer }) => {
+  inicio = moment(inicio).format("DD MMMM YYYY")
   final = final !== "la actualidad" ? moment(final).format("DD MMMM YYYY") : final;
   const navigate = useNavigate();
 
@@ -39,9 +39,9 @@ export const TarjetaEquipo = ({ final, roles, activo, equipo, puedeVer }) => {
           sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
           id="lista-roles"
         >
-          {roles.map((value) => (
+          {roles.slice().reverse().map((value, i) => (
             <ButtonBase id="ripple" key={value.nombreRol}>
-              <Chip label={value.nombreRol} color="primary" />
+              <Chip label={value.nombreRol} style={{backgroundColor: i === 0 ? "#1976d2" : "#80aaee", color: "white"}} />
             </ButtonBase>
           ))}
         </Box>

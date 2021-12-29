@@ -2,7 +2,6 @@ import "./Usuario.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import Divider from "@mui/material/Divider";
-
 import { useParams } from "react-router-dom";
 import { getById } from "../../state/usuarios";
 import { TarjetaUsuario } from "../../components/tarjetaUsuario/TarjetaUsuario";

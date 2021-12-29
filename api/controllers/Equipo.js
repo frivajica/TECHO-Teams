@@ -1,13 +1,19 @@
-const {
-  Equipo,
-  Usuario,
-  UsuarioEnEquipo,
-  Role,
-  RolEnEquipo,
-} = require("../models");
+const { Equipo, Usuario, UsuarioEnEquipo, Role, RolEnEquipo } = require("../models");
 const generateAxios = require("../utils/generateAxios");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
+const multer = require("multer");
+let fs = require("fs-extra");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads/equipos");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, `${uniqueSuffix}-${file.originalname}`);
+  },
+});
+const upload = multer({ storage: storage });
 
 class EquipoController {
   static async createEquipo(req, res) {
@@ -15,7 +21,15 @@ class EquipoController {
       const coordinador = await Usuario.findOne({
         where: { idPersona: req.headers.idpersona },
       });
-      const newTeam = await Equipo.create(req.body);
+      //las siguientes propiedades llegan como string
+      //se convierten a su type original
+      req.body.cantMiembros = parseInt(req.body.cantMiembros)
+      req.body.activo = JSON.parse(req.body.activo)
+      req.body.paisId = parseInt(req.body.paisId)
+      req.body.sedeId = parseInt(req.body.sedeId)
+      req.body.territorioId = req.body.territorioId === "null" ? null : parseInt(req.body.territorioId)
+
+      const newTeam = await Equipo.create({...req.body, img: req.file && req.file.filename});
 
       const usrEnEquipo = await newTeam
         .addUsuario(coordinador)
@@ -30,21 +44,30 @@ class EquipoController {
         .then((res) => res.data);
 
       await newTeam.createEvento({
+        //se crea el equipo
         //éste evento solo se utiliza en el historial del equipo
         tipo: 0,
         nombreEquipo: newTeam.nombre,
-        nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
+        nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
       });
+
+      const evento1 = await equipo.createEvento({
+          //el coordinador se une al equipo
+          tipo: 1,
+          nombreEquipo: newTeam.nombre,
+          nombreUsuario: coordInfo.nombres+" "+coordInfo.apellidoPaterno
+        });
+      await coordinador.addEvento(evento1); //fecha en la que se unió al equipo, se utiliza en el historial de equipos
 
       //creo otro evento para guardar el rol en el historial del usuario
       //también se mostrará en el historial del equipo
-      const evento = await coordinador.createEvento({
+      const evento2 = await coordinador.createEvento({
         tipo: 2,
         nombreEquipo: newTeam.nombre,
-        nombreUsuario: coordInfo.nombres+coordInfo.apellidoPaterno,
+        nombreUsuario: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
         nombreRol: coordRol.nombre,
       });
-      await newTeam.addEvento(evento); //necesitamos saber en qué equipo cumplió el rol de coordinador
+      await newTeam.addEvento(evento2); //lo relacionamos tambíen con el equipo
 
       return res.status(201).send(newTeam);
     } catch (error) {
@@ -82,7 +105,14 @@ class EquipoController {
   }
 
   static updateEquipo(req, res) {
-    Equipo.update(req.body, { where: { id: req.params.id } })
+    //las siguientes propiedades llegan como string
+    //se convierten a su type original
+    req.body.cantMiembros = parseInt(req.body.cantMiembros)
+    req.body.activo = JSON.parse(req.body.activo)
+    req.body.paisId = parseInt(req.body.paisId)
+    req.body.sedeId = parseInt(req.body.sedeId)
+    req.body.territorioId = req.body.territorioId === "null" ? null : parseInt(req.body.territorioId)
+    Equipo.update({...req.body, img: req.file && req.file.filename}, { where: { id: req.params.id } })
       .then(() => Equipo.findOne({ where: { id: req.params.id } }))
       .then((updatedEquipo) => res.status(200).send(updatedEquipo))
       .catch((err) => res.status(500).send(err));
@@ -121,8 +151,8 @@ class EquipoController {
         //evento para el historial del equipo
         tipo: 1,
         nombreEquipo: equipo.nombre,
-        nombreUsuario: usrInfo.nombres+usrInfo.apellidoPaterno,
-        nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
+        nombreUsuario: usrInfo.nombres+" "+usrInfo.apellidoPaterno,
+        nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
       });
       await usr.addEvento(evento); //para historial de usuario
       return res.send("usuario agregado");
@@ -240,21 +270,21 @@ class EquipoController {
           usuarioIdPersona: req.params.userId,
         },
       });
-      usrEnEquipo.activo === false &&
-        res.status(401).send("El rol esta desactivado");
+      if (usrEnEquipo.activo === false) return res.status(401).send("El usuario no está en el equipo actualmente");
 
       const oldRoleId = usrEnEquipo.roleId; //guardo el viejo para saber que el equipo ya no tiene este rol
       const rol = await Role.findOne({
         where: { id: req.params.roleId },
       });
       rol.activo === false && res.status(401).send("El rol esta desactivado");
+      const usr = await Usuario.findOne({
+        where: { idPersona: req.params.userId },
+      });
+      if (rol.id === "1" && !usr.isCoordinador) return res.status(401).send("el usuario no tiene autoridad para ser coordinador")
 
       await usrEnEquipo.setRole(rol); //relaciono rol con tabla intermedia
 
       //info para crear evento:
-      const usr = await Usuario.findOne({
-        where: { idPersona: req.params.userId },
-      });
       const equipo = await Equipo.findOne({ where: { id: req.params.id } });
       const server = generateAxios(req.headers.authorization);
       const usrInfo = await server
@@ -266,8 +296,8 @@ class EquipoController {
       const evento = await equipo.createEvento({
         tipo: 2,
         nombreEquipo: equipo.nombre,
-        nombreUsuario: usrInfo.nombres+usrInfo.apellidoPaterno,
-        nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
+        nombreUsuario: usrInfo.nombres+" "+usrInfo.apellidoPaterno,
+        nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
         nombreRol: rol.nombre,
       });
       await usr.addEvento(evento); // <-- ^^^relaciono el evento con el equipo y con el usuario
@@ -367,8 +397,8 @@ class EquipoController {
       const evento = await equipo.createEvento({
         tipo: -1,
         nombreEquipo: equipo.nombre,
-        nombreUsuario: usrInfo.nombres+usrInfo.apellidoPaterno,
-        nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno
+        nombreUsuario: usrInfo.nombres+" "+usrInfo.apellidoPaterno,
+        nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno
       });
       const usuario = await Usuario.findOne({
         where: { idPersona: req.params.userId },
@@ -391,7 +421,7 @@ class EquipoController {
       equipo
         .createEvento({
           tipo: -2,
-          nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
+          nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
           nombreEquipo: equipo.nombre,
         })
         .then(() => res.status(201).send(equipo))
@@ -412,7 +442,7 @@ class EquipoController {
       equipo
         .createEvento({
           tipo: 3,
-          nombreCoord: coordInfo.nombres+coordInfo.apellidoPaterno,
+          nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
           nombreEquipo: equipo.nombre,
         })
         .then(() => res.status(200).send(equipo));
@@ -429,4 +459,4 @@ class EquipoController {
   }
 }
 
-module.exports = EquipoController;
+module.exports = { EquipoController, uploadEquipo: upload.single("fotoDeEquipo") };

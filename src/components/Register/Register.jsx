@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import { styled } from "@mui/material/styles";
 
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,9 +16,6 @@ import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
 
-/* const Input = styled("input")({
-  display: "none",
-}); */
 
 const initialForm = {
   nombres: "",
@@ -156,6 +152,7 @@ function Register() {
   const localidad = CustomHook("");
 
   //inputs
+  const [imagenPerfil, setImagenPerfil] = useState({})
   const [recibirMails, setRecibirMails] = useState(0);
   const [intereses, setIntereses] = useState([]);
   const [genero, setGenero] = useState("Prefiero no decirlo");
@@ -204,6 +201,11 @@ function Register() {
     setIntereses(value);
   };
 
+  const imageHandler = e => {
+    e.preventDefault()
+    setImagenPerfil(e.target.files[0])
+  }
+
   const successAlert = () => {
     swal({
       title: "Registro exitoso!",
@@ -222,27 +224,26 @@ function Register() {
     });
   };
 
-  let envio = {
-    ...form,
-    idPais: parseInt(pais.value),
-    idProvincia: provincia.value ? parseInt(provincia.value) : 0,
-    idLocalidad: localidad.value ? parseInt(localidad.value) : 0,
-    estudios: estudios.value,
-    intereses: JSON.stringify(intereses),
-    apellidoMaterno: apellidoMaterno.value,
-    acepta_marketing: recibirMails,
-    recibirMails: recibirMails,
-    telefono: "0",
-    sexo: genero,
-    idUnidadOrganizacional: 0,
-    //imagen: document.getElementById("fotoDePerfil").value
-  };
+  const data = new FormData()
+  for(let campo in form) {
+    data.append(`${campo}`, form[campo])
+  }
+  data.append("idPais", parseInt(pais.value))
+  data.append("idProvincia", provincia.value ? parseInt(provincia.value) : 0)
+  data.append("idLocalidad", localidad.value ? parseInt(localidad.value) : 0)
+  data.append("estudios", estudios.value)
+  data.append("intereses", JSON.stringify(intereses))
+  data.append("apellidoMaterno", apellidoMaterno.value)
+  data.append("acepta_marketing", recibirMails)
+  data.append("recibirMails", recibirMails)
+  data.append("telefono", "0")
+  data.append("sexo", genero)
+  data.append("idUnidadOrganizacional", 0)
 
   console.log(errors);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (Object.keys(errors).length !== 0) {
       return errorAlert("Complete los campos obligatorios correctamente");
     } else if (!pais.value) {
@@ -250,8 +251,9 @@ function Register() {
     } else if (!intereses.length) {
       return errorAlert("Complete los campos obligatorios correctamente");
     } else {
+      if(imagenPerfil.name) data.append("fotoDePerfil", imagenPerfil, imagenPerfil.name)
       axios
-        .post("http://localhost:3001/api/usuarios/registrar", envio)
+        .post("http://localhost:3001/api/usuarios/registrar", data)
         .then((res) => res.data)
         .then(() => successAlert())
         .then(() => navigate("/"))
@@ -481,7 +483,7 @@ function Register() {
               onChange={handleChange}
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
               renderValue={(selected) => (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5}}>
                   {selected.map((value) => (
                     <Chip key={value} label={value} />
                   ))}
@@ -500,19 +502,17 @@ function Register() {
               ))}
             </Select>
           </label>
-          {/* <label htmlFor="fotoDePerfil" className="label">
+          <label htmlFor="fotoDePerfil" className="label">
             <p>IMAGEN DE PERFIL</p>
-            <Input
+            <input
               accept="image/*"
               id="fotoDePerfil"
-              multiple
               type="file"
               name="fotoDePerfil"
+              onChange={imageHandler}
+              style={{color: "#dc3545"}}
             />
-            <Button variant="contained" component="span">
-              Cargar
-            </Button>
-          </label> */}
+          </label>
           <label htmlFor="selector" className="label">
             <p>GÉNERO </p>
             <div className="radio">
@@ -527,7 +527,6 @@ function Register() {
                 Masculino
               </label>
             </div>
-
             <div className="radio">
               <label>
                 <input

@@ -11,7 +11,7 @@ Router.get("/filtrar/mail/:mail", UsuarioController.getUsuarioByMail);
 
 Router.post("/", UsuarioController.crearUsuarioEquipos);
 
-Router.post("/registrar", /* upload, */ UsuarioController.crearUsuario);
+Router.post("/registrar", upload, UsuarioController.crearUsuario);
 
 Router.post("/login", UsuarioController.loginInUsuario);
 
@@ -30,7 +30,7 @@ Router.post(
   UsuarioController.crearUsuarioEquipos
 );
 
-Router.put("/editarUsuario/:id", UsuarioController.editarUsuario);
+Router.put("/editarUsuario/:id", upload, UsuarioController.editarUsuario);
 
 Router.put("/setCoord/:id", checkAdmin, UsuarioController.changeCoordAuth);
 

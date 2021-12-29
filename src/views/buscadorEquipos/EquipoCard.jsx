@@ -27,7 +27,7 @@ const EquipoCard = ({ equipo }) => {
           height="140"
           image={
             equipo.img
-              ? equipo.img
+              ? `${process.env.PUBLIC_URL}/uploads/equipos/${equipo.img}`
               : "https://media.discordapp.net/attachments/912709181306449925/918618477298864129/grupo.png"
           }
           alt="imagen de equipo"

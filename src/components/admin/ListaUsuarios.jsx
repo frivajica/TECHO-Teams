@@ -22,6 +22,7 @@ const pageSize = 5;
 export default function ListaUsuarios({ setRows, rows }) {
   const [page, setPage] = React.useState(0);
   const usuario = useSelector((state) => state.usuario);
+  const usrs = useSelector((state) => state.usuarios);
   const [showMakeAdmin, setShowMakeAdmin] = React.useState(false);
   const [usuarioSelec, setUsuarioSelec]= React.useState({});
   const [paises, setPaises] = React.useState([]);
@@ -127,7 +128,7 @@ export default function ListaUsuarios({ setRows, rows }) {
           .catch((err) => console.error(err));
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [usrs]);
 
   return (
     <div style={{display: "flex", flexDirection: "column", alignItems: "center" }}>

@@ -9,16 +9,8 @@ class ComunidadesController {
     );
     try {
       const fixingData = data
-        .replace(/\\n/g, "\\n")
-        .replace(/\\'/g, "\\'")
-        .replace(/\\"/g, '\\"')
-        .replace(/\\&/g, "\\&")
-        .replace(/\\r/g, "\\r")
-        .replace(/\\t/g, "\\t")
-        .replace(/\\b/g, "\\b")
-        .replace(/\\f/g, "\\f")
-        .replaceAll(" ", "")
-        .replaceAll("\n", "");
+        .replace(/ /g, "")
+        .replace(/\n/g, "");
 
       const fixedJSON = fixingData.slice(0, fixingData.length - 2) + "]";
       const finalData = JSON.parse(fixedJSON);
