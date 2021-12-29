@@ -102,7 +102,7 @@ export default function CardInfoEquipo({ equipo }) {
             </label>
           </div>
           <div>
-            <label>{territorio}</label>
+            <label>{territorio.replace(/([A-Z])/g, ' $1')}</label>
           </div>
         </Box>
       </CardContent>

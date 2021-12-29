@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { infoRolesEquipo } from '../../../state/cargaDeRoles'
 import { useParams } from "react-router-dom";
 import { handlePersonas } from "../../../hooks/handlePersonas";
+import { Skeleton } from "../../../components/tarjetaRoles/Skeleton"
 import "./Conformacion.css";
 
 export const Conformacion = () => {
@@ -29,7 +30,7 @@ export const Conformacion = () => {
           </p>
         )}
       </div>
-      {infoEquipo.map && (
+      {infoEquipo.map ? (
         <div id="modificar-roles">
           {infoEquipo?.map((e) => (
             <TarjetaRoles
@@ -43,7 +44,7 @@ export const Conformacion = () => {
             />
           ))}
         </div>
-      )}
+      ) : ([1, 2, 3, 4, 5].map((e, i) => <Skeleton key={`sk-${i}`} />))}
       <Divider variant="middle" className="divisor" />
     </div>
   );

@@ -8,5 +8,5 @@ const db = new Sequelize("bwgpm6fqaz25rnk0nnmj", "uglfayeryrkjedwt", "WVymCqqIln
 });
 
 
-
 module.exports = db;
+

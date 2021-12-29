@@ -7,8 +7,6 @@ const useForm = (inic) => {
       ? setForm({ ...form, [name]: event.target.checked })
       : setForm({ ...form, [name]: value });
   };
-  console.log("FORM", form);
-
   return { form, handleChange };
 };
 
