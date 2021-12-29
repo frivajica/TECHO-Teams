@@ -23,6 +23,7 @@ export const infoRolesEquipo = createAsyncThunk("ROLES_EN_EQUIPO", (idEquipo) =>
 });
 
 const cargaDeRolesReducer = createReducer({}, {
+  [setRol]: (state, action) => action.payload,
   [rolesListos.fulfilled]: (state, action) => action.payload,
   [infoRolesEquipo.fulfilled]: (state, action) => action.payload,
 });

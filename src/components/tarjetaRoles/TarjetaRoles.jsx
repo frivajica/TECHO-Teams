@@ -11,50 +11,44 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Link } from "react-router-dom";
 import { infoRolesEquipo } from "../../state/cargaDeRoles";
+import { setRol } from "../../state/cargaDeRoles";
 import getToken from "../../utils/getToken";
 import "./TarjetaRoles.css";
 import axios from "axios";
 
-export const TarjetaRoles = ({
-  disabled,
-  reRender,
-  state,
-  data,
-  id,
-  opcPersns = [],
-  opcRoles = [],
-}) => {
+export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state }) => {
   const dispatch = useDispatch();
   const { form, handleChange } = useForm({
     idEquipo: id,
-    rol: { nombre: data?.role },
-    user: { id: data?.usuarioIdPersona },
+    rol: { nombre: data.role?.nombre, id: data.role?.id},
+    user: { id: data.usuarioIdPersona },
   });
   const yo = useSelector(({ usuario }) => usuario);
   const [editMode, setEditMode] = useState();
+  const [error, setError] = useState(false);
+
   const guardarEditado = async () => {
+    if (form.rol.id === 1 && !data.usuario.isCoordinador && !data.usuario.isAdmin) return setError(true)
+
     setEditMode(!editMode);
-    await axios({
+    if (form.rol.id && form.user.id && form.idEquipo) await axios({
       method: "put",
-      url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}/${form.rol.id}`,
+      url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user.id}/${form.rol.id}`,
       headers: {
         idpersona: yo.idPersona,
         authorization: getToken(),
       },
     })
-      .then((res) => res.data)
       .catch((err) => console.log({ err }));
     dispatch(infoRolesEquipo(form.idEquipo));
   };
   const borrar = () => {
+    dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
     axios({
       method: "delete",
       url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,
       headers: { idpersona: yo.idPersona, authorization: getToken() },
     })
-      .then((res) => {
-        dispatch(infoRolesEquipo(form.idEquipo));
-      })
       .catch((err) => console.log({ err }));
     setEditMode(!editMode);
   };
@@ -84,29 +78,25 @@ export const TarjetaRoles = ({
       </div>
       {editMode ? (
         <div className="rol-opciones">
+          {error ? (<p style={{ color: 'red', fontSize: '0.8em' }}>El usuario no puede ser coordinador, {yo.isAdmin ? 'necesitas darle autoridad en la sección AdminLand.': 'consulte a un admin para darle autoridad.'}</p>) : null}
           <FormControl id="modificar-rol" variant="standard">
             <Autocompletar
               opciones={opcRoles}
               freeSolo
               etiqueta="Rol"
               onChange={handleChange}
+              setError={setError}
               name="rol"
-              defVal={data?.role?.nombre}
+              defVal={form.rol?.nombre}
             />
           </FormControl>
-          <div id="buscar-persona">
-            <Autocompletar
-              opciones={opcPersns}
-              etiqueta="Persona"
-              onChange={handleChange}
-              name="user"
-              defVal={data?.nombreApellido}
-            />
-          </div>
+          <h3 id="buscar-persona">
+            {data?.nombreApellido || "Persona no asignada"}
+          </h3>
         </div>
       ) : (
         <div className="rol-opciones">
-          <h3 id="modificar-rol">{data?.role?.nombre || "Sin rol asignado"}</h3>
+          <h3 id="modificar-rol">{form.rol?.nombre || "Sin rol asignado"}</h3>
           <h3 id="buscar-persona">
             {data?.nombreApellido || "Persona no asignada"}
           </h3>

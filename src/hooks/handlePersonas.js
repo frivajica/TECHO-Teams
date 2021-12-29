@@ -5,7 +5,7 @@ export const handlePersonas = (users) => {
   });
 
   arregloPersonas.forEach((e) => {
-    personas.push({ id: e.usuarioIdPersona, nombre: e.nombreApellido });
+    personas.push({ id: e.usuarioIdPersona, nombre: e.nombreApellido});
   });
 
   return personas

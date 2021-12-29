@@ -44,21 +44,30 @@ class EquipoController {
         .then((res) => res.data);
 
       await newTeam.createEvento({
+        //se crea el equipo
         //éste evento solo se utiliza en el historial del equipo
         tipo: 0,
         nombreEquipo: newTeam.nombre,
         nombreCoord: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
       });
 
+      const evento1 = await equipo.createEvento({
+          //el coordinador se une al equipo
+          tipo: 1,
+          nombreEquipo: newTeam.nombre,
+          nombreUsuario: coordInfo.nombres+" "+coordInfo.apellidoPaterno
+        });
+      await coordinador.addEvento(evento1); //fecha en la que se unió al equipo, se utiliza en el historial de equipos
+
       //creo otro evento para guardar el rol en el historial del usuario
       //también se mostrará en el historial del equipo
-      const evento = await coordinador.createEvento({
+      const evento2 = await coordinador.createEvento({
         tipo: 2,
         nombreEquipo: newTeam.nombre,
         nombreUsuario: coordInfo.nombres+" "+coordInfo.apellidoPaterno,
         nombreRol: coordRol.nombre,
       });
-      await newTeam.addEvento(evento); //necesitamos saber en qué equipo cumplió el rol de coordinador
+      await newTeam.addEvento(evento2); //lo relacionamos tambíen con el equipo
 
       return res.status(201).send(newTeam);
     } catch (error) {
@@ -261,21 +270,21 @@ class EquipoController {
           usuarioIdPersona: req.params.userId,
         },
       });
-      usrEnEquipo.activo === false &&
-        res.status(401).send("El rol esta desactivado");
+      if (usrEnEquipo.activo === false) return res.status(401).send("El usuario no está en el equipo actualmente");
 
       const oldRoleId = usrEnEquipo.roleId; //guardo el viejo para saber que el equipo ya no tiene este rol
       const rol = await Role.findOne({
         where: { id: req.params.roleId },
       });
       rol.activo === false && res.status(401).send("El rol esta desactivado");
+      const usr = await Usuario.findOne({
+        where: { idPersona: req.params.userId },
+      });
+      if (rol.id === "1" && !usr.isCoordinador) return res.status(401).send("el usuario no tiene autoridad para ser coordinador")
 
       await usrEnEquipo.setRole(rol); //relaciono rol con tabla intermedia
 
       //info para crear evento:
-      const usr = await Usuario.findOne({
-        where: { idPersona: req.params.userId },
-      });
       const equipo = await Equipo.findOne({ where: { id: req.params.id } });
       const server = generateAxios(req.headers.authorization);
       const usrInfo = await server
