@@ -37,9 +37,18 @@ export default function EditarEquipo() {
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/sedes")
-      .then((res) => setSedes(res.data))
+      .then((res) =>
+        setSedes(
+          res.data.filter(
+            (sedesPais) =>
+              sedesPais.id_pais.toString() === pais.value.toString()
+          )
+        )
+      )
       .catch((err) => console.log(err));
   }, [pais.value]);
+
+  console.log(typeof pais.value);
 
   useEffect(() => {
     axios
