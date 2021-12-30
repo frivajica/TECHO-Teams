@@ -37,6 +37,8 @@ Router.get(
   /* isCoordinatorHere, */ EquipoController.getUsuariosDeEquipo
 );
 
+Router.get("/:id/checkAdminCoordinator", EquipoController.isAdminOrCoordinatorHere)
+
 Router.get("/:id/roles", /* isCoordinatorHere, */ EquipoController.getRoles);
 
 Router.post("/:id/agregarRol", /* isCoordinatorHere, */ EquipoController.addRole);

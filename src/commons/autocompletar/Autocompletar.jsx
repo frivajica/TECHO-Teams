@@ -12,6 +12,7 @@ export const Autocompletar = ({ disabled, opciones, etiqueta, onChange, defVal, 
           getOptionLabel={(option) => option?.rol || option?.nombre}
           defaultValue={{nombre: defVal || ''}}
           onChange={(e,val) => {onChange(e, val, name); setError(false)}}
+          clearOnBlurr={false}
           renderInput={(params) => (
             <TextField {...params} variant="standard" label={etiqueta} />
           )}

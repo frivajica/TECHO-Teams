@@ -8,7 +8,7 @@ import { handlePersonas } from "../../../hooks/handlePersonas";
 import { Skeleton } from "../../../components/tarjetaRoles/Skeleton"
 import "./Conformacion.css";
 
-export const Conformacion = () => {
+export const Conformacion = ({setCantMiembros, isAdminOrCoord}) => {
   const infoEquipo = useSelector(({ cargaDeRoles }) => cargaDeRoles);
   const roles = useSelector(({ rol }) => rol);
   const idEquipo = useParams().id;
@@ -25,8 +25,7 @@ export const Conformacion = () => {
         <h2>Conformación</h2>
         {(yo.isAdmin || yo.isCoordinador) && (
           <p>
-            Definí la composición de tu equipo, indicando los roles y si es
-            fundamental para el funcionamiento del mismo.
+            Definí la composición de tu equipo, indicando los roles.
           </p>
         )}
       </div>
@@ -34,6 +33,8 @@ export const Conformacion = () => {
         <div id="modificar-roles">
           {infoEquipo?.map((e) => (
             <TarjetaRoles
+              isAdminOrCoord={isAdminOrCoord}
+              setCantMiembros={setCantMiembros}
               data={e}
               disabled
               key={`${idEquipo}${e.usuarioIdPersona}${e.role}`}
