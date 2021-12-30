@@ -169,6 +169,8 @@ function Register() {
     setRecibirMails((prev) => (prev === 0 ? 1 : 0));
   };
 
+  const justIntegers = (event) => event.key === 8 || event.key === 46 ? true : !isNaN(Number(event.key) && event.key!=='')
+
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/regiones/paises")
@@ -239,8 +241,6 @@ function Register() {
   data.append("telefono", "0")
   data.append("sexo", genero)
   data.append("idUnidadOrganizacional", 0)
-
-  console.log(errors);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -393,11 +393,14 @@ function Register() {
           </label>
 
           <label htmlFor="selector" className="label">
-            <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
+            <p>NUMERO DE DOCUMENTO *</p>
             <TextField
               className="text-field"
               size="small"
-              type="text"
+              type="number"
+              inputProps={{
+                min: 0,
+              }}
               name="dni"
               onBlur={handleBlur}
               onChange={handleChanges}
@@ -451,7 +454,7 @@ function Register() {
             <TextField
               className="text-field"
               size="small"
-              type="text"
+              type="number"
               name="telefonoMovil"
               onBlur={handleBlur}
               onChange={handleChanges}
