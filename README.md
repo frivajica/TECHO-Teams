@@ -1,28 +1,43 @@
-![logop5](https://p5-hall-of-fame.s3.amazonaws.com/p5logo.png)
+<div align="center">
+	<img src="/src/assets/imagenes/home/banner.png" alt="TECHO Banner"/>
+</div>
 
-# ![logo Techo](https://techo.org/wp-content/uploads/2021/09/logo-techo.svg) - Plataforma de Gestión de Equipos
+---
 
-Proyecto profesional del coding bootcamp de Plataforma5. Consistió en el desarrollo de una plataforma de gestión de equipos para TECHO Argentina.
-Hasta antes de este proyecto, TECHO contaba con información, en su base de datos, de sus voluntarios y las actividades en las que participaron. El desarrollo de esta plataforma permitió agregar información de los equipos de trabajo, de los roles de los voluntarios en los equipos y nueva información personal de los voluntarios. Además, el proyecto implicó la integración con la API de actividades con la que TECHO contaba.
+# TECHO-Teams
 
-### Características y funcionalidades implementadas:
+This project was made using ReactJs, Redux, MaterialUI, Express, Sequelize and MySQL.
 
-- Conectarse con la API del sistema de actividades de TECHO para obtener datos de las personas.
-- Registro de nuevos usarios y logueo.
-- Perfil de usuario: visualización y modificación de sus datos; visualización de equipos en los que participa y participó; visualización de actividades en las que participó.
-- Equipos: visualización de datos del equipo, integrantes y roles; ver historial de equipo; agregar o quitar integrantes; deshabilitar y habilitar equipos; modificar roles de integrantes.
-- Asignación de jerarquías de usuario: voluntario/a de equipo, coordinador/a de equipo, coordinador/a general y administrador/a.
-- Funciones de coordinador/a: crear equipos, modificar equipos, agregar integrantes, habilitar/deshabilitar equipos.
-- Funciones de administrador/a: junto con las de coordinador/a, designar coordinadores y administradores.
+## Objective
 
-### Tecnologías utilizadas:
-#### Front-end:
-- React
-- Redux
-- Material UI
+To have a platform in which TECHO administrators can manage activities, events, teams and volunteers easily at the same time as volunteers can consult information about next projects and activities.
 
-#### Back-end:
-- NodeJS
-- Express
-- MySQL
-- Sequelize
+## Specifications
+
+This web app must conform to the brand manual available *[here](https://techo.org/wp-content/uploads/2021/11/Manual-de-Marca-TECHO.pdf)*.
+
+### `npm start`
+
+Runs the app in the development mode (**Back-End and Front-End**).
+
+### `npm run client`
+
+Launches a client-only instance of the app (**Front-End**).
+
+### `npm run server`
+
+Launches a server-side-only instance of the app (**Back-End**).
+
+### `npm run seed`
+
+Seeds the database with a set of mock data for testing purposes.
+
+## To have in mind
+
+This project's database settings include the use of a cluster to perform CRUD operations in real time.\
+This can be changed to a local based work modifying the **/api/config/database.js** file.
+
+---
+
+[TECHO's main site](techo.org) \
+[TECHO's GitHub account](https://github.com/techo)
