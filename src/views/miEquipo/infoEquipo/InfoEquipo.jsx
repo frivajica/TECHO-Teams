@@ -15,7 +15,7 @@ import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
-export const InfoEquipo = () => {
+export const InfoEquipo = ({cantMiembros, setCantMiembros, isAdminOrCoord}) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -24,16 +24,6 @@ export const InfoEquipo = () => {
   const historialDeUsuario = useSelector(
     ({ historialDeUsuario }) => historialDeUsuario
   )
-
-  const coordinaEquipos = () => {
-    const equipo = historialDeUsuario.filter(
-      historial =>
-        (historial.equipo?.id == id &&
-        historial.roles[0]?.nombreRol == "coordinador/a")
-    );
-    return (equipo.length || usuario.isAdmin || usuario.isCoordinador) ? true : false;
-  };
-
 
   function click() {
     equipo.activo
@@ -103,7 +93,7 @@ export const InfoEquipo = () => {
               <p>{equipo.detalles}</p>
             </label>
             <div className="Buttons mt">
-              {(equipo.activo && coordinaEquipos()) && (
+              {(equipo.activo && isAdminOrCoord) && (
                 <Link to="/search" style={{ textDecoration: "none" }}>
                   <Button
                     variant="contained"
@@ -118,7 +108,7 @@ export const InfoEquipo = () => {
         </div>
 
         <div>
-          <CardInfoEquipo equipo={equipo} />
+          <CardInfoEquipo equipo={equipo} cantMiembros={cantMiembros} setCantMiembros={setCantMiembros} />
           <div className="Buttons mt">
             <div>
               <Button
@@ -128,7 +118,7 @@ export const InfoEquipo = () => {
                 Historia
               </Button>
             </div>
-            { coordinaEquipos() &&
+            { isAdminOrCoord &&
             <>
             <div>
               <Button
@@ -140,7 +130,7 @@ export const InfoEquipo = () => {
               </Button>
             </div>
             <div>
-              {equipo.activo &&
+              {(equipo.activo && isAdminOrCoord) &&
                 <Button
                   variant="contained"
                   onClick={() => navigate(`/equipo/${equipo.id}/editar`)}

@@ -1,3 +1,4 @@
+import {useEffect} from "react"
 import FormControl from "@mui/material/FormControl";
 import ButtonBase from "@mui/material/ButtonBase";
 import { Autocompletar } from "../../commons/autocompletar/Autocompletar";
@@ -18,7 +19,7 @@ import "./TarjetaRoles.css";
 import axios from "axios";
 import capitalize from "../../utils/capitalize"
 
-export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state }) => {
+export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state, setCantMiembros, isAdminOrCoord }) => {
   const dispatch = useDispatch();
   const { form, handleChange } = useForm({
     idEquipo: id,
@@ -31,7 +32,8 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
   const [error, setError] = useState(false);
 
   const guardarEditado = async () => {
-    if (form.rol.id === 1 && !data.usuario.isCoordinador && !data.usuario.isAdmin) return setError(true)
+    if (!form.rol) return;
+    if (form.rol?.id === 1 && !data.usuario.isCoordinador && !data.usuario.isAdmin) return setError(true)
 
     setEditMode(!editMode);
     if (form.rol.id && form.user.id && form.idEquipo) await axios({
@@ -55,6 +57,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
     })
     .then((willDelete) => {
       if (willDelete) {
+        setCantMiembros((miembros) => miembros - 1 )
         dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
         axios({
           method: "delete",
@@ -64,7 +67,8 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
           .catch((err) => console.log({ err }));
       }
       setEditMode(!editMode);
-    }) 
+    })
+
   };
 
   return (
@@ -97,7 +101,6 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
           <FormControl id="modificar-rol" variant="standard">
             <Autocompletar
               opciones={opcRoles}
-              freeSolo
               etiqueta="Rol"
               onChange={handleChange}
               setError={setError}
@@ -130,7 +133,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state })
           </ButtonBase>
         </div>
       ) : (
-        (yo.isAdmin || yo.isCoordinador) && (
+         isAdminOrCoord && (
           <div className="rol-icons">
             <ButtonBase onClick={() => setEditMode(!editMode)} id="item-icon">
               <ModeEditOutlineIcon color="action" />

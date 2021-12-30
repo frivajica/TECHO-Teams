@@ -14,11 +14,23 @@ import axios from "axios";
 export const Equipo = () => {
   const [trigger, setTrigger] = useState(false);
   const [permitido, setPermitido] = useState(false);
+  const [cantMiembros, setCantMiembros] = useState(0);
+  const [isAdminOrCoord, setIsAdminOrCoord] = useState(false)
   const dispatch = useDispatch();
   const { id } = useParams();
   const usuario = useSelector(({ usuario }) => usuario);
 
   useEffect(() => {
+    axios
+    .get(`http://localhost:3001/api/equipos/${id}/checkAdminCoordinator`, {
+      headers: {
+        authorization: usuario.token,
+        idPersona: usuario.idPersona
+      }
+    })
+    .then(res => setIsAdminOrCoord(res.data))
+    .catch(err => console.log(err))
+
     dispatch(getRoles());
     dispatch(getEquipo({id, idpersona: usuario.idPersona, token: usuario.token}))
     .then(({payload}) => payload)
@@ -32,8 +44,8 @@ export const Equipo = () => {
     if (permitido) {
       return (
         <div>
-          <InfoEquipo />
-          <Conformacion />
+          <InfoEquipo isAdminOrCoord={isAdminOrCoord} cantMiembros={cantMiembros} setCantMiembros={setCantMiembros} />
+          <Conformacion isAdminOrCoord={isAdminOrCoord} setCantMiembros={setCantMiembros} />
         </div>
       );
     } else {
