@@ -2,8 +2,6 @@ const express = require("express");
 const Router = express.Router();
 const { EquipoController, uploadEquipo } = require("../controllers");
 const {
-  checkAdmin,
-  checkAuth,
   belongsToEquipo,
   isAdminOrCoordinator,
   isAdminOrCoordinatorHere,
@@ -11,7 +9,7 @@ const {
 
 Router.post("/", isAdminOrCoordinator, uploadEquipo, EquipoController.createEquipo);
 
-Router.get("/", /* checkAuthAndAdmin, */ EquipoController.getEquipos);
+Router.get("/", EquipoController.getEquipos);
 
 Router.get("/:id", belongsToEquipo, EquipoController.getOneEquipo);
 
@@ -21,27 +19,27 @@ Router.put("/desactivar/:id", isAdminOrCoordinatorHere, EquipoController.deactiv
 
 Router.put("/activar/:id", isAdminOrCoordinatorHere, EquipoController.activateEquipo);
 
-Router.get("/:id/historial", /* checkAuth, */ EquipoController.getHistory);
+Router.get("/:id/historial", EquipoController.getHistory);
 
-Router.get("/:id/usuarios", /* checkAuth, */ EquipoController.getUsers);
+Router.get("/:id/usuarios", EquipoController.getUsers);
 
 Router.get("/cantMiembros/:id", EquipoController.getCantMiembros);
 
 Router.get(
   "/:id/rolesEnEquipo",
-  /* isCoordinatorHere, */ EquipoController.getRolesEnEquipo
+  EquipoController.getRolesEnEquipo
 );
 
 Router.get(
   "/:id/usuariosDeEquipo",
-  /* isCoordinatorHere, */ EquipoController.getUsuariosDeEquipo
+  EquipoController.getUsuariosDeEquipo
 );
 
-Router.get("/:id/checkAdminCoordinator", EquipoController.isAdminOrCoordinatorHere)
+Router.get("/:id/checkAdminCoordinator", isAdminOrCoordinatorHere)
 
-Router.get("/:id/roles", /* isCoordinatorHere, */ EquipoController.getRoles);
+Router.get("/:id/roles", EquipoController.getRoles);
 
-Router.post("/:id/agregarRol", /* isCoordinatorHere, */ EquipoController.addRole);
+Router.post("/:id/agregarRol", EquipoController.addRole);
 
 Router.put("/:id/:userId", isAdminOrCoordinatorHere, EquipoController.addUser);
 

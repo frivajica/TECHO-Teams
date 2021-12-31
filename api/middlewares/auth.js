@@ -6,12 +6,9 @@ const checkAdmin = async (req, res, next) => {
     return res.status(401).send('Usuario no es admin');
 };
 
-const checkAuth = (req, res, next) => {
-  //esperando endpoint de actividades
-};
-
 const isAdminOrCoordinatorHere = async (req, res, next) => {
-  console.log("SE EJECUTO IS ADMIN OR COORDINATOR HERE !")
+  const isMiddleware = req.route.path !== "/:id/checkAdminCoordinator"
+  console.log("SE EJECUTO IS ADMIN OR COORDINATOR HERE !", req.route.path, isMiddleware)
   try {
     const usrEnEquipo = await UsuarioEnEquipo.findOne({
       where: {
@@ -22,7 +19,7 @@ const isAdminOrCoordinatorHere = async (req, res, next) => {
     });
     if (usrEnEquipo && usrEnEquipo?.activo) {
       console.log("PERTENECE AL EQUIPO COMO COORDINADOR")
-      return next(); 
+      return isMiddleware? next() : res.send(true); 
     } else {
       console.log("NO PERTENECE AL EQUIPO")
       const usuario = await Usuario.findOne({
@@ -36,7 +33,7 @@ const isAdminOrCoordinatorHere = async (req, res, next) => {
           usuario.sedeIdCoord === equipo.sedeId
           ) {
         console.log("ES COORDINADOR GENERAL O ADMIN")
-        return next();
+        return isMiddleware? next() : res.send(true);
       } else {
         console.log("JOACO NO ES COORDINADOR!!")
         return res.status(401).send("El usuario no tiene acceso como coordinador");
@@ -70,7 +67,6 @@ const belongsToEquipo = (req, res, next) => {
 
 module.exports = {
   checkAdmin,
-  checkAuth,
   isAdminOrCoordinatorHere,
   isAdminOrCoordinator,
   belongsToEquipo
