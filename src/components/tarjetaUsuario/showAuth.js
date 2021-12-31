@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const showAuth = async (usr, setAuth) => {
-    if (usr.isAdmin) return setAuth("Administrador.")
+    if (usr.isAdmin) return setAuth(usr.sexo === "Femenino"? "Administradora." : "Administrador")
     else if (usr.isCoordinador) {
-      let Auth = "Coordinador.";
+      let Auth = usr.sexo === "Femenino"? "Coordinadora." : "Coordinador.";
       if (usr.areaCoord) {
         await axios.get("http://localhost:3001/api/regiones/paises")
         .then(res => res.data.map(pais => { if (pais.id === usr.paisIdCoord) Auth += "\nÁrea: "+usr.areaCoord+" ("+pais.nombre+")."}))
