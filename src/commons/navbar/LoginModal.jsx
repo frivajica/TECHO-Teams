@@ -15,6 +15,7 @@ import { loginRequest } from "../../state/usuario";
 import { useDispatch, useSelector } from "react-redux";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const { in: open, children, onEnter, onExited, ...other } = props;
@@ -68,6 +69,23 @@ const successAlert = () => {
   });
 };
 
+const pending = () => {
+  Swal.fire({
+    title: 'Custom width, padding, color, background.',
+    width: 600,
+    padding: '3em',
+    color: '#716add',
+    background: '#fff url(/images/trees.png)',
+    backdrop: `
+      rgba(0,0,123,0.4)
+      url("/images/nyan-cat.gif")
+      left top
+      no-repeat
+    `
+  })
+}
+
+
 const LoginModal = ({ open, handleClose }) => {
   const mail = CustomHook("");
   const password = CustomHook("");
@@ -85,10 +103,19 @@ const LoginModal = ({ open, handleClose }) => {
         mail: mail.value,
         password: password.value,
         errorAlert,
-        successAlert,
+    
         
       })
-    ).then(() => handleClose());
+    )
+    .then((data)=>{ 
+      if (data.type === "LOGIN/fulfilled")
+       {
+        successAlert()
+
+         
+        } 
+  })
+    .then(() => handleClose());
   };
  
 

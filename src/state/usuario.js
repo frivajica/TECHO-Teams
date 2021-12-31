@@ -23,10 +23,7 @@ export const loginRequest = createAsyncThunk(
             "Recorda verificar tu email para ingresar"
           );
         else {
-          successAlert(
-            "Biendenidx",
-            "Te has logeadx correctamente!"
-          )
+         
           return res.data;}
       })
       .catch(() => errorAlert());
@@ -53,6 +50,7 @@ const usuarioReducer = createReducer(
   {
     [setUsuario]: (state, action) => action.payload,
     [loginRequest.fulfilled]: (state, action) => action.payload,
+    [loginRequest.pending]: (state, action) =>  action.payload,
     [logoutRequest.fulfilled]: (state, action) => action.payload,
   }
 );

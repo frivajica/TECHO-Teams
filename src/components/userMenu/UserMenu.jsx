@@ -13,7 +13,8 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logoutRequest, setUsuario } from "../../state/usuario";
 import Swal from 'sweetalert2'
-
+import background from "../../assets/imagenes/LogOut/techobakgroud.jpg"
+import techoLogo from "../../assets/imagenes/LogOut/techo-png.png"
 export const UserMenu = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,11 +28,11 @@ export const UserMenu = () => {
     Swal.fire({
   title: '¡Gracias por tu trabajo!',
   text: '¡Te esperamos pronto!',
-  imageUrl: 'https://www.expoknews.com/wp-content/uploads/2020/05/techo-.png',
+  imageUrl: `${techoLogo}`,
   imageWidth: 400,
   imageHeight: 200,
   imageAlt: 'Techo Logout',
-  background: '#fff url(https://www.telam.com.ar/thumbs/bluesteel/advf/imagenes/2021/10/6176c8368d3b4_900.jpg)',
+  background: `#fff url(${background})`,
   color:"#FFFFFF",
   confirmButtonText:"Hasta pronto",
   timer:5000,

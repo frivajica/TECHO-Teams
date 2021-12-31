@@ -8,6 +8,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import Avatar from '@mui/material/Avatar';
+
+
 import { CustomHook } from "../../hooks/CustomHook";
 import { useValidation } from "../../hooks/useValidation";
 //import "../../components/Register.css";
@@ -121,6 +125,7 @@ function MiInformación() {
   console.log(provincias);
   //inputs
   const [imagenPerfil, setImagenPerfil] = useState({});
+  const [imageUrl, setImageUrl] = useState(null);
   const [recibirMails, setRecibirMails] = useState(
     usuario.recibirMails === 1 ? 1 : 0
   );
@@ -164,6 +169,10 @@ function MiInformación() {
   const handleMail = () => {
     setRecibirMails((prev) => (prev === 0 ? 1 : 0));
   };
+
+ 
+
+
 
   useEffect(() => {
     axios
@@ -220,6 +229,7 @@ function MiInformación() {
     e.preventDefault();
     setImagenPerfil(e.target.files[0])
   };
+ 
 
   //FormData.set() transforma en string los integer y booleans, 
   //por lo que en el back se convierten a su tipo original
@@ -487,9 +497,17 @@ function MiInformación() {
               id="fotoDePerfil"
               type="file"
               name="fotoDePerfil"
-              onChange={handleImagenPerfil}
-              style={{color: "#dc3545"}}
+              onChange={handleImagenPerfil}        
+                style={{ display: 'none' }} 
             />
+             <Button style={{height:"35%"}} id="ingresar" startIcon={<AddPhotoAlternateIcon />}variant="contained" component="span">
+             
+             
+             Subir
+           </Button>
+      
+       
+           {imagenPerfil? imagenPerfil.name : null}
           </label>
         </div>
 

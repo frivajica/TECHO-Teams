@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import getToken from "../../utils/getToken";
 import { useSelector } from "react-redux";
-
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 export function CrearEquipo() {
   const navigate = useNavigate();
   const [imagenEquipo, setImagenEquipo] = useState({});
@@ -25,6 +25,7 @@ export function CrearEquipo() {
   const areas = CustomHook("");
   const [categoria, setCategoria] = useState("");
   const loggedUser = useSelector((state) => state.usuario);
+ 
 
   useEffect(() => {
     axios
@@ -96,6 +97,7 @@ export function CrearEquipo() {
     });
   };
 
+
   const handleImagen = (e) => {
     e.preventDefault();
     setImagenEquipo(e.target.files[0]);
@@ -140,7 +142,19 @@ export function CrearEquipo() {
         .catch((err) => console.log({ err }));
     }
   };
+ 
 
+  const onKeyPress = (e) => {
+   
+    let value = e.target.value;
+    if (isNaN(+value)) {
+      errorAlert("Error!", "ingrese solo numeros")
+    
+      
+    }
+
+  };
+  
   return (
     <div>
       <div id="register">
@@ -180,6 +194,9 @@ export function CrearEquipo() {
                 name="nombres"
                 {...cantidad}
                 required
+                onKeyUp={onKeyPress}
+                placeholder="Ingrese solo números"
+               
               />
             </label>
             <label htmlFor="selector" className="label">
@@ -258,18 +275,27 @@ export function CrearEquipo() {
               </select>
             </label>
 
-            <label htmlFor="fotoDeEquipo" className="label">
+          </div>
+          <label htmlFor="fotoDeEquipo" className="label"   style={{ marginLeft:"15%",width:"14%"}} >
               <p>IMAGEN DE EQUIPO</p>
+               
               <input
+              style={{ display: 'none' }} 
                 accept="image/*"
                 id="fotoDeEquipo"
                 type="file"
                 name="fotoDeEquipo"
                 onChange={handleImagen}
-                style={{ color: "#dc3545" }}
+                
               />
-            </label>
-          </div>
+              <Button  id="ingresar" startIcon={<AddPhotoAlternateIcon />}variant="contained" component="span">
+             
+             
+          Subir
+        </Button>
+
+        {imagenEquipo? imagenEquipo.name : null}
+        </label>
           <div
             style={{
               display: "flex",

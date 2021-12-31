@@ -7,5 +7,5 @@ export const CustomHook = (initialState) => {
     setValue(e.target.value);
   };
 
-  return { value, onChange };
+  return { value, onChange,setValue };
 };
