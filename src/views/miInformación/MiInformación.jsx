@@ -249,7 +249,6 @@ function MiInformación() {
   data.set("sexo", genero)
   data.set("idUnidadOrganizacional", 0)
 
-  // ESTE POST HAY QUE VER
   const handleSubmit = (e) => {
     e.preventDefault();
     if(imagenPerfil.name) data.set("fotoDePerfil", imagenPerfil, imagenPerfil.name)
@@ -291,7 +290,7 @@ function MiInformación() {
       <form onSubmit={handleSubmit} enctype="multipart/form-data">
         <div className="contenedor-formulario">
           <label htmlFor="selector" className="label">
-            <p>NOMBRES *</p>
+            <p>NOMBRES</p>
             <TextField
               className="text-field"
               size="small"
@@ -306,7 +305,7 @@ function MiInformación() {
           </label>
 
           <label htmlFor="apellidoPaterno" className="label">
-            <p>APELLIDO PATERNO *</p>
+            <p>APELLIDO PATERNO</p>
             <TextField
               className="text-field"
               size="small"
@@ -323,7 +322,7 @@ function MiInformación() {
           </label>
 
           <label htmlFor="selector" className="label">
-            <p>FECHA DE NACIMIENTO *</p>
+            <p>FECHA DE NACIMIENTO</p>
             <input
               onBlur={handleBlur}
               onChange={handleChanges}
@@ -343,7 +342,7 @@ function MiInformación() {
           </label>
 
           <label htmlFor="selector" className="label">
-            <p>NUMERO DE DOCUMENTO/PASAPORTE *</p>
+            <p>NUMERO DE DOCUMENTO/PASAPORTE</p>
             <TextField
               className="text-field"
               size="small"
@@ -361,7 +360,7 @@ function MiInformación() {
           </label>
 
           <label htmlFor="selector" className="label">
-            <p>PROFESIÓN / OCUPACIÓN*</p>
+            <p>PROFESIÓN / OCUPACIÓN</p>
             <TextField
               className="text-field"
               size="small"
@@ -376,7 +375,7 @@ function MiInformación() {
           </label>
 
           <label htmlFor="selector" className="label">
-            <p>PAÍS *</p>
+            <p>PAÍS</p>
             <select
               value={pais.value}
               onChange={(e) => {
@@ -387,7 +386,6 @@ function MiInformación() {
               className="form-select"
             >
               {paises.map((pais) =>
-                // -> initialForm.pais -> 13
                 pais.id === initialForm.idPais ? (
                   <option key={pais.id} value={pais.id} selected="selected">
                     {pais.nombre}
@@ -402,7 +400,7 @@ function MiInformación() {
           </label>
 
           <label htmlFor="selector" className="label">
-            <p>TELEFONO MOVIL *</p>
+            <p>TELEFONO MOVIL</p>
             <TextField
               className="text-field"
               size="small"
@@ -462,7 +460,7 @@ function MiInformación() {
           </label>
 
           <label htmlFor="selector" className="label">
-            <p>TEMÁTICAS/ÁREAS DE INTÉRES *</p>
+            <p>TEMÁTICAS/ÁREAS DE INTÉRES</p>
             <Select
               id="demo-multiple-chip"
               multiple
@@ -529,14 +527,6 @@ function MiInformación() {
           <Button id="ingresar" size="medium" variant="outlined" type="submit">
             GUARDAR
           </Button>
-          {/* <Button
-            className="redButton"
-            size="medium"
-            variant="outlined"
-            id="ingresar"
-          >
-            ELIMINAR MI CUENTA
-          </Button> */}
         </div>
       </form>
     </div>

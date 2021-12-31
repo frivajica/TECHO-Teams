@@ -206,7 +206,14 @@ export default function EditarEquipo() {
             </label>
             <label htmlFor="selector" className="label">
               <p>PAÍS</p>
-              <select {...pais} className="form-select">
+              <select 
+                value={pais.value}
+                onChange={(e)=> {
+                  pais.onChange(e)
+                  sede.setValue(null)
+                }} 
+                className="form-select" 
+                >
                 {paises.map((pais) => (
                   <option key={pais.id} value={pais.id}>
                     {pais.nombre}

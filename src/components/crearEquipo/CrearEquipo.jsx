@@ -132,7 +132,7 @@ export function CrearEquipo() {
           headers: {
             authorization: loggedUser.token,
             idPersona: loggedUser.idPersona,
-          },
+          }
         })
         .then((res) => {
           successAlert();
