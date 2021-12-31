@@ -125,7 +125,7 @@ function MiInformación() {
   console.log(provincias);
   //inputs
   const [imagenPerfil, setImagenPerfil] = useState({});
-  const [imageUrl, setImageUrl] = useState(null);
+
   const [recibirMails, setRecibirMails] = useState(
     usuario.recibirMails === 1 ? 1 : 0
   );
@@ -504,7 +504,7 @@ function MiInformación() {
              Subir
            </Button>
       
-       
+           
            {imagenPerfil? imagenPerfil.name : null}
           </label>
         </div>

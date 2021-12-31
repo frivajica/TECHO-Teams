@@ -293,7 +293,7 @@ export function CrearEquipo() {
              
           Subir
         </Button>
-
+        
         {imagenEquipo? imagenEquipo.name : null}
         </label>
           <div
