@@ -10,7 +10,7 @@ export const setUsuario = createAction("SET_USARIO");
 
 export const loginRequest = createAsyncThunk(
   "LOGIN",
-  ({ mail, password, errorAlert }) => {
+  ({ mail, password, errorAlert,successAlert}) => {
     return axios
       .post("http://143.198.238.253:3001/api/usuarios/login", {
         mail,
@@ -22,7 +22,9 @@ export const loginRequest = createAsyncThunk(
             "Error de logueo",
             "Recorda verificar tu email para ingresar"
           );
-        else return res.data;
+        else {
+         
+          return res.data;}
       })
       .catch(() => errorAlert());
   }
@@ -48,6 +50,7 @@ const usuarioReducer = createReducer(
   {
     [setUsuario]: (state, action) => action.payload,
     [loginRequest.fulfilled]: (state, action) => action.payload,
+    [loginRequest.pending]: (state, action) =>  action.payload,
     [logoutRequest.fulfilled]: (state, action) => action.payload,
   }
 );

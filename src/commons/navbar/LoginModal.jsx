@@ -1,5 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import Button from "@mui/material/Button";
 import { useSpring, animated } from "react-spring/";
 import Modal from "@mui/material/Modal";
@@ -13,6 +15,7 @@ import { loginRequest } from "../../state/usuario";
 import { useDispatch, useSelector } from "react-redux";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const { in: open, children, onEnter, onExited, ...other } = props;
@@ -57,13 +60,41 @@ const errorAlert = (title = "Login fallido", text = "Intentalo nuevamente") => {
     icon: "error",
   });
 };
+const successAlert = () => {
+  swal({
+    title: "¡Bienvenidx!",
+    text: "Te has logeado correctamente!",
+    icon: "success",
+    timer: "5000",
+  });
+};
+
+const pending = () => {
+  Swal.fire({
+    title: 'Custom width, padding, color, background.',
+    width: 600,
+    padding: '3em',
+    color: '#716add',
+    background: '#fff url(/images/trees.png)',
+    backdrop: `
+      rgba(0,0,123,0.4)
+      url("/images/nyan-cat.gif")
+      left top
+      no-repeat
+    `
+  })
+}
+
 
 const LoginModal = ({ open, handleClose }) => {
   const mail = CustomHook("");
   const password = CustomHook("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const usuario = useSelector((state) => state.usuario);
+  const usuarios = useSelector((state) => state.usuarios);
+ 
+
+
 
   const handleLoginClick = (e) => {
     e.preventDefault();
@@ -72,9 +103,21 @@ const LoginModal = ({ open, handleClose }) => {
         mail: mail.value,
         password: password.value,
         errorAlert,
+    
+        
       })
-    ).then(() => handleClose());
+    )
+    .then((data)=>{ 
+      if (data.type === "LOGIN/fulfilled")
+       {
+        successAlert()
+
+         
+        } 
+  })
+    .then(() => handleClose());
   };
+ 
 
   return (
     <Modal
@@ -96,9 +139,11 @@ const LoginModal = ({ open, handleClose }) => {
           >
             BIENVENIDX A TECHO
           </Typography>
+
           <hr />
           <br />
           <form onSubmit={handleLoginClick}>
+
             <Box id="formBox">
               <TextField
                 size="small"

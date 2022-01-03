@@ -12,7 +12,9 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logoutRequest, setUsuario } from "../../state/usuario";
-
+import Swal from 'sweetalert2'
+import background from "../../assets/imagenes/LogOut/techobakgroud.jpg"
+import techoLogo from "../../assets/imagenes/LogOut/techo-png.png"
 export const UserMenu = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,9 +24,25 @@ export const UserMenu = () => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const alertLogut =()=>{
+    Swal.fire({
+  title: '¡Gracias por tu trabajo!',
+  text: '¡Te esperamos pronto!',
+  imageUrl: `${techoLogo}`,
+  imageWidth: 400,
+  imageHeight: 200,
+  imageAlt: 'Techo Logout',
+  background: `#fff url(${background})`,
+  color:"#FFFFFF",
+  confirmButtonText:"Hasta pronto",
+  timer:5000,
+
+})
+  }
   const handleAction = () => {
     dispatch(logoutRequest());
     navigate("/");
+    alertLogut()
     handleClose();
   };
   const handleClose = () => {

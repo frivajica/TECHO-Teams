@@ -119,44 +119,6 @@ class EquipoController {
       .catch((err) => res.status(500).send(err));
   }
 
-  static async isAdminOrCoordinatorHere(req, res) {
-    console.log("SE EJECUTO IS ADMIN OR COORDINATOR HERE !")
-  try {
-    const usrEnEquipo = await UsuarioEnEquipo.findOne({
-      where: {
-        usuarioIdPersona: req.headers.idpersona,
-        equipoId: req.params.id,
-        roleId: 1,
-      },
-    });
-    if (usrEnEquipo && usrEnEquipo?.activo) {
-      console.log("PERTENECE AL EQUIPO COMO COORDINADOR")
-      return res.send(true) 
-    } else {
-      console.log("NO PERTENECE AL EQUIPO")
-      const usuario = await Usuario.findOne({
-        where: { idPersona: req.headers.idpersona },
-      });
-      const equipo = await Equipo.findOne({ where: { id: req.params.id } });
-      if (
-        usuario.isAdmin ||
-        (usuario.areaCoord === equipo.area &&
-          usuario.paisIdCoord === equipo.paisId) ||
-          usuario.sedeIdCoord === equipo.sedeId
-          ) {
-        console.log("ES COORDINADOR GENERAL O ADMIN")
-        return res.send(true)
-      } else {
-        console.log("JOACO NO ES COORDINADOR!!")
-        return res.status(401).send("El usuario no tiene acceso como coordinador");
-      }
-    }
-  } catch (error) {
-    console.log(error);
-    return res.status(500).send(error)
-  }
-  }
-
   static async addUser(req, res) {
     try {
       const equipo = await Equipo.findOne({ where: { id: req.params.id } });

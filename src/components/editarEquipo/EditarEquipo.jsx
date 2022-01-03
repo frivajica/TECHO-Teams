@@ -8,6 +8,7 @@ import swal from "sweetalert";
 import getToken from "../../utils/getToken";
 import { useDispatch, useSelector } from "react-redux";
 import { updateEquipo } from "../../state/equipo";
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 export default function EditarEquipo() {
   const usuario = useSelector((state) => state.usuario);
@@ -148,7 +149,18 @@ export default function EditarEquipo() {
         .catch((err) => console.log({ err }));
       }
   };
+ 
 
+
+  const onKeyPress = (e) => {
+   
+    let value = e.target.value;
+    if (isNaN(+value)) {
+      errorAlert("Error!", "ingrese solo numeros");
+      
+    }
+
+  };
   return (
     <div>
       <div id="register">
@@ -186,6 +198,8 @@ export default function EditarEquipo() {
                 name="nombres"
                 {...cantidad}
                 required
+                onKeyUp={onKeyPress}
+                placeholder="Ingrese solo números"
               />
             </label>
             <label htmlFor="selector" className="label">
@@ -274,13 +288,21 @@ export default function EditarEquipo() {
             <label htmlFor="fotoDeEquipo" className="label">
             <p>IMAGEN DE EQUIPO</p>
             <input
+              style={{ display: 'none' }} 
               accept="image/*"
               id="fotoDeEquipo"
               type="file"
               name="fotoDeEquipo"
               onChange={handleImagen}
-              style={{color: "#dc3545"}}
+              // style={{color: "#dc3545"}}
             />
+            <Button id="ingresar" startIcon={<AddPhotoAlternateIcon />}variant="contained" component="span">
+             
+             
+             Subir
+           </Button>
+           {imagenEquipo? imagenEquipo.name : null}
+          
           </label>
           </div>
           <div
