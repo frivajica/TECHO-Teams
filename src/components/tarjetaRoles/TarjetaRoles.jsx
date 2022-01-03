@@ -38,7 +38,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state, s
     setEditMode(!editMode);
     if (form.rol.id && form.user.id && form.idEquipo) await axios({
       method: "put",
-      url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user.id}/${form.rol.id}`,
+      url: `http://143.198.238.253:3001/api/equipos/${form.idEquipo}/${form.user.id}/${form.rol.id}`,
       headers: {
         idpersona: yo.idPersona,
         authorization: getToken(),
@@ -61,7 +61,7 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state, s
         dispatch(setRol(state.filter(e => e.usuarioIdPersona !== data.usuarioIdPersona)))
         axios({
           method: "delete",
-          url: `http://localhost:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,
+          url: `http://143.198.238.253:3001/api/equipos/${form.idEquipo}/${form.user?.id}`,
           headers: { idpersona: yo.idPersona, authorization: getToken() },
         })
           .catch((err) => console.log({ err }));

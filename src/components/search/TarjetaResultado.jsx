@@ -48,7 +48,7 @@ export default function TarjetaResultado({ usuarios }) {
   const addUser = () => {
     axios
       .put(
-        `http://localhost:3001/api/equipos/${equipo.id}/${usuarios.idPersona}`,
+        `http://143.198.238.253:3001/api/equipos/${equipo.id}/${usuarios.idPersona}`,
         {},
         {
           headers: {

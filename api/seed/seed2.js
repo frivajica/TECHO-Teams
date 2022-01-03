@@ -21,7 +21,7 @@ const getUsuarios = () => {
 
 const addUserToEquipos = async (equipo, num1, num2, token) => {
     for (let i = num1; i < num2; i++) {
-       await axios.put(`http://localhost:3001/api/equipos/${equipos[equipo].id}/${usuarios[i].idPersona}`,{}, {headers: {authorization: token, idPersona: "791718"}})
+       await axios.put(`http://143.198.238.253:3001/api/equipos/${equipos[equipo].id}/${usuarios[i].idPersona}`,{}, {headers: {authorization: token, idPersona: "791718"}})
        .then(()=>{
             readline.clearLine(process.stdout);
             readline.cursorTo(process.stdout, 0, null)
@@ -52,7 +52,7 @@ const getRoles = () => {
 
 let loading = 0;
 const agregarRoles = async (userEq, rol, token) => {
-        await axios.put(`http://localhost:3001/api/equipos/${usuariosEnEquipos[userEq].equipoId}/${usuariosEnEquipos[userEq].usuarioIdPersona}/${roles[rol].id}`,{}, {headers: {authorization: token, idPersona: "791718"}})
+        await axios.put(`http://143.198.238.253:3001/api/equipos/${usuariosEnEquipos[userEq].equipoId}/${usuariosEnEquipos[userEq].usuarioIdPersona}/${roles[rol].id}`,{}, {headers: {authorization: token, idPersona: "791718"}})
         .then(()=>{
             readline.clearLine(process.stdout);
             readline.cursorTo(process.stdout, 0, null)
@@ -65,7 +65,7 @@ const agregarRoles = async (userEq, rol, token) => {
 
 
 const login = async () => {
-    return await axios.post("http://localhost:3001/api/usuarios/login", {
+    return await axios.post("http://143.198.238.253:3001/api/usuarios/login", {
         mail: "mariana.gutierrez@gmail.com",
         password: "123456789"
       })

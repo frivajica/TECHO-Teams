@@ -15,7 +15,7 @@ export const rolesListos = createAsyncThunk("CARGA_DE_ROLES", (newState) => {
 export const infoRolesEquipo = createAsyncThunk("ROLES_EN_EQUIPO", (idEquipo) => {
   return axios({
     method: "get",
-    url: `http://localhost:3001/api/equipos/${idEquipo}/rolesEnEquipo`,
+    url: `http://143.198.238.253:3001/api/equipos/${idEquipo}/rolesEnEquipo`,
     headers: { authorization: getToken() },
   })
     .then((res) => res.data)

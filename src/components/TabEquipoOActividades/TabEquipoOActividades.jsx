@@ -19,7 +19,7 @@ export default function TabEquipoOActividades() {
   const [actividades, setActividades] = useState([]);
   useEffect(() => {
    axios
-   .get("http://localhost:3001/api/usuarios/misActividades", {
+   .get("http://143.198.238.253:3001/api/usuarios/misActividades", {
      headers: {
        authorization: getToken()
      }

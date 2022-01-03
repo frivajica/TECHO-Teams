@@ -28,14 +28,14 @@ export function CrearEquipo() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/regiones/paises")
+      .get("http://143.198.238.253:3001/api/regiones/paises")
       .then((res) => setPaises(res.data))
       .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/sedes")
+      .get("http://143.198.238.253:3001/api/sedes")
       .then((res) =>
         setSedes(
           res.data.filter(
@@ -49,7 +49,7 @@ export function CrearEquipo() {
   useEffect(() => {
     pais.value &&
       axios
-        .get("http://localhost:3001/api/comunidades", {
+        .get("http://143.198.238.253:3001/api/comunidades", {
           headers: { authorization: getToken(), pais: pais.value },
         })
         .then((res) => {
@@ -60,7 +60,7 @@ export function CrearEquipo() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/areas")
+      .get("http://143.198.238.253:3001/api/areas")
       .then((res) => setArea(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -126,7 +126,7 @@ export function CrearEquipo() {
       if (imagenEquipo.name)
         data.append("fotoDeEquipo", imagenEquipo, imagenEquipo.name);
       axios
-        .post(`http://localhost:3001/api/equipos/`, data, {
+        .post(`http://143.198.238.253:3001/api/equipos/`, data, {
           headers: {
             authorization: loggedUser.token,
             idPersona: loggedUser.idPersona,

@@ -30,14 +30,14 @@ export default function EditarEquipo() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/regiones/paises")
+      .get("http://143.198.238.253:3001/api/regiones/paises")
       .then((res) => setPaises(res.data))
       .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/sedes")
+      .get("http://143.198.238.253:3001/api/sedes")
       .then((res) =>
         setSedes(
           res.data.filter(
@@ -53,7 +53,7 @@ export default function EditarEquipo() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/comunidades", {
+      .get("http://143.198.238.253:3001/api/comunidades", {
         headers: { authorization: getToken(), pais: pais.value },
       })
       .then((res) => {
@@ -64,7 +64,7 @@ export default function EditarEquipo() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/areas")
+      .get("http://143.198.238.253:3001/api/areas")
       .then((res) => setArea(res.data))
       .catch((err) => console.log(err));
   }, []);

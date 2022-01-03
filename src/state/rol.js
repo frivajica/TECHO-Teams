@@ -9,7 +9,7 @@ export const setRol = createAction("SET_ROL");
 
 export const getRoles = createAsyncThunk("GET_INFO_DE_ROLES", () => {
     return axios
-      .get(`http://localhost:3001/api/roles`)
+      .get(`http://143.198.238.253:3001/api/roles`)
       .then((res) => res.data)
       .catch((err) => {
         console.log("ERROR", err);

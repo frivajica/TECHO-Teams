@@ -10,7 +10,7 @@ export default function CrearArea() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3001/api/roles", {
+      .post("http://143.198.238.253:3001/api/roles", {
         nombre: rol,
       })
       .then(() => {

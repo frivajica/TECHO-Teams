@@ -16,7 +16,7 @@ export default function EventosEquipo() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/api/equipos/${equipoId}/historial`)
+        axios.get(`http://143.198.238.253:3001/api/equipos/${equipoId}/historial`)
         .then(res => res.data)
         .then(hist => setHistorial(hist.reverse()))
         .then(() => setShow(true));

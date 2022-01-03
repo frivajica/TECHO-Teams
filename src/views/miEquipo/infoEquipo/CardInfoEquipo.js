@@ -15,10 +15,10 @@ export default function CardInfoEquipo({ equipo, cantMiembros, setCantMiembros }
 
   useEffect(() => {
     const promesas = [
-      axios.get("http://localhost:3001/api/regiones/paises"),
-      axios.get("http://localhost:3001/api/sedes"),
-      axios.get(`http://localhost:3001/api/equipos/cantMiembros/${equipo.id}`),
-      axios.get("http://localhost:3001/api/comunidades", {
+      axios.get("http://143.198.238.253:3001/api/regiones/paises"),
+      axios.get("http://143.198.238.253:3001/api/sedes"),
+      axios.get(`http://143.198.238.253:3001/api/equipos/cantMiembros/${equipo.id}`),
+      axios.get("http://143.198.238.253:3001/api/comunidades", {
         headers: { authorization: getToken(), pais: equipo.paisId },
       }),
     ];

@@ -43,7 +43,7 @@ export default function ModalCoord({
     if (area && !pais.id) return setPaisRequired(true)
     axios
       .put(
-        `http://localhost:3001/api/usuarios/setCoord/${usuarioSelec.idPersona}`,
+        `http://143.198.238.253:3001/api/usuarios/setCoord/${usuarioSelec.idPersona}`,
         {
           isCoordinador: isCoord,
           sedeIdCoord: sede.id,
@@ -84,7 +84,7 @@ export default function ModalCoord({
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/areas")
+      .get("http://143.198.238.253:3001/api/areas")
       .then((res) => setAreas(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -92,7 +92,7 @@ export default function ModalCoord({
   useEffect(() => {
     if (!pais.id) setArea(null)
     axios
-      .get("http://localhost:3001/api/sedes")
+      .get("http://143.198.238.253:3001/api/sedes")
       .then((res) =>
         setSedes(res.data.filter((sedesPais) => sedesPais.id_pais === pais.id))
       )

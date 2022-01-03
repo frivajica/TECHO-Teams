@@ -10,7 +10,7 @@ export const setUsuarios = createAction("SET_USARIOS");
 
 export const toggleAdmin = createAsyncThunk("TOGGLE_ADMIN", ({ idPersona, errorAlert }) => {
   return axios
-    .post(`http://localhost:3001/api/usuarios/${idPersona}/toogleAdmin`, {
+    .post(`http://143.198.238.253:3001/api/usuarios/${idPersona}/toogleAdmin`, {
       //Donde targetUserId es la id del usuario al que se le otorgarán permisos de admin
       headers: {
         authorization: getToken(),
@@ -31,7 +31,7 @@ export const getByMail = createAsyncThunk(
   "GET_USER_BY_MAIL",
   ({ mail, errorAlert }) => {
     return axios
-      .get(`http://localhost:3001/api/usuarios/filtrar/mail/${mail}`, {
+      .get(`http://143.198.238.253:3001/api/usuarios/filtrar/mail/${mail}`, {
         headers: { Authorization: getToken() },
       })
       .then((res) => res.data)
@@ -48,7 +48,7 @@ export const getById = createAsyncThunk(
   "GET_USER_BY_ID",
   ({ id, errorAlert }) => {    
     return axios
-      .get(`http://localhost:3001/api/usuarios/filtrar/id/${id}`, {
+      .get(`http://143.198.238.253:3001/api/usuarios/filtrar/id/${id}`, {
         headers: { Authorization: getToken() },
       })
       .then((res) => res.data)

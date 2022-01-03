@@ -167,14 +167,14 @@ function MiInformación() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/regiones/paises")
+      .get("http://143.198.238.253:3001/api/regiones/paises")
       .then((res) => setPaises(res.data))
       .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/api/regiones/paises/${pais.value}/provincias`)
+      .get(`http://143.198.238.253:3001/api/regiones/paises/${pais.value}/provincias`)
       .then((res) => setProvincias(res.data))
       .catch((err) => console.log(err));
   }, [pais.value]);
@@ -182,7 +182,7 @@ function MiInformación() {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:3001/api/regiones/paises/${pais.value}/provincias/${provincia.value}/localidades`
+        `http://143.198.238.253:3001/api/regiones/paises/${pais.value}/provincias/${provincia.value}/localidades`
       )
       .then((res) => setLocalidades(res.data))
       .catch((err) => console.log(err));
@@ -244,7 +244,7 @@ function MiInformación() {
     if(imagenPerfil.name) data.set("fotoDePerfil", imagenPerfil, imagenPerfil.name)
     axios
       .put(
-        `http://localhost:3001/api/usuarios/editarUsuario/${usuario.idPersona}`,
+        `http://143.198.238.253:3001/api/usuarios/editarUsuario/${usuario.idPersona}`,
         data,
         {
           headers: {

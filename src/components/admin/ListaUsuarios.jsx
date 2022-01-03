@@ -53,7 +53,7 @@ export default function ListaUsuarios({ setRows, rows }) {
     let offset = (newPage + 1) * pageSize - pageSize;
     let limit = (newPage + 1) * pageSize;
     axios
-      .get("http://localhost:3001/api/usuarios", {
+      .get("http://143.198.238.253:3001/api/usuarios", {
         headers: { authorization: usuario.token, offset, limit },
       })
       .then((res) => res.data)
@@ -110,14 +110,14 @@ export default function ListaUsuarios({ setRows, rows }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/regiones/paises")
+      .get("http://143.198.238.253:3001/api/regiones/paises")
       .then((res) => {
         setPaises(res.data);
         return res.data;
       })
       .then((paises) => {
         axios
-          .get("http://localhost:3001/api/usuarios", {
+          .get("http://143.198.238.253:3001/api/usuarios", {
             headers: { authorization: usuario.token, offset: page * pageSize, limit: page * pageSize + pageSize  },
           })
           .then((res) => res.data)

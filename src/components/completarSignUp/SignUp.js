@@ -134,7 +134,7 @@ function SignUp() {
 
     if (handleFormValidation()) {
       axios
-        .post("http://localhost:3001/api/usuarios/registrarDesdeActividades", {
+        .post("http://143.198.238.253:3001/api/usuarios/registrarDesdeActividades", {
           idPersona: usuario.idPersona,
           profesion: profesion.value,
           estudios: estudios.value,

@@ -22,7 +22,7 @@ export const Equipo = () => {
 
   useEffect(() => {
     axios
-    .get(`http://localhost:3001/api/equipos/${id}/checkAdminCoordinator`, {
+    .get(`http://143.198.238.253:3001/api/equipos/${id}/checkAdminCoordinator`, {
       headers: {
         authorization: usuario.token,
         idPersona: usuario.idPersona
