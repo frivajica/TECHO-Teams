@@ -31,7 +31,6 @@ export default function CardInfoEquipo({ equipo, cantMiembros, setCantMiembros }
           (sede) => sede.id === equipo.sedeId && setSedes(sede.nombre)
         );
         setCantMiembros(respuestas[2].data.length);
-        console.log("---->", respuestas[2])
         respuestas[3].data.map(
           (barrio) =>
             parseInt(barrio.id) === equipo.territorioId &&

@@ -47,7 +47,6 @@ export const HistorialEquipos = ({ historialDeUsuario, actividades }) => {
           {!rolesCargados
             ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => <Skeleton key={n} />)
             : equipoOActividades() || seleccionado.map((e, i) => {
-                console.log("this is e",e)
                 return seleccionado === historialDeUsuario ? (
                   <TarjetaEquipo
                     key={i}

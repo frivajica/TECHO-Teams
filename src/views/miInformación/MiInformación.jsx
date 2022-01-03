@@ -118,7 +118,6 @@ function MiInformación() {
   const [paises, setPaises] = useState([]);
   const [provincias, setProvincias] = useState([]);
   const [localidades, setLocalidades] = useState([]);
-  console.log(provincias);
   //inputs
   const [imagenPerfil, setImagenPerfil] = useState({});
   const [recibirMails, setRecibirMails] = useState(
@@ -155,7 +154,6 @@ function MiInformación() {
   const pais = CustomHook(initialForm.idPais);
   const provincia = CustomHook(initialForm.idProvincia);
   const localidad = CustomHook(initialForm.idLocalidad);
-  console.log(provincia);
   const { form, errors, handleChanges, handleBlur } = useValidation(
     initialForm,
     validationsForm
@@ -194,7 +192,6 @@ function MiInformación() {
     const {
       target: { value },
     } = event;
-    console.log("------> valuess", value);
     setIntereses(value);
   };
 

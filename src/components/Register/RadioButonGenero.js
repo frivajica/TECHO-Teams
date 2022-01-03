@@ -18,7 +18,6 @@ import React, { Component } from "react";
 
   formSubmit(event) {
     event.preventDefault();
-    console.log(this.state.selectedOption)
   }
 
   render() {

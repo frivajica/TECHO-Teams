@@ -8,7 +8,6 @@ import axios from "axios";
 export const setEquipo = createAction("SET_EQUIPO");
 
 export const getEquipo = createAsyncThunk("GET_EQUIPO", ({ id, idpersona, token }) => {
-  console.log("id personaa", idpersona)
   return axios
     .get(`http://143.198.238.253:3001/api/equipos/${id}`, {headers: {authorization: token, idpersona}})
     .then((res) => res.data)

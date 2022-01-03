@@ -74,7 +74,6 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state, s
   return (
     <div className="tarjeta-roles">
       <div className="rol-imagen">
-        {console.log("this is the img", data.imagenUsr)}
         {yo.isAdmin || yo.isCoordinador ? (
           <Link to={`/${data?.usuarioIdPersona}`}>
             <ButtonBase sx={{ width: 200, height: 200 }} id="ripple-avatar">

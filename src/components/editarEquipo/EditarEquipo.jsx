@@ -49,8 +49,6 @@ export default function EditarEquipo() {
       .catch((err) => console.log(err));
   }, [pais.value]);
 
-  console.log(typeof pais.value);
-
   useEffect(() => {
     axios
       .get("http://143.198.238.253:3001/api/comunidades", {
