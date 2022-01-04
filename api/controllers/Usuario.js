@@ -274,49 +274,54 @@ class UsuarioController {
   }
 
   static getHistorial(req, res) {
-    let historiales = [];
+    let historial = [];
     UsuarioEnEquipo.findAll({ where: { usuarioIdPersona: req.params.userId } })
       .then(async (usrEnEquipos) => {
         if (usrEnEquipos.length === 0) {
           return res.send([]);
         }
-        for (let i = 0; i < usrEnEquipos.length; i++) {
-          let fechasEntrada = [];
-          let fechasSalida = [];
-          let rolesEnEquipo = [];
-          let equipo = {};
-          const findEvents = (tipo) => {
-            return Evento.findAll({
-              where: {
-                usuarioIdPersona: req.params.userId,
-                equipoId: usrEnEquipos[i].equipoId,
-                tipo,
-              },
-              order: ["createdAt"],
-            });
-          };
-          fechasEntrada = await findEvents(1);
-
-          fechasSalida = await findEvents(-1);
-
-          rolesEnEquipo = await findEvents(2);
-
-          equipo = await Equipo.findOne({
-            where: { id: usrEnEquipos[i].equipoId },
+        const equiposId = usrEnEquipos.map(usrEq => usrEq.equipoId)//necesito una array solo de id's para usar con sequelize
+        const findEvents = () => {
+          return Evento.findAll({
+            where: {
+              usuarioIdPersona: req.params.userId,
+              equipoId: {[Sequelize.Op.or]: equiposId},
+              tipo: {[Sequelize.Op.or]: [1, -1, 2]}
+            },
+            order: ["createdAt"],
           });
+        };
+        const eventos = await findEvents();
+        const equipos = await Equipo.findAll({
+          where: { id: {[Sequelize.Op.or]: equiposId} }
+        });
+
+        const findEquipo = (id) => {
+          for (let i = 0; i < equipos.length; i++) {
+            if (equipos[i].id === id) return equipos[i]
+          }
+        }
+
+        for (let i = 0; i < usrEnEquipos.length; i++) {
+          const //por cada equipo tengo que saber si el equipo está activo, el nombre del equipo, las fechas de entrada y salida, y los roles
+          fechasEntrada = eventos.filter(e => e.tipo === 1 && e.equipoId === usrEnEquipos[i].equipoId),
+          fechasSalida = eventos.filter(e => e.tipo === -1 && e.equipoId === usrEnEquipos[i].equipoId),
+          rolesEnEquipo = eventos.filter(e => e.tipo === 2 && e.equipoId === usrEnEquipos[i].equipoId)
 
           let historialDeEquipo = {
             entradas: fechasEntrada,
             salidas: fechasSalida,
             roles: rolesEnEquipo,
             activo: usrEnEquipos[i].activo,
-            equipo,
+            equipo: findEquipo(usrEnEquipos[i].equipoId)
           };
-          historiales.push(historialDeEquipo);
-          if (i === usrEnEquipos.length - 1) res.send(historiales);
+          historial.push(historialDeEquipo);
         }
+        return res.send(historial);
       })
-      .catch((err) => res.status(500).send(err));
+      .catch((err) => {
+        console.log("ERROR",err)
+        res.status(500).send(err)});
   }
 
   static getActividades(req, res) {

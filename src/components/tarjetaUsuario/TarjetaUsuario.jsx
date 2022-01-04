@@ -17,7 +17,7 @@ export const TarjetaUsuario = () => {
   const yo = useSelector(({ usuario }) => usuario);
   const usuario = useSelector(({ usuarios }) => usuarios);
   const soyYo = yo.idPersona === parseInt(useParams().idPersona);
-  const [autoridad, setAutoridad] = useState(<></>)
+  const [autoridad, setAutoridad] = useState("")
   const creado = usuario.email_verified_at ? usuario.email_verified_at?.slice(0, 10): usuario.createdAt?.slice(0, 10);
   let momentFromNow = moment(creado, "YYYY-MM-DD").fromNow(true);
 
