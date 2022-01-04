@@ -29,7 +29,6 @@ export const TarjetaUsuario = () => {
   
   return (
     <div className="tarjeta-usuario">
-      {console.log(usuario)}
       <div className="grid-usuario">
         <div className="avatar-usuario">
           <div sx={{ width: 200, height: 200 }} id="ripple-avatar">
