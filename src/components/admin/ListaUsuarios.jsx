@@ -128,14 +128,14 @@ export default function ListaUsuarios({ setRows, rows }) {
           .catch((err) => console.error(err));
       })
       .catch((err) => console.log(err));
-  }, [usrs]);
+  }, []);
 
   return (
     <div style={{display: "flex", flexDirection: "column", alignItems: "center" }}>
       <DataGrid
         columns={columns}
         rows={rows}
-        getRowId={(row) => row.idPersona}
+        getRowId={(row) => row?.idPersona}
         autoHeight={true}
         hideFooter
         pagesize={pageSize}

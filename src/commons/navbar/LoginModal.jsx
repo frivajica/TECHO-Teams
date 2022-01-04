@@ -103,19 +103,8 @@ const LoginModal = ({ open, handleClose }) => {
         mail: mail.value,
         password: password.value,
         errorAlert,
-    
-        
       })
-    )
-    .then((data)=>{ 
-      if (data.type === "LOGIN/fulfilled")
-       {
-        successAlert()
-
-         
-        } 
-  })
-    .then(() => handleClose());
+    ).then(() => handleClose());
   };
  
 

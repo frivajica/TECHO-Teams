@@ -33,13 +33,11 @@ export default function Search({setRows}) {
         e.preventDefault();
     
         tipo === "email" &&
-          dispatch(getByMail({ mail: busqueda.value, errorAlert })).then(
-            ({ payload }) => setRows([payload]));
+          dispatch(getByMail({ mail: busqueda.value, errorAlert }))
+          .then(({ payload }) => {setRows(rows => payload ? [payload]: rows)})
         tipo === "id" &&
           dispatch(getById({ id: parseInt(busqueda.value), errorAlert })).then(
-            ({ payload }) => setRows([payload]));
-        tipo === "" && errorAlert();
-        
+            ({ payload }) => {setRows(rows => payload ? [payload]: rows)});
       };
 
     return (

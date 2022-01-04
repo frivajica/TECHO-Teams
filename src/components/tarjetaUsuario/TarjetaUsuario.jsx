@@ -55,7 +55,7 @@ export const TarjetaUsuario = () => {
           <pre>{autoridad}</pre>
         </div>
         <div className="contenedor-roles">
-          <p>Roles actuales:</p>
+          <p style={{color: '#0092dd'}}>Roles actuales:</p>
           <CajaDeRoles />
         </div>
 

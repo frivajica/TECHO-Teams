@@ -43,11 +43,11 @@ export const CajaDeRoles = () => {
                 sx={{ width: 120, height: 50, borderRadius: 5 }}
               />
             ))
-          : roles.map((value, i) => (
+          : roles.length ? roles.map((value, i) => (
               <ButtonBase id="ripple" key={i}>
                 {value && <Chip label={value} color="primary" />}
               </ButtonBase>
-            ))}
+            )): <em>Sin roles</em>}
       </Box>
     </div>
   );
