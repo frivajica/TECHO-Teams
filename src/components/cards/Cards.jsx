@@ -21,7 +21,7 @@ const Cards = () => {
           key={plataforma.nombre}
           style={{ width: "30%" }}
         >
-          <ImageSrc style={{ backgroundImage: `url(${plataforma.imagen})` }} /> 
+          <ImageSrc style={{ backgroundImage: `url(${plataforma.imagen})`}} /> 
           <ImageBackdrop className="MuiImageBackdrop-root" />
           <Link href={plataforma.url}>
             <Image>
