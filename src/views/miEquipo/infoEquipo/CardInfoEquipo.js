@@ -38,7 +38,7 @@ export default function CardInfoEquipo({ equipo, cantMiembros, setCantMiembros }
         );
       })
       .catch((err) => console.log({ err }));
-  }, []);
+  }, [equipo.id, equipo.paisId, equipo.sedeId, equipo.territorioId, setCantMiembros]);
 
   return (
     <Card sx={{ width: 500 }}>

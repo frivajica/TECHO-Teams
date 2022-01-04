@@ -11,7 +11,7 @@ import "./UserMenu.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { logoutRequest, setUsuario } from "../../state/usuario";
+import { logoutRequest } from "../../state/usuario";
 import Swal from 'sweetalert2'
 import background from "../../assets/imagenes/LogOut/techobakgroud.jpg"
 import techoLogo from "../../assets/imagenes/LogOut/techo-png.png"
@@ -76,9 +76,6 @@ export const UserMenu = () => {
         <MenuItem onClick={() => navigate(`/${usuario.idPersona}`)}>
           <AccountCircleIcon className="color" />Mi Perfil
         </MenuItem>
-        {/* {(usuario.cargo === "Coordinador" || usuario.cargo === "Admin") && (
-          <MenuItem onClick={handleClose}>Mis Equipos</MenuItem> ------>ESTO VA?????
-        )} */}
         {(usuario.isAdmin || usuario.isCoordinador) && (
           <div>
           <MenuItem onClick={() => navigate("/buscarEquipos")}>

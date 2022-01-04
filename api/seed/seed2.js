@@ -1,7 +1,3 @@
-//INSTRUCCIONES PARA SEEDAR DB --> En package.json hay un script "seed":
-// 1--> Al final de esa linea poner 1 "/seed1" y escribir en la consola npm run seed p/seedear seed1.js
-// 2--> Al final de esa linea poner 2 "/seed2" y escribir en la consola npm run seed p/seedear seed2.js
-// 3--> Al final de esa linea poner 3 "/seed3" y escribir en la consola npm run seed p/seedear seed3.js
 const readline = require('readline');
 
 const { Equipo, Usuario, UsuarioEnEquipo, Role } = require("../models")
@@ -31,12 +27,6 @@ const addUserToEquipos = async (equipo, num1, num2, token) => {
         .catch(err => console.log(err.message))
     }
 }
-
-
-//INSTRUCCIONES PARA SEEDAR DB --> En package.json hay un script "seed":
-// 1--> Al final de esa linea poner 1 "/seed1" y escribir en la consola npm run seed p/seedear seed1.js
-// 2--> Al final de esa linea poner 2 "/seed2" y escribir en la consola npm run seed p/seedear seed2.js
-// 3--> Al final de esa linea poner 3 "/seed3" y escribir en la consola npm run seed p/seedear seed3.js
 
 let usuariosEnEquipos, roles
 

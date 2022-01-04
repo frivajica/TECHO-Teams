@@ -22,7 +22,6 @@ const pageSize = 5;
 export default function ListaUsuarios({ setRows, rows }) {
   const [page, setPage] = React.useState(0);
   const usuario = useSelector((state) => state.usuario);
-  const usrs = useSelector((state) => state.usuarios);
   const [showMakeAdmin, setShowMakeAdmin] = React.useState(false);
   const [usuarioSelec, setUsuarioSelec]= React.useState({});
   const [paises, setPaises] = React.useState([]);
@@ -50,18 +49,6 @@ export default function ListaUsuarios({ setRows, rows }) {
     if (newPage < 0) return;
     setPage(newPage);
     setRows(loading);
-    let offset = (newPage + 1) * pageSize - pageSize;
-    let limit = (newPage + 1) * pageSize;
-    axios
-      .get("http://143.198.238.253:3001/api/usuarios", {
-        headers: { authorization: usuario.token, offset, limit },
-      })
-      .then((res) => res.data)
-      .then(async (users) => {
-        await changeIdToName(users, paises)
-        setRows(users);
-      })
-      .catch((err) => console.error(err));
   };
 
   const columns = React.useMemo(
@@ -128,7 +115,7 @@ export default function ListaUsuarios({ setRows, rows }) {
           .catch((err) => console.error(err));
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [page, setRows, usuario.token]);
 
   return (
     <div style={{display: "flex", flexDirection: "column", alignItems: "center" }}>

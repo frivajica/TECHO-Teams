@@ -21,7 +21,7 @@ export default function EventosEquipo() {
         .then(hist => setHistorial(hist.reverse()))
         .then(() => setShow(true));
         window.addEventListener("scroll", () => setYposition(window.pageYOffset), { passive: true });
-    }, [])
+    }, [equipoId])
 
     return (
     <Stack>

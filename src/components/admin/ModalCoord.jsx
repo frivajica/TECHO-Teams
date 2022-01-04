@@ -60,8 +60,8 @@ export default function ModalCoord({
             if (row.idPersona === usuarioSelec.idPersona)
             
              { 
-              paises.map(p => {if(p.id === pais.id) pais.nombre = p.nombre})
-              sedes.map(s =>{if(s.id === sede.id) sede.nombre = s.nombre}) 
+              paises.forEach(p => {if(p.id === pais.id) pais.nombre = p.nombre})
+              sedes.forEach(s =>{if(s.id === sede.id) sede.nombre = s.nombre}) 
               return {
                 ...row,
                 isCoordinador: isCoord,
@@ -97,7 +97,7 @@ export default function ModalCoord({
         setSedes(res.data.filter((sedesPais) => sedesPais.id_pais === pais.id))
       )
       .catch((err) => console.log(err));
-  }, [pais]);
+  }, [pais, setSedes]);
 
   useEffect(() => {
     setIsCoord(usuarioSelec.isCoordinador);
@@ -110,7 +110,15 @@ export default function ModalCoord({
       id: usuarioSelec.sedeIdCoord,
       nombre: usuarioSelec.nombreSedeCoord,
     });
-  }, [show]);
+  }, [
+    show, 
+    usuarioSelec.isCoordinador, 
+    usuarioSelec.areaCoord, 
+    usuarioSelec.paisIdCoord, 
+    usuarioSelec.nombrePaisCoord,
+    usuarioSelec.sedeIdCoord,
+    usuarioSelec.nombreSedeCoord
+  ]);
 
   useEffect(() => {
     if (!isCoord) {

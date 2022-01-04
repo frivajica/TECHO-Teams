@@ -21,7 +21,6 @@ Usuario.init(
     sedeIdCoord: Sequelize.INTEGER, 
     paisIdCoord: Sequelize.INTEGER, 
     areaCoord: Sequelize.STRING, 
-    // -----
     profesion: {
       type: Sequelize.STRING,
       allowNull: false,

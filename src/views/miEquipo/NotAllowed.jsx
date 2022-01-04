@@ -1,5 +1,3 @@
-import { Typography } from "@mui/material";
-
 const NotAllowed = () => {
   return (
     <div

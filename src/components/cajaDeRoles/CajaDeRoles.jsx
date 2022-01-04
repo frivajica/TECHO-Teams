@@ -19,7 +19,7 @@ export const CajaDeRoles = () => {
     dispatch(obtenerHistorial(idPersona)).then(({ payload }) => {
       let arr = [];
       let obj = {};
-      payload?.map((historia) => {
+      payload?.forEach((historia) => {
         const rol =
           historia.roles[historia.roles.length - 1] &&
           historia.roles[historia.roles.length - 1].nombreRol;
@@ -31,7 +31,7 @@ export const CajaDeRoles = () => {
       setRoles(arr);
       dispatch(rolesListos(true));
     });
-  }, [idPersona]);
+  }, [idPersona, dispatch]);
 
   return (
     <div className="caja">
@@ -45,6 +45,7 @@ export const CajaDeRoles = () => {
             ))
           : roles.length ? roles.map((value, i) => (
               <ButtonBase id="ripple" key={i}>
+                {console.log(value)}
                 {value && <Chip label={value} color="primary" />}
               </ButtonBase>
             )): <em>Sin roles</em>}

@@ -1,23 +1,19 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { obtenerHistorialResultado } from "../../state/historialDeResultado";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
-//import "./CajaDeRoles.css";
 
 export const CajaRolesResultado = ({ usuarios }) => {
   const dispatch = useDispatch();
-  const historialDeResultado = useSelector(
-    (state) => state.historialDeResultado
-  );
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
     dispatch(obtenerHistorialResultado()).then(({ payload }) => {
       let arr = [];
       let obj = {};
-      payload.map((historia) => {
+      payload.forEach((historia) => {
         const rol =
           historia.roles[historia.roles.length - 1] &&
           historia.roles[historia.roles.length - 1].nombreRol;
@@ -28,7 +24,7 @@ export const CajaRolesResultado = ({ usuarios }) => {
       });
       setRoles(arr);
     });
-  }, [usuarios]);
+  }, [usuarios, dispatch]);
 
   return (
     <div className="caja">

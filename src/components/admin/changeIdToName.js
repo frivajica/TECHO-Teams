@@ -6,17 +6,17 @@ export const changeIdToName = async (users, paises) => {
         let nombreSedeCoord = "";
 
         if (user.paisIdCoord) {
-            paises.map((pais) => {
+            paises.forEach((pais) => {
                 if (pais.id === user.paisIdCoord) nombrePaisCoord = pais.nombre
             });
         }
         
         if (user.sedeIdCoord) {
-            sedes.map((sedesPais) => {
+            sedes.forEach((sedesPais) => {
                 if (sedesPais.id === user.sedeIdCoord) nombreSedeCoord = sedesPais.nombre;
             });
         }
         
-        users[i] = { ...user, nombrePaisCoord, nombreSedeCoord };
+        return { ...user, nombrePaisCoord, nombreSedeCoord };
     });
 }

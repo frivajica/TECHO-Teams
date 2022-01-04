@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { ButtonBase } from "@mui/material";
 import { CajaRolesResultado } from "./CajaRolesResultado";
@@ -16,6 +16,7 @@ export default function TarjetaResultado({ usuarios }) {
   );
   const equipo = useSelector((state) => state.equipo);
   const usuario = useSelector((state) => state.usuario);
+  const [agregando, setAgregando] = useState(false)
 
   const cantEquip = historialDeResultado.filter(
     (equipo) => equipo.activo === true
@@ -46,6 +47,7 @@ export default function TarjetaResultado({ usuarios }) {
   };
 
   const addUser = () => {
+    setAgregando(true);
     axios
       .put(
         `http://143.198.238.253:3001/api/equipos/${equipo.id}/${usuarios.idPersona}`,
@@ -58,11 +60,13 @@ export default function TarjetaResultado({ usuarios }) {
         }
       )
       .then((res) => {
+        setAgregando(false);
         res.data === "el equipo no esta activo" &&
           errorAlert("Error", "El equipo no esta activo actualmente");
         res.data === "usuario agregado" && successAlert();
       })
       .catch((err) => {
+        setAgregando(false);
         err.response.data === "el usuario ya pertenece al equipo" &&
           errorAlert("Error", "El usuario ya esta en este equipo");
         console.log({ err });
@@ -111,9 +115,15 @@ export default function TarjetaResultado({ usuarios }) {
             justifyContent: "space-around",
           }}
         >
-          <Button variant="contained" startIcon={<AddIcon />} onClick={addUser}>
-            AGREGAR
-          </Button>
+          {!agregando ? 
+            <Button variant="contained" startIcon={<AddIcon />} onClick={addUser}>
+              AGREGAR
+            </Button>
+            :
+            <Button variant="contained">
+              AGREGANDO...
+            </Button>
+          }
         </div>
       </div>
     </div>

@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-import logger from "redux-logger";
 import equipoReducer from "./equipo";
 import rolReducer from "./rol";
 import cargaDeRolesReducer from "./cargaDeRoles";
@@ -25,8 +24,7 @@ const persistConfig = {
   key: "root",
   storage,
   whitelist: [
-    "usuario", //aquí se enlistan los nombres
-    // "usuarios", //de los reducers que queremos
+    "usuario", //aquí se enlistan los nombres de los reducers que queremos
     "equipo", //que persistan
     "rol",
     "historialDeUsuario",
@@ -37,7 +35,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 //Exportaciones
 export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat(logger),
+    getDefaultMiddleware({ serializableCheck: false }),
   reducer: persistedReducer,
 });
 export const persistor = persistStore(store);

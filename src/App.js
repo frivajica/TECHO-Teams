@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./commons/navbar/Navbar";
 import Footer from "./commons/footer/Footer";
 import Home from "./components/home/Home";
@@ -31,7 +31,6 @@ function App() {
               usuario.nombres && !usuario.intereses ? <SignUp /> : <Home />
             }
           />
-          {/* VER DE PRIVATIZAR RUTA SOLO PARA QUIENES NO TENGAN INTERESES */}
           <Route
             exact
             path="/completarRegistro"
@@ -99,7 +98,6 @@ function App() {
               )
             }
           />
-          {/* <Route exact path="/404" element={<NotFound />} /> */}
           <Route exact path="/crearArea" element={<CrearArea />} />
           <Route exact path="/crearRol" element={<CrearRol />} />
           <Route path="*" element={<NotFound />} />

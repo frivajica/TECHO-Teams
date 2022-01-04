@@ -98,18 +98,7 @@ export default function EditarEquipo() {
       timer: "5000",
     });
   };
-
- /*  let form = {
-    nombre: nombre.value,
-    cantMiembros: parseInt(cantidad.value),
-    activo: equipo.activo,
-    detalles: descripcion.value,
-    paisId: parseInt(pais.value),
-    sedeId: sede.value ? parseInt(sede.value) : 0,
-    territorioId: categoria === "Territorio" ? parseInt(comunidad.value) : null,
-    categoria: categoria,
-    area: areas.value,
-  }; */
+  
   const data = new FormData()
   data.set("nombre", nombre.value)
   data.set("cantMiembros", cantidad.value)
@@ -165,7 +154,7 @@ export default function EditarEquipo() {
     <div>
       <div id="register">
         <h2 className="TitleRegister">Edición de datos de equipos</h2>
-        <form onSubmit={handleSubmit} enctype="multipart/form-data">
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="contenedor-formulario">
             <label htmlFor="selector" className="label">
               <p>NOMBRE DEL EQUIPO</p>
@@ -275,8 +264,8 @@ export default function EditarEquipo() {
 
             <label htmlFor="selector" className="label">
               <p>ÁREA</p>
-              <option></option>
               <select {...areas} className="form-select">
+                <option></option>
                 {area.map((area) => (
                   <option key={area.id} value={area.nombre}>
                     {area.nombre}
@@ -294,7 +283,6 @@ export default function EditarEquipo() {
               type="file"
               name="fotoDeEquipo"
               onChange={handleImagen}
-              // style={{color: "#dc3545"}}
             />
             <Button id="ingresar" startIcon={<AddPhotoAlternateIcon />}variant="contained" component="span">
              

@@ -11,7 +11,6 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import GroupsIcon from '@mui/icons-material/Groups';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 export function ChooseEventContent({evento, isLast, i}) {
     const fontsize = useMediaQuery('(min-width:600px)')? "1em" : "0.8em";
@@ -61,6 +60,7 @@ export function ChooseEventContent({evento, isLast, i}) {
             descripcion="El equipo está habilitado nuevamente :)"
             break;
         }
+        default: ;
     }
 
     return (

@@ -24,6 +24,7 @@ export function CrearEquipo() {
   const [area, setArea] = useState([]);
   const areas = CustomHook("");
   const [categoria, setCategoria] = useState("");
+  const [creando, setCreando] = useState(false)
   const loggedUser = useSelector((state) => state.usuario);
  
 
@@ -119,6 +120,7 @@ export function CrearEquipo() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setCreando(true);
 
     if (!pais.value || !categoria)
       errorAlert("Error!", "Complete todos los campos requeridos");
@@ -128,7 +130,7 @@ export function CrearEquipo() {
       if (imagenEquipo.name)
         data.append("fotoDeEquipo", imagenEquipo, imagenEquipo.name);
       axios
-        .post(`http://localhost:3001/api/equipos/`, data, {
+        .post(`http://143.198.238.253:3001/api/equipos/`, data, {
           headers: {
             authorization: loggedUser.token,
             idPersona: loggedUser.idPersona,
@@ -136,10 +138,11 @@ export function CrearEquipo() {
         })
         .then((res) => res.data)
         .then((equipo) => {
+          setCreando(false)
           successAlert();
           navigate(`/equipo/${equipo.id}`)
         })
-        .catch((err) => console.log({ err }));
+        .catch((err) => {setCreando(false); console.log({ err })});
     }
   };
  
@@ -159,7 +162,7 @@ export function CrearEquipo() {
     <div>
       <div id="register">
         <h2 className="TitleRegister">CREACIÓN DE EQUIPOS</h2>
-        <form onSubmit={handleSubmit} enctype="multipart/form-data">
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="contenedor-formulario">
             <label htmlFor="selector" className="label">
               <p>NOMBRE DEL EQUIPO</p>
@@ -306,14 +309,21 @@ export function CrearEquipo() {
             <Link style={{ textDecoration: "none" }} to="/">
               <Button variant="text">VOLVER</Button>
             </Link>
-            <Button
+            {!creando ? (<Button
               id="ingresar"
               size="medium"
               variant="outlined"
               type="submit"
             >
               CREAR EQUIPO
-            </Button>
+            </Button>) :
+             <Button 
+              id="ingresar"
+              size="medium"
+              variant="outlined"
+              >
+                creando...
+              </Button>}
           </div>
         </form>
       </div>

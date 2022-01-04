@@ -1,6 +1,5 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
 
 import Button from "@mui/material/Button";
 import { useSpring, animated } from "react-spring/";
@@ -11,11 +10,10 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import { CustomHook } from "../../hooks/CustomHook";
-import { loginRequest } from "../../state/usuario";
-import { useDispatch, useSelector } from "react-redux";
+import { setUsuario } from "../../state/usuario";
+import { useDispatch } from "react-redux";
 import swal from "sweetalert";
-import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2'
+import axios from "axios";
 
 const Fade = React.forwardRef(function Fade(props, ref) {
   const { in: open, children, onEnter, onExited, ...other } = props;
@@ -25,6 +23,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
     onStart: () => open && onEnter && onEnter(),
     onRest: () => !open && onExited && onExited(),
   });
+
 
   return (
     <animated.div ref={ref} style={style} {...other}>
@@ -60,53 +59,33 @@ const errorAlert = (title = "Login fallido", text = "Intentalo nuevamente") => {
     icon: "error",
   });
 };
-const successAlert = () => {
-  swal({
-    title: "¡Bienvenidx!",
-    text: "Te has logeado correctamente!",
-    icon: "success",
-    timer: "5000",
-  });
-};
-
-const pending = () => {
-  Swal.fire({
-    title: 'Custom width, padding, color, background.',
-    width: 600,
-    padding: '3em',
-    color: '#716add',
-    background: '#fff url(/images/trees.png)',
-    backdrop: `
-      rgba(0,0,123,0.4)
-      url("/images/nyan-cat.gif")
-      left top
-      no-repeat
-    `
-  })
-}
 
 
 const LoginModal = ({ open, handleClose }) => {
   const mail = CustomHook("");
   const password = CustomHook("");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const usuarios = useSelector((state) => state.usuarios);
- 
-
-
 
   const handleLoginClick = (e) => {
     e.preventDefault();
-    dispatch(
-      loginRequest({
-        mail: mail.value,
-        password: password.value,
-        errorAlert,
-      })
-    ).then(() => handleClose());
+    return axios
+    .post("http://143.198.238.253:3001/api/usuarios/login", {
+      mail: mail.value,
+      password: password.value,
+    })
+    .then((res) => {
+      if (res.data.error)
+        errorAlert(
+          "Error de logueo",
+          "Recorda verificar tu email para ingresar"
+        );
+      else {
+        dispatch(setUsuario(res.data))
+      }
+    })
+    .then(() => handleClose())
+    .catch(() => errorAlert());
   };
- 
 
   return (
     <Modal

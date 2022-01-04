@@ -17,7 +17,6 @@ export const loginRequest = createAsyncThunk(
         password,
       })
       .then((res) => {
-        console.log("respiestaa",res.data)
         if (res.data.error)
           errorAlert(
             "Error de logueo",

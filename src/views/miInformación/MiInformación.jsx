@@ -9,22 +9,19 @@ import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import Avatar from '@mui/material/Avatar';
 
 
 import { CustomHook } from "../../hooks/CustomHook";
 import { useValidation } from "../../hooks/useValidation";
-//import "../../components/Register.css";
 import swal from "sweetalert";
 import { useTheme } from "@mui/material/styles";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setUsuario } from "../../state/usuario";
 
 const validationsForm = (form) => {
   let errors = {};
   let regexName = /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/;
-  let regexMail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
   let regexDocu = /^[a-zA-Z0-9_.-]*$/;
   let regexTelefono = /^[0-9]*$/;
 
@@ -168,10 +165,6 @@ function MiInformación() {
     setRecibirMails((prev) => (prev === 0 ? 1 : 0));
   };
 
- 
-
-
-
   useEffect(() => {
     axios
       .get("http://143.198.238.253:3001/api/regiones/paises")
@@ -193,7 +186,7 @@ function MiInformación() {
       )
       .then((res) => setLocalidades(res.data))
       .catch((err) => console.log(err));
-  }, [provincia.value]);
+  }, [pais.value, provincia.value]);
 
   const theme = useTheme();
 
@@ -202,24 +195,6 @@ function MiInformación() {
       target: { value },
     } = event;
     setIntereses(value);
-  };
-
-  const successAlert = () => {
-    swal({
-      title: "Registro exitoso!",
-      text: "Dirigite a Ingresar para loguearte",
-      icon: "success",
-      timer: "5000",
-    });
-  };
-
-  const errorAlert = () => {
-    swal({
-      title: "Error",
-      text: "Complete los campos obligatorios correctamente",
-      button: "Aceptar",
-      icon: "error",
-    });
   };
 
   const handleImagenPerfil = e => {
@@ -284,7 +259,7 @@ function MiInformación() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} enctype="multipart/form-data">
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="contenedor-formulario">
           <label htmlFor="selector" className="label">
             <p>NOMBRES</p>

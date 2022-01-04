@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
 import { useSelector } from "react-redux";
 import CardInfoEquipo from "./CardInfoEquipo";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deactivateEquipo, activateEquipo } from "../../../state/equipo";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
@@ -16,14 +16,10 @@ import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 
 export const InfoEquipo = ({cantMiembros, setCantMiembros, isAdminOrCoord}) => {
-  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const equipo = useSelector(({ equipo }) => equipo);
   const usuario = useSelector(({ usuario }) => usuario);
-  const historialDeUsuario = useSelector(
-    ({ historialDeUsuario }) => historialDeUsuario
-  )
 
   function click() {
     equipo.activo

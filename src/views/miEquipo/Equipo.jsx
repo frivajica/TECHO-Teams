@@ -37,7 +37,7 @@ export const Equipo = () => {
     .then(equipo => equipo? setPermitido(true):setPermitido(false))
     .then(() => setTrigger(true))
     .catch((err) => console.log(err));
-  }, []);
+  }, [dispatch, id, usuario.token, usuario.idPersona]);
 
 
   if (trigger) {

@@ -8,8 +8,6 @@ import MenuItem from "@mui/material/MenuItem";
 import swal from "sweetalert";
 import { CustomHook } from "../../hooks/CustomHook";
 import axios from "axios";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
 
 const BuscadorEquipos = () => {
   const errorAlert = () => {
@@ -73,6 +71,7 @@ const BuscadorEquipos = () => {
       case "Nombre":
         valor = nombre.value;
         break;
+      default: ;
     }
     axios
       .get(
@@ -227,9 +226,6 @@ const BuscadorEquipos = () => {
                 !equipo.activo && <EquipoCard key={equipo.id} equipo={equipo} />
             )}
           </div>
-     {/*      <Stack spacing={2}>
-            <Pagination count={10} />
-          </Stack> */}
         </>
       ) : (
         <div>

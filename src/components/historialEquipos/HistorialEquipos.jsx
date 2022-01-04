@@ -26,8 +26,7 @@ export const HistorialEquipos = ({ historialDeUsuario, actividades }) => {
 
   const filterRoles = (roles) => {
     let obj = {}, arr = [];
-    //roles = roles.slice().reverse()
-    roles.map((value, i) => {
+    roles.forEach((value, i) => {
       if (!obj[value.nombreRol]) {
         arr.push(value)
         obj[value.nombreRol] = true

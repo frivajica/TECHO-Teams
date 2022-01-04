@@ -12,7 +12,6 @@ import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutRequest } from "../../state/usuario";
-import { useNavigate } from "react-router";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -122,7 +121,6 @@ function SignUp() {
     return formIsValid;
   };
 
-  //estudiosErr,
   const { profesionErr, interesErr } = formErrors;
 
   const handleSubmit = (e) => {

@@ -5,12 +5,12 @@ const showAuth = async (usr, setAuth) => {
     else if (usr.isCoordinador) {
       if (usr.areaCoord) {
         return axios.get("http://localhost:3001/api/regiones/paises")
-        .then(res => res.data.map(pais => { 
+        .then(res => res.data.forEach(pais => { 
           
           if (pais.id === usr.paisIdCoord){
             if (usr.sedeIdCoord) {
               axios.get("http://localhost:3001/api/sedes")
-              .then(res => res.data.map(sede => { 
+              .then(res => res.data.forEach(sede => { 
                 if (sede.id === usr.sedeIdCoord) {
                   setAuth(
                     <>
@@ -36,7 +36,7 @@ const showAuth = async (usr, setAuth) => {
       else if (usr.sedeIdCoord) {
         return axios.get("http://localhost:3001/api/sedes")
         .then(res => {
-          res.data.map(sede => { 
+          res.data.forEach(sede => { 
             if (sede.id === usr.sedeIdCoord) setAuth(<><em style={{color: '#0092dd'}}>Coordinador/a</em><p><span style={{color: '#0092dd'}}>Sede:</span> {sede.nombre}</p></>)
           })
         })

@@ -1,4 +1,3 @@
-import {useEffect} from "react"
 import FormControl from "@mui/material/FormControl";
 import ButtonBase from "@mui/material/ButtonBase";
 import { Autocompletar } from "../../commons/autocompletar/Autocompletar";
@@ -28,7 +27,6 @@ export const TarjetaRoles = ({ data, id, opcPersns = [], opcRoles = [], state, s
   });
   const yo = useSelector(({ usuario }) => usuario);
   const [editMode, setEditMode] = useState();
-  const [confirm, setConfirm] = useState(false);
   const [error, setError] = useState(false);
 
   const guardarEditado = async () => {

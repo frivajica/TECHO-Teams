@@ -168,9 +168,7 @@ function Register() {
   const handleMail = () => {
     setRecibirMails((prev) => (prev === 0 ? 1 : 0));
   };
-
-  const justIntegers = (event) => event.key === 8 || event.key === 46 ? true : !isNaN(Number(event.key) && event.key!=='')
-
+  
   useEffect(() => {
     axios
       .get("http://143.198.238.253:3001/api/regiones/paises")
@@ -192,7 +190,7 @@ function Register() {
       )
       .then((res) => setLocalidades(res.data))
       .catch((err) => console.log(err));
-  }, [provincia.value]);
+  }, [pais.value, provincia.value]);
 
   const theme = useTheme();
 
@@ -268,7 +266,7 @@ function Register() {
     <div id="register">
       <h2 className="TitleRegister">¡Completa estos datos para registrarte!</h2>
 
-      <form onSubmit={handleSubmit} enctype="multipart/form-data">
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="contenedor-formulario">
           <label htmlFor="selector" className="label">
             <p>EMAIL *</p>

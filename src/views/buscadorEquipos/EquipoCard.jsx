@@ -11,13 +11,13 @@ import { useNavigate } from "react-router-dom"
 const EquipoCard = ({ equipo }) => {
   const navigate = useNavigate()
   const [miembros, setMiembros] = useState(0);
+
   useEffect(() => {
     axios
       .get(`http://143.198.238.253:3001/api/equipos/cantMiembros/${equipo.id}`)
       .then((res) => setMiembros(res.data.length))
       .catch((err) => console.log(err));
-  }, []);
-
+  }, [equipo.id]);
 
   return (
     <Card sx={{ width: 345 }} onClick={() => navigate(`/equipo/${equipo.id}`)}>

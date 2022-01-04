@@ -17,7 +17,7 @@ export const Conformacion = ({setCantMiembros, isAdminOrCoord}) => {
   
   useEffect(() => {
     dispatch(infoRolesEquipo(idEquipo));
-    }, []);
+    }, [idEquipo, dispatch]);
 
   return (
     <div className="conformacion">
