@@ -140,6 +140,7 @@ function MiInformación() {
     mail: usuario.mail,
     apellidoPaterno: usuario.apellidoPaterno,
     dni: usuario.dni,
+    telefono: usuario.telefono,
     telefonoMovil: usuario.telefonoMovil,
     profesion: usuario.profesion,
     fechaNacimiento: usuario.fechaNacimiento.slice(0, 10),
@@ -180,6 +181,7 @@ function MiInformación() {
   }, [pais.value]);
 
   useEffect(() => {
+    (pais.value && provincia.value) &&
     axios
       .get(
         `http://143.198.238.253:3001/api/regiones/paises/${pais.value}/provincias/${provincia.value}/localidades`
@@ -207,27 +209,34 @@ function MiInformación() {
   //por lo que en el back se convierten a su tipo original
   const data = new FormData()
   for(let campo in form) {
-    data.set(`${campo}`, form[campo])
+    data.append(`${campo}`, form[campo])
   }
   data.set("idPais", pais.value)
   data.set("idProvincia", provincia.value)
   data.set("idLocalidad", localidad.value)
   data.set("estudios", estudios.value)
   data.set("intereses", JSON.stringify(intereses))
-  data.set("apellidoMaterno", apellidoMaterno.value)
   data.set("acepta_marketing", recibirMails)
   data.set("recibirMails", recibirMails)
-  data.set("telefono", "0")
-  data.set("sexo", genero)
-  data.set("idUnidadOrganizacional", 0)
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("intentando editar")
     if(imagenPerfil.name) data.set("fotoDePerfil", imagenPerfil, imagenPerfil.name)
+    console.log("intentando axios", form, "pais:", pais.value)
     axios
       .put(
         `http://143.198.238.253:3001/api/usuarios/editarUsuario/${usuario.idPersona}`,
-        data,
+        {...form, 
+          fotoDePerfil: data.fotoDePerfil, 
+          idPais: pais.value,
+          idProvincia: provincia.value || 0,
+          idLocalidad: localidad.value || 0,
+          estudios: estudios.value,
+          acepta_marketing: recibirMails,
+          idUnidadOrganizacional: 0,
+          intereses: JSON.stringify(intereses)
+        },
         {
           headers: {
             authorization: usuario.token,
@@ -359,7 +368,7 @@ function MiInformación() {
             >
               {paises.map((pais) =>
                 pais.id === initialForm.idPais ? (
-                  <option key={pais.id} value={pais.id} selected="selected">
+                  <option key={pais.id} value={pais.id}>
                     {pais.nombre}
                   </option>
                 ) : (
@@ -394,6 +403,7 @@ function MiInformación() {
           <label htmlFor="selector" className="label">
             <p>PROVINCIA </p>
             <select {...provincia} className="form-select">
+              <option></option>
               {provincias.map((provincia) => (
                 <option key={provincia.id} value={provincia.id}>
                   {provincia.provincia}
@@ -407,7 +417,7 @@ function MiInformación() {
             <select {...estudios} className="form-select">
               {listaEstudios.map((estudio, i) =>
                 estudio === initialForm.estudios ? (
-                  <option key={i} value={estudio} selected="selected">
+                  <option key={i} value={estudio}>
                     {estudio}
                   </option>
                 ) : (
@@ -422,6 +432,7 @@ function MiInformación() {
           <label htmlFor="selector" className="label">
             <p>LOCALIDAD </p>
             <select {...localidad} className="form-select">
+              <option></option>
               {provincias.length &&
                 localidades.map((localidad) => (
                   <option key={localidad.id} value={localidad.id}>

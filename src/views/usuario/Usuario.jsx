@@ -51,7 +51,7 @@ export const Usuario = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <p className="participaciones">
+        <div className="participaciones">
           {rolesCargados ? (
             <div>
               Participando en{" "}
@@ -62,7 +62,7 @@ export const Usuario = () => {
               <Skeleton />
             </div>
           )}
-        </p>
+        </div>
       )}
       <Divider variant="middle" className="divisor" />
       <TabEquipoOActividades />

@@ -45,7 +45,6 @@ export const CajaDeRoles = () => {
             ))
           : roles.length ? roles.map((value, i) => (
               <ButtonBase id="ripple" key={i}>
-                {console.log(value)}
                 {value && <Chip label={value} color="primary" />}
               </ButtonBase>
             )): <em>Sin roles</em>}
