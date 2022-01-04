@@ -128,17 +128,17 @@ export function CrearEquipo() {
       if (imagenEquipo.name)
         data.append("fotoDeEquipo", imagenEquipo, imagenEquipo.name);
       axios
-        .post(`http://143.198.238.253:3001/api/equipos/`, data, {
+        .post(`http://localhost:3001/api/equipos/`, data, {
           headers: {
             authorization: loggedUser.token,
             idPersona: loggedUser.idPersona,
           }
         })
-        .then((res) => {
+        .then((res) => res.data)
+        .then((equipo) => {
           successAlert();
-          return res.data;
+          navigate(`/equipo/${equipo.id}`)
         })
-        .then((equipo) => navigate(`/equipo/${equipo.id}`))
         .catch((err) => console.log({ err }));
     }
   };
