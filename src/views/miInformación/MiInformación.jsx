@@ -115,6 +115,7 @@ function MiInformación() {
   const dispatch = useDispatch();
   const usuario = useSelector((state) => state.usuario);
   const navigate = useNavigate();
+  const [actualizar, setActualizar] = useState(false)
   //estados para regiones
   const [paises, setPaises] = useState([]);
   const [provincias, setProvincias] = useState([]);
@@ -219,39 +220,40 @@ function MiInformación() {
   data.set("acepta_marketing", recibirMails)
   data.set("recibirMails", recibirMails)
 
+  data.set("apellidoMaterno", apellidoMaterno.value)
+  data.set("telefono", "0")
+  data.set("sexo", genero)
+  data.set("idUnidadOrganizacional", 0)
+
   const handleSubmit = (e) => {
+    setActualizar(true)
     e.preventDefault();
-    console.log("intentando editar")
     if(imagenPerfil.name) data.set("fotoDePerfil", imagenPerfil, imagenPerfil.name)
-    console.log("intentando axios", form, "pais:", pais.value)
     axios
       .put(
-        `http://143.198.238.253:3001/api/usuarios/editarUsuario/${usuario.idPersona}`,
-        {...form, 
-          fotoDePerfil: data.fotoDePerfil, 
-          idPais: pais.value,
-          idProvincia: provincia.value || 0,
-          idLocalidad: localidad.value || 0,
-          estudios: estudios.value,
-          acepta_marketing: recibirMails,
-          idUnidadOrganizacional: 0,
-          intereses: JSON.stringify(intereses)
-        },
+        `http://143.198.238.253:3001:3001/api/usuarios/editarUsuario/${usuario.idPersona}`, 
+        data,
         {
           headers: {
             authorization: usuario.token,
           },
         }
       )
-      .then((res) => dispatch(setUsuario(res.data)))
-      .then(() =>
+      .then((res) => res.data)
+      .then((usuario) => {
+        setActualizar(false)
+        dispatch(setUsuario(usuario))
         swal({
           title: "Perfil editado",
           icon: "success",
           timer: "2000",
         })
+      }
       )
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setActualizar(false)
+        console.log(err)
+      });
   };
 
   return (
@@ -482,12 +484,8 @@ function MiInformación() {
                 style={{ display: 'none' }} 
             />
              <Button style={{height:"35%"}} id="ingresar" startIcon={<AddPhotoAlternateIcon />}variant="contained" component="span">
-             
-             
              Subir
            </Button>
-      
-           
            {imagenPerfil? imagenPerfil.name : null}
           </label>
         </div>
@@ -507,9 +505,12 @@ function MiInformación() {
             VOLVER
           </Button>
 
-          <Button id="ingresar" size="medium" variant="outlined" type="submit">
+          {!actualizar ? <Button id="ingresar" size="medium" variant="outlined" type="submit">
             GUARDAR
-          </Button>
+          </Button> :
+          <Button id="ingresar" size="medium" variant="outlined">
+          EDITANDO
+        </Button>}
         </div>
       </form>
     </div>
