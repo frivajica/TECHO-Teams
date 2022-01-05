@@ -242,10 +242,9 @@ function MiInformación() {
           },
         }
       )
-      .then((res) => res.data)
-      .then((usuario) => {
+      .then((res) => setUsuario(res.data))
+      .then(() => {
         setActualizar(false)
-        dispatch(setUsuario(usuario))
         swal({
           title: "Perfil editado",
           icon: "success",
