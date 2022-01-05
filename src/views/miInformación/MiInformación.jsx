@@ -234,7 +234,7 @@ function MiInformación() {
    }
     axios
       .put(
-        `http://143.198.238.253:3001:3001/api/usuarios/editarUsuario/${usuario.idPersona}`, 
+        `http://143.198.238.253:3001/api/usuarios/editarUsuario/${usuario.idPersona}`, 
         data,
         {
           headers: {
