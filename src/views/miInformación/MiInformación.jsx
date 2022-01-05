@@ -229,6 +229,9 @@ function MiInformación() {
     setActualizar(true)
     e.preventDefault();
     if(imagenPerfil.name) data.set("fotoDePerfil", imagenPerfil, imagenPerfil.name)
+    for (var value of data.values()) {
+      console.log(value);
+   }
     axios
       .put(
         `http://143.198.238.253:3001:3001/api/usuarios/editarUsuario/${usuario.idPersona}`, 
