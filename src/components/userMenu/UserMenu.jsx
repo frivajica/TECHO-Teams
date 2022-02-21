@@ -41,8 +41,7 @@ export const UserMenu = () => {
 })
   }
   const handleAction = () => {
-    //dispatch(logoutRequest());
-    dispatch(setUsuario({}))
+    dispatch(logoutRequest());
     console.log("esto anda?")
     navigate("/");
     alertLogut()
