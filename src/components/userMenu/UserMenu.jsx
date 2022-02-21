@@ -15,6 +15,7 @@ import { logoutRequest } from "../../state/usuario";
 import Swal from 'sweetalert2'
 import background from "../../assets/imagenes/LogOut/techobakgroud.jpg"
 import techoLogo from "../../assets/imagenes/LogOut/techo-png.png"
+
 export const UserMenu = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,7 +41,9 @@ export const UserMenu = () => {
 })
   }
   const handleAction = () => {
-    dispatch(logoutRequest());
+    //dispatch(logoutRequest());
+    usuario = {};
+    console.log("esto anda?")
     navigate("/");
     alertLogut()
     handleClose();
