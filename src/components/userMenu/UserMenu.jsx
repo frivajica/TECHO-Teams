@@ -11,7 +11,7 @@ import "./UserMenu.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { logoutRequest } from "../../state/usuario";
+import { logoutRequest, setUsuario } from "../../state/usuario";
 import Swal from 'sweetalert2'
 import background from "../../assets/imagenes/LogOut/techobakgroud.jpg"
 import techoLogo from "../../assets/imagenes/LogOut/techo-png.png"
@@ -42,7 +42,7 @@ export const UserMenu = () => {
   }
   const handleAction = () => {
     //dispatch(logoutRequest());
-    usuario = {};
+    dispatch(setUsuario({}))
     console.log("esto anda?")
     navigate("/");
     alertLogut()
